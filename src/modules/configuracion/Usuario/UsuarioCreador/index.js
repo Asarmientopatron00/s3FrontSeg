@@ -10,7 +10,7 @@ import {
   onCreate,
 } from '../../../../redux/actions/Usuario';
 import Slide from '@material-ui/core/Slide';
-import IntlMessages from '../../../../@crema/utility/IntlMessages';
+// import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
 import UsuarioForm from './UsuarioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
@@ -45,6 +45,7 @@ const UsuarioCreador = (props) => {
     handleOnClose,
     accion,
     showForm,
+    setPage,
   } = props;
 
   const dispatch = useDispatch();
@@ -112,27 +113,14 @@ const UsuarioCreador = (props) => {
             if (accion==='crear'){
               dispatch(onCreate(data));
             } else if(accion==='editar') {
-              
               if (selectedRow) {
-                dispatch(onUpdate(selectedRow));
+                dispatch(onUpdate(data));
               } 
             }
-
-            
-            // else {
-            //   const newContact = {
-            //     id: Math.floor(Math.random() * 1000),
-            //     isStarred: false,
-            //     isFrequent: Math.random() > 0.5,
-            //     image: userImage,
-            //     ...data,
-            //   };
-            //   dispatch(onCreateContact(newContact));
-            // }
             handleOnClose();
             resetForm();
             setSubmitting(false);
-            
+            setPage(1);
           }}
           >
           {({values, setFieldValue}) => (
@@ -141,7 +129,7 @@ const UsuarioCreador = (props) => {
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
               accion={accion}
-              onsubmit={onsubmit}
+              setPage={setPage}
             />
           )}
         </Formik>

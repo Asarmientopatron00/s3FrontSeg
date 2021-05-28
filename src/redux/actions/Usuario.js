@@ -14,7 +14,6 @@ import Api from '../../@crema/services/ApiConfig';
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend) => {
-  console.log(orderByToSend)
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const nombreAux = nombre ? nombre : "";
@@ -92,6 +91,7 @@ export const onShow = (id) => {
 };
 
 export const onUpdate = (params) => {
+  console.log(params);
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -147,7 +147,7 @@ export const onCreate = (params) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/usuarios/crear',params)
+    Api.post('http://solicitudesservicio.test/api/usuarios/',params)
       .then((data) => {
         console.log(data);
         if (data.status === 200) {

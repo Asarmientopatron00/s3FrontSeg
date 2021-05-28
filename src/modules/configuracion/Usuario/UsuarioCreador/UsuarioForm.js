@@ -38,7 +38,6 @@ const UsuarioForm = (props) => {
     accion,
     values,
   } = props;
-  console.log(values.estado)
   const dispatch = useDispatch();
   const asociados = useSelector(({asociado}) => asociado.ligera);
   useEffect(() => {

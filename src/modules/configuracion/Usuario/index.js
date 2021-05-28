@@ -419,7 +419,7 @@ const Usuarios =  () => {
   const [showForm,setShowForm]=useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState('id:asc');
+  const [orderByToSend, setOrderByToSend] = React.useState('fecha_modificacion:desc');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
@@ -466,10 +466,12 @@ const Usuarios =  () => {
   const  dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
-    );
-  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend]);
+    if (!showForm){
+      dispatch(
+        onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
+      );
+    }
+  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm]);
 
   useEffect(() => {
       setPage(1);
@@ -493,9 +495,9 @@ const Usuarios =  () => {
         setOrderByToSend(id + ':asc');
       }
     } else {
-      setOrder('desc');
+      setOrder('asc');
       setOrderBy(id);
-      setOrderByToSend(id + ':desc');
+      setOrderByToSend(id + ':asc');
     }
    
   }
@@ -755,6 +757,7 @@ const Usuarios =  () => {
           usuario={usuarioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
+          setPage={setPage}
         />
         :""
       }
