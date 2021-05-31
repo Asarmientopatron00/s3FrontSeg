@@ -40,19 +40,19 @@ import {
       case UPDATE:
         return {
           ...state,
-          selectedRow: action.payload,
+          selectedRow: action.payload.datos,
         };
 
       case DELETE:
         return {
           ...state,
-          selectedRow: action.payload,
+          selectedRow: action.payload.datos,
         };
 
       case CREATE:
         return {
           ...state,
-          selectedRow: action.payload,
+          selectedRow: action.payload.datos,
         };
     
       default:
