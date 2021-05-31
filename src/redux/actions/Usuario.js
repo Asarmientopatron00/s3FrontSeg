@@ -91,38 +91,35 @@ export const onShow = (id) => {
 };
 
 export const onUpdate = (params) => {
-  console.log(params);
-  const {messages} = appIntl();
-  return (dispatch) => {
+  return (dispatch) =>  {
     dispatch({type: FETCH_START});
     Api.put('http://solicitudesservicio.test/api/usuarios/' + params.id, params)
       .then((data) => {
-        console.log(data);
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: UPDATE,
             payload: data.data,
           });
+          
           dispatch({
             type: SHOW_MESSAGE,
-            payload: messages['message.labelUpdated'],
+            payload:data.data.mensajes[0],
           });
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
       });
   };
 };
 
 export const onDelete = (id) => {
-  const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
     Api.delete('http://solicitudesservicio.test/api/usuarios/'+id)
@@ -131,27 +128,28 @@ export const onDelete = (id) => {
           dispatch({type: FETCH_SUCCESS});
           dispatch({type: DELETE, payload: data.data});
         } else {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
-          });
+          dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        console.log(error.response.data);
+        if (error.response.data.mensajes){
+          dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        } else {
+          dispatch({type: FETCH_ERROR, payload:error.message});
+        }
       });
   };
 };
 
 export const onCreate = (params) => {
-  const {messages} = appIntl();
+  // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/usuarios/',params)
+    Api.post('http://solicitudesservicio.test/api/usuarios',params)
       .then((data) => {
         console.log(data);
-        if (data.status === 200) {
-          alert(1);
+        if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: CREATE,
@@ -159,18 +157,15 @@ export const onCreate = (params) => {
           });
           dispatch({
             type: SHOW_MESSAGE,
-            payload: messages['message.labelUpdated'],
+            payload:data.data.mensajes[0],
           });
         } else {
-          alert(1);
-          dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
-          });
+
+          dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
       });
   };
 };

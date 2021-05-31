@@ -1,13 +1,9 @@
 import {
     GET_COLECCION,
-    // GET_COLECCION_LIGERA,
     SHOW,
     UPDATE,
     DELETE,
     CREATE,
-    // FETCH_ERROR,
-    // FETCH_START,
-    // FETCH_SUCCESS,
   } from '../../shared/constants/ActionTypes';
   
   const initialState = {

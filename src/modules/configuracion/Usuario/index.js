@@ -37,6 +37,8 @@ import Popover from '@material-ui/core/Popover';
 import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
+import Swal from 'sweetalert2';
+// import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
 //   if (b[orderBy] < a[orderBy]) {
@@ -441,6 +443,7 @@ const Usuarios =  () => {
   const [openPopOver,setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
 
+
   let columnasMostradasInicial = [];
 
   cells.forEach((cell)=>{
@@ -466,13 +469,17 @@ const Usuarios =  () => {
   const  dispatch = useDispatch();
 
   useEffect(() => {
-    if (!showForm){
       dispatch(
         onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
       );
-    }
   }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm]);
 
+  const updateColeccion = ()=>{
+    setPage(1);
+    dispatch(
+      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
+    );
+  }
   useEffect(() => {
       setPage(1);
   }, [nombreFiltro,orderByToSend]);
@@ -547,7 +554,29 @@ const Usuarios =  () => {
   };
 
   const onDeleteUsuario = (id) => {
-    dispatch(onDelete(id));
+    Swal.fire({
+      title: 'Confirmar',
+      text: "¿Seguro Que Desea Eliminar El Usuario?",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'NO',
+      confirmButtonText: 'SI'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(onDelete(id));
+        Swal.fire(
+          'Eliminado',
+          'El Usuario Fue Eliminado Correctamente',
+          'success'
+        )
+        setTimeout(()=>{
+        updateColeccion();
+        },1000)
+      }
+    })
+
+    
   };
 
   const onOpenAddUsuario = () => {
@@ -757,7 +786,7 @@ const Usuarios =  () => {
           usuario={usuarioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
-          setPage={setPage}
+          updateColeccion={updateColeccion}
         />
         :""
       }
@@ -792,10 +821,10 @@ const Usuarios =  () => {
             <Button onClick={reiniciarColumns}>Reiniciar Vista</Button>
           </Box>
         </Box>
-
       </Popover>
-     
+      {/* <MessageView variant='error' message='sss' /> */}
     </div>
+    
   );
 }
 

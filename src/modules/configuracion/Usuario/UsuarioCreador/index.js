@@ -45,7 +45,7 @@ const UsuarioCreador = (props) => {
     handleOnClose,
     accion,
     showForm,
-    setPage,
+    updateColeccion,
   } = props;
 
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ const UsuarioCreador = (props) => {
 
   const classes = useStyles(props);
 
-  let selectedRow = useSelector(({usuario}) => usuario.selectedRow);
+  let {selectedRow} = useSelector(({usuario}) => usuario);
   
   if (accion==='crear'){
     selectedRow = {estado:1};
@@ -77,10 +77,6 @@ const UsuarioCreador = (props) => {
       dispatch(
         onShow(usuario),
       );
-      // if (selectedRow) {
-
-      // console.log(selectedRow.estado);
-      // }
     }
   },[accion,dispatch,usuario])
   
@@ -117,10 +113,12 @@ const UsuarioCreador = (props) => {
                 dispatch(onUpdate(data));
               } 
             }
-            handleOnClose();
-            resetForm();
-            setSubmitting(false);
-            setPage(1);
+            setTimeout(()=>{
+              handleOnClose();
+              resetForm();
+              setSubmitting(false);
+              updateColeccion();
+            },3000)
           }}
           >
           {({values, setFieldValue}) => (
@@ -129,7 +127,6 @@ const UsuarioCreador = (props) => {
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
               accion={accion}
-              setPage={setPage}
             />
           )}
         </Formik>

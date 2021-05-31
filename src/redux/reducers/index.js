@@ -8,6 +8,7 @@ import Usuario from './Usuario';
 import ContactApp from './ContactApp';
 import Asociado from './Asociado';
 import Rol from './Rol';
+import Close from './Close';
 
 const reducers = (history) =>
   combineReducers({
@@ -20,5 +21,6 @@ const reducers = (history) =>
     usuario: Usuario,
     asociado: Asociado,
     rol: Rol,
+    close: Close,
   });
 export default reducers;

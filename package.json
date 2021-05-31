@@ -105,6 +105,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.0.16",
     "typescript": "^3.8.3",
     "use-url-search-params": "^2.3.13",
     "velocity-animate": "^1.5.2",

@@ -5073,12 +5073,7 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001135, caniuse-lite@^1.0.30001137:
-  version "1.0.30001228"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001228.tgz"
-  integrity sha512-QQmLOGJ3DEgokHbMSA8cj2a+geXqmnpyOFT0lhQV6P3/YOJvGDEwoedcwxEQ30gJIwIIunHIicunJ2rzK5gB2A==
-
-caniuse-lite@^1.0.30000989, caniuse-lite@^1.0.30001035:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30000989, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001135, caniuse-lite@^1.0.30001137:
   version "1.0.30001228"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001228.tgz"
   integrity sha512-QQmLOGJ3DEgokHbMSA8cj2a+geXqmnpyOFT0lhQV6P3/YOJvGDEwoedcwxEQ30gJIwIIunHIicunJ2rzK5gB2A==
@@ -16132,6 +16127,11 @@ svgo@^1.0.0, svgo@^1.2.2:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+sweetalert2@^11.0.16:
+  version "11.0.16"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.0.16.tgz#48b3b0420cb2431b906f627d54884f5c7a88d434"
+  integrity sha512-9XStCZJMQpLQBAT/jr/4qZuA5Xwoupi/x5FagZYM1qGnyRqYecaJTPD1Cb5gc7G+9B5muH/JaDaBQGrvLpCmvQ==
 
 symbol-observable@^1.0.4, symbol-observable@^1.2.0:
   version "1.2.0"

@@ -41,6 +41,7 @@ const useStyles1 = makeStyles((theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
+    textTransform:'capitalize',
   },
 }));
 const AppSnackbar = (props) => {
