@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Box, Button, Select,RadioGroup,Radio} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
-import {useDispatch,useSelector} from 'react-redux';
 // import {useIntl} from 'react-intl';
 import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
@@ -12,8 +11,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../../redux/actions/Asociado'; 
-import {onGetColeccionLigera as rolColeccionLigera} from '../../../../redux/actions/Rol'; 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 
@@ -30,33 +27,62 @@ const MyTextField = (props) => {
   );
 };
 
+// const MySelectField= (props) => {
+//   const [field, meta] = useField(props);
+//   const errorText = meta.error && meta.touched ? meta.error : '';
+  
+//   return (
+//     <Field
+//       {...props}
+//       {...field}
+//       row
+//     >
+//     <Field
+//       type='radio'
+//       as={Radio}
+//       value="1"
+//       label="Activo"
+//       name={props.name}
+//       className={props.className}
+//     />
+
+//     <Field
+//       as={Radio}
+//       name={props.name}
+//       type='radio'
+//       value="0"
+//       label="Inactivo"
+//       className={props.className}
+//     />
+//   </Field>
+//   );
+// };
+
 
 
 const UsuarioForm = (props) => {
   const {
     handleOnClose,
     accion,
+    asociados,
+    roles,
     values,
   } = props;
-  const dispatch = useDispatch();
-  const asociados = useSelector(({asociado}) => asociado.ligera);
-  useEffect(() => {
-    dispatch(
-      asociadoColeccionLigera(),
-    );
-  }, [dispatch]);
 
-  const roles = useSelector(({rol}) => rol.ligera);
-  useEffect(() => {
-    dispatch(
-      rolColeccionLigera(),
-    );
-  }, [dispatch]);
+  // const [estado,setEstado] = useState('1');
 
-  const [estado,setEstado] = useState(0);
-  useEffect(()=>{
-    setEstado(values.estado);
-  },[values.estado])
+  // useEffect(()=>{
+  //   if (accion==='crear'){
+  //     setEstado('1');
+  //   } else {
+  //     setEstado(values.estado);
+  //   }
+  //   alert(values.estado)
+  // },[values.estado,accion])
+
+  // useEffect(()=>{
+  //   alert(values.estado)
+  // },[values.estado])
   const inputLabel = React.useRef(null);
 
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -85,6 +111,17 @@ const UsuarioForm = (props) => {
       [theme.breakpoints.up('xl')]: {
         marginBottom: 24,
       },
+    },
+    MySelectField: {
+      width: 'auto',
+      marginBottom: 16,
+      [theme.breakpoints.up('xl')]: {
+        marginBottom: 24,
+      },
+      color:theme.palette.primary.main,
+      "&:target": {
+        color:theme.palette.primary.main,
+      }
     },
     btnRoot: {
       paddingLeft: 15,
@@ -120,7 +157,7 @@ const UsuarioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={16}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.usuarios'/>
+            <IntlMessages id='seguridad.usuarios'/>
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
@@ -239,7 +276,7 @@ const UsuarioForm = (props) => {
               className={classes.myTextField}
               disabled={accion==='ver'}
               row
-              value={estado===1?'1':'0'}
+              value={values.estado}
             >
               <FormControlLabel
                 value="1"
@@ -257,8 +294,15 @@ const UsuarioForm = (props) => {
               />
             </Field>
           </FormControl>
-
-
+            
+            {/* <MySelectField
+              className={classes.MySelectField}
+              label= 'Estado'
+              name='estado'
+              disabled={accion==='ver'}
+              type='radio'
+              as={RadioGroup}
+            ></MySelectField> */}
           </Box>
         </Box>
       </Scrollbar>

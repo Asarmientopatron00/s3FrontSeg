@@ -15,6 +15,8 @@ export const SHOW = 'show';
 export const UPDATE = 'update';
 export const CREATE = 'create';
 export const DELETE = 'delete';
+export const GET_COLECCION_TIPO_DOCUMENTO_LIGERA = 'get_coleccion_tipo_documento_ligera';
+export const GET_COLECCION_TIPO_DOCUMENTO = 'get_coleccion_tipo_documento';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

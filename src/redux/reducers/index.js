@@ -9,6 +9,7 @@ import ContactApp from './ContactApp';
 import Asociado from './Asociado';
 import Rol from './Rol';
 import Close from './Close';
+import TipoDocumentoReducer from './TipoDocumentoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -22,5 +23,6 @@ const reducers = (history) =>
     asociado: Asociado,
     rol: Rol,
     close: Close,
+    tipoDocumentoReducer: TipoDocumentoReducer,
   });
 export default reducers;

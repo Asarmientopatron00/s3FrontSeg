@@ -10,6 +10,10 @@ export const configuracionConfig = [
         path: ['/configuracion/usuarios'],
         component: React.lazy(() => import('./Usuario')),
       },
+      {
+        path: ['/configuracion/tipos-documentos'],
+        component: React.lazy(() => import('./TipoDocumento')),
+      },
     ],
   },
 ];

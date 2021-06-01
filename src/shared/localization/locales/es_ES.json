@@ -1,7 +1,7 @@
 {
   "configuracion":"Configuración",
   "configuracion.tiposDocumentos":"Tipos de Documentos",
-  "configuracion.usuarios":"Usuarios",
+  "seguridad.usuarios":"Usuarios",
   "boton.submit":"GUARDAR",
   "boton.cancel":"CANCELAR",
   "boton.editar":"Editar",

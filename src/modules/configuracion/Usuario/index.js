@@ -38,6 +38,9 @@ import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../redux/actions/Asociado'; 
+import {onGetColeccionLigera as rolColeccionLigera} from '../../../redux/actions/Rol'; 
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -272,7 +275,7 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Box>
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            <IntlMessages id='configuracion.usuarios'/>
+            <IntlMessages id='seguridad.usuarios'/>
           </Typography>
 
           <Box>
@@ -405,6 +408,7 @@ const useStyles = makeStyles((theme) => ({
   popoverColumns:{
     display: 'grid',
     padding: '10px',
+    color: theme.palette.grayBottoms,
   },
   paginacion:{
     display: 'flex',
@@ -473,6 +477,21 @@ const Usuarios =  () => {
         onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
       );
   }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm]);
+
+  const asociados = useSelector(({asociado}) => asociado.ligera);
+  useEffect(() => {
+    dispatch(
+      asociadoColeccionLigera(),
+    );
+  }, [dispatch]);
+
+  const roles = useSelector(({rol}) => rol.ligera);
+  useEffect(() => {
+    dispatch(
+      rolColeccionLigera(),
+    );
+  }, [dispatch]);
+
 
   const updateColeccion = ()=>{
     setPage(1);
@@ -557,6 +576,8 @@ const Usuarios =  () => {
     Swal.fire({
       title: 'Confirmar',
       text: "¿Seguro Que Desea Eliminar El Usuario?",
+      allowEscapeKey: false,
+      allowEnterKey: false,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -571,7 +592,7 @@ const Usuarios =  () => {
           'success'
         )
         setTimeout(()=>{
-        updateColeccion();
+          updateColeccion();
         },1000)
       }
     })
@@ -580,6 +601,7 @@ const Usuarios =  () => {
   };
 
   const onOpenAddUsuario = () => {
+    setUsuarioSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
@@ -787,6 +809,8 @@ const Usuarios =  () => {
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
+          asociados={asociados}
+          roles={roles}
         />
         :""
       }

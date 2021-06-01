@@ -14,3 +14,4 @@ export * from './Wall';
 export * from './Usuario';
 export * from './Asociado';
 export * from './Rol';
+export * from './TipoDocumentoAction';

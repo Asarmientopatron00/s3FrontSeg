@@ -46,6 +46,8 @@ const UsuarioCreador = (props) => {
     accion,
     showForm,
     updateColeccion,
+    asociados,
+    roles,
   } = props;
 
   const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const UsuarioCreador = (props) => {
   let {selectedRow} = useSelector(({usuario}) => usuario);
   
   if (accion==='crear'){
-    selectedRow = {estado:1};
+    selectedRow = {estado:'1'};
   }
 
   useEffect(()=>{
@@ -87,8 +89,11 @@ const UsuarioCreador = (props) => {
       aria-labelledby='simple-modal-title'
       TransitionComponent={Transition}
       aria-describedby='simple-modal-description'
-      className={classes.dialogBox}>
-       <Scrollbar>
+      className={classes.dialogBox}
+      disableBackdropClick = {true}
+      maxWidth={'sm'}
+    >
+      <Scrollbar>
         <Formik
           initialStatus={true}
           enableReinitialize={true}
@@ -101,9 +106,9 @@ const UsuarioCreador = (props) => {
             email: selectedRow ? selectedRow.email : '',
             cargo: selectedRow ? selectedRow.cargo : '',
             numero_celular: selectedRow ? selectedRow.numero_celular : '',
-            estado: selectedRow ? selectedRow.estado : '1',
+            estado: selectedRow ? selectedRow.estado:'0',
           }}
-           validationSchema={validationSchema}
+          validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting, resetForm}) => {
             setSubmitting(true);
             if (accion==='crear'){
@@ -114,19 +119,21 @@ const UsuarioCreador = (props) => {
               } 
             }
             setTimeout(()=>{
-              handleOnClose();
               resetForm();
               setSubmitting(false);
+              handleOnClose();
               updateColeccion();
             },3000)
           }}
-          >
+        >
           {({values, setFieldValue}) => (
             <UsuarioForm
               values={values}
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
               accion={accion}
+              asociados={asociados}
+              roles={roles}
             />
           )}
         </Formik>
@@ -136,10 +143,6 @@ const UsuarioCreador = (props) => {
 };
 
 export default UsuarioCreador;
-
-UsuarioCreador.defaultProps = {
-  selectedRow: {estado:1},
-};
 
 // UsuarioCreador.prototype = {
 //   isAddContact: PropTypes.bool.isRequired,

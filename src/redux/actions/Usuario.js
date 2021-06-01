@@ -71,22 +71,24 @@ export const onGetColeccionLigera = () => {
 export const onShow = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
-    dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/usuarios/'+id)
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          dispatch({type: SHOW, payload: data.data});
-        } else {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+    if(id!==0){
+      dispatch({type: FETCH_START});
+      Api.get('http://solicitudesservicio.test/api/usuarios/'+id)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({type: SHOW, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
       });
+    }
   };
 };
 
