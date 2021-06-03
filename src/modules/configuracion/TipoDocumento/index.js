@@ -297,7 +297,7 @@ const EnhancedTableToolbar = (props) => {
             </Tooltip> 
           </Box>
           <Box className={classes.verticalBottoms}>
-            <Tooltip title="Crear TipoDocumento" onClick={onOpenAddTipoDocumento}>
+            <Tooltip title="Crear Tipo Documento" onClick={onOpenAddTipoDocumento}>
               <IconButton className={classes.createButton} aria-label="filter list">
                 <AddIcon />
               </IconButton>

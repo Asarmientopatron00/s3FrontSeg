@@ -2,6 +2,8 @@
   "configuracion":"Configuración",
   "configuracion.tiposDocumentos":"Tipos de Documentos",
   "configuracion.paises":"Paises",
+  "configuracion.actividadesEconomicas":"Actividades Económicas",
+  "configuracion.listasDocumentos":"Listas de Documentos",
   "seguridad":"Seguridad",
   "seguridad.roles":"Roles",
   "seguridad.usuarios":"Usuarios",

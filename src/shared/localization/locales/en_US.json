@@ -2,6 +2,8 @@
   "configuracion":"Configuration",
   "configuracion.tiposDocumentos":"Document Types",
   "configuracion.paises":"Countries",
+  "configuracion.actividadesEconomicas":"Economic Activities",
+  "configuracion.listasDocumentos":"Document Lists",
   "seguridad":"Sequirity",
   "seguridad.roles":"Rols",
   "seguridad.usuarios":"Users",

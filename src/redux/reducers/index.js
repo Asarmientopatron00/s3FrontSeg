@@ -9,8 +9,12 @@ import ContactApp from './ContactApp';
 import Asociado from './Asociado';
 import RolReducer from './RolReducer';
 import Close from './Close';
-import TipoDocumentoReducer from './TipoDocumentoReducer';
 import PaisReducer from './PaisReducer';
+import ActividadEconomicaReducer from './ActividadEconomicaReducer';
+import ListaDocumentoReducer from './ListaDocumentoReducer';
+import TipoDocumentoReducer from './TipoDocumentoReducer';
+
+
 
 const reducers = (history) =>
   combineReducers({
@@ -26,5 +30,8 @@ const reducers = (history) =>
     tipoDocumentoReducer: TipoDocumentoReducer,
     paisReducer: PaisReducer,
     rolReducer: RolReducer,
+    actividadEconomicaReducer: ActividadEconomicaReducer,
+    listaDocumentoReducer: ListaDocumentoReducer,
+
   });
 export default reducers;

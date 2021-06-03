@@ -14,6 +14,14 @@ export const configuracionConfig = [
         path: ['/configuracion/paises'],
         component: React.lazy(() => import('./Pais')),
       },
+      {
+        path: ['/configuracion/actividades-economicas'],
+        component: React.lazy(() => import('./ActividadEconomica')),
+      },
+      {
+        path: ['/configuracion/listas-documentos'],
+        component: React.lazy(() => import('./ListaDocumento')),
+      },
     ],
   },
 ];

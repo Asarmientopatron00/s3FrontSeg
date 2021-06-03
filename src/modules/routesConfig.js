@@ -22,6 +22,20 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/paises',
       },
+      {
+        id: 'actividades-economicas',
+        title: 'configuracion.actividadesEconomicas',
+        messageId: 'configuracion.actividadesEconomicas',
+        type: 'item',
+        url: '/configuracion/actividades-economicas',
+      },
+      {
+        id: 'listas-documentos',
+        title: 'configuracion.listasDocumentos',
+        messageId: 'configuracion.listasDocumentos',
+        type: 'item',
+        url: '/configuracion/listas-documentos',
+      },
     ]
   },
   {

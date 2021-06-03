@@ -16,3 +16,5 @@ export * from './Asociado';
 export * from './RolAction';
 export * from './TipoDocumentoAction';
 export * from './PaisAction';
+export * from './ActividadEconomicaAction';
+export * from './ListaDocumentoAction';

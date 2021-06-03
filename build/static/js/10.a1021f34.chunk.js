@@ -1,0 +1,2 @@
+(this.webpackJsonpcrema=this.webpackJsonpcrema||[]).push([[10],{3072:function(e,t,n){"use strict";n.r(t);var a=n(0),i=n.n(a),r=n(67),c=n(23),s=n(188);t.default=function(){return i.a.createElement(s.a,{animation:"transition.slideUpIn",delay:200},i.a.createElement(r.a,{fontSize:20,component:"h3",display:"flex",alignItems:"center",justifyContent:"center"},i.a.createElement(c.a,{id:"sidebar.multiLevel"})))}}}]);
+//# sourceMappingURL=10.a1021f34.chunk.js.map

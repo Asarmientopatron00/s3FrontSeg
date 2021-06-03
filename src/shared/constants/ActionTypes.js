@@ -39,7 +39,18 @@ export const SHOW_PAIS = 'show_pais';
 export const UPDATE_PAIS = 'update_pais';
 export const CREATE_PAIS = 'create_pais';
 export const DELETE_PAIS = 'delete_pais';
-
+export const GET_COLECCION_ACTIVIDAD_ECONOMICA = 'get_coleccion_actividad_economica';
+export const GET_COLECCION_LIGERA_ACTIVIDAD_ECONOMICA = 'get_coleccion_ligera_actividad_economica';
+export const SHOW_ACTIVIDAD_ECONOMICA = 'show_actividad_economica';
+export const UPDATE_ACTIVIDAD_ECONOMICA = 'update_actividad_economica';
+export const CREATE_ACTIVIDAD_ECONOMICA = 'create_actividad_economica';
+export const DELETE_ACTIVIDAD_ECONOMICA = 'delete_actividad_economica';
+export const GET_COLECCION_LISTA_DOCUMENTO = 'get_coleccion_LISTA_documento';
+export const GET_COLECCION_LIGERA_LISTA_DOCUMENTO = 'get_coleccion_ligera_LISTA_documento';
+export const SHOW_LISTA_DOCUMENTO = 'show_LISTA_documento';
+export const UPDATE_LISTA_DOCUMENTO = 'update_LISTA_documento';
+export const CREATE_LISTA_DOCUMENTO = 'create_LISTA_documento';
+export const DELETE_LISTA_DOCUMENTO = 'delete_LISTA_documento';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
