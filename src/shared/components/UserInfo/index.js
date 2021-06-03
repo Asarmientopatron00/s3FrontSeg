@@ -1,5 +1,4 @@
 import React, {useContext} from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import {useDispatch} from 'react-redux';
 import {
   onCognitoUserSignOut,
@@ -15,13 +14,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Box from '@material-ui/core/Box';
-import {orange} from '@material-ui/core/colors';
 import {AuthType, Fonts} from '../../constants/AppEnums';
+import PersonIcon from '@material-ui/icons/Person';
 
 const useStyles = makeStyles((theme) => {
   return {
     crUserInfo: {
-      backgroundColor: 'rgba(0,0,0,.08)',
+      backgroundColor: 'transparent',
       paddingTop: 9,
       paddingBottom: 9,
       minHeight: 56,
@@ -35,8 +34,9 @@ const useStyles = makeStyles((theme) => {
       },
     },
     profilePic: {
-      fontSize: 24,
-      backgroundColor: orange[500],
+      fontSize: 50,
+      backgroundColor: 'transparent',
+      color:'white',
     },
     userInfo: {
       width: 'calc(100% - 75px)',
@@ -76,27 +76,15 @@ const UserInfo = (props) => {
     setAnchorEl(null);
   };
 
-  const getUserAvatar = () => {
-    if (user.displayName) {
-      return user.displayName.charAt(0).toUpperCase();
-    }
-    if (user.email) {
-      return user.email.charAt(0).toUpperCase();
-    }
-  };
-
   const classes = useStyles({themeMode});
 
   return (
     <Box
       px={{xs: 4, xl: 7}}
-      className={clsx(classes.crUserInfo, 'cr-user-info')}>
+      className={clsx(classes.crUserInfo, 'cr-user-info')}
+    >
       <Box display='flex' alignItems='center'>
-        {user.photoURL ? (
-          <Avatar className={classes.profilePic} src={user.photoURL} />
-        ) : (
-          <Avatar className={classes.profilePic}>{getUserAvatar()}</Avatar>
-        )}
+        <PersonIcon className={classes.profilePic}/>
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
           <Box
             display='flex'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import {Box, Button, RadioGroup,Radio} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
@@ -19,6 +19,7 @@ const MyTextField = (props) => {
       {...field}
       helperText={errorText}
       error={!!errorText}
+      
     />
   );
 };
@@ -28,7 +29,15 @@ const TipoDocumentoForm = (props) => {
     handleOnClose,
     accion,
     values,
+    initialValues,
   } = props;
+
+  const [disabled, setDisabled] = useState(false);
+  useEffect(()=>{
+    if (accion ==='ver'||initialValues.estado==='0'){
+      setDisabled(true);
+    }
+  },[initialValues.estado,accion]);
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -92,7 +101,7 @@ const TipoDocumentoForm = (props) => {
           <Box
             component='h6'
             mb={{xs: 4, xl: 6}}
-            fontSize={16}
+            fontSize={20}
             fontWeight={Fonts.MEDIUM}>
             <IntlMessages id='configuracion.tiposDocumentos'/>
           </Box>
@@ -102,19 +111,21 @@ const TipoDocumentoForm = (props) => {
               className={classes.myTextField}
               label= 'Nombre'
               name='nombre'
-              disabled={accion==='ver'}
-              
+              disabled={disabled}
+              required
             />
 
             <MyTextField
               className={classes.myTextField}
               label= 'Código Externo'
               name='codigo'
-              disabled={accion==='ver'}
+              disabled={disabled}
+              required
+              inputProps={{maxLength:2}}
             />
-        
+
             <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel component="legend">Estado</FormLabel>
+              <FormLabel component="legend">Estado*</FormLabel>
               <Field
                 name='estado'
                 type='radio'

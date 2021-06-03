@@ -2,33 +2,49 @@
 
 const routesConfig = [
   {
-    id: 'apps',
-    title: 'Apps',
+    id: 'configuracion',
+    title: 'configuracion',
     messageId: 'configuracion',
     type: 'collapse',
     icon: 'settings',
     children: [
       {
         id: 'tipos-documentos',
-        title: 'Tipos de Documentos',
+        title: 'configuracion.tiposDocumentos',
         messageId: 'configuracion.tiposDocumentos',
         type: 'item',
         url: '/configuracion/tipos-documentos',
       },
       {
+        id: 'paises',
+        title: 'configuracion.paises',
+        messageId: 'configuracion.paises',
+        type: 'item',
+        url: '/configuracion/paises',
+      },
+    ]
+  },
+  {
+    id: 'seguridad',
+    title: 'seguridad',
+    messageId: 'seguridad',
+    type: 'collapse',
+    icon: 'security',
+    children: [
+      {
+        id: 'roles',
+        title: 'seguridad.roles',
+        messageId: 'seguridad.roles',
+        type: 'item',
+        url: '/seguridad/roles',
+      },
+      {
         id: 'usuarios',
-        title: 'Usuarios',
+        title: 'seguridad.usuarios',
         messageId: 'seguridad.usuarios',
         type: 'item',
-        url: '/configuracion/usuarios',
+        url: '/seguridad/usuarios',
       },
-      // {
-      //   id: 'contact',
-      //   title: 'Contact',
-      //   messageId: 'sidebar.apps.contact',
-      //   type: 'item',
-      //   url: '/apps/contact',
-      // },
     ]
   }
   

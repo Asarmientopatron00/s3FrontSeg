@@ -15,8 +15,31 @@ export const SHOW = 'show';
 export const UPDATE = 'update';
 export const CREATE = 'create';
 export const DELETE = 'delete';
-export const GET_COLECCION_TIPO_DOCUMENTO_LIGERA = 'get_coleccion_tipo_documento_ligera';
+export const GET_COLECCION_USUARIO = 'get_coleccion_USUARIO';
+export const GET_COLECCION_LIGERA_USUARIO = 'get_coleccion_ligera_usuario';
+export const SHOW_USUARIO = 'show_usuario';
+export const UPDATE_USUARIO = 'update_usuario';
+export const CREATE_USUARIO = 'create_usuario';
+export const DELETE_USUARIO = 'delete_usuario';
 export const GET_COLECCION_TIPO_DOCUMENTO = 'get_coleccion_tipo_documento';
+export const GET_COLECCION_LIGERA_TIPO_DOCUMENTO = 'get_coleccion_ligera_tipo_documento';
+export const SHOW_TIPO_DOCUMENTO = 'show_tipo_documento';
+export const UPDATE_TIPO_DOCUMENTO = 'update_tipo_documento';
+export const CREATE_TIPO_DOCUMENTO = 'create_tipo_documento';
+export const DELETE_TIPO_DOCUMENTO = 'delete_tipo_documento';
+export const GET_COLECCION_ROL = 'get_coleccion_rol';
+export const GET_COLECCION_LIGERA_ROL = 'get_coleccion_ligera_rol';
+export const SHOW_ROL = 'show_rol';
+export const UPDATE_ROL = 'update_rol';
+export const CREATE_ROL = 'create_rol';
+export const DELETE_ROL = 'delete_rol';
+export const GET_COLECCION_PAIS = 'get_coleccion_pais';
+export const GET_COLECCION_LIGERA_PAIS = 'get_coleccion_ligera_pais';
+export const SHOW_PAIS = 'show_pais';
+export const UPDATE_PAIS = 'update_pais';
+export const CREATE_PAIS = 'create_pais';
+export const DELETE_PAIS = 'delete_pais';
+
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

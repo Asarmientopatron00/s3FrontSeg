@@ -23,7 +23,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-import FilterListIcon from '@material-ui/icons/FilterList';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import TipoDocumentoCreador from './TipoDocumentoCreador'
 import {
   onGetColeccion,
@@ -230,9 +230,12 @@ const useToolbarStyles = makeStyles((theme) => ({
       cursor:'pointer',
     }
   },
-  inputFiltros:{
-    width:300
-  }
+  contenedorFiltros:{
+    width:'100%',
+    display:'grid',
+    gridTemplateColumns: 'repeat(2,1fr)',
+    gap:'20px',
+  },
 }));
 
 const EnhancedTableToolbar = (props) => {
@@ -256,19 +259,18 @@ const EnhancedTableToolbar = (props) => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Box>
+        <Box width={'100%'}>
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
             <IntlMessages id='configuracion.tiposDocumentos'/>
           </Typography>
 
-          <Box>
+          <Box className={classes.contenedorFiltros}>
             <TextField
               label= 'Nombre'
               name='nombre'
               id='nombreFiltro'
               onChange = {queryFilter}
               value={nombreFiltro}
-              className={classes.inputFiltros}
             />
           </Box>
         </Box>
@@ -283,11 +285,11 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Box className={classes.rootBottoms}>
           <Box className={classes.horizontalBottoms}>
-            <Tooltip title="Filtros Avanzados">
+            {/* <Tooltip title="Filtros Avanzados">
               <IconButton aria-label="filter list">
                 <FilterListIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="Mostrar/Ocultar Columnas" onClick={handleOpenPopoverColumns}>
               <IconButton className={classes.columnFilterButton} aria-label="filter list">
                 <ViewColumnIcon />
@@ -327,7 +329,7 @@ const useStyles = makeStyles((theme) => ({
       padding:'15px'
   },
   head: {
-    borderTop:'1px solid #dee2e6',
+    borderTop:'2px solid #dee2e6',
     borderBottom:'2px solid #dee2e6',
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
@@ -342,6 +344,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cell: props=>({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    whiteSpace:'nowrap',
   }),
   cellWidth: props=>({
     minWidth:props.width,

@@ -13,6 +13,8 @@ const AppLogo = () => {
       flexDirection: 'column',
       cursor: 'pointer',
       alignItems: 'center',
+      marginTop:'20px',
+      marginBottom:'20px',
     },
     logo: {
       height: 160,

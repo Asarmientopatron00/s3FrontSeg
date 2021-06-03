@@ -27,8 +27,6 @@ const commonReducer = (state = INIT_STATE, action) => {
     case FETCH_SUCCESS: {
       return {
         ...state,
-        error: '',
-        message: '',
         loading: false,
         updatingContent: false,
       };

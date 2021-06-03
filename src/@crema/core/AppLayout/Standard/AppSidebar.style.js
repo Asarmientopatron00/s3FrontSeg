@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.up('xl')]: {
         width: '19rem',
       },
+      fontWeight:theme.palette.sidebar.fontWeight,
     },
     sidebarBg: {
       backgroundColor: (props) =>

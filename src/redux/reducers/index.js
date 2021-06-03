@@ -4,12 +4,13 @@ import Settings from './Setting';
 import UserList from './UserList';
 import Auth from './Auth';
 import Common from './Common';
-import Usuario from './Usuario';
+import Usuario from './UsuarioReducer';
 import ContactApp from './ContactApp';
 import Asociado from './Asociado';
-import Rol from './Rol';
+import RolReducer from './RolReducer';
 import Close from './Close';
 import TipoDocumentoReducer from './TipoDocumentoReducer';
+import PaisReducer from './PaisReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -21,8 +22,9 @@ const reducers = (history) =>
     contactApp: ContactApp,
     usuario: Usuario,
     asociado: Asociado,
-    rol: Rol,
     close: Close,
     tipoDocumentoReducer: TipoDocumentoReducer,
+    paisReducer: PaisReducer,
+    rolReducer: RolReducer,
   });
 export default reducers;

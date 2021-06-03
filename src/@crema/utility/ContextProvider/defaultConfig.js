@@ -35,8 +35,8 @@ const defaultConfig = {
       sidebar: {
         bgColor: '#26426C',
         textColor: '#FFFFFF',
-        fontSize:'14.4px',
-        fontWeight:'bold',
+        fontSize:'14px',
+        fontWeight:'600',
       },
       gray: {
         50: '#fafafa',

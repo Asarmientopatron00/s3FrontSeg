@@ -1,10 +1,10 @@
 import {
   GET_COLECCION_TIPO_DOCUMENTO,
-  GET_COLECCION_TIPO_DOCUMENTO_LIGERA,
-  SHOW,
-  UPDATE,
-  DELETE,
-  CREATE,
+  GET_COLECCION_LIGERA_TIPO_DOCUMENTO,
+  SHOW_TIPO_DOCUMENTO,
+  UPDATE_TIPO_DOCUMENTO,
+  DELETE_TIPO_DOCUMENTO,
+  CREATE_TIPO_DOCUMENTO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -50,21 +50,25 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/contactApp/labels/list')
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_TIPO_DOCUMENTO_LIGERA, payload: data.data});
-        } else {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
-      });
+    Api.get('http://solicitudesservicio.test/api/tipos-de-documentos', {
+      params: {
+        ligera: true,
+      },
+    })
+    .then((data) => {
+      if (data.status === 200) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: GET_COLECCION_LIGERA_TIPO_DOCUMENTO, payload: data});
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: messages['message.somethingWentWrong'],
+        });
+      }
+    })
+    .catch((error) => {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+    });
   };
 };
 
@@ -77,7 +81,7 @@ export const onShow = (id) => {
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW, payload: data.data});
+            dispatch({type: SHOW_TIPO_DOCUMENTO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -100,7 +104,7 @@ export const onUpdate = (params) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE,
+            type: UPDATE_TIPO_DOCUMENTO,
             payload: data.data,
           });
           
@@ -128,7 +132,7 @@ export const onDelete = (id) => {
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE, payload: data.data});
+          dispatch({type: DELETE_TIPO_DOCUMENTO, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
@@ -154,7 +158,7 @@ export const onCreate = (params) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE,
+            type: CREATE_TIPO_DOCUMENTO,
             payload: data.data,
           });
           dispatch({

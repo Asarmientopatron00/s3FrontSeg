@@ -1,5 +1,5 @@
 import {makeStyles} from '@material-ui/core/styles';
-import {Fonts, ThemeMode} from '../../../../shared/constants/AppEnums';
+import {ThemeMode} from '../../../../shared/constants/AppEnums';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => {
       },
 
       '& .nav-item-text': {
-        fontWeight: Fonts.REGULAR,
+        fontWeight: theme.palette.sidebar.fontWeight,
         // fontSize: 16,
         color: theme.palette.sidebar.textColor,
 
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => {
 
       '&.open, &:hover, &:focus': {
         '& .nav-item-text': {
-          fontWeight: Fonts.MEDIUM,
+          fontWeight: theme.palette.sidebar.fontWeight,
           color: (props) =>
             props.themeMode === ThemeMode.LIGHT ? '#313541' : '#fff',
         },

@@ -21,15 +21,19 @@ const variantIcon = {
 const useStyles1 = makeStyles((theme) => ({
   success: {
     backgroundColor: green[600],
+    width:'95vw',
   },
   error: {
     backgroundColor: theme.palette.error.dark,
+    width:'95vw',
   },
   info: {
     backgroundColor: theme.palette.primary.main,
+    width:'95vw',
   },
   warning: {
     backgroundColor: amber[700],
+    width:'95vw',
   },
   icon: {
     fontSize: 20,
@@ -41,7 +45,6 @@ const useStyles1 = makeStyles((theme) => ({
   message: {
     display: 'flex',
     alignItems: 'center',
-    textTransform:'capitalize',
   },
 }));
 const AppSnackbar = (props) => {
@@ -62,7 +65,7 @@ const AppSnackbar = (props) => {
         horizontal: 'left',
       }}
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={2000}
       onClose={onClose}>
       <SnackbarContent
         className={clsx(classes[variant], className)}

@@ -58,7 +58,7 @@ const TipoDocumentoCreator = (props) => {
   let {selectedRow} = useSelector(({tipoDocumentoReducer}) => tipoDocumentoReducer);
   
   if (accion==='crear'){
-    selectedRow = {estado:'1'};
+    selectedRow = null;
   }
 
   useEffect(()=>{
@@ -84,11 +84,12 @@ const TipoDocumentoCreator = (props) => {
         <Formik
           initialStatus={true}
           enableReinitialize={true}
+          validateOnBlur={false}
           initialValues={{
             id: selectedRow ? selectedRow.id : '',
             nombre: selectedRow ? selectedRow.nombre : '',
             codigo: selectedRow ? selectedRow.codigo : '',
-            estado: selectedRow ? selectedRow.estado:'0',
+            estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
           }}
           validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting, resetForm}) => {
@@ -100,15 +101,13 @@ const TipoDocumentoCreator = (props) => {
                 dispatch(onUpdate(data));
               } 
             }
-            setTimeout(()=>{
-              resetForm();
-              setSubmitting(false);
-              handleOnClose();
-              updateColeccion();
-            },3000)
+            resetForm();
+            setSubmitting(false);
+            handleOnClose();
+            updateColeccion();
           }}
         >
-          {({values, setFieldValue}) => (
+          {({values,initialValues, setFieldValue}) => (
             <TipoDocumentoForm
               values={values}
               setFieldValue={setFieldValue}
@@ -116,6 +115,7 @@ const TipoDocumentoCreator = (props) => {
               accion={accion}
               asociados={asociados}
               roles={roles}
+              initialValues={initialValues}
             />
           )}
         </Formik>

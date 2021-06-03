@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => {
         props.themeMode === ThemeMode.LIGHT
           ? theme.palette.text.secondary
           : 'rgba(255,255,255,0.38)',
-      fontWeight: 700,
+      fontWeight: theme.palette.sidebar.fontWeight,
       fontSize: 14,
       cursor: 'pointer',
       textDecoration: 'none!important',

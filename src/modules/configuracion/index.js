@@ -7,12 +7,12 @@ export const configuracionConfig = [
     auth: authRole.user,
     routes: [
       {
-        path: ['/configuracion/usuarios'],
-        component: React.lazy(() => import('./Usuario')),
-      },
-      {
         path: ['/configuracion/tipos-documentos'],
         component: React.lazy(() => import('./TipoDocumento')),
+      },
+      {
+        path: ['/configuracion/paises'],
+        component: React.lazy(() => import('./Pais')),
       },
     ],
   },

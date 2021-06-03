@@ -1,6 +1,9 @@
 {
   "configuracion":"Configuration",
   "configuracion.tiposDocumentos":"Document Types",
+  "configuracion.paises":"Countries",
+  "seguridad":"Sequirity",
+  "seguridad.roles":"Rols",
   "seguridad.usuarios":"Users",
   "boton.submit":"SAVE",
   "boton.cancel":"CANCEL",

@@ -1,9 +1,10 @@
 import {
     GET_COLECCION_TIPO_DOCUMENTO,
-    SHOW,
-    UPDATE,
-    DELETE,
-    CREATE,
+    GET_COLECCION_LIGERA_TIPO_DOCUMENTO,
+    SHOW_TIPO_DOCUMENTO,
+    UPDATE_TIPO_DOCUMENTO,
+    DELETE_TIPO_DOCUMENTO,
+    CREATE_TIPO_DOCUMENTO,
   } from '../../shared/constants/ActionTypes';
   
   const initialState = {
@@ -31,25 +32,31 @@ import {
           total: action.payload.data.total,
         };
 
-      case SHOW:
+      case GET_COLECCION_LIGERA_TIPO_DOCUMENTO:
+        return {
+          ...state,
+          ligera: action.payload.data,
+        };
+
+      case SHOW_TIPO_DOCUMENTO:
         return {
           ...state,
           selectedRow: action.payload,
         };
 
-      case UPDATE:
+      case UPDATE_TIPO_DOCUMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case DELETE:
+      case DELETE_TIPO_DOCUMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case CREATE:
+      case CREATE_TIPO_DOCUMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
