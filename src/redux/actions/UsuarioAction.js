@@ -21,7 +21,7 @@ export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend) => 
   
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/usuarios', {
+    Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/usuarios', {
       params: {
         page: page,
         limite:rowsPerPage,
@@ -73,7 +73,7 @@ export const onShow = (id) => {
   return (dispatch) => {
     if(id!==0){
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/usuarios/'+id)
+      Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/usuarios/'+id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -95,7 +95,7 @@ export const onShow = (id) => {
 export const onUpdate = (params) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
-    Api.put('http://solicitudesservicio.test/api/usuarios/' + params.id, params)
+    Api.put('http://10.1.1.14/solicitudesservicio-backend/public/api/usuarios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -124,7 +124,7 @@ export const onUpdate = (params) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/usuarios/'+id)
+    Api.delete('http://10.1.1.14/solicitudesservicio-backend/public/api/usuarios/'+id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -148,7 +148,7 @@ export const onCreate = (params) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/usuarios',params)
+    Api.post('http://10.1.1.14/solicitudesservicio-backend/public/api/usuarios',params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {

@@ -18,7 +18,7 @@ import {
     const page = currentPage ? currentPage : 0;
     return (dispatch) => {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/asociados-negocios', {
+      Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/asociados-negocios', {
         params: {
           page: page,
         },
@@ -44,7 +44,7 @@ import {
     const {messages} = appIntl();
     return (dispatch) => {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/asociados-negocio', {
+      Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/asociados-negocio', {
         params: {
           ligera: true,
         },
@@ -70,7 +70,7 @@ import {
     const {messages} = appIntl();
     return (dispatch) => {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/asociados-negocios/'+id)
+      Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/asociados-negocios/'+id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});

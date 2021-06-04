@@ -22,7 +22,7 @@ export const onGetContactList = (type, name, currentPage) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     // Api.get('/api/contactApp/contact/List', {
-    Api.get('http://solicitudesservicio.test/api/lugares', {
+    Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/lugares', {
       params: {
         type: type,
         name: name,

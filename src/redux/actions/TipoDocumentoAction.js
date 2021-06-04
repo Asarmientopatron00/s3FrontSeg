@@ -21,7 +21,7 @@ export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend) => 
   
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/tipos-de-documentos', {
+    Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos', {
       params: {
         page: page,
         limite:rowsPerPage,
@@ -50,7 +50,7 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/tipos-de-documentos', {
+    Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos', {
       params: {
         ligera: true,
       },
@@ -77,7 +77,7 @@ export const onShow = (id) => {
   return (dispatch) => {
     if(id!==0){
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/tipos-de-documentos/'+id)
+      Api.get('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos/'+id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -99,7 +99,7 @@ export const onShow = (id) => {
 export const onUpdate = (params) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
-    Api.put('http://solicitudesservicio.test/api/tipos-de-documentos/' + params.id, params)
+    Api.put('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -128,7 +128,7 @@ export const onUpdate = (params) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/tipos-de-documentos/'+id)
+    Api.delete('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos/'+id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -152,7 +152,7 @@ export const onCreate = (params) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/tipos-de-documentos',params)
+    Api.post('http://10.1.1.14/solicitudesservicio-backend/public/api/tipos-de-documentos',params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
