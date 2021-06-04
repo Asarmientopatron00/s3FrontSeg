@@ -4,6 +4,7 @@
   "configuracion.paises":"Countries",
   "configuracion.actividadesEconomicas":"Economic Activities",
   "configuracion.listasDocumentos":"Document Lists",
+  "configuracion.requisitosSeguridad":"Security Requirements",
   "seguridad":"Sequirity",
   "seguridad.roles":"Rols",
   "seguridad.usuarios":"Users",

@@ -18,3 +18,4 @@ export * from './TipoDocumentoAction';
 export * from './PaisAction';
 export * from './ActividadEconomicaAction';
 export * from './ListaDocumentoAction';
+export * from './RequisitoSeguridadAction';

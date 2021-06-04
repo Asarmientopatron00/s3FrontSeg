@@ -1,5 +1,6 @@
 //API
 export const FETCH_START = 'fetch_start';
+export const OPEN_FORM = 'open_form';
 export const FETCH_SUCCESS = 'fetch_success';
 export const FETCH_ERROR = 'fetch_error';
 export const SHOW_MESSAGE = 'show_message';
@@ -33,6 +34,7 @@ export const SHOW_ROL = 'show_rol';
 export const UPDATE_ROL = 'update_rol';
 export const CREATE_ROL = 'create_rol';
 export const DELETE_ROL = 'delete_rol';
+export const CREATE_TEMPLATE_ROL = 'create_template_rol';
 export const GET_COLECCION_PAIS = 'get_coleccion_pais';
 export const GET_COLECCION_LIGERA_PAIS = 'get_coleccion_ligera_pais';
 export const SHOW_PAIS = 'show_pais';
@@ -51,6 +53,12 @@ export const SHOW_LISTA_DOCUMENTO = 'show_LISTA_documento';
 export const UPDATE_LISTA_DOCUMENTO = 'update_LISTA_documento';
 export const CREATE_LISTA_DOCUMENTO = 'create_LISTA_documento';
 export const DELETE_LISTA_DOCUMENTO = 'delete_LISTA_documento';
+export const GET_COLECCION_REQUISITO_SEGURIDAD = 'get_coleccion_requisito_seguridad';
+export const GET_COLECCION_LIGERA_REQUISITO_SEGURIDAD = 'get_coleccion_ligera_requisito_seguridad';
+export const SHOW_REQUISITO_SEGURIDAD = 'show_requisito_seguridad';
+export const UPDATE_REQUISITO_SEGURIDAD = 'update_requisito_seguridad';
+export const CREATE_REQUISITO_SEGURIDAD = 'create_requisito_seguridad';
+export const DELETE_REQUISITO_SEGURIDAD = 'delete_requisito_seguridad';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

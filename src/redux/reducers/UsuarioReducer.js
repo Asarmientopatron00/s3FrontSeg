@@ -18,7 +18,7 @@ import {
     total:1,
   };
   
-  const usuarioReducer = (state = initialState, action) => {
+  const UsuarioReducer = (state = initialState, action) => {
     switch (action.type) {
       case GET_COLECCION_USUARIO:
         return {
@@ -66,5 +66,5 @@ import {
         return state;
     }
   };
-  export default usuarioReducer;
+  export default UsuarioReducer;
   

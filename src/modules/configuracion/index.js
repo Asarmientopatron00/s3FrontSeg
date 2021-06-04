@@ -22,6 +22,10 @@ export const configuracionConfig = [
         path: ['/configuracion/listas-documentos'],
         component: React.lazy(() => import('./ListaDocumento')),
       },
+      {
+        path: ['/configuracion/requisitos-seguridad'],
+        component: React.lazy(() => import('./RequisitoSeguridad')),
+      },
     ],
   },
 ];

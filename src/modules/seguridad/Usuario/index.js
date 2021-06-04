@@ -446,7 +446,7 @@ const Usuarios =  () => {
           hasta,
           ultima_pagina,
           total,
-        } = useSelector(({usuario}) => usuario);
+        } = useSelector(({usuarioReducer}) => usuarioReducer);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`
   const [nombreFiltro,setNombreFiltro]=useState('');
   // const {pathname} = useLocation();

@@ -36,6 +36,13 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/listas-documentos',
       },
+      {
+        id: 'requisitos-seguridad',
+        title: 'configuracion.requisitosSeguridad',
+        messageId: 'configuracion.requisitosSeguridad',
+        type: 'item',
+        url: '/configuracion/requisitos-seguridad',
+      },
     ]
   },
   {

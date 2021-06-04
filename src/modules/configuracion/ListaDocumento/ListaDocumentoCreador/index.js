@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -32,7 +32,6 @@ const ListaDocumentoCreator = (props) => {
     listaDocumento,
     handleOnClose,
     accion,
-    showForm,
     updateColeccion,
     asociados,
     roles,
@@ -56,11 +55,30 @@ const ListaDocumentoCreator = (props) => {
 
   const classes = useStyles(props);
 
-  let {selectedRow} = useSelector(({listaDocumentoReducer}) => listaDocumentoReducer);
-  
-  if (accion==='crear'){
-    selectedRow = null;
+  const [showForm,setShowForm] = useState(false);
+  let selectedRow = useRef();
+  selectedRow = useSelector(({listaDocumentoReducer}) => listaDocumentoReducer.selectedRow);
+
+  const initializeSelectedRow = ()=> {
+    selectedRow=null;
   }
+  useEffect(()=>{
+    initializeSelectedRow();
+  },[])
+
+  if (accion==='crear') {
+    initializeSelectedRow();
+  }
+  
+  useEffect(()=>{
+    if(selectedRow){
+      setShowForm(true);
+    } else if(accion==='crear') {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+  },[selectedRow,accion])
 
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
@@ -71,6 +89,7 @@ const ListaDocumentoCreator = (props) => {
   },[accion,dispatch,listaDocumento])
   
   return (
+    showForm&&
     <Dialog
       open= {showForm}
       onClose={handleOnClose}

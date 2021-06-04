@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -31,7 +31,6 @@ const ActividadEconomicaCreator = (props) => {
     actividadEconomica,
     handleOnClose,
     accion,
-    showForm,
     updateColeccion,
   } = props;
 
@@ -52,12 +51,30 @@ const ActividadEconomicaCreator = (props) => {
   }));
 
   const classes = useStyles(props);
+  const [showForm,setShowForm] = useState(false);
+  let selectedRow = useRef();
+  selectedRow = useSelector(({actividadEconomicaReducer}) => actividadEconomicaReducer.selectedRow);
 
-  let {selectedRow} = useSelector(({actividadEconomicaReducer}) => actividadEconomicaReducer);
-  
-  if (accion==='crear'){
-    selectedRow = null;
+  const initializeSelectedRow = ()=> {
+    selectedRow=null;
   }
+  useEffect(()=>{
+    initializeSelectedRow();
+  },[])
+
+  if (accion==='crear') {
+    initializeSelectedRow();
+  }
+  
+  useEffect(()=>{
+    if(selectedRow){
+      setShowForm(true);
+    } else if(accion==='crear') {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+  },[selectedRow,accion])
 
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
@@ -68,6 +85,7 @@ const ActividadEconomicaCreator = (props) => {
   },[accion,dispatch,actividadEconomica])
   
   return (
+    showForm&&
     <Dialog
       open= {showForm}
       onClose={handleOnClose}

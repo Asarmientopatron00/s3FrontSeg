@@ -4,7 +4,7 @@ import Settings from './Setting';
 import UserList from './UserList';
 import Auth from './Auth';
 import Common from './Common';
-import Usuario from './UsuarioReducer';
+import UsuarioReducer from './UsuarioReducer';
 import ContactApp from './ContactApp';
 import Asociado from './Asociado';
 import RolReducer from './RolReducer';
@@ -13,6 +13,7 @@ import PaisReducer from './PaisReducer';
 import ActividadEconomicaReducer from './ActividadEconomicaReducer';
 import ListaDocumentoReducer from './ListaDocumentoReducer';
 import TipoDocumentoReducer from './TipoDocumentoReducer';
+import RequisitoSeguridadReducer from './RequisitoSeguridadReducer';
 
 
 
@@ -24,7 +25,7 @@ const reducers = (history) =>
     userList: UserList,
     common: Common,
     contactApp: ContactApp,
-    usuario: Usuario,
+    usuarioReducer: UsuarioReducer,
     asociado: Asociado,
     close: Close,
     tipoDocumentoReducer: TipoDocumentoReducer,
@@ -32,6 +33,7 @@ const reducers = (history) =>
     rolReducer: RolReducer,
     actividadEconomicaReducer: ActividadEconomicaReducer,
     listaDocumentoReducer: ListaDocumentoReducer,
+    requisitoSeguridadReducer: RequisitoSeguridadReducer,
 
   });
 export default reducers;

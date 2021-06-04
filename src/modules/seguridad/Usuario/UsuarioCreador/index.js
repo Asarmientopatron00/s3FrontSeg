@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -28,7 +28,6 @@ const UsuarioCreador = (props) => {
     usuario,
     handleOnClose,
     accion,
-    showForm,
     updateColeccion,
     asociados,
     roles,
@@ -89,12 +88,31 @@ const UsuarioCreador = (props) => {
 
   const classes = useStyles(props);
 
-  let {selectedRow} = useSelector(({usuario}) => usuario);
-  
-  if (accion==='crear') {
+  const [showForm,setShowForm] = useState(false);
+  let selectedRow = useRef();
+  selectedRow = useSelector(({usuarioReducer}) => usuarioReducer.selectedRow);
+
+  const initializeSelectedRow = ()=> {
     selectedRow=null;
   }
+  useEffect(()=>{
+    initializeSelectedRow();
+  },[])
+
+  if (accion==='crear') {
+    initializeSelectedRow();
+  }
   
+  useEffect(()=>{
+    if(selectedRow){
+      setShowForm(true);
+    } else if(accion==='crear') {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+  },[selectedRow,accion])
+
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
       dispatch(
@@ -104,6 +122,7 @@ const UsuarioCreador = (props) => {
   },[accion,dispatch,usuario])
   
   return (
+    showForm&&
     <Dialog
       open= {showForm}
       onClose={handleOnClose}

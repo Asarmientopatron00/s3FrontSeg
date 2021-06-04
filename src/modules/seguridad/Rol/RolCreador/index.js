@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useRef,useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -31,12 +31,11 @@ const RolCreador = (props) => {
     rol,
     handleOnClose,
     accion,
-    showForm,
     updateColeccion,
   } = props;
 
   const dispatch = useDispatch();
-
+  const [showForm,setShowForm] = useState(false);
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
       position: 'relative',
@@ -53,12 +52,30 @@ const RolCreador = (props) => {
 
   const classes = useStyles(props);
 
-  let {selectedRow} = useSelector(({rolReducer}) => rolReducer);
-  
-  if (accion==='crear') {
+  let selectedRow = useRef();
+  selectedRow = useSelector(({rolReducer}) => rolReducer.selectedRow);
+
+  const initializeSelectedRow = ()=> {
     selectedRow=null;
   }
+  useEffect(()=>{
+    initializeSelectedRow();
+  },[])
 
+  if (accion==='crear') {
+    initializeSelectedRow();
+  }
+
+  useEffect(()=>{
+    if(selectedRow){
+      setShowForm(true);
+    } else if(accion==='crear') {
+      setShowForm(true);
+    } else {
+      setShowForm(false);
+    }
+  },[selectedRow,accion])
+ 
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
       dispatch(
@@ -68,6 +85,7 @@ const RolCreador = (props) => {
   },[accion,dispatch,rol])
   
   return (
+    showForm&&
     <Dialog
       open= {showForm}
       onClose={handleOnClose}
