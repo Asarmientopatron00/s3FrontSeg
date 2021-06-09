@@ -230,7 +230,7 @@ const UsuarioForm = (props) => {
               label= 'Cargo'
               name='cargo'
               disabled={disabled}
-              
+              required
             />
 
             <MyTextField

@@ -8,28 +8,27 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/PaisAction';
+} from '../../../../redux/actions/ParametroConstanteAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import PaisForm from './PaisForm';
+import ParametroConstanteForm from './ParametroConstanteForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
 const validationSchema = yup.object({
-  nombre: yup.string().required('Requerido'),
-  codigo_externo: yup.string().required('Requerido').max(3,'Debe Tener Máximo 3 Caracteres'),
-  geocerca_id: yup.string().required('Requerido'),
+  codigo_parametro: yup.string().required('Requerido').max('128','Debe tener máximo 128 Caracteres'),
+  descripcion_parametro: yup.string().required('Requerido').max('128','Debe tener máximo 128 Caracteres'),
+  valor_parametro: yup.string().required('Requerido').max('2000','Debe tener máximo 2000 Caracteres'),
 });
 
-const PaisCreator = (props) => {
+const ParametroConstanteCreator = (props) => {
   const {
-    pais,
+    parametroConstante,
     handleOnClose,
     accion,
     updateColeccion,
@@ -55,7 +54,7 @@ const PaisCreator = (props) => {
 
   const [showForm,setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({paisReducer}) => paisReducer.selectedRow);
+  selectedRow = useSelector(({parametroConstanteReducer}) => parametroConstanteReducer.selectedRow);
 
   const initializeSelectedRow = ()=> {
     selectedRow=null;
@@ -67,7 +66,7 @@ const PaisCreator = (props) => {
   if (accion==='crear') {
     initializeSelectedRow();
   }
-
+  
   useEffect(()=>{
     if(selectedRow){
       setShowForm(true);
@@ -81,10 +80,10 @@ const PaisCreator = (props) => {
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
       dispatch(
-        onShow(pais),
+        onShow(parametroConstante),
       );
     }
-  },[accion,dispatch,pais])
+  },[accion,dispatch,parametroConstante])
   
   return (
     showForm&&
@@ -105,9 +104,9 @@ const PaisCreator = (props) => {
           validateOnBlur={false}
           initialValues={{
             id: selectedRow ? selectedRow.id : '',
-            nombre: selectedRow ? selectedRow.nombre : '',
-            codigo_externo: selectedRow ? selectedRow.codigo_externo : '',
-            geocerca_id: selectedRow ? selectedRow.geocerca_id : '',
+            codigo_parametro: selectedRow ? selectedRow.codigo_parametro : '',
+            descripcion_parametro: selectedRow ? selectedRow.descripcion_parametro : '',
+            valor_parametro: selectedRow ? selectedRow.valor_parametro : '',
             estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
           }}
           validationSchema={validationSchema}
@@ -127,7 +126,7 @@ const PaisCreator = (props) => {
           }}
         >
           {({values,initialValues, setFieldValue}) => (
-            <PaisForm
+            <ParametroConstanteForm
               values={values}
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
@@ -141,4 +140,4 @@ const PaisCreator = (props) => {
   );
 };
 
-export default PaisCreator;
+export default ParametroConstanteCreator;

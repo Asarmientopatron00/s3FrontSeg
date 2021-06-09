@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
-  codigo_ciiu: yup.string().required('Requerido').max(4,'Debe Tener Máximo 4 Carácteres'),
+  codigo_ciiu: yup.string().required('Requerido').max(4,'Debe Tener Máximo 4 Caracteres'),
 });
 
 const ActividadEconomicaCreator = (props) => {

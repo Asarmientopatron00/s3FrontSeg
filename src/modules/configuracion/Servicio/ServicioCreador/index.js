@@ -8,11 +8,11 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/PaisAction';
+} from '../../../../redux/actions/ServicioAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import PaisForm from './PaisForm';
+import ServicioForm from './ServicioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 
@@ -23,16 +23,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
-  codigo_externo: yup.string().required('Requerido').max(3,'Debe Tener Máximo 3 Caracteres'),
-  geocerca_id: yup.string().required('Requerido'),
 });
 
-const PaisCreator = (props) => {
+const ServicioCreator = (props) => {
   const {
-    pais,
+    servicio,
     handleOnClose,
     accion,
     updateColeccion,
+    departamentos,
   } = props;
 
   const dispatch = useDispatch();
@@ -55,7 +54,7 @@ const PaisCreator = (props) => {
 
   const [showForm,setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({paisReducer}) => paisReducer.selectedRow);
+  selectedRow = useSelector(({servicioReducer}) => servicioReducer.selectedRow);
 
   const initializeSelectedRow = ()=> {
     selectedRow=null;
@@ -81,10 +80,10 @@ const PaisCreator = (props) => {
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
       dispatch(
-        onShow(pais),
+        onShow(servicio),
       );
     }
-  },[accion,dispatch,pais])
+  },[accion,dispatch,servicio])
   
   return (
     showForm&&
@@ -106,8 +105,6 @@ const PaisCreator = (props) => {
           initialValues={{
             id: selectedRow ? selectedRow.id : '',
             nombre: selectedRow ? selectedRow.nombre : '',
-            codigo_externo: selectedRow ? selectedRow.codigo_externo : '',
-            geocerca_id: selectedRow ? selectedRow.geocerca_id : '',
             estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
           }}
           validationSchema={validationSchema}
@@ -127,12 +124,13 @@ const PaisCreator = (props) => {
           }}
         >
           {({values,initialValues, setFieldValue}) => (
-            <PaisForm
+            <ServicioForm
               values={values}
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
               accion={accion}
               initialValues={initialValues}
+              departamentos={departamentos}
             />
           )}
         </Formik>
@@ -141,4 +139,4 @@ const PaisCreator = (props) => {
   );
 };
 
-export default PaisCreator;
+export default ServicioCreator;

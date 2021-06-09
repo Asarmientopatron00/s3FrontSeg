@@ -9,6 +9,7 @@ import {
   
   const initialState = {
     rows: [],
+    ligera: [],
     selectedRow: null,
     desde:1,
     hasta:1,
@@ -16,7 +17,6 @@ import {
     pagina_actual:1,
     ultima_pagina:1,
     total:1,
-    ligera:[],
   };
   
   const rolReducer = (state = initialState, action) => {

@@ -26,6 +26,22 @@ export const configuracionConfig = [
         path: ['/configuracion/requisitos-seguridad'],
         component: React.lazy(() => import('./RequisitoSeguridad')),
       },
+      {
+        path: ['/configuracion/parametros-constantes'],
+        component: React.lazy(() => import('./ParametroConstante')),
+      },
+      {
+        path: ['/configuracion/departamentos'],
+        component: React.lazy(() => import('./Departamento')),
+      },
+      {
+        path: ['/configuracion/ciudades'],
+        component: React.lazy(() => import('./Ciudad')),
+      },
+      {
+        path: ['/configuracion/servicios'],
+        component: React.lazy(() => import('./Servicio')),
+      },
     ],
   },
 ];

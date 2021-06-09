@@ -8,11 +8,11 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/PaisAction';
+} from '../../../../redux/actions/CiudadAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import PaisForm from './PaisForm';
+import CiudadForm from './CiudadForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 
@@ -23,16 +23,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
-  codigo_externo: yup.string().required('Requerido').max(3,'Debe Tener Máximo 3 Caracteres'),
-  geocerca_id: yup.string().required('Requerido'),
+  codigo_dane: yup.string().required('Requerido').min(5,'Debe Tener Mínimo 5 Caracteres').max(5,'Debe Tener Máximo 5 Caracteres'),
+  departamento_id: yup.string().required('Requerido'),
 });
 
-const PaisCreator = (props) => {
+const CiudadCreator = (props) => {
   const {
-    pais,
+    ciudad,
     handleOnClose,
     accion,
     updateColeccion,
+    departamentos,
   } = props;
 
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ const PaisCreator = (props) => {
 
   const [showForm,setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({paisReducer}) => paisReducer.selectedRow);
+  selectedRow = useSelector(({ciudadReducer}) => ciudadReducer.selectedRow);
 
   const initializeSelectedRow = ()=> {
     selectedRow=null;
@@ -81,10 +82,10 @@ const PaisCreator = (props) => {
   useEffect(()=>{
     if (accion==='editar' | accion==='ver'){
       dispatch(
-        onShow(pais),
+        onShow(ciudad),
       );
     }
-  },[accion,dispatch,pais])
+  },[accion,dispatch,ciudad])
   
   return (
     showForm&&
@@ -106,7 +107,8 @@ const PaisCreator = (props) => {
           initialValues={{
             id: selectedRow ? selectedRow.id : '',
             nombre: selectedRow ? selectedRow.nombre : '',
-            codigo_externo: selectedRow ? selectedRow.codigo_externo : '',
+            codigo_dane: selectedRow ? selectedRow.codigo_dane : '',
+            departamento_id: selectedRow ? selectedRow.departamento_id : '',
             geocerca_id: selectedRow ? selectedRow.geocerca_id : '',
             estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
           }}
@@ -127,12 +129,13 @@ const PaisCreator = (props) => {
           }}
         >
           {({values,initialValues, setFieldValue}) => (
-            <PaisForm
+            <CiudadForm
               values={values}
               setFieldValue={setFieldValue}
               handleOnClose={handleOnClose}
               accion={accion}
               initialValues={initialValues}
+              departamentos={departamentos}
             />
           )}
         </Formik>
@@ -141,4 +144,4 @@ const PaisCreator = (props) => {
   );
 };
 
-export default PaisCreator;
+export default CiudadCreator;

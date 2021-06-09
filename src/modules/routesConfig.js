@@ -43,6 +43,34 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/requisitos-seguridad',
       },
+      {
+        id: 'parametros-constantes',
+        title: 'configuracion.parametrosConstantes',
+        messageId: 'configuracion.parametrosConstantes',
+        type: 'item',
+        url: '/configuracion/parametros-constantes',
+      },
+      {
+        id: 'departamentos',
+        title: 'configuracion.departamentos',
+        messageId: 'configuracion.departamentos',
+        type: 'item',
+        url: '/configuracion/departamentos',
+      },
+      {
+        id: 'ciudades',
+        title: 'configuracion.ciudades',
+        messageId: 'configuracion.ciudades',
+        type: 'item',
+        url: '/configuracion/ciudades',
+      },
+      {
+        id: 'servicios',
+        title: 'configuracion.servicios',
+        messageId: 'configuracion.servicios',
+        type: 'item',
+        url: '/configuracion/servicios',
+      },
     ]
   },
   {

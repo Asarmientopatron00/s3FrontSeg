@@ -502,7 +502,6 @@ const RequisitoSeguridad =  () => {
       default:
         break;
     }
-    
   }
 
   const limpiarFiltros = ()=>{

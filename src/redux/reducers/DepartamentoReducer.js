@@ -1,10 +1,10 @@
 import {
-    GET_COLECCION_PAIS,
-    GET_COLECCION_LIGERA_PAIS,
-    SHOW_PAIS,
-    UPDATE_PAIS,
-    DELETE_PAIS,
-    CREATE_PAIS,
+    GET_COLECCION_DEPARTAMENTO,
+    GET_COLECCION_LIGERA_DEPARTAMENTO,
+    SHOW_DEPARTAMENTO,
+    UPDATE_DEPARTAMENTO,
+    DELETE_DEPARTAMENTO,
+    CREATE_DEPARTAMENTO,
   } from '../../shared/constants/ActionTypes';
   
   const initialState = {
@@ -19,9 +19,9 @@ import {
     total:1,
   };
   
-  const RequisitoSeguridadReducer = (state = initialState, action) => {
+  const DepartamentoReducer = (state = initialState, action) => {
     switch (action.type) {
-      case GET_COLECCION_PAIS:
+      case GET_COLECCION_DEPARTAMENTO:
         return {
           ...state,
           rows: action.payload.data.datos,
@@ -33,31 +33,31 @@ import {
           total: action.payload.data.total,
         };
 
-      case GET_COLECCION_LIGERA_PAIS:
+      case GET_COLECCION_LIGERA_DEPARTAMENTO:
         return {
           ...state,
           ligera: action.payload.data,
         };
 
-      case SHOW_PAIS:
+      case SHOW_DEPARTAMENTO:
         return {
           ...state,
           selectedRow: action.payload,
         };
 
-      case UPDATE_PAIS:
+      case UPDATE_DEPARTAMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case DELETE_PAIS:
+      case DELETE_DEPARTAMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case CREATE_PAIS:
+      case CREATE_DEPARTAMENTO:
         return {
           ...state,
           selectedRow: action.payload.datos,
@@ -67,5 +67,5 @@ import {
         return state;
     }
   };
-  export default RequisitoSeguridadReducer;
+  export default DepartamentoReducer;
   

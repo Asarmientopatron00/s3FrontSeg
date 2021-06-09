@@ -19,3 +19,7 @@ export * from './PaisAction';
 export * from './ActividadEconomicaAction';
 export * from './ListaDocumentoAction';
 export * from './RequisitoSeguridadAction';
+export * from './ParametroConstanteAction';
+export * from './DepartamentoAction';
+export * from './CiudadAction';
+export * from './ServicioAction';

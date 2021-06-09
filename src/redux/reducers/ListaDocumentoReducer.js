@@ -9,6 +9,7 @@ import {
   
   const initialState = {
     rows: [],
+    ligera: [],
     selectedRow: null,
     desde:1,
     hasta:1,
@@ -18,7 +19,7 @@ import {
     total:1,
   };
   
-  const usuarioReducer = (state = initialState, action) => {
+  const ListaDocumentoReducer = (state = initialState, action) => {
     switch (action.type) {
       case GET_COLECCION_LISTA_DOCUMENTO:
         return {
@@ -66,5 +67,5 @@ import {
         return state;
     }
   };
-  export default usuarioReducer;
+  export default ListaDocumentoReducer;
   

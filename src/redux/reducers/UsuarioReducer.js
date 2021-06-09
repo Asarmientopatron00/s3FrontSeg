@@ -9,6 +9,7 @@ import {
   
   const initialState = {
     rows: [],
+    ligera: [],
     selectedRow: null,
     desde:1,
     hasta:1,

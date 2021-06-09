@@ -1,10 +1,10 @@
 import {
-  GET_COLECCION_REQUISITO_SEGURIDAD,
-  GET_COLECCION_LIGERA_REQUISITO_SEGURIDAD,
-  SHOW_REQUISITO_SEGURIDAD,
-  UPDATE_REQUISITO_SEGURIDAD,
-  DELETE_REQUISITO_SEGURIDAD,
-  CREATE_REQUISITO_SEGURIDAD,
+  GET_COLECCION_DEPARTAMENTO,
+  GET_COLECCION_LIGERA_DEPARTAMENTO,
+  SHOW_DEPARTAMENTO,
+  UPDATE_DEPARTAMENTO,
+  DELETE_DEPARTAMENTO,
+  CREATE_DEPARTAMENTO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -13,28 +13,28 @@ import {
 import Api from '../../@crema/services/ApiConfig';
 import {appIntl} from '../../@crema/utility/Utils';
 
-export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend,tipo) => {
+export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend,pais) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const nombreAux = nombre ? nombre : "";
-  const tipoAux = tipo ? tipo : "";
+  const paisAux = pais ? pais : "";
   const ordenar_por = orderByToSend ? orderByToSend : "";
   
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/requisitos-de-seguridad', {
+    Api.get('http://solicitudesservicio.test/api/departamentos', {
       params: {
         page: page,
         limite:rowsPerPage,
         nombre:nombreAux,
-        tipo:tipoAux,
+        pais:paisAux,
         ordenar_por:ordenar_por,
       },
     })
     .then((data) => {
       if (data.status === 200) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_COLECCION_REQUISITO_SEGURIDAD, payload: data});
+        dispatch({type: GET_COLECCION_DEPARTAMENTO, payload: data});
       } else {
         dispatch({
           type: FETCH_ERROR,
@@ -52,7 +52,7 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/requisitos-de-seguridad', {
+    Api.get('http://solicitudesservicio.test/api/departamentos', {
       params: {
         ligera: true,
       },
@@ -60,7 +60,7 @@ export const onGetColeccionLigera = () => {
     .then((data) => {
       if (data.status === 200) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_COLECCION_LIGERA_REQUISITO_SEGURIDAD, payload: data});
+        dispatch({type: GET_COLECCION_LIGERA_DEPARTAMENTO, payload: data});
       } else {
         dispatch({
           type: FETCH_ERROR,
@@ -79,11 +79,11 @@ export const onShow = (id) => {
   return (dispatch) => {
     if(id!==0){
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/requisitos-de-seguridad/'+id)
+      Api.get('http://solicitudesservicio.test/api/departamentos/'+id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW_REQUISITO_SEGURIDAD, payload: data.data});
+            dispatch({type: SHOW_DEPARTAMENTO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -101,12 +101,12 @@ export const onShow = (id) => {
 export const onUpdate = (params) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
-    Api.put('http://solicitudesservicio.test/api/requisitos-de-seguridad/' + params.id, params)
+    Api.put('http://solicitudesservicio.test/api/departamentos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE_REQUISITO_SEGURIDAD,
+            type: UPDATE_DEPARTAMENTO,
             payload: data.data,
           });
           
@@ -130,11 +130,11 @@ export const onUpdate = (params) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/requisitos-de-seguridad/'+id)
+    Api.delete('http://solicitudesservicio.test/api/departamentos/'+id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE_REQUISITO_SEGURIDAD, payload: data.data});
+          dispatch({type: DELETE_DEPARTAMENTO, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
@@ -154,13 +154,13 @@ export const onCreate = (params) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/requisitos-de-seguridad',params)
+    Api.post('http://solicitudesservicio.test/api/departamentos',params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE_REQUISITO_SEGURIDAD,
+            type: CREATE_DEPARTAMENTO,
             payload: data.data,
           });
           dispatch({

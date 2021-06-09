@@ -14,6 +14,10 @@ import ActividadEconomicaReducer from './ActividadEconomicaReducer';
 import ListaDocumentoReducer from './ListaDocumentoReducer';
 import TipoDocumentoReducer from './TipoDocumentoReducer';
 import RequisitoSeguridadReducer from './RequisitoSeguridadReducer';
+import ParametroConstanteReducer from './ParametroConstanteReducer';
+import DepartamentoReducer from './DepartamentoReducer';
+import CiudadReducer from './CiudadReducer';
+import ServicioReducer from './ServicioReducer';
 
 
 
@@ -34,6 +38,10 @@ const reducers = (history) =>
     actividadEconomicaReducer: ActividadEconomicaReducer,
     listaDocumentoReducer: ListaDocumentoReducer,
     requisitoSeguridadReducer: RequisitoSeguridadReducer,
+    parametroConstanteReducer: ParametroConstanteReducer,
+    departamentoReducer: DepartamentoReducer,
+    ciudadReducer: CiudadReducer,
+    servicioReducer: ServicioReducer,
 
   });
 export default reducers;

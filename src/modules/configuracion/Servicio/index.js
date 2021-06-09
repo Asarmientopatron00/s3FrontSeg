@@ -24,13 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import UsuarioCreador from './UsuarioCreador'
+import ServicioCreador from './ServicioCreador'
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/UsuarioAction';
-import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../redux/actions/Asociado'; 
-import {onGetColeccionLigera as rolColeccionLigera} from '../../../redux/actions/RolAction'; 
+} from '../../../redux/actions/ServicioAction';
 import {useDispatch,useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -69,35 +67,15 @@ import Swal from 'sweetalert2';
 //   return stabilizedThis.map((el) => el[0]);
 // }
 
-// const headCells = [
-//   { id: 'identificacion_usuario', type: 'string', label: 'Identificación',mostrarInicio:true},
-//   { id: 'nombre', type: 'string', label: 'Nombre',mostrarInicio:true},
-//   { id: 'nombre_asociado', type: 'string', label: 'Nombre Asociado',mostrarInicio:true},
-//   { id: 'email', type: 'string', label: 'E-mail',mostrarInicio:true},
-//   { id: 'cargo', type: 'string', label: 'Cargo',mostrarInicio:true},
-//   { id: 'numero_celular', type: 'string', label: 'Celular',mostrarInicio:true},
-//   { id: 'rol_nombre', type: 'string', label: 'Rol',mostrarInicio:true},
-//   { id: 'estado', type: 'boolean', label: 'Estado',mostrarInicio:true},
-//   { id: 'usuario_modificacion_nombre', type: 'string', label: ':',mostrarInicio:true},
-//   { id: 'fecha_modificacion', type: 'string', label: 'Fecha Última Modificación',mostrarInicio:true},
-// ];
-
 
 const cells = [
-  {id:'identificacion_usuario', typeHead: 'string',label: 'Identificación',value:(value)=>value, align:'left',mostrarInicio:false},
   {id:'nombre', typeHead: 'string',label: 'Nombre',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'nombre_asociado', typeHead: 'string',label: 'Nombre Asociado',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'email', typeHead: 'string',label: 'E-mail',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'cargo', typeHead: 'string',label: 'Cargo',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'numero_celular', typeHead: 'string',label: 'Celular',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'rol_nombre', typeHead: 'string',label: 'Rol',value:(value)=>value, align:'left',mostrarInicio:true},
   {id:'estado', typeHead: 'boolean',label: 'Estado',value:(value)=>value===1?'Activo':'Inactivo', align:'center',mostrarInicio:true,cellColor:(value)=>value===1?'green':'red'},
   {id:'usuario_modificacion_nombre', typeHead: 'string',label: 'Modificado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:true},
   {id:'fecha_modificacion', typeHead: 'string',label: 'Fecha Última Modificación',value:(value)=>value, align:'left', width: '180px',mostrarInicio:true},
   {id:'usuario_creacion_nombre', typeHead: 'string',label: 'Creado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:false},
   {id:'fecha_creacion', typeHead: 'string',label: 'Fecha Creación',value:(value)=>value, align:'left', width: '180px',mostrarInicio:false},
 ];
-
 
 const MyCell = (props)=>{
   const {align,width,claseBase,value,cellColor} = props;
@@ -254,14 +232,14 @@ const useToolbarStyles = makeStyles((theme) => ({
     display:'grid',
     gridTemplateColumns: 'repeat(2,1fr)',
     gap:'20px',
-  }
+  },
 }));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { 
     numSelected,
-    onOpenAddUsuario,
+    onOpenAddServicio,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
@@ -280,13 +258,13 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Box width={'100%'}>
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            <IntlMessages id='seguridad.usuarios'/>
+            <IntlMessages id='configuracion.servicios'/>
           </Typography>
 
           <Box className={classes.contenedorFiltros}>
             <TextField
               label= 'Nombre'
-              name='nombre'
+              name='nombreFiltro'
               id='nombreFiltro'
               onChange = {queryFilter}
               value={nombreFiltro}
@@ -316,7 +294,7 @@ const EnhancedTableToolbar = (props) => {
             </Tooltip> 
           </Box>
           <Box className={classes.verticalBottoms}>
-            <Tooltip title="Crear Usuario" onClick={onOpenAddUsuario}>
+            <Tooltip title="Crear Producto & Servicio" onClick={onOpenAddServicio}>
               <IconButton className={classes.createButton} aria-label="filter list">
                 <AddIcon />
               </IconButton>
@@ -335,7 +313,7 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddUsuario: PropTypes.func.isRequired,
+  onOpenAddServicio: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros:PropTypes.func.isRequired,
@@ -355,7 +333,6 @@ const useStyles = makeStyles((theme) => ({
   },
   headCell: {
     padding:'0px 0px 0px 15px',
-    whiteSpace:'nowrap'
   },
   row: {
     // display:'grid',
@@ -427,7 +404,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Usuarios =  () => {
+const Servicio =  () => {
   const [showForm,setShowForm]=useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -440,13 +417,13 @@ const Usuarios =  () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion,setAccion] = useState('ver');
-  const [usuarioSeleccionado,setUsuarioSeleccionado]= useState(0);
+  const [servicioSeleccionado,setServicioSeleccionado]= useState(0);
   const {rows,
           desde,
           hasta,
           ultima_pagina,
           total,
-        } = useSelector(({usuarioReducer}) => usuarioReducer);
+        } = useSelector(({servicioReducer}) => servicioReducer);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`
   const [nombreFiltro,setNombreFiltro]=useState('');
   // const {pathname} = useLocation();
@@ -482,27 +459,11 @@ const Usuarios =  () => {
       dispatch(
         onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
       );
-  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm]);
-
-  const asociados = useSelector(({asociado}) => asociado.ligera);
-  useEffect(() => {
-    dispatch(
-      asociadoColeccionLigera(),
-    );
-  }, [dispatch]);
-
-  const roles = useSelector(({rolReducer}) => rolReducer.ligera);
-  useEffect(() => {
-    dispatch(
-      rolColeccionLigera(),
-    );
-  }, [dispatch]);
-
+  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend]);
 
   const updateColeccion = ()=>{
-    setPage(1);
     dispatch(
-      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
+      onGetColeccion(1,rowsPerPage,nombreFiltro,orderByToSend),
     );
   }
   useEffect(() => {
@@ -510,8 +471,15 @@ const Usuarios =  () => {
   }, [nombreFiltro,orderByToSend]);
 
   const queryFilter = (e)=> {
-    setNombreFiltro(e.target.value);
+    switch(e.target.name){
+      case('nombreFiltro'):
+        setNombreFiltro(e.target.value);
+        break;
+      default:
+        break;
+    }
   }
+
 
   const limpiarFiltros = ()=>{
     setNombreFiltro('');
@@ -534,8 +502,8 @@ const Usuarios =  () => {
    
   }
 
-  const onOpenEditUsuario = (id) => {
-    setUsuarioSeleccionado(id);
+  const onOpenEditServicio = (id) => {
+    setServicioSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -572,16 +540,16 @@ const Usuarios =  () => {
     setColumnasMostradas(columnasMostradasInicial)
   } 
 
-  const onOpenViewUsuario = (id) => {
-    setUsuarioSeleccionado(id);
+  const onOpenViewServicio = (id) => {
+    setServicioSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteUsuario = (id) => {
+  const onDeleteServicio = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: "¿Seguro Que Desea Eliminar El Usuario?",
+      text: "¿Seguro Que Desea Eliminar El Producto & Servicio?",
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -594,27 +562,25 @@ const Usuarios =  () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Usuario Fue Eliminado Correctamente',
+          'El Producto & Servicio Fue Eliminado Correctamente',
           'success'
         )
-        setTimeout(()=>{
-          updateColeccion();
-        },1000)
+        updateColeccion();
       }
     })
 
     
   };
 
-  const onOpenAddUsuario = () => {
-    setUsuarioSeleccionado(0);
+  const onOpenAddServicio = () => {
+    setServicioSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setUsuarioSeleccionado(0);
+    setServicioSeleccionado(0);
     setAccion('ver');
   }
   // const handleRequestSort = (event, property) => {
@@ -654,7 +620,7 @@ const Usuarios =  () => {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar 
           numSelected={selected.length} 
-          onOpenAddUsuario={onOpenAddUsuario}
+          onOpenAddServicio={onOpenAddServicio}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           queryFilter={queryFilter}
           limpiarFiltros={limpiarFiltros}
@@ -726,13 +692,13 @@ const Usuarios =  () => {
 
                       <TableCell align="center" className={classes.acciones}> 
                         <Tooltip title={<IntlMessages id='boton.editar'/>}>
-                          <EditIcon onClick={()=>onOpenEditUsuario(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                          <EditIcon onClick={()=>onOpenEditServicio(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                         </Tooltip>
                         <Tooltip title={<IntlMessages id='boton.ver'/>}>
-                          <VisibilityIcon onClick={()=>onOpenViewUsuario(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
+                          <VisibilityIcon onClick={()=>onOpenViewServicio(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
                         </Tooltip>
                         <Tooltip title={<IntlMessages id='boton.eliminar'/>}>
-                          <DeleteIcon  onClick={()=>onDeleteUsuario(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
+                          <DeleteIcon  onClick={()=>onDeleteServicio(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
                         </Tooltip>
                       </TableCell>
 
@@ -798,25 +764,19 @@ const Usuarios =  () => {
           />
           </Box>
         </Box>
-        
-
-
       </Paper>
-
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
       {showForm ?
-        <UsuarioCreador 
+        <ServicioCreador 
           showForm={showForm}
-          usuario={usuarioSeleccionado}
+          servicio={servicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
-          asociados={asociados}
-          roles={roles}
         />
         :""
       }
@@ -858,4 +818,4 @@ const Usuarios =  () => {
   );
 }
 
-export default Usuarios;
+export default Servicio;

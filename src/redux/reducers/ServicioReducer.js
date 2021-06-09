@@ -1,10 +1,10 @@
 import {
-    GET_COLECCION_PAIS,
-    GET_COLECCION_LIGERA_PAIS,
-    SHOW_PAIS,
-    UPDATE_PAIS,
-    DELETE_PAIS,
-    CREATE_PAIS,
+    GET_COLECCION_SERVICIO,
+    GET_COLECCION_LIGERA_SERVICIO,
+    SHOW_SERVICIO,
+    UPDATE_SERVICIO,
+    DELETE_SERVICIO,
+    CREATE_SERVICIO,
   } from '../../shared/constants/ActionTypes';
   
   const initialState = {
@@ -19,9 +19,9 @@ import {
     total:1,
   };
   
-  const RequisitoSeguridadReducer = (state = initialState, action) => {
+  const DepartamentoReducer = (state = initialState, action) => {
     switch (action.type) {
-      case GET_COLECCION_PAIS:
+      case GET_COLECCION_SERVICIO:
         return {
           ...state,
           rows: action.payload.data.datos,
@@ -33,31 +33,31 @@ import {
           total: action.payload.data.total,
         };
 
-      case GET_COLECCION_LIGERA_PAIS:
+      case GET_COLECCION_LIGERA_SERVICIO:
         return {
           ...state,
           ligera: action.payload.data,
         };
 
-      case SHOW_PAIS:
+      case SHOW_SERVICIO:
         return {
           ...state,
           selectedRow: action.payload,
         };
 
-      case UPDATE_PAIS:
+      case UPDATE_SERVICIO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case DELETE_PAIS:
+      case DELETE_SERVICIO:
         return {
           ...state,
           selectedRow: action.payload.datos,
         };
 
-      case CREATE_PAIS:
+      case CREATE_SERVICIO:
         return {
           ...state,
           selectedRow: action.payload.datos,
@@ -67,5 +67,5 @@ import {
         return state;
     }
   };
-  export default RequisitoSeguridadReducer;
+  export default DepartamentoReducer;
   

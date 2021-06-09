@@ -13,8 +13,8 @@ import {
   
   const initialState = {
     rows: [],
-    selectedRow: null,
     ligera: [],
+    selectedRow: null,
   };
   
   const asociadoReducer = (state = initialState, action) => {
