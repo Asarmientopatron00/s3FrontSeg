@@ -78,6 +78,13 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/terceros-servicio',
       },
+      {
+        id: 'eventos-notificacion',
+        title: 'configuracion.eventosNotificaciones',
+        messageId: 'configuracion.eventosNotificaciones',
+        type: 'item',
+        url: '/configuracion/eventos-notificacion',
+      },
     ]
   },
   {

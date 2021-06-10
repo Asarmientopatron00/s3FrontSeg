@@ -19,6 +19,7 @@ import DepartamentoReducer from './DepartamentoReducer';
 import CiudadReducer from './CiudadReducer';
 import ServicioReducer from './ServicioReducer';
 import TerceroServicioReducer from './TerceroServicioReducer';
+import EventoNotificacionReducer from './EventoNotificacionReducer';
 
 
 
@@ -44,6 +45,6 @@ const reducers = (history) =>
     ciudadReducer: CiudadReducer,
     servicioReducer: ServicioReducer,
     terceroServicioReducer: TerceroServicioReducer,
-
+    eventoNotificacionReducer: EventoNotificacionReducer,
   });
 export default reducers;

@@ -46,6 +46,10 @@ export const configuracionConfig = [
         path: ['/configuracion/terceros-servicio'],
         component: React.lazy(() => import('./TerceroServicio')),
       },
+      {
+        path: ['/configuracion/eventos-notificacion'],
+        component: React.lazy(() => import('./EventoNotificacion')),
+      },
     ],
   },
 ];

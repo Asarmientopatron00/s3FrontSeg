@@ -89,6 +89,12 @@ export const SHOW_TERCERO_SERVICIO = 'show_tercero_servicio';
 export const UPDATE_TERCERO_SERVICIO = 'update_tercero_servicio';
 export const CREATE_TERCERO_SERVICIO = 'create_tercero_servicio';
 export const DELETE_TERCERO_SERVICIO = 'delete_tercero_servicio';
+export const GET_COLECCION_EVENTO_NOTIFICACION = 'get_coleccion_evento_notificacion';
+export const GET_COLECCION_LIGERA_EVENTO_NOTIFICACION = 'get_coleccion_ligera_evento_notificacion';
+export const SHOW_EVENTO_NOTIFICACION = 'show_evento_notificacion';
+export const UPDATE_EVENTO_NOTIFICACION = 'update_evento_notificacion';
+export const CREATE_EVENTO_NOTIFICACION = 'create_evento_notificacion';
+export const DELETE_EVENTO_NOTIFICACION = 'delete_evento_notificacion';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
