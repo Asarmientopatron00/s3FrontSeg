@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ParametroConstanteCreador from './ParametroConstanteCreador'
+import TerceroServicioCreador from './TerceroServicioCreador'
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/ParametroConstanteAction';
+} from '../../../redux/actions/TerceroServicioAction';
 import {useDispatch,useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,6 +38,8 @@ import ViewColumnIcon from '@material-ui/icons/ViewColumn';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {TIPOS_TERCEROS} from './../../../shared/constants/ListasValores';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
 
@@ -69,9 +71,24 @@ import Swal from 'sweetalert2';
 
 
 const cells = [
-  {id:'codigo_parametro', typeHead: 'string',label: 'Parámetro',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'descripcion_parametro', typeHead: 'string',label: 'Descripción',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'valor_parametro', typeHead: 'string',label: 'Valor',value:(value)=>value, align:'left',mostrarInicio:true},
+  {id:'nombre_tipo_documento', typeHead: 'string',label: 'Tipo Documento',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'numero_documento', typeHead: 'numeric',label: 'Documento',value:(value)=>value, align:'right',mostrarInicio:true},
+  {id:'nombre', typeHead: 'string',label: 'Nombre',value:(value)=>value, align:'left',mostrarInicio:true},
+  {id:'tipo_persona', typeHead: 'string',label: 'Tipo Persona',value:(value)=>value==='N'?'Natural':'Jurídica', align:'left',mostrarInicio:false},
+  {id:'tipo', typeHead: 'string',label: 'Tipo Asociado',value:(value)=>TIPOS_TERCEROS.map((tipoTercero)=>tipoTercero.id===value?tipoTercero.value:""), align:'left',mostrarInicio:true},
+  {id:'nombre_departamento', typeHead: 'string',label: 'Departamento',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'nombre_ciudad', typeHead: 'string',label: 'Ciudad',value:(value)=>value, align:'left',mostrarInicio:true},
+  {id:'direccion', typeHead: 'string',label: 'Dirección',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'telefono', typeHead: 'string',label: 'Telefono',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'celular', typeHead: 'string',label: 'Celular',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'email', typeHead: 'string',label: 'Correo Electrónico',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'pagina_web', typeHead: 'string',label: 'Sitio Web',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'nombre_contacto', typeHead: 'string',label: 'Nombre Contacto',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'cargo', typeHead: 'string',label: 'Cargo',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'email_contacto', typeHead: 'string',label: 'Correo Electrónico Contacto',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'telefono_contacto', typeHead: 'string',label: 'Telefono Contacto',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'celular_contacto', typeHead: 'string',label: 'Celular Contacto',value:(value)=>value, align:'left',mostrarInicio:false},
+  {id:'cargo_contacto', typeHead: 'string',label: 'Cargo Contacto',value:(value)=>value, align:'left',mostrarInicio:false},
   {id:'estado', typeHead: 'boolean',label: 'Estado',value:(value)=>value===1?'Activo':'Inactivo', align:'center',mostrarInicio:true,cellColor:(value)=>value===1?'green':'red'},
   {id:'usuario_modificacion_nombre', typeHead: 'string',label: 'Modificado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:true},
   {id:'fecha_modificacion', typeHead: 'string',label: 'Fecha Última Modificación',value:(value)=>value, align:'left', width: '180px',mostrarInicio:true},
@@ -242,10 +259,11 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { 
     numSelected,
-    onOpenAddParametroConstante,
+    onOpenAddTerceroServicio,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
+    tipoFiltro,
     limpiarFiltros,
   } = props;
   return (
@@ -261,19 +279,38 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <Box width={'100%'}>
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            <IntlMessages id='configuracion.parametrosConstantes'/>
+            <IntlMessages id='configuracion.terceroServicio'/>
           </Typography>
-
-          <Box className={classes.contenedorFiltros}>
-            <TextField
-              label= 'Parametro'
-              name='nombreFiltro'
-              id='nombreFiltro'
-              onChange = {queryFilter}
-              value={nombreFiltro}
-            />
-            
-          </Box>
+            <Box className={classes.contenedorFiltros}>
+              <TextField
+                label= 'Nombre'
+                name='nombreFiltro'
+                id='nombreFiltro'
+                onChange = {queryFilter}
+                value={nombreFiltro}
+              />
+              <TextField
+                  label= 'Tipo'
+                  name='tipofiltro'
+                  id='tipoFiltro'
+                  select={true}
+                  onChange = {queryFilter}
+                  value={tipoFiltro}
+                >
+                  {TIPOS_TERCEROS.map((tipoTercero) => {
+                    return (
+                      <MenuItem
+                        value={tipoTercero.id}
+                        key={tipoTercero.id}
+                        id={tipoTercero.id}
+                        className={classes.pointer}>
+                        {tipoTercero.value}
+                      </MenuItem>
+                    )
+                  })
+                  }
+              </TextField>
+            </Box>
         </Box>
       )}
 
@@ -298,7 +335,7 @@ const EnhancedTableToolbar = (props) => {
             </Tooltip> 
           </Box>
           <Box className={classes.verticalBottoms}>
-            <Tooltip title="Crear Parámetro Constante" onClick={onOpenAddParametroConstante}>
+            <Tooltip title="Crear Tercero de Servicio" onClick={onOpenAddTerceroServicio}>
               <IconButton className={classes.createButton} aria-label="filter list">
                 <AddIcon />
               </IconButton>
@@ -315,7 +352,14 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onOpenAddTerceroServicio: PropTypes.func.isRequired,
+  handleOpenPopoverColumns: PropTypes.func.isRequired,
+  queryFilter: PropTypes.func.isRequired,
+  limpiarFiltros:PropTypes.func.isRequired,
+  nombreFiltro:PropTypes.string.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -401,7 +445,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ParametroConstante =  () => {
+const TerceroServicio =  () => {
   const [showForm,setShowForm]=useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -414,15 +458,16 @@ const ParametroConstante =  () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion,setAccion] = useState('ver');
-  const [parametroConstanteSeleccionado,setParametroConstanteSeleccionado]= useState(0);
+  const [terceroServicioSeleccionado,setTerceroServicioSeleccionado]= useState(0);
   const {rows,
           desde,
           hasta,
           ultima_pagina,
           total,
-        } = useSelector(({parametroConstanteReducer}) => parametroConstanteReducer);
+        } = useSelector(({terceroServicioReducer}) => terceroServicioReducer);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`
   const [nombreFiltro,setNombreFiltro]=useState('');
+  const [tipoFiltro,setTipoFiltro]=useState('');
   // const {pathname} = useLocation();
   const [openPopOver,setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -454,33 +499,37 @@ const ParametroConstante =  () => {
 
   useEffect(() => {
       dispatch(
-        onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
+        onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend,tipoFiltro),
       );
-  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm]);
+  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm,tipoFiltro]);
 
   const updateColeccion = ()=>{
     setPage(1);
     dispatch(
-      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend),
+      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend,tipoFiltro),
     );
   }
   useEffect(() => {
       setPage(1);
-  }, [nombreFiltro,orderByToSend]);
+  }, [nombreFiltro,orderByToSend,tipoFiltro]);
 
   const queryFilter = (e)=> {
     switch(e.target.name){
       case('nombreFiltro'):
         setNombreFiltro(e.target.value);
         break;
+      case('tipofiltro'):
+        setTipoFiltro(e.target.value);
+        break;
       default:
         break;
     }
-    
+
   }
 
   const limpiarFiltros = ()=>{
     setNombreFiltro('');
+    setTipoFiltro('');
   }
 
   const changeOrderBy = (id)=>{
@@ -500,8 +549,8 @@ const ParametroConstante =  () => {
    
   }
 
-  const onOpenEditParametroConstante = (id) => {
-    setParametroConstanteSeleccionado(id);
+  const onOpenEditTerceroServicio = (id) => {
+    setTerceroServicioSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -538,16 +587,16 @@ const ParametroConstante =  () => {
     setColumnasMostradas(columnasMostradasInicial)
   } 
 
-  const onOpenViewParametroConstante = (id) => {
-    setParametroConstanteSeleccionado(id);
+  const onOpenViewTerceroServicio = (id) => {
+    setTerceroServicioSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteParametroConstante = (id) => {
+  const onDeleteTerceroServicio = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: "¿Seguro Que Desea Eliminar El Parámetro Constante?",
+      text: "¿Seguro Que Desea Eliminar El Tercero de Servicio?",
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -560,7 +609,7 @@ const ParametroConstante =  () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Parámetro Constante Fue Eliminado Correctamente',
+          'El Tercero de Servicio Fue Eliminado Correctamente',
           'success'
         )
         setTimeout(()=>{
@@ -572,15 +621,15 @@ const ParametroConstante =  () => {
     
   };
 
-  const onOpenAddParametroConstante = () => {
-    setParametroConstanteSeleccionado(0);
+  const onOpenAddTerceroServicio = () => {
+    setTerceroServicioSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setParametroConstanteSeleccionado(0);
+    setTerceroServicioSeleccionado(0);
     setAccion('ver');
   }
   // const handleRequestSort = (event, property) => {
@@ -620,11 +669,12 @@ const ParametroConstante =  () => {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar 
           numSelected={selected.length} 
-          onOpenAddParametroConstante={onOpenAddParametroConstante}
+          onOpenAddTerceroServicio={onOpenAddTerceroServicio}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           queryFilter={queryFilter}
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
+          tipoFiltro={tipoFiltro}
         />
 
         <Box className={classes.paginacion}>
@@ -692,13 +742,13 @@ const ParametroConstante =  () => {
 
                       <TableCell align="center" className={classes.acciones}> 
                         <Tooltip title={<IntlMessages id='boton.editar'/>}>
-                          <EditIcon onClick={()=>onOpenEditParametroConstante(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                          <EditIcon onClick={()=>onOpenEditTerceroServicio(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                         </Tooltip>
                         <Tooltip title={<IntlMessages id='boton.ver'/>}>
-                          <VisibilityIcon onClick={()=>onOpenViewParametroConstante(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
+                          <VisibilityIcon onClick={()=>onOpenViewTerceroServicio(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
                         </Tooltip>
                         <Tooltip title={<IntlMessages id='boton.eliminar'/>}>
-                          <DeleteIcon  onClick={()=>onDeleteParametroConstante(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
+                          <DeleteIcon  onClick={()=>onDeleteTerceroServicio(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
                         </Tooltip>
                       </TableCell>
 
@@ -764,20 +814,16 @@ const ParametroConstante =  () => {
           />
           </Box>
         </Box>
-        
-
-
       </Paper>
-
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
       {showForm ?
-        <ParametroConstanteCreador 
+        <TerceroServicioCreador 
           showForm={showForm}
-          parametroConstante={parametroConstanteSeleccionado}
+          terceroServicio={terceroServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -822,4 +868,4 @@ const ParametroConstante =  () => {
   );
 }
 
-export default ParametroConstante;
+export default TerceroServicio;

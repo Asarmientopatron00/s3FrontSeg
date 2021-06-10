@@ -13,7 +13,6 @@ const initialState = {
 const wallReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_WALL_DATA:
-      console.log('action.a', action.payload);
       return {
         ...state,
         wallData: action.payload,

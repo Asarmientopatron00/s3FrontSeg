@@ -42,6 +42,10 @@ export const configuracionConfig = [
         path: ['/configuracion/servicios'],
         component: React.lazy(() => import('./Servicio')),
       },
+      {
+        path: ['/configuracion/terceros-servicio'],
+        component: React.lazy(() => import('./TerceroServicio')),
+      },
     ],
   },
 ];

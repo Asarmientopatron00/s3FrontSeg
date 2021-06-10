@@ -138,7 +138,6 @@ export const onDelete = (id) => {
         }
       })
       .catch((error) => {
-        console.log(error.response.data);
         if (error.response.data.mensajes){
           dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
         } else {
@@ -154,7 +153,6 @@ export const onCreate = (params) => {
     dispatch({type: FETCH_START});
     Api.post('http://solicitudesservicio.test/api/paises',params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({

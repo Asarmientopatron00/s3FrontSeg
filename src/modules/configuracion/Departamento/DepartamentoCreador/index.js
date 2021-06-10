@@ -23,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
-  codigo_dane: yup.string().required('Requerido').min(2,'Debe Tener Mínimi 5 Caracteres').max(2,'Debe Tener Máximo 2 Caracteres'),
+  codigo_dane: yup.string().required('Requerido').min(2,'Debe Tener Mínimo 2 Caracteres').max(2,'Debe Tener Máximo 2 Caracteres'),
   pais_id: yup.string().required('Requerido'),
 });
 

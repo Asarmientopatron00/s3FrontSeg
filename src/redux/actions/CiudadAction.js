@@ -48,13 +48,14 @@ export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend,depa
   };
 };
 
-export const onGetColeccionLigera = () => {
+export const onGetColeccionLigera = (depto) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
     Api.get('http://solicitudesservicio.test/api/ciudades', {
       params: {
         ligera: true,
+        departamento_id: depto,
       },
     })
     .then((data) => {

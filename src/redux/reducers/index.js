@@ -18,6 +18,7 @@ import ParametroConstanteReducer from './ParametroConstanteReducer';
 import DepartamentoReducer from './DepartamentoReducer';
 import CiudadReducer from './CiudadReducer';
 import ServicioReducer from './ServicioReducer';
+import TerceroServicioReducer from './TerceroServicioReducer';
 
 
 
@@ -42,6 +43,7 @@ const reducers = (history) =>
     departamentoReducer: DepartamentoReducer,
     ciudadReducer: CiudadReducer,
     servicioReducer: ServicioReducer,
+    terceroServicioReducer: TerceroServicioReducer,
 
   });
 export default reducers;

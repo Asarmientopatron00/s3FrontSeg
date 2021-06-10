@@ -27,17 +27,17 @@ export const onJwtUserSignUp = ({email, password, name}) => {
   };
 };
 
-export const onJwtSignIn = ({email, password}) => {
+export const onJwtSignIn = ({ username, password }) => {
   return async (dispatch) => {
     dispatch(fetchStart());
-    const body = {email, password};
+    const body = { username, password };
     try {
-      const res = await jwtAxios.post('auth', body);
+      const res = await jwtAxios.post("/users/token", body);
       localStorage.setItem('token', res.data.token);
-      dispatch(setJWTToken(res.data.token));
+      dispatch(setJWTToken(res.data.access_token));
       dispatch(loadJWTUser());
     } catch (err) {
-      console.log('error!!!!', err.response.data.error);
+      console.log("error!!!!", err);
       dispatch(fetchError(err.response.data.error));
     }
   };
@@ -47,22 +47,22 @@ export const loadJWTUser = () => {
   return async (dispatch) => {
     dispatch(fetchStart());
     try {
-      const res = await jwtAxios.get('/auth');
+      const res = await jwtAxios.get("/users/current/session");
       dispatch(fetchSuccess());
-      console.log('res.data', res.data);
+      console.log("res.data", res.data);
       dispatch({
         type: UPDATE_AUTH_USER,
         payload: {
           authType: AuthType.JWT_AUTH,
-          displayName: res.data.name,
-          email: res.data.email,
+          displayName: res.data.usuario.nombre,
+          email: res.data.usuario.email,
           role: defaultUser.role,
           token: res.data._id,
-          photoURL: res.data.avatar,
-        },
+          photoURL: res.data.avatar
+        }
       });
     } catch (err) {
-      console.log('error!!!!', err.response.error);
+      console.log("error!!!!", err);
       dispatch(fetchError(err.response.error));
     }
   };

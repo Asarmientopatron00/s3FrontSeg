@@ -23,3 +23,4 @@ export * from './ParametroConstanteAction';
 export * from './DepartamentoAction';
 export * from './CiudadAction';
 export * from './ServicioAction';
+export * from './TerceroServicioAction';

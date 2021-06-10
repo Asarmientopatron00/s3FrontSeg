@@ -1,10 +1,10 @@
 import {
-  GET_COLECCION_USUARIO,
-  GET_COLECCION_LIGERA_USUARIO,
-  SHOW_USUARIO,
-  UPDATE_USUARIO,
-  DELETE_USUARIO,
-  CREATE_USUARIO,
+  GET_COLECCION_TERCERO_SERVICIO,
+  GET_COLECCION_LIGERA_TERCERO_SERVICIO,
+  SHOW_TERCERO_SERVICIO,
+  UPDATE_TERCERO_SERVICIO,
+  DELETE_TERCERO_SERVICIO,
+  CREATE_TERCERO_SERVICIO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -13,26 +13,28 @@ import {
 import Api from '../../@crema/services/ApiConfig';
 import {appIntl} from '../../@crema/utility/Utils';
 
-export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend) => {
+export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend,tipo) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const nombreAux = nombre ? nombre : "";
+  const tipoAux = tipo ? tipo : "";
   const ordenar_por = orderByToSend ? orderByToSend : "";
   
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/usuarios', {
+    Api.get('http://solicitudesservicio.test/api/terceros-servicio', {
       params: {
         page: page,
         limite:rowsPerPage,
         nombre:nombreAux,
+        tipo:tipoAux,
         ordenar_por:ordenar_por,
       },
     })
     .then((data) => {
       if (data.status === 200) {
         dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_COLECCION_USUARIO, payload: data});
+        dispatch({type: GET_COLECCION_TERCERO_SERVICIO, payload: data});
       } else {
         dispatch({
           type: FETCH_ERROR,
@@ -50,21 +52,25 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/contactApp/labels/list')
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_LIGERA_USUARIO, payload: data.data});
-        } else {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
-      });
+    Api.get('http://solicitudesservicio.test/api/terceros-servicio', {
+      params: {
+        ligera: true,
+      },
+    })
+    .then((data) => {
+      if (data.status === 200) {
+        dispatch({type: FETCH_SUCCESS});
+        dispatch({type: GET_COLECCION_LIGERA_TERCERO_SERVICIO, payload: data});
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: messages['message.somethingWentWrong'],
+        });
+      }
+    })
+    .catch((error) => {
+      dispatch({type: FETCH_ERROR, payload: error.message});
+    });
   };
 };
 
@@ -73,11 +79,11 @@ export const onShow = (id) => {
   return (dispatch) => {
     if(id!==0){
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/usuarios/'+id)
+      Api.get('http://solicitudesservicio.test/api/terceros-servicio/'+id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW_USUARIO, payload: data.data});
+            dispatch({type: SHOW_TERCERO_SERVICIO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -95,12 +101,12 @@ export const onShow = (id) => {
 export const onUpdate = (params) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
-    Api.put('http://solicitudesservicio.test/api/usuarios/' + params.id, params)
+    Api.put('http://solicitudesservicio.test/api/terceros-servicio/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE_USUARIO,
+            type: UPDATE_TERCERO_SERVICIO,
             payload: data.data,
           });
           
@@ -124,11 +130,11 @@ export const onUpdate = (params) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/usuarios/'+id)
+    Api.delete('http://solicitudesservicio.test/api/terceros-servicio/'+id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE_USUARIO, payload: data.data});
+          dispatch({type: DELETE_TERCERO_SERVICIO, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
@@ -147,12 +153,12 @@ export const onCreate = (params) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/usuarios',params)
+    Api.post('http://solicitudesservicio.test/api/terceros-servicio',params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE_USUARIO,
+            type: CREATE_TERCERO_SERVICIO,
             payload: data.data,
           });
           dispatch({

@@ -22,3 +22,11 @@ export const TIPOS_REQUISITOS_SEGURIDAD = [
     {id:'8',value:'8. Seguridad en tecnología de la información'},
     {id:'9',value:'9.Entrenamiento en seguridad y conciencia de amenazas'},
 ]
+
+export const TIPOS_TERCEROS = [
+    {id:'TR',value:'Transportador'},
+    {id:'AA',value:'Agente de Aduanas'},
+    {id:'AC',value:'Agente de Carga'},
+    {id:'AS',value:'Aseguradora'},
+    {id:'GC',value:'Generador de Carga'},
+]

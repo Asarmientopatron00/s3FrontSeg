@@ -1,21 +1,18 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {Checkbox} from '@material-ui/core';
 import {Form, Formik, useField} from 'formik';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
 
 import InfoView from '@crema/core/InfoView';
-import {onJwtSignIn, onSignInAuth0User} from '../../../redux/actions';
-import {Link, useHistory} from 'react-router-dom';
+import {onJwtSignIn} from '../../../redux/actions';
+import {useHistory} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {useIntl} from 'react-intl';
 import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
 import {Fonts} from '../../../shared/constants/AppEnums';
-import grey from '@material-ui/core/colors/grey';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -33,7 +30,7 @@ const MyTextField = (props) => {
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email(<IntlMessages id='validation.emailFormat' />)
+    // .email(<IntlMessages id='validation.emailFormat' />)
     .required(<IntlMessages id='validation.emailRequired' />),
   password: yup
     .string()
@@ -98,6 +95,135 @@ const SigninJwtAuth = (props) => {
   }));
   const classes = useStyles(props);
 
+  // return (
+  //   <Box flex={1} display='flex' flexDirection='column'>
+  //     <Box
+  //       px={{xs: 6, sm: 10, xl: 15}}
+  //       pt={8}
+  //       flex={1}
+  //       display='flex'
+  //       flexDirection='column'>
+  //       <Formik
+  //         validateOnChange={true}
+  //         initialValues={{
+  //           email: 'crema.demo@gmail.com',
+  //           password: 'Pass@1!@all',
+  //         }}
+  //         validationSchema={validationSchema}
+  //         onSubmit={(data, {setSubmitting}) => {
+  //           setSubmitting(true);
+  //           dispatch(
+  //             onJwtSignIn({email: data.email, password: data.password}),
+  //             history,
+  //           );
+  //           setSubmitting(false);
+  //         }}>
+  //         {({isSubmitting}) => (
+  //           <Form className={classes.formRoot} noValidate autoComplete='off'>
+  //             <Box mb={{xs: 5, xl: 8}}>
+  //               <MyTextField
+  //                 placeholder={messages['common.email']}
+  //                 name='email'
+  //                 label={<IntlMessages id='common.email' />}
+  //                 variant='outlined'
+  //                 className={classes.myTextFieldRoot}
+  //               />
+  //             </Box>
+
+  //             <Box mb={{xs: 3, xl: 4}}>
+  //               <MyTextField
+  //                 type='password'
+  //                 placeholder={messages['common.password']}
+  //                 label={<IntlMessages id='common.password' />}
+  //                 name='password'
+  //                 variant='outlined'
+  //                 className={classes.myTextFieldRoot}
+  //               />
+  //             </Box>
+
+  //             <Box
+  //               mb={{xs: 3, xl: 4}}
+  //               display='flex'
+  //               flexDirection={{xs: 'column', sm: 'row'}}
+  //               alignItems={{sm: 'center'}}
+  //               justifyContent={{sm: 'space-between'}}
+  //               fontSize={15}>
+  //               <Box display='flex' alignItems='center'>
+  //                 <Checkbox className={classes.checkboxRoot} />
+  //                 <Box className={classes.textGrey} component='span'>
+  //                   <IntlMessages id='common.rememberMe' />
+  //                 </Box>
+  //               </Box>
+  //               <Box
+  //                 color='primary.main'
+  //                 component='span'
+  //                 ml={{sm: 4}}
+  //                 className={classes.pointer}
+  //                 onClick={onGoToForgetPassword}
+  //                 fontSize={15}>
+  //                 <IntlMessages id='common.forgetPassword' />
+  //               </Box>
+  //             </Box>
+
+  //             <Box
+  //               mb={6}
+  //               display='flex'
+  //               flexDirection={{xs: 'column', sm: 'row'}}
+  //               alignItems={{sm: 'center'}}
+  //               justifyContent={{sm: 'space-between'}}>
+  //               <Button
+  //                 variant='contained'
+  //                 color='secondary'
+  //                 type='submit'
+  //                 disabled={isSubmitting}
+  //                 className={classes.btnRoot}>
+  //                 <IntlMessages id='common.login' />
+  //               </Button>
+
+  //               <Box
+  //                 ml={{xs: 0, sm: 4}}
+  //                 mt={{xs: 3, sm: 0}}
+  //                 className={classes.textGrey}
+  //                 fontSize={15}>
+  //                 <Box component='span' mr={2}>
+  //                   <IntlMessages id='common.dontHaveAccount' />
+  //                 </Box>
+  //                 <Box component='span'>
+  //                   <Link
+  //                     to='/signup'
+  //                     className={clsx(
+  //                       classes.underlineNone,
+  //                       classes.colorTextPrimary,
+  //                     )}>
+  //                     <IntlMessages id='common.signup' />
+  //                   </Link>
+  //                 </Box>
+  //               </Box>
+  //             </Box>
+  //           </Form>
+  //         )}
+  //       </Formik>
+  //     </Box>
+  //     <Box
+  //       bgcolor={grey[100]}
+  //       px={{xs: 6, sm: 10, xl: 15}}
+  //       py={{xs: 3, xl: 4}}
+  //       display='flex'
+  //       justifyContent='center'
+  //       alignItems='center'>
+  //       <Button
+  //         variant='contained'
+  //         color='primary'
+  //         className={clsx(classes.btnRoot, classes.btnRootFull)}
+  //         onClick={() => dispatch(onSignInAuth0User())}>
+  //         <IntlMessages id='auth.loginWithAuth0' />
+  //       </Button>
+  //     </Box>
+
+  //     <InfoView />
+  //   </Box>
+  // );
+
   return (
     <Box flex={1} display='flex' flexDirection='column'>
       <Box
@@ -109,14 +235,14 @@ const SigninJwtAuth = (props) => {
         <Formik
           validateOnChange={true}
           initialValues={{
-            email: 'crema.demo@gmail.com',
-            password: 'Pass@1!@all',
+            email: '123456855',
+            password: 'hola',
           }}
           validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting}) => {
             setSubmitting(true);
             dispatch(
-              onJwtSignIn({email: data.email, password: data.password}),
+              onJwtSignIn({username: data.email, password: data.password}),
               history,
             );
             setSubmitting(false);
@@ -151,12 +277,6 @@ const SigninJwtAuth = (props) => {
                 alignItems={{sm: 'center'}}
                 justifyContent={{sm: 'space-between'}}
                 fontSize={15}>
-                <Box display='flex' alignItems='center'>
-                  <Checkbox className={classes.checkboxRoot} />
-                  <Box className={classes.textGrey} component='span'>
-                    <IntlMessages id='common.rememberMe' />
-                  </Box>
-                </Box>
                 <Box
                   color='primary.main'
                   component='span'
@@ -182,50 +302,15 @@ const SigninJwtAuth = (props) => {
                   className={classes.btnRoot}>
                   <IntlMessages id='common.login' />
                 </Button>
-
-                <Box
-                  ml={{xs: 0, sm: 4}}
-                  mt={{xs: 3, sm: 0}}
-                  className={classes.textGrey}
-                  fontSize={15}>
-                  <Box component='span' mr={2}>
-                    <IntlMessages id='common.dontHaveAccount' />
-                  </Box>
-                  <Box component='span'>
-                    <Link
-                      to='/signup'
-                      className={clsx(
-                        classes.underlineNone,
-                        classes.colorTextPrimary,
-                      )}>
-                      <IntlMessages id='common.signup' />
-                    </Link>
-                  </Box>
-                </Box>
               </Box>
             </Form>
           )}
         </Formik>
       </Box>
-      <Box
-        bgcolor={grey[100]}
-        px={{xs: 6, sm: 10, xl: 15}}
-        py={{xs: 3, xl: 4}}
-        display='flex'
-        justifyContent='center'
-        alignItems='center'>
-        <Button
-          variant='contained'
-          color='primary'
-          className={clsx(classes.btnRoot, classes.btnRootFull)}
-          onClick={() => dispatch(onSignInAuth0User())}>
-          <IntlMessages id='auth.loginWithAuth0' />
-        </Button>
-      </Box>
-
       <InfoView />
     </Box>
   );
+  
 };
 
 export default SigninJwtAuth;

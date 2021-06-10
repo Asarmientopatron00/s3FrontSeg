@@ -508,7 +508,7 @@ const Ciudad =  () => {
 
   const limpiarFiltros = ()=>{
     setNombreFiltro('');
-    departamentoFiltro('');
+    setDepartamentoFiltro('');
   }
 
   const changeOrderBy = (id)=>{

@@ -83,6 +83,12 @@ export const SHOW_SERVICIO = 'show_servicio';
 export const UPDATE_SERVICIO = 'update_servicio';
 export const CREATE_SERVICIO = 'create_servicio';
 export const DELETE_SERVICIO = 'delete_servicio';
+export const GET_COLECCION_TERCERO_SERVICIO = 'get_coleccion_tercero_servicio';
+export const GET_COLECCION_LIGERA_TERCERO_SERVICIO = 'get_coleccion_ligera_tercero_servicio';
+export const SHOW_TERCERO_SERVICIO = 'show_tercero_servicio';
+export const UPDATE_TERCERO_SERVICIO = 'update_tercero_servicio';
+export const CREATE_TERCERO_SERVICIO = 'create_tercero_servicio';
+export const DELETE_TERCERO_SERVICIO = 'delete_tercero_servicio';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

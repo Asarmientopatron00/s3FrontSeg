@@ -77,14 +77,14 @@ export const useAuthToken = () => {
       }
       dispatch(setJWTToken(token));
       try {
-        const res = await jwtAxios.get('/auth');
+        const res = await jwtAxios.get('/users/current/session');
         dispatch(fetchSuccess());
         dispatch({
           type: UPDATE_AUTH_USER,
           payload: {
             authType: AuthType.JWT_AUTH,
-            displayName: res.data.name,
-            email: res.data.email,
+            displayName: res.data.usuario.nombre,
+            email: res.data.usuario.email,
             role: defaultUser.role,
             token: res.data._id,
             photoURL: res.data.avatar,

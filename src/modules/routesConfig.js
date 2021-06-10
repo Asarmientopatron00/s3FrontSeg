@@ -71,6 +71,13 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/servicios',
       },
+      {
+        id: 'terceros-servicio',
+        title: 'configuracion.terceroServicio',
+        messageId: 'configuracion.terceroServicio',
+        type: 'item',
+        url: '/configuracion/terceros-servicio',
+      },
     ]
   },
   {
