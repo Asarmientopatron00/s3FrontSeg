@@ -1,3 +1,5 @@
 export const LONGITUD_MAXIMA_TELEFONOS = 12;
 export const LONGITUD_MAXIMA_DOCUMENTOS = 13;
 export const LONGITUD_MINIMA_TELEFONOS = 7;
+export const VALIDACION_REGEX_TELEFONOS = '^[+]?[0-9]*$';
+export const VALIDACION_REGEX_DOCUMENTOS = '^[0-9]*$';

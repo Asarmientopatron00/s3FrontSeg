@@ -72,14 +72,16 @@ const TerceroServicioForm = (props) => {
     onChangeDepartamento,
   } = props;
 
-  const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
-  // const factores = [3,7,13,17,19,23,29,37,41,43,47,53,59,67,71];
+  
+  // const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
+  
   let calcularDV = useRef();
   calcularDV = (documento)=>{
     let suma = 0;
+    const factores = [3,7,13,17,19,23,29,37,41,43,47,53,59,67,71]; 
     if (documento!==''){
       for (let i = 0; i < documento.length; i++) {
-        suma += parseFloat(documento[i])*factores[i];
+        suma += parseFloat(documento[i])*factores[documento.length - i-1];
       }
       const cv = suma%11;
         if (cv === 0 | cv===1){

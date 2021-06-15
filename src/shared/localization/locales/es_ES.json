@@ -25,6 +25,8 @@
   "validacion.min1": "Debe tener mínimo ",
   "validacion.min2": " dígitos ",
   "validacion.numero": "Debe ser número",
+  "validacion.telefono": "Ingrese un telefono válido",
+  "validacion.documento": "Ingrese un documento válido",
   "dashboard.quickStats": "Estadísticas rápidas",
   "dashboard.totalClients": "Clientes totales",
   "dashboard.paidInvoices": "Facturas pagadas",

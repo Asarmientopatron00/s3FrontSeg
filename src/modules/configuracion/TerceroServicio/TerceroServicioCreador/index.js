@@ -19,7 +19,7 @@ import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../
 import {onGetColeccionLigera as departamentosColeccionLigera} from '../../../../redux/actions/DepartamentoAction'; 
 import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction'; 
 import saMessages from './../../../../shared/localization/entries/es_ES';
-import {LONGITUD_MAXIMA_DOCUMENTOS,LONGITUD_MAXIMA_TELEFONOS,LONGITUD_MINIMA_TELEFONOS} from './../../../../shared/constants/Constantes'
+import {LONGITUD_MAXIMA_DOCUMENTOS,LONGITUD_MAXIMA_TELEFONOS,LONGITUD_MINIMA_TELEFONOS,VALIDACION_REGEX_TELEFONOS,VALIDACION_REGEX_DOCUMENTOS} from './../../../../shared/constants/Constantes'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -33,6 +33,10 @@ const mensajeValidacion = (type,cant=0)=>{
       return (saMessages.messages['validacion.min1']+cant+saMessages.messages['validacion.min2'])
     case 'numero':
       return (saMessages.messages['validacion.numero'])
+    case 'telefono':
+      return (saMessages.messages['validacion.telefono'])
+    case 'documento':
+      return (saMessages.messages['validacion.documento'])
     default:
       return '';
   }
@@ -49,7 +53,8 @@ const validationSchema = yup.object({
     .number(mensajeValidacion('numero'))
     .required('Requerido'),
   numero_documento: yup
-    .string()
+    .string() 
+    .matches(VALIDACION_REGEX_DOCUMENTOS,mensajeValidacion('documento'))
     .required('Requerido')
     .max(LONGITUD_MAXIMA_DOCUMENTOS,mensajeValidacion('max',LONGITUD_MAXIMA_DOCUMENTOS)),
   nombre: yup
@@ -84,11 +89,13 @@ const validationSchema = yup.object({
   telefono: yup
     .string()
     .required('Requerido')
+    .matches(VALIDACION_REGEX_TELEFONOS,mensajeValidacion('telefono'))
     .max(LONGITUD_MAXIMA_TELEFONOS,mensajeValidacion('max',LONGITUD_MAXIMA_TELEFONOS))
     .min(LONGITUD_MINIMA_TELEFONOS,mensajeValidacion('min',LONGITUD_MINIMA_TELEFONOS)),
   celular: yup
     .string()
     .nullable()
+    .matches(VALIDACION_REGEX_TELEFONOS,mensajeValidacion('telefono'))
     .max(LONGITUD_MAXIMA_TELEFONOS,mensajeValidacion('max',LONGITUD_MAXIMA_TELEFONOS))
     .min(LONGITUD_MINIMA_TELEFONOS,mensajeValidacion('min',LONGITUD_MINIMA_TELEFONOS)),
   email: yup
@@ -115,12 +122,14 @@ const validationSchema = yup.object({
     .max(128,mensajeValidacion('max',128)),
   telefono_contacto: yup
     .string()
+    .matches(VALIDACION_REGEX_TELEFONOS,mensajeValidacion('telefono'))
     .required('Requerido')
     .max(LONGITUD_MAXIMA_TELEFONOS,mensajeValidacion('max',LONGITUD_MAXIMA_TELEFONOS))
     .min(LONGITUD_MINIMA_TELEFONOS,mensajeValidacion('min',LONGITUD_MINIMA_TELEFONOS)),
   celular_contacto: yup
     .string()
     .nullable()
+    .matches(VALIDACION_REGEX_TELEFONOS,mensajeValidacion('telefono'))
     .max(LONGITUD_MAXIMA_TELEFONOS,mensajeValidacion('max',LONGITUD_MAXIMA_TELEFONOS))
     .min(LONGITUD_MINIMA_TELEFONOS,mensajeValidacion('min',LONGITUD_MINIMA_TELEFONOS)),
 });
