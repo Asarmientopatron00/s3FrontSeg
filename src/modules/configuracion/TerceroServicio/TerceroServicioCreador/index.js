@@ -44,7 +44,7 @@ const validationSchema = yup.object({
     .max(2,mensajeValidacion('max',2)),
   tipo_persona:yup
     .string()
-    .required(),
+    .required('Requerido'),
   tipo_documento_id: yup
     .number(mensajeValidacion('numero'))
     .required('Requerido'),
@@ -229,7 +229,7 @@ const TerceroServicioCreator = (props) => {
             segundo_nombre: selectedRow ? selectedRow.segundo_nombre : '',
             primer_apellido: selectedRow ? selectedRow.primer_apellido : '',
             segundo_apellido: selectedRow ? selectedRow.segundo_apellido : '',
-            tipo_persona: selectedRow ? selectedRow.tipo_persona : '',
+            tipo_persona: selectedRow ? (selectedRow.tipo_persona?selectedRow.tipo_persona:'') : '',
             tipo: selectedRow ? selectedRow.tipo : '',
             departamento_id: selectedRow ? selectedRow.departamento_id : '',
             ciudad_id: selectedRow ? selectedRow.ciudad_id : '',

@@ -147,11 +147,11 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params) => {
+export const onCreate = (params,history) => {
   // const {messages} = appIntl();
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/tipos-de-documentos',params)
+    await Api.post('http://solicitudesservicio.test/api/tipos-de-documentos',params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
@@ -163,8 +163,9 @@ export const onCreate = (params) => {
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],
           });
+          history.push('/index')
+          history.goBack();
         } else {
-
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }
       })

@@ -75,9 +75,9 @@ const cells = [
   {id:'tipo', typeHead: 'string',label: 'Tipo',value:(value)=>TIPOS_REQUISITOS_SEGURIDAD.map((tipoDocumento)=>tipoDocumento.id===value?tipoDocumento.value:""), align:'left',mostrarInicio:true},
   {id:'estado', typeHead: 'boolean',label: 'Estado',value:(value)=>value===1?'Activo':'Inactivo', align:'center',mostrarInicio:true,cellColor:(value)=>value===1?'green':'red'},
   {id:'usuario_modificacion_nombre', typeHead: 'string',label: 'Modificado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:true},
-  {id:'fecha_modificacion', typeHead: 'string',label: 'Fecha Última Modificación',value:(value)=>value, align:'left', width: '180px',mostrarInicio:true},
+  {id:'fecha_modificacion', typeHead: 'string',label: 'Fecha Última Modificación',value:(value)=>new Date(value).toLocaleString('es-CL'), align:'left', width: '180px',mostrarInicio:true},
   {id:'usuario_creacion_nombre', typeHead: 'string',label: 'Creado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:false},
-  {id:'fecha_creacion', typeHead: 'string',label: 'Fecha Creación',value:(value)=>value, align:'left', width: '180px',mostrarInicio:false},
+  {id:'fecha_creacion', typeHead: 'string',label: 'Fecha Creación',value:(value)=>new Date(value).toLocaleString('es-CL'), align:'left', width: '180px',mostrarInicio:false},
 ];
 
 

@@ -8,6 +8,7 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_TERCEROS} from './../../../../shared/constants/ListasValores'
 import MenuItem from '@material-ui/core/MenuItem';
@@ -26,6 +27,39 @@ const MyTextField = (props) => {
   );
 };
 
+const MyRadioField = (props) =>{
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  return(
+    <FormControl
+      error={!!errorText}
+      component='fieldset'
+    >
+      <FormLabel {...props} {...field} component="legend">{props.label}</FormLabel>
+      <Field
+        {...props}
+        {...field}
+        type='radio'
+        as={RadioGroup}
+        row
+      >
+        {props.options.map((option,index)=>{
+          return (              
+            <FormControlLabel
+              key={index}
+              value={option.value}
+              control={<Radio color="primary" />}
+              label={option.label}
+              labelPlacement="end"
+              disabled={props.disabled}
+            />
+          )
+        })}
+      </Field>
+      <FormHelperText>{errorText}</FormHelperText>
+    </FormControl>
+  )
+}
 const TerceroServicioForm = (props) => {
   const {
     handleOnClose,
@@ -83,7 +117,10 @@ const TerceroServicioForm = (props) => {
     }
   },[values.departamento_id]);
 
-
+  const [tipoPersona, setTipoPersona] = useState('N');
+  useEffect(()=>{
+    setTipoPersona(values.tipo_persona);
+  },[values.tipo_persona]);
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -182,33 +219,17 @@ const TerceroServicioForm = (props) => {
                 }
               </MyTextField>
 
-              <FormControl className={classes.widthFull} component='fieldset'>
-                <FormLabel component="legend">Tipo Persona*</FormLabel>
-                <Field
-                  name='tipo_persona'
-                  type='radio'
-                  as={RadioGroup}
-                  className={classes.myTextField}
-                  disabled={accion==='ver'}
-                  row
-                  value={values.tipo_persona}
-                >
-                  <FormControlLabel
-                    value="N"
-                    control={<Radio color="primary" />}
-                    label="Natural"
-                    labelPlacement="end"
-                    disabled={accion==='ver'}
-                  />
-                  <FormControlLabel
-                    value="J"
-                    control={<Radio color="primary" />}
-                    label="Jurídica"
-                    labelPlacement="end"
-                    disabled={accion==='ver'}
-                  />
-                </Field>
-              </FormControl>
+              <MyRadioField
+                label = 'Tipo de Persona'
+                className = {classes.myTextField}
+                name='tipo_persona'
+                disabled={accion==='ver'}
+                required
+                options = {[
+                  {value:'N',label:'Natural'},
+                  {value:'J',label:'Jurídica'},
+                ]}
+              />
 
               <MyTextField
                 className={classes.myTextField}
@@ -258,27 +279,31 @@ const TerceroServicioForm = (props) => {
                 required
               />
               
-              <MyTextField
-                className={classes.myTextField}
-                label= 'Segundo Nombre'
-                name='segundo_nombre'
-                disabled={disabled}
-              />
-              
-              <MyTextField
-                className={classes.myTextField}
-                label= 'Primer Apellido'
-                name='primer_apellido'
-                disabled={disabled}
-              />
-              
-              <MyTextField
-                className={classes.myTextField}
-                label= 'Segundo Apellido'
-                name='segundo_apellido'
-                disabled={disabled}
-              />
-              
+              {tipoPersona!=='J'?
+                <>
+                  <MyTextField
+                    className={classes.myTextField}
+                    label= 'Segundo Nombre'
+                    name='segundo_nombre'
+                    disabled={disabled}
+                  />
+                  <MyTextField
+                    className={classes.myTextField}
+                    label= 'Segundo Apellido'
+                    name='segundo_apellido'
+                    disabled={disabled}
+                  />
+                  <MyTextField
+                  className={classes.myTextField}
+                  label= 'Primer Apellido'
+                  name='primer_apellido'
+                  disabled={disabled}
+                  />
+                </>
+              :
+                ""
+              }
+
               <MyTextField
                 className={classes.myTextField}
                 label= 'Departamento'
