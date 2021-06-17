@@ -4,6 +4,7 @@ import {
   SET_AUTH_TOKEN,
   SIGNOUT_AUTH_SUCCESS,
   UPDATE_AUTH_USER,
+  FETCH_ERROR,
 } from '../../shared/constants/ActionTypes';
 import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
 import {fetchError, fetchStart, fetchSuccess} from './Common';
@@ -11,7 +12,6 @@ import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
 
 export const onJwtUserSignUp = ({email, password, name}) => {
-  console.log('email, password', {email, password, name});
   return async (dispatch) => {
     dispatch(fetchStart());
     const body = {email, name, password};
@@ -21,8 +21,12 @@ export const onJwtUserSignUp = ({email, password, name}) => {
       dispatch(setJWTToken(res.data.token));
       dispatch(loadJWTUser());
     } catch (err) {
-      console.log('error!!!!', err.response.data.error);
-      dispatch(fetchError(err.response.data.error));
+      console.log('error!!!!', err.response.data);
+      // dispatch(fetchError(err.response.data.error));
+      dispatch({
+        type: FETCH_ERROR,
+        payload:err.response.data.mensajes[0],
+      });
     }
   };
 };
@@ -37,8 +41,12 @@ export const onJwtSignIn = ({ username, password }) => {
       dispatch(setJWTToken(res.data.access_token));
       dispatch(loadJWTUser());
     } catch (err) {
-      console.log("error!!!!", err);
-      dispatch(fetchError(err.response.data.error));
+      // dispatch(fetchError(err.response.data.error));
+      dispatch({
+        type: FETCH_ERROR,
+        payload:err.response.data.messages[0],
+      });
+
     }
   };
 };
@@ -53,12 +61,23 @@ export const loadJWTUser = () => {
       dispatch({
         type: UPDATE_AUTH_USER,
         payload: {
+          id: res.data.usuario.id,
           authType: AuthType.JWT_AUTH,
           displayName: res.data.usuario.nombre,
+          identificacion_usuario: res.data.usuario.identificacion_usuario,
           email: res.data.usuario.email,
+          asociado: {
+            id:res.data.usuario.asociado.id,
+            nombre:res.data.usuario.asociado.nombre,
+            numero_documento:res.data.usuario.asociado.numero_documento,
+          },
+          rol: {
+            id:res.data.usuario.rol.id,
+            nombre:res.data.usuario.rol.nombre,
+            tipo:res.data.usuario.rol.tipo,
+          },
           role: defaultUser.role,
           token: res.data._id,
-          photoURL: res.data.avatar
         }
       });
     } catch (err) {

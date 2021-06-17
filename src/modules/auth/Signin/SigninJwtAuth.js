@@ -10,7 +10,7 @@ import {onJwtSignIn} from '../../../redux/actions';
 import {useHistory} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
-import {useIntl} from 'react-intl';
+// import {useIntl} from 'react-intl';
 import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../../shared/constants/AppEnums';
 
@@ -21,7 +21,7 @@ const MyTextField = (props) => {
     <TextField
       {...props}
       {...field}
-      helperText={errorText}
+      helperText={errorText?errorText:''}
       error={!!errorText}
     />
   );
@@ -31,10 +31,10 @@ const validationSchema = yup.object({
   email: yup
     .string()
     // .email(<IntlMessages id='validation.emailFormat' />)
-    .required(<IntlMessages id='validation.emailRequired' />),
+    .required('Requerido'),
   password: yup
     .string()
-    .required(<IntlMessages id='validation.passwordRequired' />),
+    .required('Requerido'),
 });
 
 const SigninJwtAuth = (props) => {
@@ -44,17 +44,18 @@ const SigninJwtAuth = (props) => {
     history.push('/forget-password', {tab: 'jwtAuth'});
   };
 
-  const {messages} = useIntl();
+  // const {messages} = useIntl();
 
   const useStyles = makeStyles((theme) => ({
     formRoot: {
       textAlign: 'left',
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
+        marginBottom: 0,
       },
     },
     myTextFieldRoot: {
       width: '100%',
+      height:'70px',
     },
     checkboxRoot: {
       marginLeft: -12,
@@ -63,11 +64,20 @@ const SigninJwtAuth = (props) => {
       cursor: 'pointer',
     },
     btnRoot: {
-      borderRadius: theme.overrides.MuiCard.root.borderRadius,
-      width: '10rem',
+      width: '100%',
       fontWeight: Fonts.REGULAR,
-      fontSize: 16,
+      fontSize: 14,
       textTransform: 'capitalize',
+      paddingLeft: 15,
+      paddingRight: 15,
+      color:'white',
+      "&:hover": {
+        backgroundColor: theme.palette.colorHover,
+        cursor:'pointer',
+      }
+    },
+    btnPrymary:{
+      backgroundColor:theme.palette.primary.main,
     },
     btnRootFull: {
       width: '100%',
@@ -227,16 +237,17 @@ const SigninJwtAuth = (props) => {
   return (
     <Box flex={1} display='flex' flexDirection='column'>
       <Box
-        px={{xs: 6, sm: 10, xl: 15}}
-        pt={8}
+        px={6}
+        py={6}
         flex={1}
         display='flex'
         flexDirection='column'>
         <Formik
           validateOnChange={true}
+          validateOnBlur={false}
           initialValues={{
-            email: '123456855',
-            password: 'hola',
+            email: '1036641426',
+            password: '1234',
           }}
           validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting}) => {
@@ -249,34 +260,48 @@ const SigninJwtAuth = (props) => {
           }}>
           {({isSubmitting}) => (
             <Form className={classes.formRoot} noValidate autoComplete='off'>
-              <Box mb={{xs: 5, xl: 8}}>
+              <Box mb={{xs: 1, xl: 2}}>
                 <MyTextField
-                  placeholder={messages['common.email']}
                   name='email'
-                  label={<IntlMessages id='common.email' />}
-                  variant='outlined'
+                  label='Identificación'
                   className={classes.myTextFieldRoot}
                 />
               </Box>
 
-              <Box mb={{xs: 3, xl: 4}}>
+              <Box mb={{xs: 1, xl: 2}}>
                 <MyTextField
                   type='password'
-                  placeholder={messages['common.password']}
                   label={<IntlMessages id='common.password' />}
                   name='password'
-                  variant='outlined'
                   className={classes.myTextFieldRoot}
                 />
               </Box>
 
               <Box
-                mb={{xs: 3, xl: 4}}
+                mb={2}
+                display='flex'
+                alignItems={{sm: 'center'}}
+                justifyContent='center'
+                width='100%'
+              >
+                <Button
+                  variant='contained'
+                  type='submit'
+                  disabled={isSubmitting}
+                  className={`${classes.btnRoot} ${classes.btnPrymary}`}
+                >
+                  <IntlMessages id='boton.login' />
+                </Button>
+              </Box>
+
+              <Box
+                mb={2}
                 display='flex'
                 flexDirection={{xs: 'column', sm: 'row'}}
                 alignItems={{sm: 'center'}}
-                justifyContent={{sm: 'space-between'}}
-                fontSize={15}>
+                justifyContent={'flex-end'}
+                fontSize={15}
+              >
                 <Box
                   color='primary.main'
                   component='span'
@@ -284,24 +309,8 @@ const SigninJwtAuth = (props) => {
                   className={classes.pointer}
                   onClick={onGoToForgetPassword}
                   fontSize={15}>
-                  <IntlMessages id='common.forgetPassword' />
+                  <IntlMessages id='login.forgetPassword' />
                 </Box>
-              </Box>
-
-              <Box
-                mb={6}
-                display='flex'
-                flexDirection={{xs: 'column', sm: 'row'}}
-                alignItems={{sm: 'center'}}
-                justifyContent={{sm: 'space-between'}}>
-                <Button
-                  variant='contained'
-                  color='secondary'
-                  type='submit'
-                  disabled={isSubmitting}
-                  className={classes.btnRoot}>
-                  <IntlMessages id='common.login' />
-                </Button>
               </Box>
             </Form>
           )}

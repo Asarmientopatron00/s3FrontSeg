@@ -9,33 +9,46 @@ const useStyles = makeStyles((theme) => ({
   imgRoot: {
     cursor: 'pointer',
     display: 'inline-block',
-    width: 140,
+    width: 100,
   },
   cardRoot: {
-    maxWidth: '36rem',
-    width: '100%',
+    minWidth: '500px',
+    // maxHeight: '',
+    width: '50%',
     overflow: 'hidden',
     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',
-    position: 'relative',
-    paddingTop: 20,
+    justifyContent:'center',
     [theme.breakpoints.up('xl')]: {
-      paddingTop: 32,
+      paddingTop: 0,
     },
-    '&:before': {
-      content: "''",
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      width: 130,
-      height: 9,
-      borderBottomRightRadius: 80,
-      borderBottomLeftRadius: 80,
-      marginRight: 'auto',
-      marginLeft: 'auto',
-      backgroundColor: theme.palette.primary.main,
-    },
+    // '&:before': {
+    //   content: "''",
+    //   position: 'absolute',
+    //   left: 0,
+    //   right: 0,
+    //   top: 0,
+    //   width: 130,
+    //   height: 9,
+    //   borderBottomRightRadius: 80,
+    //   borderBottomLeftRadius: 80,
+    //   marginRight: 'auto',
+    //   marginLeft: 'auto',
+    //   backgroundColor: theme.palette.primary.main,
+    // },
+  },
+  login:{
+    display:'grid',
+    gridTemplateColumns:'2fr 1fr',
+    justifyContent:'center',
+  },
+  loginDerecha:{
+      backgroundColor: theme.palette.redBottoms,
+      backgroundImage:'url(/assets/images/logística-fuera-de-la-empresa.jpg)',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'contain',
+      height:'calc(100vh)',
   },
   muiTabsFull: {
     marginLeft: 0,
@@ -144,24 +157,30 @@ const Signin = (props) => {
   const classes = useStyles(props);
 
   return (
-    <Box flex={1} display='flex' flexDirection='column' justifyContent='center'>
-      <Box mb={{xs: 6, md: 8, xl: 18}} textAlign='center'>
-        <img
-          className={classes.imgRoot}
-          src='/images/logo-white-with-name.png'
-          alt='crema-logo'
-        />
+    <Box className={classes.login}>
+      <Box flex={1} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+        <Box
+          display='flex'
+          flexDirection='row'
+          justifyContent='center'
+          alignItems='center'>
+          <Card className={classes.cardRoot}>
+            <Box mx={{xs: 6, md: 8, xl: 10}} mt='10px' display='flex' justifyContent='flex-end' >
+              <Box display='grid' alignItems='center' width='100%'>
+                <Box component='h2'>Solicitudes Servicio</Box>
+                <Box component='h3'>Sec Sel SAS</Box>
+              </Box>
+              <img
+                className={classes.imgRoot}
+                src='/assets/images/LogoSecSel.png'
+                alt='Logo Sec Sel'
+              />
+            </Box>
+            <SigninJwtAuth />
+          </Card>
+        </Box>
       </Box>
-
-      <Box
-        display='flex'
-        flexDirection='column'
-        justifyContent='center'
-        alignItems='center'>
-        <Card className={classes.cardRoot}>
-          <SigninJwtAuth />
-        </Card>
-      </Box>
+      <Box className={classes.loginDerecha}></Box>
     </Box>
   );
 };

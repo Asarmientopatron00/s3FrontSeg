@@ -21,7 +21,7 @@ const App = () => (
           <LocaleProvider>
             <ConnectedRouter history={history}>
               <AuthRoutes>
-                <CssBaseline />|
+                <CssBaseline />
                 <AppLayout />
               </AuthRoutes>
             </ConnectedRouter>

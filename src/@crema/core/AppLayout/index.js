@@ -8,23 +8,21 @@ import Layouts from './Layouts';
 import {ContentView} from '../../index';
 import useStyles from '../../../shared/jss/common/common.style';
 
-const useStyle = makeStyles(() => ({
+const useStyle = makeStyles((theme) => ({
   appAuth: {
     flex: 1,
     display: 'flex',
-    position: 'relative',
     height: '100vh',
-    backgroundColor: '#f3f4f6',
-    background: `url(/assets/images/auth-background.jpg) no-repeat center center`,
+    backgroundColor: theme.palette.gray[200],
     backgroundSize: 'cover',
-
+    padding:0,
     '& .scrollbar-container': {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
     },
     '& .main-content-view': {
-      padding: 20,
+      justifyContent:'center',
     },
     '& .footer': {
       marginRight: 0,

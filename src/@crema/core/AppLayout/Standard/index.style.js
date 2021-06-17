@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => {
       position: 'relative',
       backgroundColor: theme.palette.background.default,
       paddingTop: 52,
-      marginTop:0,
+      marginTop:15,
       [theme.breakpoints.up('sm')]: {
         paddingTop: 52,
       },

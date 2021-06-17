@@ -96,7 +96,7 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params) => {
+export const onUpdate = (params,handleOnClose,updateColeccion) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
     Api.put('http://solicitudesservicio.test/api/tipos-de-documentos/' + params.id, params)
@@ -107,7 +107,8 @@ export const onUpdate = (params) => {
             type: UPDATE_TIPO_DOCUMENTO,
             payload: data.data,
           });
-          
+          updateColeccion();
+          handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],
@@ -147,7 +148,7 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params,history) => {
+export const onCreate = (params,handleOnClose,updateColeccion) => {
   // const {messages} = appIntl();
   return async (dispatch) => {
     dispatch({type: FETCH_START});
@@ -163,8 +164,8 @@ export const onCreate = (params,history) => {
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],
           });
-          history.push('/index')
-          history.goBack();
+          updateColeccion();
+          handleOnClose();
         } else {
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }

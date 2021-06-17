@@ -15,7 +15,6 @@ import Slide from '@material-ui/core/Slide';
 import TipoDocumentoForm from './TipoDocumentoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {useHistory} from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -31,13 +30,12 @@ const TipoDocumentoCreator = (props) => {
     tipoDocumento,
     handleOnClose,
     accion,
-    // updateColeccion,
+    updateColeccion,
     asociados,
     roles,
   } = props;
 
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -115,13 +113,12 @@ const TipoDocumentoCreator = (props) => {
           onSubmit={(data, {setSubmitting, resetForm}) => {
             setSubmitting(true);
             if (accion==='crear'){
-              dispatch(onCreate(data,history));
+              dispatch(onCreate(data,handleOnClose,updateColeccion));
             } else if(accion==='editar') {
               if (selectedRow) {
-                dispatch(onUpdate(data),history);
+                dispatch(onUpdate(data,handleOnClose,updateColeccion));
               } 
             }
-
             // resetForm();
             setSubmitting(false);
             // handleOnClose();

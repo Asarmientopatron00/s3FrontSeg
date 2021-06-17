@@ -8,6 +8,7 @@ import {
 import {Auth} from 'aws-amplify';
 import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
+import Api from '../../@crema/services/ApiConfig';
 
 export const onConfirmCognitoUserSignup = (username, confirmCode, history) => {
   const code = confirmCode ? confirmCode : '000000';
@@ -173,40 +174,52 @@ export const onChangePasswordFirstTime = ({email, password}, user) => {
 
 export const onResetCognitoPassword = (email, history) => {
   return (dispatch) => {
+    const params = {email:email}
     dispatch({type: FETCH_START});
-    Auth.forgotPassword(email)
+    Api.post('http://solicitudesservicio.test/api/forgot-password', params)
       .then((data) => {
         if (data) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: SHOW_MESSAGE,
-            payload: `A code has been sent to registered email address ${data.CodeDeliveryDetails.Destination}`,
+            payload:data.data.mensajes,
           });
-          history.push('/reset-password', {email: email});
+          // history.push('/reset-password', {email: email});
+          history.push('/signin');
         } else {
-          dispatch({type: FETCH_ERROR, payload: data.error});
+          dispatch({type: FETCH_ERROR, payload:data.mensajes});
         }
       })
       .catch(function (error) {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
       });
   };
 };
 
-export const onSetNewCognitoPassword = (email, code, new_password, history) => {
+export const onSetNewCognitoPassword = (token,email,password,password_confirmation,history) => {
   return (dispatch) => {
+    const params = {
+      token:token,
+      email:email,
+      password:password,
+      password_confirmation:password_confirmation,
+    }
     dispatch({type: FETCH_START});
-    Auth.forgotPasswordSubmit(email, code, new_password)
+    Api.post('http://solicitudesservicio.test/api/reset-password', params)
       .then((data) => {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({
-          type: SHOW_MESSAGE,
-          payload: 'The new Password has been successfully set',
-        });
-        history.push('/signin');
+        if (data) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload:data.data.mensajes,
+          });
+          history.push('/signin');
+        } else {
+          dispatch({type: FETCH_ERROR, payload:data.mensajes});
+        }
       })
       .catch(function (error) {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
       });
   };
 };

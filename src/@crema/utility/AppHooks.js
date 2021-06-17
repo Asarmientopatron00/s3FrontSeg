@@ -82,12 +82,23 @@ export const useAuthToken = () => {
         dispatch({
           type: UPDATE_AUTH_USER,
           payload: {
+            id: res.data.usuario.id,
             authType: AuthType.JWT_AUTH,
             displayName: res.data.usuario.nombre,
+            identificacion_usuario: res.data.usuario.identificacion_usuario,
             email: res.data.usuario.email,
+            asociado: {
+              id:res.data.usuario.asociado.id,
+              nombre:res.data.usuario.asociado.nombre,
+              numero_documento:res.data.usuario.asociado.numero_documento,
+            },
+            rol: {
+              id:res.data.usuario.rol.id,
+              nombre:res.data.usuario.rol.nombre,
+              tipo:res.data.usuario.rol.tipo,
+            },
             role: defaultUser.role,
             token: res.data._id,
-            photoURL: res.data.avatar,
           },
         });
         return;

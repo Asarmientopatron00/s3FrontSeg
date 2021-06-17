@@ -40,6 +40,9 @@ const AuthRoutes = ({children}) => {
           '/error-pages/error-404',
           '/forget-password',
         ].indexOf(pathname) === -1
+        && pathname.search('/signin')===-1 && pathname.search('/signup')===-1 
+        && pathname.search('/confirm-signup')===-1 && pathname.search('/reset-password')===-1 
+        && pathname.search('/forget-password')===-1 && pathname.search('/error-pages/error-404')===-1 
       ) {
         if (isPermitted) {
           dispatch(setInitialPath(pathname));

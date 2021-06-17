@@ -1,21 +1,17 @@
 import React, {useContext} from 'react';
 import {useDispatch} from 'react-redux';
 import {
-  onCognitoUserSignOut,
   onJWTAuthSignout,
-  onSignOutAuth0User,
-  onSignOutFirebaseUser,
 } from '../../../redux/actions';
 import {useAuthUser} from '../../../@crema/utility/AppHooks';
 import AppContext from '../../../@crema/utility/AppContext';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Box from '@material-ui/core/Box';
-import {AuthType, Fonts} from '../../constants/AppEnums';
+import {Box,Button} from '@material-ui/core';
+import {Fonts} from '../../constants/AppEnums';
 import PersonIcon from '@material-ui/icons/Person';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
+import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -46,7 +42,7 @@ const useStyles = makeStyles((theme) => {
     userName: {
       overflow: 'hidden',
       whiteSpace: 'nowrap',
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: Fonts.MEDIUM,
       color: 'white',
       textTransform:'uppercase'
@@ -59,6 +55,18 @@ const useStyles = makeStyles((theme) => {
     },
     pointer: {
       cursor: 'pointer',
+    },
+    btnRoot: {
+      paddingLeft: 15,
+      paddingRight: 15,
+      color:'white',
+      "&:hover": {
+        backgroundColor: theme.palette.colorHover,
+        cursor:'pointer',
+      }
+    },
+    btnPrymary:{
+      backgroundColor:theme.palette.primary.main,
     },
   };
 });
@@ -88,79 +96,66 @@ const UserInfo = (props) => {
       <Box display='flex' alignItems='center' onClick={handleClick}>
         <BusinessCenterIcon className={classes.profilePic}/>
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
-          <Box
-            display='flex'
-            alignItems='center'
-            justifyContent='space-between'>
-            <Box mb={0} className={clsx(classes.userName)}>
-              {/* {user.displayName ? user.displayName : 'Admin User '} */}
-              {'Sec Sel'}
-            </Box>
-            <Box
-              ml={3}
-              className={classes.pointer}
-              color={themeMode === 'light' ? '#313541' : 'white'}>
-              
-              <Menu
-                id='simple-menu'
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                autoFocus={false}  
-              >
-                <MenuItem>My account</MenuItem>
-              </Menu>
-            </Box>
+          <Box mb={0} className={clsx(classes.userName)}>
+            {user.asociado.nombre ? user.asociado.nombre : ''}
           </Box>
-          <Box className={classes.designation}>88888888</Box>
+          <Box className={classes.designation}>{user.asociado.numero_documento}</Box>
         </Box>
       </Box>
       <Box display='flex' alignItems='center' onClick={handleClick}>
         <PersonIcon className={classes.profilePic}/>
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
-          <Box
-            display='flex'
-            alignItems='center'
-            justifyContent='space-between'>
-            <Box mb={0} className={clsx(classes.userName)}>
-              {/* {user.displayName ? user.displayName : 'Admin User '} */}
-              {'Pedro Perez'}
-            </Box>
-            <Box
-              ml={3}
-              className={classes.pointer}
-              color={themeMode === 'light' ? '#313541' : 'white'}>
-              
-              <Menu
-                id='simple-menu'
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-                autoFocus={false}  
-              >
-                <MenuItem>My account</MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    if (user && user.authType === AuthType.AWS_COGNITO) {
-                      dispatch(onCognitoUserSignOut());
-                    } else if (user && user.authType === AuthType.FIREBASE) {
-                      dispatch(onSignOutFirebaseUser());
-                    } else if (user && user.authType === AuthType.AUTH0) {
-                      dispatch(onSignOutAuth0User());
-                    } else if (user && user.authType === AuthType.JWT_AUTH) {
-                      dispatch(onJWTAuthSignout());
-                    }
-                  }}>
-                  Cerrar Sesion
-                </MenuItem>
-              </Menu>
-            </Box>
+          <Box mb={0} className={clsx(classes.userName)}>
+            {user.displayName ? user.displayName:''}
           </Box>
-          <Box className={classes.designation}>104312345</Box>
+          <Box className={classes.designation}>{user.identificacion_usuario}</Box>
         </Box>
       </Box>
+      <Popover
+        id='simple-menu'
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        disableScrollLock
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+      >
+        <Box 
+          margin={2} 
+          mb={5}
+        >
+          <Box
+            component='h4'
+            mb={3}
+            textAlign='left'
+          >{user.rol.nombre}
+          </Box>
+
+          <Box
+            component='h6'
+            fontWeight='normal'
+            textAlign='left'
+          >{user.email}
+          </Box>
+        </Box>
+        <Box
+          borderTop='1px solid gray'
+          padding={2}
+          display='flex'
+          justifyContent='center'
+        >
+          <Button
+            className={`${classes.btnRoot} ${classes.btnPrymary}`}
+            onClick={() => {
+                dispatch(onJWTAuthSignout());
+            }}
+          >
+            Cerrar Sesion
+          </Button>
+        </Box>
+      </Popover>
     </Box>
   );
 };

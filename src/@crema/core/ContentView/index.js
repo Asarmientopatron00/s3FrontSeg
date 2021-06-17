@@ -42,7 +42,9 @@ const ContentView = () => {
         display='flex'
         flex={1}
         flexDirection='column'
-        className='main-content-view'>
+        className='main-content-view'
+
+      >
         <AppSuspense>
           <AppErrorBoundary>
             <TransitionWrapper>{renderRoutes(routes)}</TransitionWrapper>

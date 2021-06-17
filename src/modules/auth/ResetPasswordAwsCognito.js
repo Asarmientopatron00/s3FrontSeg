@@ -1,18 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {Form, Formik, useField} from 'formik';
 import * as yup from 'yup';
-import ReactCodeInput from 'react-code-input';
 import {useDispatch} from 'react-redux';
-import {fetchError, onSetNewCognitoPassword} from '../../redux/actions';
-import {useHistory} from 'react-router-dom';
+import { onSetNewCognitoPassword} from '../../redux/actions';
+import {useHistory,useParams} from 'react-router-dom';
 import InfoView from '@crema/core/InfoView';
 import Box from '@material-ui/core/Box';
 import IntlMessages from '../../@crema/utility/IntlMessages';
-import Typography from '@material-ui/core/Typography';
-import {useIntl} from 'react-intl';
 import {makeStyles} from '@material-ui/core/styles';
 import {Fonts} from '../../shared/constants/AppEnums';
 
@@ -30,22 +27,22 @@ const MyTextField = (props) => {
 };
 
 const validationSchema = yup.object({
+  email: yup
+    .string()
+    .required('Requerido'),
   newPassword: yup
     .string()
-    .required(<IntlMessages id='validation.enterNewPassword' />),
+    .required('Requerido'),
   confirmPassword: yup
     .string()
-    .required(<IntlMessages id='validation.reTypePassword' />),
+    .required('Requerido'),
 });
 
 const ResetPasswordAwsCognito = (props) => {
   const dispatch = useDispatch();
+  const { token } = useParams();
 
   const history = useHistory();
-
-  const [pin, setPin] = useState('');
-
-  const {messages} = useIntl();
 
   const useStyles = makeStyles((theme) => ({
     imgRoot: {
@@ -60,29 +57,16 @@ const ResetPasswordAwsCognito = (props) => {
       position: 'relative',
       boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
       textAlign: 'center',
+      // padding: 24,
       padding: 24,
       [theme.breakpoints.up('sm')]: {
-        padding: 40,
+        // padding: 40,
       },
       [theme.breakpoints.up('md')]: {
-        padding: 48,
+        // padding: 48,
       },
       [theme.breakpoints.up('xl')]: {
-        padding: 64,
-      },
-      '&:before': {
-        content: "''",
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        width: 130,
-        height: 9,
-        borderBottomRightRadius: 80,
-        borderBottomLeftRadius: 80,
-        marginRight: 'auto',
-        marginLeft: 'auto',
-        backgroundColor: theme.palette.primary.main,
+        // padding: 64,
       },
     },
     formRoot: {
@@ -90,15 +74,23 @@ const ResetPasswordAwsCognito = (props) => {
     },
     myTextFieldRoot: {
       width: '100%',
+      height:'70px',
     },
     btnRoot: {
-      borderRadius: theme.overrides.MuiCard.root.borderRadius,
       width: '100%',
-      fontWeight: Fonts.MEDIUM,
+      fontWeight: Fonts.REGULAR,
       fontSize: 16,
-      paddingTop: 12,
-      paddingBottom: 12,
       textTransform: 'capitalize',
+      paddingLeft: 15,
+      paddingRight: 15,
+      color:'white',
+      "&:hover": {
+        backgroundColor: theme.palette.colorHover,
+        cursor:'pointer',
+      }
+    },
+    btnPrymary:{
+      backgroundColor:theme.palette.primary.main,
     },
   }));
   const classes = useStyles(props);
@@ -108,7 +100,7 @@ const ResetPasswordAwsCognito = (props) => {
       <Box mb={{xs: 6, md: 8, xl: 18}} textAlign='center'>
         <img
           className={classes.imgRoot}
-          src={'/assets/images/logo-white-with-name.png'}
+          src={'/assets/images/LogoSecSel.png'}
           alt='crema-logo'
         />
       </Box>
@@ -125,74 +117,64 @@ const ResetPasswordAwsCognito = (props) => {
             color='text.primary'
             fontWeight={Fonts.REGULAR}
             fontSize={{xs: 24, sm: 26}}
-            textTransform='uppercase'>
+          >
             <IntlMessages id='common.resetPassword' />
           </Box>
           <Formik
             validateOnChange={true}
             initialValues={{
-              oldPassword: '',
+              email: '',
               newPassword: '',
               confirmPassword: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setErrors, resetForm, setSubmitting}) => {
-              const {email} = props.location.state;
-              if (pin.length !== 6) {
-                dispatch(fetchError(messages['validation.pinLength']));
-              } else if (data.newPassword !== data.confirmPassword) {
+              if (data.newPassword !== data.confirmPassword) {
                 setErrors({
                   confirmPassword: (
-                    <IntlMessages id='validation.passwordMisMatch' />
+                    <IntlMessages id='login.contrasenasDiferentes' />
                   ),
                 });
+                setSubmitting(false);
               } else {
                 setSubmitting(true);
                 dispatch(
                   onSetNewCognitoPassword(
-                    email,
-                    pin,
+                    token,
+                    data.email,
                     data.newPassword,
+                    data.confirmPassword,
                     history,
                   ),
                 );
-                resetForm();
                 setSubmitting(false);
               }
             }}>
             {({isSubmitting}) => (
               <Form className={classes.formRoot} noValidate autoComplete='off'>
-                <Box mb={{xs: 5, lg: 8}}>
-                  <Box mb={6} fontSize={{xs: 16, sm: 18}}>
-                    <Typography>
-                      <IntlMessages id='common.verificationMessage' />
-                    </Typography>
-                  </Box>
-
-                  <ReactCodeInput
-                    type='password'
-                    value={pin}
-                    fields={6}
-                    onChange={(value) => setPin(value)}
+                <Box mb={{xs: 2, lg: 4}}>
+                  <MyTextField
+                    name='email'
+                    label='Identificación'
+                    className={classes.myTextFieldRoot}
+                    type='text'
                   />
                 </Box>
 
-                <Box mb={{xs: 5, lg: 8}}>
+                <Box mb={{xs: 2, lg: 4}}>
                   <MyTextField
                     name='newPassword'
                     label={<IntlMessages id='common.newPassword' />}
                     className={classes.myTextFieldRoot}
-                    variant='outlined'
                     type='password'
                   />
                 </Box>
 
-                <Box mb={{xs: 5, lg: 8}}>
+                <Box mb={{xs: 2, lg: 4}}>
                   <MyTextField
                     name='confirmPassword'
-                    label={<IntlMessages id='common.retypePassword' />}
+                    label={<IntlMessages id='login.confirmarcontrasena' />}
                     className={classes.myTextFieldRoot}
-                    variant='outlined'
                     type='password'
                   />
                 </Box>
@@ -202,8 +184,9 @@ const ResetPasswordAwsCognito = (props) => {
                   type='submit'
                   disabled={isSubmitting}
                   color='secondary'
-                  className={classes.btnRoot}>
-                  <IntlMessages id='common.resetMyPassword' />
+                  className={`${classes.btnRoot} ${classes.btnPrymary}`}
+                >
+                  <IntlMessages id='login.restablecer' />
                 </Button>
               </Form>
             )}
