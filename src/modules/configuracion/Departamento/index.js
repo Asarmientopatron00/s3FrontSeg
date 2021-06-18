@@ -642,7 +642,15 @@ const Departamento =  () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+// const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const [showTable,setShowTable] = useState(true);
+  useEffect(()=>{
+    if(rows.length===0){
+      setShowTable(false);
+    } else {
+      setShowTable(true);
+    }
+  },[rows])
 
   return (
     <div className={classes.root}>
@@ -656,7 +664,8 @@ const Departamento =  () => {
           nombreFiltro={nombreFiltro}
           paisFiltro={paisFiltro}
         />
-
+        {showTable?
+        <>
         <Box className={classes.paginacion}>
           <Box>
             <p>{textoPaginacion}</p>
@@ -794,6 +803,14 @@ const Departamento =  () => {
           />
           </Box>
         </Box>
+        </>
+        :<Box
+          component='h2'
+          fontSize={19}
+        >
+          <IntlMessages id='sinResultados' />
+        </Box>
+      }
       </Paper>
 
       {/* <FormControlLabel

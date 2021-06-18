@@ -116,16 +116,16 @@ const CiudadCreator = (props) => {
           onSubmit={(data, {setSubmitting, resetForm}) => {
             setSubmitting(true);
             if (accion==='crear'){
-              dispatch(onCreate(data));
+              dispatch(onCreate(data,handleOnClose,updateColeccion));
             } else if(accion==='editar') {
               if (selectedRow) {
-                dispatch(onUpdate(data));
+                dispatch(onUpdate(data,handleOnClose,updateColeccion));
               } 
             }
-            resetForm();
+            // resetForm();
             setSubmitting(false);
-            handleOnClose();
-            updateColeccion();
+            // handleOnClose();
+            // updateColeccion();
           }}
         >
           {({values,initialValues, setFieldValue}) => (

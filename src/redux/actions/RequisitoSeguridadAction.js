@@ -98,7 +98,7 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params) => {
+export const onUpdate = (params,handleOnClose,updateColeccion) => {
   return (dispatch) =>  {
     dispatch({type: FETCH_START});
     Api.put('http://solicitudesservicio.test/api/requisitos-de-seguridad/' + params.id, params)
@@ -109,7 +109,8 @@ export const onUpdate = (params) => {
             type: UPDATE_REQUISITO_SEGURIDAD,
             payload: data.data,
           });
-          
+          updateColeccion();
+          handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],
@@ -149,7 +150,7 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params) => {
+export const onCreate = (params,handleOnClose,updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -161,6 +162,8 @@ export const onCreate = (params) => {
             type: CREATE_REQUISITO_SEGURIDAD,
             payload: data.data,
           });
+          updateColeccion();
+          handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],

@@ -408,6 +408,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TipoDocumento =  () => {
+  console.log(process.env.NODE_ENV )
   const [showForm,setShowForm]=useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -612,8 +613,15 @@ const TipoDocumento =  () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+// const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const [showTable,setShowTable] = useState(true);
+  useEffect(()=>{
+    if(rows.length===0){
+      setShowTable(false);
+    } else {
+      setShowTable(true);
+    }
+  },[rows])
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -625,149 +633,154 @@ const TipoDocumento =  () => {
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
         />
-
-        <Box className={classes.paginacion}>
-          <Box>
-            <p>{textoPaginacion}</p>
-          </Box>
+        {showTable?
+        <>
           <Box className={classes.paginacion}>
-            <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-              {
-                rowsPerPageOptions.map((option)=>{
-                  return(<option key = {option} value={option}>{option}</option>)
-                })
-              }
-            </select>
-            <Pagination
-            showFirstButton
-            showLastButton
-            onChange={handleChangePage}
-            count={ultima_pagina}
-            page={page}
-          />
-          </Box>
-        </Box>
-        
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={changeOrderBy}
-              rowCount={rows.length}
-              columnasMostradas={columnasMostradas}
+            <Box>
+              <p>{textoPaginacion}</p>
+            </Box>
+            <Box className={classes.paginacion}>
+              <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
+                {
+                  rowsPerPageOptions.map((option)=>{
+                    return(<option key = {option} value={option}>{option}</option>)
+                  })
+                }
+              </select>
+              <Pagination
+              showFirstButton
+              showLastButton
+              onChange={handleChangePage}
+              count={ultima_pagina}
+              page={page}
             />
-            <TableBody>
-              {
-              // stableSort(rows, getComparator(order, orderBy))
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                rows.map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  
-                  return (
-                    <TableRow
-                      hover
-                      // role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                      className={classes.row}
-                    > 
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell> */}
-
-                      <TableCell align="center" className={classes.acciones}> 
-                        <Tooltip title={<IntlMessages id='boton.editar'/>}>
-                          <EditIcon onClick={()=>onOpenEditTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                        </Tooltip>
-                        <Tooltip title={<IntlMessages id='boton.ver'/>}>
-                          <VisibilityIcon onClick={()=>onOpenViewTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
-                        </Tooltip>
-                        <Tooltip title={<IntlMessages id='boton.eliminar'/>}>
-                          <DeleteIcon  onClick={()=>onDeleteTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
-                        </Tooltip>
-                      </TableCell>
-
-                      {columnasMostradas.map((columna)=>{
-                        if(columna.mostrar){
-                          return(
-                            <MyCell 
-                              key={row.id + columna.id} 
-                              align={columna.align} 
-                              width={columna.width} 
-                              claseBase={classes.cell} 
-                              value={columna.value(row[columna.id])}
-                              cellColor={columna.cellColor?columna.cellColor(row[columna.id]):''}
-                            />                       
-                          )        
-                        } else {
-                          return(
-                            <th key={row.id + columna.id}></th>
-                          )
-                        }
-                                        
-                      })}
-                    </TableRow>
-                  );
-                })
-              }
-              {/* {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {/* <TablePagination
-          rowsPerPageOptions={rowsPerPageOptions}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        /> */}
-
-        <Box className={classes.paginacion}>
-          <Box>
-            <p>{textoPaginacion}</p>
+            </Box>
           </Box>
-          <Box className={classes.paginacion}>
-            <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-              {
-                rowsPerPageOptions.map((option)=>{
-                  return(<option key={option} value={option}>{option}</option>)
-                })
-              }
-            </select>
-            <Pagination
-            showFirstButton
-            showLastButton
-            onChange={handleChangePage}
-            count={ultima_pagina}
+          
+          <TableContainer>
+            <Table
+              className={classes.table}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+              aria-label="enhanced table"
+            >
+              <EnhancedTableHead
+                classes={classes}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={changeOrderBy}
+                rowCount={rows.length}
+                columnasMostradas={columnasMostradas}
+              />
+              <TableBody>
+                {
+                // stableSort(rows, getComparator(order, orderBy))
+                  // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  rows.map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    
+                    return (
+                      <TableRow
+                        hover
+                        // role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        className={classes.row}
+                      > 
+                        {/* <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell> */}
+
+                        <TableCell align="center" className={classes.acciones}> 
+                          <Tooltip title={<IntlMessages id='boton.editar'/>}>
+                            <EditIcon onClick={()=>onOpenEditTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                          </Tooltip>
+                          <Tooltip title={<IntlMessages id='boton.ver'/>}>
+                            <VisibilityIcon onClick={()=>onOpenViewTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
+                          </Tooltip>
+                          <Tooltip title={<IntlMessages id='boton.eliminar'/>}>
+                            <DeleteIcon  onClick={()=>onDeleteTipoDocumento(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
+                          </Tooltip>
+                        </TableCell>
+
+                        {columnasMostradas.map((columna)=>{
+                          if(columna.mostrar){
+                            return(
+                              <MyCell 
+                                key={row.id + columna.id} 
+                                align={columna.align} 
+                                width={columna.width} 
+                                claseBase={classes.cell} 
+                                value={columna.value(row[columna.id])}
+                                cellColor={columna.cellColor?columna.cellColor(row[columna.id]):''}
+                              />                       
+                            )        
+                          } else {
+                            return(
+                              <th key={row.id + columna.id}></th>
+                            )
+                          }
+                                          
+                        })}
+                      </TableRow>
+                    );
+                  })
+                }
+                {/* {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )} */}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          {/* <TablePagination
+            rowsPerPageOptions={rowsPerPageOptions}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
             page={page}
-          />
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          /> */}
+
+          <Box className={classes.paginacion}>
+            <Box>
+              <p>{textoPaginacion}</p>
+            </Box>
+            <Box className={classes.paginacion}>
+              <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
+                {
+                  rowsPerPageOptions.map((option)=>{
+                    return(<option key={option} value={option}>{option}</option>)
+                  })
+                }
+              </select>
+              <Pagination
+              showFirstButton
+              showLastButton
+              onChange={handleChangePage}
+              count={ultima_pagina}
+              page={page}
+            />
+            </Box>
           </Box>
+        </>
+        :<Box
+          component='h2'
+          fontSize={19}
+        >
+          <IntlMessages id='sinResultados' />
         </Box>
-        
-
-
+      }
       </Paper>
-
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
@@ -781,7 +794,7 @@ const TipoDocumento =  () => {
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
         />
-        :""
+        :''
       }
 
       <Popover

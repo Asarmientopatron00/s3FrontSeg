@@ -160,12 +160,12 @@ export const onCreate = (params,handleOnClose,updateColeccion) => {
             type: CREATE_TIPO_DOCUMENTO,
             payload: data.data,
           });
+          updateColeccion();
+          handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
             payload:data.data.mensajes[0],
           });
-          updateColeccion();
-          handleOnClose();
         } else {
           dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
         }

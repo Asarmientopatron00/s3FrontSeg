@@ -111,16 +111,16 @@ const RolCreador = (props) => {
           onSubmit={(data, {setSubmitting, resetForm}) => {
             setSubmitting(true);
             if (accion==='crear'){
-              dispatch(onCreate(data));
+              dispatch(onCreate(data,handleOnClose,updateColeccion));
             } else if(accion==='editar') {
               if (selectedRow) {
-                dispatch(onUpdate(data));
+                dispatch(onUpdate(data,handleOnClose,updateColeccion));
               } 
             }
-              resetForm();
-              setSubmitting(false);
-              handleOnClose();
-              updateColeccion();
+            // resetForm();
+            setSubmitting(false);
+            // handleOnClose();
+            // updateColeccion();
           }}
         >
           {({values,initialValues, setFieldValue}) => (

@@ -612,7 +612,15 @@ const ActividadEconomica =  () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+// const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const [showTable,setShowTable] = useState(true);
+  useEffect(()=>{
+    if(rows.length===0){
+      setShowTable(false);
+    } else {
+      setShowTable(true);
+    }
+  },[rows])
 
   return (
     <div className={classes.root}>
@@ -625,6 +633,8 @@ const ActividadEconomica =  () => {
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
         />
+        {showTable?
+        <>
 
         <Box className={classes.paginacion}>
           <Box>
@@ -763,11 +773,15 @@ const ActividadEconomica =  () => {
           />
           </Box>
         </Box>
-        
-
-
+        </>
+        :<Box
+          component='h2'
+          fontSize={19}
+        >
+          <IntlMessages id='sinResultados' />
+        </Box>
+      }
       </Paper>
-
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
