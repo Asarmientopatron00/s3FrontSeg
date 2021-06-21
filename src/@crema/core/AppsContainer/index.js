@@ -19,7 +19,12 @@ const AppsContainer = (props) => {
   const classes = useStyles({footer, navStyle, fullView});
 
   return (
-    <Box pt={{xl: 4}} flex={1} display='flex' flexDirection='column' margin='0px'>
+    <Box
+      pt={{xl: 4}}
+      flex={1}
+      display='flex'
+      flexDirection='column'
+      margin='0px'>
       <Box
         mb={{xs: fullView ? 4 : 2, lg: fullView ? 5 : 4}}
         mt={{xs: fullView ? 0 : -3, lg: 0}}

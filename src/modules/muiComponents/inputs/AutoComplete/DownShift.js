@@ -73,13 +73,8 @@ renderInput.propTypes = {
 };
 
 function renderSuggestion(suggestionProps) {
-  const {
-    suggestion,
-    index,
-    itemProps,
-    highlightedIndex,
-    selectedItem,
-  } = suggestionProps;
+  const {suggestion, index, itemProps, highlightedIndex, selectedItem} =
+    suggestionProps;
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 

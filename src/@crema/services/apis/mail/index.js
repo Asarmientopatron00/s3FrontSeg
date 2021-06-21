@@ -27,8 +27,9 @@ mock.onGet('/api/mailApp/folder/mail/List').reply((config) => {
     if (params.name === 'starred') {
       folderMailList = mailList.filter((mail) => mail.isStarred);
     } else {
-      const folderId = folderList.find((folder) => folder.alias === params.name)
-        .id;
+      const folderId = folderList.find(
+        (folder) => folder.alias === params.name,
+      ).id;
       folderMailList = mailList.filter((mail) => mail.folderValue === folderId);
     }
   } else if (params.type === 'label') {

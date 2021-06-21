@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {Box, Button,RadioGroup,Radio} from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 // import {useIntl} from 'react-intl';
@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import {LONGITUD_MAXIMA_TELEFONOS} from './../../../../shared/constants/Constantes'
+import {LONGITUD_MAXIMA_TELEFONOS} from './../../../../shared/constants/Constantes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -30,7 +30,7 @@ const MyTextField = (props) => {
 // const MySelectField= (props) => {
 //   const [field, meta] = useField(props);
 //   const errorText = meta.error && meta.touched ? meta.error : '';
-  
+
 //   return (
 //     <Field
 //       {...props}
@@ -58,24 +58,16 @@ const MyTextField = (props) => {
 //   );
 // };
 
-
-
 const UsuarioForm = (props) => {
-  const {
-    handleOnClose,
-    accion,
-    asociados,
-    roles,
-    values,
-    initialValues,
-  } = props;
+  const {handleOnClose, accion, asociados, roles, values, initialValues} =
+    props;
 
   const [disabled, setDisabled] = useState(false);
-  useEffect(()=>{
-    if (accion ==='ver'||initialValues.estado==='0'){
+  useEffect(() => {
+    if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
     }
-  },[initialValues.estado,accion]);
+  }, [initialValues.estado, accion]);
 
   // useEffect(()=>{
   //   if (accion==='crear'){
@@ -94,14 +86,14 @@ const UsuarioForm = (props) => {
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
-      justifyContent:'flex-end',
-      paddingBottom:'20px',
-      gap:'10px',
-      backgroundColor:'white',
-      paddingRight:'20px',
-      position:'sticky',
-      left:0,
-      bottom:0,
+      justifyContent: 'flex-end',
+      paddingBottom: '20px',
+      gap: '10px',
+      backgroundColor: 'white',
+      paddingRight: '20px',
+      position: 'sticky',
+      left: 0,
+      bottom: 0,
     },
     myTextField: {
       width: '100%',
@@ -116,25 +108,25 @@ const UsuarioForm = (props) => {
       [theme.breakpoints.up('xl')]: {
         marginBottom: 24,
       },
-      color:theme.palette.primary.main,
-      "&:target": {
-        color:theme.palette.primary.main,
-      }
+      color: theme.palette.primary.main,
+      '&:target': {
+        color: theme.palette.primary.main,
+      },
     },
     btnRoot: {
       paddingLeft: 15,
       paddingRight: 15,
-      color:'white',
-      "&:hover": {
+      color: 'white',
+      '&:hover': {
         backgroundColor: theme.palette.colorHover,
-        cursor:'pointer',
-      }
+        cursor: 'pointer',
+      },
     },
-    btnPrymary:{
-      backgroundColor:theme.palette.primary.main,
+    btnPrymary: {
+      backgroundColor: theme.palette.primary.main,
     },
-    btnSecundary:{
-      backgroundColor:theme.palette.grayBottoms,
+    btnSecundary: {
+      backgroundColor: theme.palette.grayBottoms,
     },
     widthFull: {
       width: '100%',
@@ -146,8 +138,6 @@ const UsuarioForm = (props) => {
 
   const classes = useStyles(props);
 
-
-
   return (
     <Form className='' noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -157,13 +147,13 @@ const UsuarioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='seguridad.usuarios'/>
+            <IntlMessages id='seguridad.usuarios' />
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <MyTextField
               className={classes.myTextField}
-              label= 'Nombre'
+              label='Nombre'
               name='nombre'
               disabled={disabled}
               required
@@ -171,63 +161,61 @@ const UsuarioForm = (props) => {
 
             <MyTextField
               className={classes.myTextField}
-              label= 'Identificación'
+              label='Identificación'
               name='identificacion_usuario'
               disabled={disabled}
               required
             />
-            
+
             <MyTextField
               className={classes.myTextField}
-              label= 'Asociado'
+              label='Asociado'
               name='asociado_id'
               disabled={disabled}
               select={true}
-              required
-            >
+              required>
               {asociados.map((asociado) => {
-                  return (
-                    <MenuItem
-                      value={asociado.id}
-                      key={asociado.id}
-                      className={classes.pointer}>
-                      {asociado.nombre}
-                    </MenuItem>
-                  );
+                return (
+                  <MenuItem
+                    value={asociado.id}
+                    key={asociado.id}
+                    className={classes.pointer}>
+                    {asociado.nombre}
+                  </MenuItem>
+                );
               })}
             </MyTextField>
 
             <MyTextField
               className={classes.myTextField}
-              label= 'Rol'
+              label='Rol'
               name='rol_id'
               disabled={disabled}
               select={true}
-              required
-            >
+              required>
               {roles.map((rol) => {
-                  return (
-                    <MenuItem
-                      value={rol.id}
-                      key={rol.id}
-                      className={classes.pointer}>
-                      {rol.nombre}
-                    </MenuItem>
-                  );
+                return (
+                  <MenuItem
+                    value={rol.id}
+                    key={rol.id}
+                    className={classes.pointer}>
+                    {rol.nombre}
+                  </MenuItem>
+                );
               })}
             </MyTextField>
 
             <MyTextField
               className={classes.myTextField}
-              label= 'E-mail'
+              label='E-mail'
               name='email'
               disabled={disabled}
               required
             />
-            
+
             <MyTextField
               className={classes.myTextField}
-              label= 'Cargo'
+              label='Cargo'
               name='cargo'
               disabled={disabled}
               required
@@ -235,52 +223,51 @@ const UsuarioForm = (props) => {
 
             <MyTextField
               className={classes.myTextField}
-              label= 'Número Celular'
+              label='Número Celular'
               name='numero_celular'
               disabled={disabled}
               required
-              inputProps={{maxLength:LONGITUD_MAXIMA_TELEFONOS}}
+              inputProps={{maxLength: LONGITUD_MAXIMA_TELEFONOS}}
             />
 
-            {accion==='crear'?
+            {accion === 'crear' ? (
               <MyTextField
-              className={classes.myTextField}
-              label= 'Clave'
-              name='clave'
-              required
+                className={classes.myTextField}
+                label='Clave'
+                name='clave'
+                required
               />
-            :
-            ''
-            }
+            ) : (
+              ''
+            )}
 
-          <FormControl className={classes.widthFull} component='fieldset'>
-            <FormLabel component="legend">Estado*</FormLabel>
-            <Field
-              name='estado'
-              type='radio'
-              as={RadioGroup}
-              className={classes.myTextField}
-              disabled={accion==='ver'}
-              row
-              value={values.estado}
-            >
-              <FormControlLabel
-                value="1"
-                control={<Radio color="primary" />}
-                label="Activo"
-                labelPlacement="end"
-                disabled={accion==='ver'}
-              />
-              <FormControlLabel
-                value="0"
-                control={<Radio color="primary" />}
-                label="Inactivo"
-                labelPlacement="end"
-                disabled={accion==='ver'}
-              />
-            </Field>
-          </FormControl>
-            
+            <FormControl className={classes.widthFull} component='fieldset'>
+              <FormLabel component='legend'>Estado*</FormLabel>
+              <Field
+                name='estado'
+                type='radio'
+                as={RadioGroup}
+                className={classes.myTextField}
+                disabled={accion === 'ver'}
+                row
+                value={values.estado}>
+                <FormControlLabel
+                  value='1'
+                  control={<Radio color='primary' />}
+                  label='Activo'
+                  labelPlacement='end'
+                  disabled={accion === 'ver'}
+                />
+                <FormControlLabel
+                  value='0'
+                  control={<Radio color='primary' />}
+                  label='Inactivo'
+                  labelPlacement='end'
+                  disabled={accion === 'ver'}
+                />
+              </Field>
+            </FormControl>
+
             {/* <MySelectField
               className={classes.MySelectField}
               label= 'Estado'
@@ -293,22 +280,20 @@ const UsuarioForm = (props) => {
         </Box>
       </Scrollbar>
       <Box className={classes.bottomsGroup}>
-        {accion!=='ver' && values?
+        {accion !== 'ver' && values ? (
           <Button
             className={`${classes.btnRoot} ${classes.btnPrymary}`}
             variant='contained'
-            type='submit'
-          >
-            <IntlMessages id='boton.submit'/>
+            type='submit'>
+            <IntlMessages id='boton.submit' />
           </Button>
-        :
-        ''
-        }
+        ) : (
+          ''
+        )}
         <Button
           className={`${classes.btnRoot} ${classes.btnSecundary}`}
-          onClick={handleOnClose}
-        >
-          <IntlMessages id='boton.cancel'/>
+          onClick={handleOnClose}>
+          <IntlMessages id='boton.cancel' />
         </Button>
       </Box>
     </Form>

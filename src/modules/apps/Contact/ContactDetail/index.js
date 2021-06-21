@@ -61,7 +61,7 @@ const ContactDetail = (props) => {
     pointer: {
       cursor: 'pointer',
     },
-    
+
     borderBottomClass: {
       borderBottom: `1px solid ${grey[300]}`,
     },

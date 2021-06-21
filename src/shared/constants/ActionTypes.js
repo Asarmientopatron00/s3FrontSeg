@@ -23,7 +23,8 @@ export const UPDATE_USUARIO = 'update_usuario';
 export const CREATE_USUARIO = 'create_usuario';
 export const DELETE_USUARIO = 'delete_usuario';
 export const GET_COLECCION_TIPO_DOCUMENTO = 'get_coleccion_tipo_documento';
-export const GET_COLECCION_LIGERA_TIPO_DOCUMENTO = 'get_coleccion_ligera_tipo_documento';
+export const GET_COLECCION_LIGERA_TIPO_DOCUMENTO =
+  'get_coleccion_ligera_tipo_documento';
 export const SHOW_TIPO_DOCUMENTO = 'show_tipo_documento';
 export const UPDATE_TIPO_DOCUMENTO = 'update_tipo_documento';
 export const CREATE_TIPO_DOCUMENTO = 'create_tipo_documento';
@@ -41,32 +42,40 @@ export const SHOW_PAIS = 'show_pais';
 export const UPDATE_PAIS = 'update_pais';
 export const CREATE_PAIS = 'create_pais';
 export const DELETE_PAIS = 'delete_pais';
-export const GET_COLECCION_ACTIVIDAD_ECONOMICA = 'get_coleccion_actividad_economica';
-export const GET_COLECCION_LIGERA_ACTIVIDAD_ECONOMICA = 'get_coleccion_ligera_actividad_economica';
+export const GET_COLECCION_ACTIVIDAD_ECONOMICA =
+  'get_coleccion_actividad_economica';
+export const GET_COLECCION_LIGERA_ACTIVIDAD_ECONOMICA =
+  'get_coleccion_ligera_actividad_economica';
 export const SHOW_ACTIVIDAD_ECONOMICA = 'show_actividad_economica';
 export const UPDATE_ACTIVIDAD_ECONOMICA = 'update_actividad_economica';
 export const CREATE_ACTIVIDAD_ECONOMICA = 'create_actividad_economica';
 export const DELETE_ACTIVIDAD_ECONOMICA = 'delete_actividad_economica';
 export const GET_COLECCION_LISTA_DOCUMENTO = 'get_coleccion_LISTA_documento';
-export const GET_COLECCION_LIGERA_LISTA_DOCUMENTO = 'get_coleccion_ligera_LISTA_documento';
+export const GET_COLECCION_LIGERA_LISTA_DOCUMENTO =
+  'get_coleccion_ligera_LISTA_documento';
 export const SHOW_LISTA_DOCUMENTO = 'show_LISTA_documento';
 export const UPDATE_LISTA_DOCUMENTO = 'update_LISTA_documento';
 export const CREATE_LISTA_DOCUMENTO = 'create_LISTA_documento';
 export const DELETE_LISTA_DOCUMENTO = 'delete_LISTA_documento';
-export const GET_COLECCION_REQUISITO_SEGURIDAD = 'get_coleccion_requisito_seguridad';
-export const GET_COLECCION_LIGERA_REQUISITO_SEGURIDAD = 'get_coleccion_ligera_requisito_seguridad';
+export const GET_COLECCION_REQUISITO_SEGURIDAD =
+  'get_coleccion_requisito_seguridad';
+export const GET_COLECCION_LIGERA_REQUISITO_SEGURIDAD =
+  'get_coleccion_ligera_requisito_seguridad';
 export const SHOW_REQUISITO_SEGURIDAD = 'show_requisito_seguridad';
 export const UPDATE_REQUISITO_SEGURIDAD = 'update_requisito_seguridad';
 export const CREATE_REQUISITO_SEGURIDAD = 'create_requisito_seguridad';
 export const DELETE_REQUISITO_SEGURIDAD = 'delete_requisito_seguridad';
-export const GET_COLECCION_PARAMETRO_CONSTANTE = 'get_coleccion_parametro_constante';
-export const GET_COLECCION_LIGERA_PARAMETRO_CONSTANTE = 'get_coleccion_ligera_parametro_constante';
+export const GET_COLECCION_PARAMETRO_CONSTANTE =
+  'get_coleccion_parametro_constante';
+export const GET_COLECCION_LIGERA_PARAMETRO_CONSTANTE =
+  'get_coleccion_ligera_parametro_constante';
 export const SHOW_PARAMETRO_CONSTANTE = 'show_parametro_constante';
 export const UPDATE_PARAMETRO_CONSTANTE = 'update_parametro_constante';
 export const CREATE_PARAMETRO_CONSTANTE = 'create_parametro_constante';
 export const DELETE_PARAMETRO_CONSTANTE = 'delete_parametro_constante';
 export const GET_COLECCION_DEPARTAMENTO = 'get_coleccion_departamento';
-export const GET_COLECCION_LIGERA_DEPARTAMENTO = 'get_coleccion_ligera_departamento';
+export const GET_COLECCION_LIGERA_DEPARTAMENTO =
+  'get_coleccion_ligera_departamento';
 export const SHOW_DEPARTAMENTO = 'show_departamento';
 export const UPDATE_DEPARTAMENTO = 'update_departamento';
 export const CREATE_DEPARTAMENTO = 'create_departamento';
@@ -84,13 +93,16 @@ export const UPDATE_SERVICIO = 'update_servicio';
 export const CREATE_SERVICIO = 'create_servicio';
 export const DELETE_SERVICIO = 'delete_servicio';
 export const GET_COLECCION_TERCERO_SERVICIO = 'get_coleccion_tercero_servicio';
-export const GET_COLECCION_LIGERA_TERCERO_SERVICIO = 'get_coleccion_ligera_tercero_servicio';
+export const GET_COLECCION_LIGERA_TERCERO_SERVICIO =
+  'get_coleccion_ligera_tercero_servicio';
 export const SHOW_TERCERO_SERVICIO = 'show_tercero_servicio';
 export const UPDATE_TERCERO_SERVICIO = 'update_tercero_servicio';
 export const CREATE_TERCERO_SERVICIO = 'create_tercero_servicio';
 export const DELETE_TERCERO_SERVICIO = 'delete_tercero_servicio';
-export const GET_COLECCION_EVENTO_NOTIFICACION = 'get_coleccion_evento_notificacion';
-export const GET_COLECCION_LIGERA_EVENTO_NOTIFICACION = 'get_coleccion_ligera_evento_notificacion';
+export const GET_COLECCION_EVENTO_NOTIFICACION =
+  'get_coleccion_evento_notificacion';
+export const GET_COLECCION_LIGERA_EVENTO_NOTIFICACION =
+  'get_coleccion_ligera_evento_notificacion';
 export const SHOW_EVENTO_NOTIFICACION = 'show_evento_notificacion';
 export const UPDATE_EVENTO_NOTIFICACION = 'update_evento_notificacion';
 export const CREATE_EVENTO_NOTIFICACION = 'create_evento_notificacion';

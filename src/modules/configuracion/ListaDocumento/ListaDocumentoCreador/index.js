@@ -1,8 +1,8 @@
-import React, {useEffect,useRef,useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch,useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
   onShow,
@@ -15,7 +15,6 @@ import Slide from '@material-ui/core/Slide';
 import ListaDocumentoForm from './ListaDocumentoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -55,93 +54,96 @@ const ListaDocumentoCreator = (props) => {
 
   const classes = useStyles(props);
 
-  const [showForm,setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({listaDocumentoReducer}) => listaDocumentoReducer.selectedRow);
+  selectedRow = useSelector(
+    ({listaDocumentoReducer}) => listaDocumentoReducer.selectedRow,
+  );
 
-  const initializeSelectedRow = ()=> {
-    selectedRow=null;
-  }
-  useEffect(()=>{
+  const initializeSelectedRow = () => {
+    selectedRow = null;
+  };
+  useEffect(() => {
     initializeSelectedRow();
-  },[])
+  }, []);
 
-  if (accion==='crear') {
+  if (accion === 'crear') {
     initializeSelectedRow();
   }
-  
-  useEffect(()=>{
-    if(selectedRow){
+
+  useEffect(() => {
+    if (selectedRow) {
       setShowForm(true);
-    } else if(accion==='crear') {
+    } else if (accion === 'crear') {
       setShowForm(true);
     } else {
       setShowForm(false);
     }
-  },[selectedRow,accion])
+  }, [selectedRow, accion]);
 
-  useEffect(()=>{
-    if (accion==='editar' | accion==='ver'){
-      dispatch(
-        onShow(listaDocumento),
-      );
+  useEffect(() => {
+    if ((accion === 'editar') | (accion === 'ver')) {
+      dispatch(onShow(listaDocumento));
     }
-  },[accion,dispatch,listaDocumento])
-  
+  }, [accion, dispatch, listaDocumento]);
+
   return (
-    showForm&&
-    <Dialog
-      open= {showForm}
-      onClose={handleOnClose}
-      aria-labelledby='simple-modal-title'
-      TransitionComponent={Transition}
-      aria-describedby='simple-modal-description'
-      className={classes.dialogBox}
-      disableBackdropClick = {true}
-      maxWidth={'sm'}
-    >
-      <Scrollbar>
-        <Formik
-          initialStatus={true}
-          enableReinitialize={true}
-          validateOnBlur={false}
-          initialValues={{
-            id: selectedRow ? selectedRow.id : '',
-            nombre: selectedRow ? selectedRow.nombre : '',
-            tipo: selectedRow ? selectedRow.tipo : '',
-            obligatorio: selectedRow ? selectedRow.obligatorio : 'N',
-            estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(data, {setSubmitting, resetForm}) => {
-            setSubmitting(true);
-            if (accion==='crear'){
-              dispatch(onCreate(data,handleOnClose,updateColeccion));
-            } else if(accion==='editar') {
-              if (selectedRow) {
-                dispatch(onUpdate(data,handleOnClose,updateColeccion));
-              } 
-            }
-            // resetForm();
-            setSubmitting(false);
-            // handleOnClose();
-            // updateColeccion();
-          }}
-        >
-          {({values,initialValues, setFieldValue}) => (
-            <ListaDocumentoForm
-              values={values}
-              setFieldValue={setFieldValue}
-              handleOnClose={handleOnClose}
-              accion={accion}
-              asociados={asociados}
-              roles={roles}
-              initialValues={initialValues}
-            />
-          )}
-        </Formik>
-      </Scrollbar>
-    </Dialog>
+    showForm && (
+      <Dialog
+        open={showForm}
+        onClose={handleOnClose}
+        aria-labelledby='simple-modal-title'
+        TransitionComponent={Transition}
+        aria-describedby='simple-modal-description'
+        className={classes.dialogBox}
+        disableBackdropClick={true}
+        maxWidth={'sm'}>
+        <Scrollbar>
+          <Formik
+            initialStatus={true}
+            enableReinitialize={true}
+            validateOnBlur={false}
+            initialValues={{
+              id: selectedRow ? selectedRow.id : '',
+              nombre: selectedRow ? selectedRow.nombre : '',
+              tipo: selectedRow ? selectedRow.tipo : '',
+              obligatorio: selectedRow ? selectedRow.obligatorio : 'N',
+              estado: selectedRow
+                ? selectedRow.estado === 1
+                  ? '1'
+                  : '0'
+                : '1',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(data, {setSubmitting, resetForm}) => {
+              setSubmitting(true);
+              if (accion === 'crear') {
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
+              } else if (accion === 'editar') {
+                if (selectedRow) {
+                  dispatch(onUpdate(data, handleOnClose, updateColeccion));
+                }
+              }
+              // resetForm();
+              setSubmitting(false);
+              // handleOnClose();
+              // updateColeccion();
+            }}>
+            {({values, initialValues, setFieldValue}) => (
+              <ListaDocumentoForm
+                values={values}
+                setFieldValue={setFieldValue}
+                handleOnClose={handleOnClose}
+                accion={accion}
+                asociados={asociados}
+                roles={roles}
+                initialValues={initialValues}
+              />
+            )}
+          </Formik>
+        </Scrollbar>
+      </Dialog>
+    )
   );
 };
 

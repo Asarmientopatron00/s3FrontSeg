@@ -25,18 +25,18 @@ export const onJwtUserSignUp = ({email, password, name}) => {
       // dispatch(fetchError(err.response.data.error));
       dispatch({
         type: FETCH_ERROR,
-        payload:err.response.data.mensajes[0],
+        payload: err.response.data.mensajes[0],
       });
     }
   };
 };
 
-export const onJwtSignIn = ({ username, password }) => {
+export const onJwtSignIn = ({username, password}) => {
   return async (dispatch) => {
     dispatch(fetchStart());
-    const body = { username, password };
+    const body = {username, password};
     try {
-      const res = await jwtAxios.post("/users/token", body);
+      const res = await jwtAxios.post('/users/token', body);
       localStorage.setItem('token', res.data.token);
       dispatch(setJWTToken(res.data.access_token));
       dispatch(loadJWTUser());
@@ -44,9 +44,8 @@ export const onJwtSignIn = ({ username, password }) => {
       // dispatch(fetchError(err.response.data.error));
       dispatch({
         type: FETCH_ERROR,
-        payload:err.response.data.messages[0],
+        payload: err.response.data.messages[0],
       });
-
     }
   };
 };
@@ -55,9 +54,9 @@ export const loadJWTUser = () => {
   return async (dispatch) => {
     dispatch(fetchStart());
     try {
-      const res = await jwtAxios.get("/users/current/session");
+      const res = await jwtAxios.get('/users/current/session');
       dispatch(fetchSuccess());
-      console.log("res.data", res.data);
+      console.log('res.data', res.data);
       dispatch({
         type: UPDATE_AUTH_USER,
         payload: {
@@ -67,21 +66,21 @@ export const loadJWTUser = () => {
           identificacion_usuario: res.data.usuario.identificacion_usuario,
           email: res.data.usuario.email,
           asociado: {
-            id:res.data.usuario.asociado.id,
-            nombre:res.data.usuario.asociado.nombre,
-            numero_documento:res.data.usuario.asociado.numero_documento,
+            id: res.data.usuario.asociado.id,
+            nombre: res.data.usuario.asociado.nombre,
+            numero_documento: res.data.usuario.asociado.numero_documento,
           },
           rol: {
-            id:res.data.usuario.rol.id,
-            nombre:res.data.usuario.rol.nombre,
-            tipo:res.data.usuario.rol.tipo,
+            id: res.data.usuario.rol.id,
+            nombre: res.data.usuario.rol.nombre,
+            tipo: res.data.usuario.rol.tipo,
           },
           role: defaultUser.role,
           token: res.data._id,
-        }
+        },
       });
     } catch (err) {
-      console.log("error!!!!", err);
+      console.log('error!!!!', err);
       dispatch(fetchError(err.response.error));
     }
   };

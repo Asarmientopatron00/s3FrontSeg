@@ -1,13 +1,11 @@
 import React, {useContext} from 'react';
 import {useDispatch} from 'react-redux';
-import {
-  onJWTAuthSignout,
-} from '../../../redux/actions';
+import {onJWTAuthSignout} from '../../../redux/actions';
 import {useAuthUser} from '../../../@crema/utility/AppHooks';
 import AppContext from '../../../@crema/utility/AppContext';
 import clsx from 'clsx';
 import {makeStyles} from '@material-ui/core';
-import {Box,Button} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import {Fonts} from '../../constants/AppEnums';
 import PersonIcon from '@material-ui/icons/Person';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
@@ -17,27 +15,27 @@ const useStyles = makeStyles((theme) => {
   return {
     crUserInfo: {
       backgroundColor: 'transparent',
-      padding:2,
+      padding: 2,
       minHeight: 56,
       display: 'flex',
       flexDirection: 'row',
-      gap:'5px',
+      gap: '5px',
       justifyContent: 'center',
       [theme.breakpoints.up('sm')]: {
-        padding:2,
+        padding: 2,
         minHeight: 50,
       },
-      cursor:'pointer',
+      cursor: 'pointer',
     },
     profilePic: {
       fontSize: 50,
       backgroundColor: 'transparent',
-      color:'white',
+      color: 'white',
     },
     userInfo: {
       width: 'fit-content',
-      padding:0,
-      margin:0,
+      padding: 0,
+      margin: 0,
     },
     userName: {
       overflow: 'hidden',
@@ -45,7 +43,7 @@ const useStyles = makeStyles((theme) => {
       fontSize: 12,
       fontWeight: Fonts.MEDIUM,
       color: 'white',
-      textTransform:'uppercase'
+      textTransform: 'uppercase',
     },
     designation: {
       margin: 0,
@@ -59,14 +57,14 @@ const useStyles = makeStyles((theme) => {
     btnRoot: {
       paddingLeft: 15,
       paddingRight: 15,
-      color:'white',
-      "&:hover": {
+      color: 'white',
+      '&:hover': {
         backgroundColor: theme.palette.colorHover,
-        cursor:'pointer',
-      }
+        cursor: 'pointer',
+      },
     },
-    btnPrymary:{
-      backgroundColor:theme.palette.primary.main,
+    btnPrymary: {
+      backgroundColor: theme.palette.primary.main,
     },
   };
 });
@@ -91,24 +89,27 @@ const UserInfo = (props) => {
   return (
     <Box
       px={{xs: 4, xl: 7}}
-      className={clsx(classes.crUserInfo, 'cr-user-info')}
-    >
+      className={clsx(classes.crUserInfo, 'cr-user-info')}>
       <Box display='flex' alignItems='center' onClick={handleClick}>
-        <BusinessCenterIcon className={classes.profilePic}/>
+        <BusinessCenterIcon className={classes.profilePic} />
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
           <Box mb={0} className={clsx(classes.userName)}>
             {user.asociado.nombre ? user.asociado.nombre : ''}
           </Box>
-          <Box className={classes.designation}>{user.asociado.numero_documento}</Box>
+          <Box className={classes.designation}>
+            {user.asociado.numero_documento}
+          </Box>
         </Box>
       </Box>
       <Box display='flex' alignItems='center' onClick={handleClick}>
-        <PersonIcon className={classes.profilePic}/>
+        <PersonIcon className={classes.profilePic} />
         <Box ml={4} className={clsx(classes.userInfo, 'user-info')}>
           <Box mb={0} className={clsx(classes.userName)}>
-            {user.displayName ? user.displayName:''}
+            {user.displayName ? user.displayName : ''}
           </Box>
-          <Box className={classes.designation}>{user.identificacion_usuario}</Box>
+          <Box className={classes.designation}>
+            {user.identificacion_usuario}
+          </Box>
         </Box>
       </Box>
       <Popover
@@ -120,38 +121,26 @@ const UserInfo = (props) => {
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
-        }}
-      >
-        <Box 
-          margin={2} 
-          mb={5}
-        >
-          <Box
-            component='h4'
-            mb={3}
-            textAlign='left'
-          >{user.rol.nombre}
+        }}>
+        <Box margin={2} mb={5}>
+          <Box component='h4' mb={3} textAlign='left'>
+            {user.rol.nombre}
           </Box>
 
-          <Box
-            component='h6'
-            fontWeight='normal'
-            textAlign='left'
-          >{user.email}
+          <Box component='h6' fontWeight='normal' textAlign='left'>
+            {user.email}
           </Box>
         </Box>
         <Box
           borderTop='1px solid gray'
           padding={2}
           display='flex'
-          justifyContent='center'
-        >
+          justifyContent='center'>
           <Button
             className={`${classes.btnRoot} ${classes.btnPrymary}`}
             onClick={() => {
-                dispatch(onJWTAuthSignout());
-            }}
-          >
+              dispatch(onJWTAuthSignout());
+            }}>
             Cerrar Sesion
           </Button>
         </Box>

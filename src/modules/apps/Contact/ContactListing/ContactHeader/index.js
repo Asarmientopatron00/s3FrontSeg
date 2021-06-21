@@ -40,52 +40,26 @@ const ContactHeader = (props) => {
         mr={{xl: 2}}
         display='flex'
         alignItems='center'
-        flex={1}
-      >
+        flex={1}>
         Acciones
       </Box>
-      <Box
-        mr={4}
-        fontWeight={Fonts.MEDIUM}
-        component='span'
-        flex={1}
-      >
+      <Box mr={4} fontWeight={Fonts.MEDIUM} component='span' flex={1}>
         Id
       </Box>
 
-      <Box
-        component='span'
-        mr={4}
-        flex={1}
-        display={{xs: 'none', sm: 'block'}}
-      >
+      <Box component='span' mr={4} flex={1} display={{xs: 'none', sm: 'block'}}>
         Nombre
       </Box>
 
-      <Box
-        component='span'
-        mr={4}
-        flex={1}
-        display={{xs: 'none', md: 'block'}}
-      >
+      <Box component='span' mr={4} flex={1} display={{xs: 'none', md: 'block'}}>
         Departamento
       </Box>
 
-      <Box
-        component='span'
-        mr={4}
-        flex={1}
-        display={{xs: 'none', md: 'block'}}
-      >
+      <Box component='span' mr={4} flex={1} display={{xs: 'none', md: 'block'}}>
         Ciudad
       </Box>
 
-      <Box
-        component='span'
-        mr={4}
-        flex={1}
-        display={{xs: 'none', md: 'block'}}
-      >
+      <Box component='span' mr={4} flex={1} display={{xs: 'none', md: 'block'}}>
         Asociado
       </Box>
 
@@ -94,8 +68,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Código DIAN
       </Box>
 
@@ -104,8 +77,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Geocerca Id
       </Box>
 
@@ -114,8 +86,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Geocerca Superior Id
       </Box>
 
@@ -124,8 +95,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Lugar Único
       </Box>
 
@@ -134,8 +104,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Observaciones
       </Box>
 
@@ -144,8 +113,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Estado
       </Box>
 
@@ -154,8 +122,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Fecha Última Modificación
       </Box>
 
@@ -164,8 +131,7 @@ const ContactHeader = (props) => {
         mr={4}
         flex={1}
         display={{xs: 'none', md: 'block'}}
-        className={classes.truncate}
-      >
+        className={classes.truncate}>
         Modificado Por
       </Box>
     </>

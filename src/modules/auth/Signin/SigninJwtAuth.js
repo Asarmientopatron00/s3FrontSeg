@@ -21,7 +21,7 @@ const MyTextField = (props) => {
     <TextField
       {...props}
       {...field}
-      helperText={errorText?errorText:''}
+      helperText={errorText ? errorText : ''}
       error={!!errorText}
     />
   );
@@ -32,9 +32,7 @@ const validationSchema = yup.object({
     .string()
     // .email(<IntlMessages id='validation.emailFormat' />)
     .required('Requerido'),
-  password: yup
-    .string()
-    .required('Requerido'),
+  password: yup.string().required('Requerido'),
 });
 
 const SigninJwtAuth = (props) => {
@@ -55,7 +53,7 @@ const SigninJwtAuth = (props) => {
     },
     myTextFieldRoot: {
       width: '100%',
-      height:'70px',
+      height: '70px',
     },
     checkboxRoot: {
       marginLeft: -12,
@@ -70,14 +68,14 @@ const SigninJwtAuth = (props) => {
       textTransform: 'capitalize',
       paddingLeft: 15,
       paddingRight: 15,
-      color:'white',
-      "&:hover": {
+      color: 'white',
+      '&:hover': {
         backgroundColor: theme.palette.colorHover,
-        cursor:'pointer',
-      }
+        cursor: 'pointer',
+      },
     },
-    btnPrymary:{
-      backgroundColor:theme.palette.primary.main,
+    btnPrymary: {
+      backgroundColor: theme.palette.primary.main,
     },
     btnRootFull: {
       width: '100%',
@@ -236,12 +234,7 @@ const SigninJwtAuth = (props) => {
 
   return (
     <Box flex={1} display='flex' flexDirection='column'>
-      <Box
-        px={6}
-        py={6}
-        flex={1}
-        display='flex'
-        flexDirection='column'>
+      <Box px={6} py={6} flex={1} display='flex' flexDirection='column'>
         <Formik
           validateOnChange={true}
           validateOnBlur={false}
@@ -282,14 +275,12 @@ const SigninJwtAuth = (props) => {
                 display='flex'
                 alignItems={{sm: 'center'}}
                 justifyContent='center'
-                width='100%'
-              >
+                width='100%'>
                 <Button
                   variant='contained'
                   type='submit'
                   disabled={isSubmitting}
-                  className={`${classes.btnRoot} ${classes.btnPrymary}`}
-                >
+                  className={`${classes.btnRoot} ${classes.btnPrymary}`}>
                   <IntlMessages id='boton.login' />
                 </Button>
               </Box>
@@ -300,8 +291,7 @@ const SigninJwtAuth = (props) => {
                 flexDirection={{xs: 'column', sm: 'row'}}
                 alignItems={{sm: 'center'}}
                 justifyContent={'flex-end'}
-                fontSize={15}
-              >
+                fontSize={15}>
                 <Box
                   color='primary.main'
                   component='span'
@@ -319,7 +309,6 @@ const SigninJwtAuth = (props) => {
       <InfoView />
     </Box>
   );
-  
 };
 
 export default SigninJwtAuth;

@@ -90,9 +90,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   scLauncher: {
-    '& .sc-header, & .sc-message--content.sent .sc-message--text, & .sc-header--close-button:hover': {
-      backgroundColor: `${theme.palette.primary.main} !important`,
-    },
+    '& .sc-header, & .sc-message--content.sent .sc-message--text, & .sc-header--close-button:hover':
+      {
+        backgroundColor: `${theme.palette.primary.main} !important`,
+      },
   },
 }));
 export default useStyles;

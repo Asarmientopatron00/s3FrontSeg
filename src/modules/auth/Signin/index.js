@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     [theme.breakpoints.up('xl')]: {
       paddingTop: 0,
     },
@@ -37,18 +37,18 @@ const useStyles = makeStyles((theme) => ({
     //   backgroundColor: theme.palette.primary.main,
     // },
   },
-  login:{
-    display:'grid',
-    gridTemplateColumns:'2fr 1fr',
-    justifyContent:'center',
+  login: {
+    display: 'grid',
+    gridTemplateColumns: '2fr 1fr',
+    justifyContent: 'center',
   },
-  loginDerecha:{
-      backgroundColor: theme.palette.redBottoms,
-      backgroundImage:'url(/assets/images/logística-fuera-de-la-empresa.jpg)',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'contain',
-      height:'calc(100vh)',
+  loginDerecha: {
+    backgroundColor: theme.palette.redBottoms,
+    backgroundImage: 'url(/assets/images/logística-fuera-de-la-empresa.jpg)',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    height: 'calc(100vh)',
   },
   muiTabsFull: {
     marginLeft: 0,
@@ -158,14 +158,23 @@ const Signin = (props) => {
 
   return (
     <Box className={classes.login}>
-      <Box flex={1} display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
+      <Box
+        flex={1}
+        display='flex'
+        flexDirection='column'
+        justifyContent='center'
+        alignItems='center'>
         <Box
           display='flex'
           flexDirection='row'
           justifyContent='center'
           alignItems='center'>
           <Card className={classes.cardRoot}>
-            <Box mx={{xs: 6, md: 8, xl: 10}} mt='10px' display='flex' justifyContent='flex-end' >
+            <Box
+              mx={{xs: 6, md: 8, xl: 10}}
+              mt='10px'
+              display='flex'
+              justifyContent='flex-end'>
               <Box display='grid' alignItems='center' width='100%'>
                 <Box component='h2'>Solicitudes Servicio</Box>
                 <Box component='h3'>Sec Sel SAS</Box>
@@ -184,6 +193,5 @@ const Signin = (props) => {
     </Box>
   );
 };
-
 
 export default Signin;

@@ -14,12 +14,12 @@ const useStyles = makeStyles((theme) => {
       maxHeight: '100vh',
       [theme.breakpoints.up('lg')]: {
         position: 'fixed',
-        width: '15rem'
+        width: '15rem',
       },
       [theme.breakpoints.up('xl')]: {
         width: '19rem',
       },
-      fontWeight:theme.palette.sidebar.fontWeight,
+      fontWeight: theme.palette.sidebar.fontWeight,
     },
     sidebarBg: {
       backgroundColor: (props) =>

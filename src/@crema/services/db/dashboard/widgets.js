@@ -115,26 +115,22 @@ const widgetsData = {
     {
       id: 101,
       title: 'Call Adams',
-      desc:
-        'It is a long established fact that a reader will be distracted by the readable content of a page.',
+      desc: 'It is a long established fact that a reader will be distracted by the readable content of a page.',
     },
     {
       id: 102,
       title: 'Meeting with Matthiew',
-      desc:
-        'It is a long established fact that a reader will be distracted by the readable content of a page.',
+      desc: 'It is a long established fact that a reader will be distracted by the readable content of a page.',
     },
     {
       id: 103,
       title: 'Team Meeting',
-      desc:
-        'It is a long established fact that a reader will be distracted by the readable content of a page.',
+      desc: 'It is a long established fact that a reader will be distracted by the readable content of a page.',
     },
     {
       id: 104,
       title: 'Call Adams',
-      desc:
-        'It is a long established fact that a reader will be distracted by the readable content of a page.',
+      desc: 'It is a long established fact that a reader will be distracted by the readable content of a page.',
     },
   ],
   colorsList: [
@@ -191,15 +187,13 @@ const widgetsData = {
       image: '/assets/images/logo-white.png',
       name: 'Crema Admin',
       id: 'crema.report@gmail.com',
-      desc:
-        'It usually begins with Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. create a natural looking block of text.',
+      desc: 'It usually begins with Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. create a natural looking block of text.',
     },
     twitterInfo: {
       image: '/assets/images/logo-white.png',
       name: 'Crema Admin',
       id: 'crema.report',
-      desc:
-        'It usually begins with Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. create a natural looking block of text. ',
+      desc: 'It usually begins with Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. create a natural looking block of text. ',
     },
   },
   formatList: [
@@ -233,29 +227,25 @@ const widgetsData = {
     {
       id: 33323,
       name: 'New York',
-      desc:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       image: 'https://via.placeholder.com/450x575',
     },
     {
       id: 3332,
       name: 'Sydney',
-      desc:
-        "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+      desc: "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
       image: 'https://via.placeholder.com/450x575',
     },
     {
       id: 4332,
       name: 'New Delhi',
-      desc:
-        'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.',
+      desc: 'It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.',
       image: 'https://via.placeholder.com/450x575',
     },
     {
       id: 5432,
       name: 'Singapore',
-      desc:
-        'It has survived not only five centuries, but also the leap into remaining essentially unchanged.',
+      desc: 'It has survived not only five centuries, but also the leap into remaining essentially unchanged.',
       image: 'https://via.placeholder.com/450x575',
     },
   ],

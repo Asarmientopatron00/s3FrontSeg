@@ -1,5 +1,5 @@
-import React,{useEffect,useState} from 'react';
-import {Box, Button, RadioGroup,Radio} from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
@@ -19,37 +19,31 @@ const MyTextField = (props) => {
       {...field}
       helperText={errorText}
       error={!!errorText}
-      
     />
   );
 };
 
 const ServicioForm = (props) => {
-  const {
-    handleOnClose,
-    accion,
-    values,
-    initialValues,
-  } = props;
+  const {handleOnClose, accion, values, initialValues} = props;
 
   const [disabled, setDisabled] = useState(false);
-  useEffect(()=>{
-    if (accion ==='ver'||initialValues.estado==='0'){
+  useEffect(() => {
+    if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
     }
-  },[initialValues.estado,accion]);
+  }, [initialValues.estado, accion]);
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
-      justifyContent:'flex-end',
-      paddingBottom:'20px',
-      gap:'10px',
-      backgroundColor:'white',
-      paddingRight:'20px',
-      position:'sticky',
-      left:0,
-      bottom:0,
+      justifyContent: 'flex-end',
+      paddingBottom: '20px',
+      gap: '10px',
+      backgroundColor: 'white',
+      paddingRight: '20px',
+      position: 'sticky',
+      left: 0,
+      bottom: 0,
     },
     myTextField: {
       width: '100%',
@@ -64,25 +58,25 @@ const ServicioForm = (props) => {
       [theme.breakpoints.up('xl')]: {
         marginBottom: 24,
       },
-      color:theme.palette.primary.main,
-      "&:target": {
-        color:theme.palette.primary.main,
-      }
+      color: theme.palette.primary.main,
+      '&:target': {
+        color: theme.palette.primary.main,
+      },
     },
     btnRoot: {
       paddingLeft: 15,
       paddingRight: 15,
-      color:'white',
-      "&:hover": {
+      color: 'white',
+      '&:hover': {
         backgroundColor: theme.palette.colorHover,
-        cursor:'pointer',
-      }
+        cursor: 'pointer',
+      },
     },
-    btnPrymary:{
-      backgroundColor:theme.palette.primary.main,
+    btnPrymary: {
+      backgroundColor: theme.palette.primary.main,
     },
-    btnSecundary:{
-      backgroundColor:theme.palette.grayBottoms,
+    btnSecundary: {
+      backgroundColor: theme.palette.grayBottoms,
     },
     widthFull: {
       width: '100%',
@@ -103,42 +97,41 @@ const ServicioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.servicios'/>
+            <IntlMessages id='configuracion.servicios' />
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <MyTextField
               className={classes.myTextField}
-              label= 'Nombre'
+              label='Nombre'
               name='nombre'
               disabled={disabled}
               required
             />
 
             <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel component="legend">Estado*</FormLabel>
+              <FormLabel component='legend'>Estado*</FormLabel>
               <Field
                 name='estado'
                 type='radio'
                 as={RadioGroup}
                 className={classes.myTextField}
-                disabled={accion==='ver'}
+                disabled={accion === 'ver'}
                 row
-                value={values.estado}
-              >
+                value={values.estado}>
                 <FormControlLabel
-                  value="1"
-                  control={<Radio color="primary" />}
-                  label="Activo"
-                  labelPlacement="end"
-                  disabled={accion==='ver'}
+                  value='1'
+                  control={<Radio color='primary' />}
+                  label='Activo'
+                  labelPlacement='end'
+                  disabled={accion === 'ver'}
                 />
                 <FormControlLabel
-                  value="0"
-                  control={<Radio color="primary" />}
-                  label="Inactivo"
-                  labelPlacement="end"
-                  disabled={accion==='ver'}
+                  value='0'
+                  control={<Radio color='primary' />}
+                  label='Inactivo'
+                  labelPlacement='end'
+                  disabled={accion === 'ver'}
                 />
               </Field>
             </FormControl>
@@ -146,22 +139,20 @@ const ServicioForm = (props) => {
         </Box>
       </Scrollbar>
       <Box className={classes.bottomsGroup}>
-        {accion!=='ver'?
+        {accion !== 'ver' ? (
           <Button
             className={`${classes.btnRoot} ${classes.btnPrymary}`}
             variant='contained'
-            type='submit'
-          >
-            <IntlMessages id='boton.submit'/>
+            type='submit'>
+            <IntlMessages id='boton.submit' />
           </Button>
-        :
-        ''
-        }
+        ) : (
+          ''
+        )}
         <Button
           className={`${classes.btnRoot} ${classes.btnSecundary}`}
-          onClick={handleOnClose}
-        >
-          <IntlMessages id='boton.cancel'/>
+          onClick={handleOnClose}>
+          <IntlMessages id='boton.cancel' />
         </Button>
       </Box>
     </Form>

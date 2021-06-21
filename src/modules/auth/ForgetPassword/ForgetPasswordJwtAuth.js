@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   textField: {
     width: '100%',
-    height:'70px',
+    height: '70px',
   },
   btnRoot: {
     width: '100%',
@@ -67,14 +67,14 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'capitalize',
     paddingLeft: 15,
     paddingRight: 15,
-    color:'white',
-    "&:hover": {
+    color: 'white',
+    '&:hover': {
       backgroundColor: theme.palette.colorHover,
-      cursor:'pointer',
-    }
+      cursor: 'pointer',
+    },
   },
-  btnPrymary:{
-    backgroundColor:theme.palette.primary.main,
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
   },
   textSecondary: {
     color: theme.palette.primary.main,
@@ -122,17 +122,17 @@ const ForgetPasswordJwtAuth = () => {
         justifyContent='center'
         alignItems='center'>
         <Card className={classes.card}>
-          <Box margin={0}  display='flex' justifyContent='space-between' >
-            <Box display='flex' 
+          <Box margin={0} display='flex' justifyContent='space-between'>
+            <Box
+              display='flex'
               width='100%'
               component='h2'
               mb={{xs: 6, xl: 8}}
               color='text.primary'
               fontWeight={Fonts.REGULAR}
               fontSize={{xs: 24, xl: 26}}
-              textAlign='left'
-            >
-            <IntlMessages id='login.forgetPasswordTitle' />
+              textAlign='left'>
+              <IntlMessages id='login.forgetPasswordTitle' />
             </Box>
             <img
               className={classes.image}
@@ -142,7 +142,7 @@ const ForgetPasswordJwtAuth = () => {
           </Box>
 
           <Box my={{xs: 2, xl: 4}} fontSize={18} textAlign='left'>
-              <IntlMessages id='login.forgetPasswordText' /> <br />
+            <IntlMessages id='login.forgetPasswordText' /> <br />
           </Box>
 
           <Formik

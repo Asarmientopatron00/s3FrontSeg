@@ -21,19 +21,19 @@ const variantIcon = {
 const useStyles1 = makeStyles((theme) => ({
   success: {
     backgroundColor: green[600],
-    width:'95vw',
+    width: '95vw',
   },
   error: {
     backgroundColor: theme.palette.error.dark,
-    width:'95vw',
+    width: '95vw',
   },
   info: {
     backgroundColor: theme.palette.primary.main,
-    width:'95vw',
+    width: '95vw',
   },
   warning: {
     backgroundColor: amber[700],
-    width:'95vw',
+    width: '95vw',
   },
   icon: {
     fontSize: 20,

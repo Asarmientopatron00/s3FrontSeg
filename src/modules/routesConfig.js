@@ -85,7 +85,7 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/eventos-notificacion',
       },
-    ]
+    ],
   },
   {
     id: 'seguridad',
@@ -108,9 +108,9 @@ const routesConfig = [
         type: 'item',
         url: '/seguridad/usuarios',
       },
-    ]
-  }
-  
+    ],
+  },
+
   // {
   //   id: 'app',
   //   title: 'Application',

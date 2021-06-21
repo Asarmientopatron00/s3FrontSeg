@@ -4,7 +4,7 @@ export const authRouteConfig = [
   {
     routes: [
       {
-        exact:true,
+        exact: true,
         path: '/signin',
         component: React.lazy(() => import('./Signin/index')),
       },
@@ -13,7 +13,7 @@ export const authRouteConfig = [
   {
     routes: [
       {
-        exact:true,
+        exact: true,
         path: '/signup',
         component: React.lazy(() => import('./Signup/index')),
       },
@@ -22,7 +22,7 @@ export const authRouteConfig = [
   {
     routes: [
       {
-        exact:true,
+        exact: true,
         path: '/confirm-signup',
         component: React.lazy(() => import('./ConfirmSignupAwsCognito')),
       },
@@ -31,7 +31,7 @@ export const authRouteConfig = [
   {
     routes: [
       {
-        exact:true,
+        exact: true,
         path: '/reset-password/:token',
         component: React.lazy(() => import('./ResetPasswordAwsCognito')),
       },
@@ -40,7 +40,7 @@ export const authRouteConfig = [
   {
     routes: [
       {
-        exact:true,
+        exact: true,
         path: '/forget-password',
         component: React.lazy(() => import('./ForgetPassword')),
       },

@@ -10,7 +10,7 @@ import AppContext from '../../../utility/AppContext';
 import AppFixedFooter from './AppFixedFooter';
 import {LayoutType} from '../../../../shared/constants/AppEnums';
 import Card from '@material-ui/core/Card';
-import { InfoView } from '@crema';
+import {InfoView} from '@crema';
 
 const StandardLayout = () => {
   const {footer, themeStyle, layoutType, footerType} = useContext(AppContext);
@@ -26,7 +26,6 @@ const StandardLayout = () => {
           appMainFixedFooter: footer && footerType === 'fixed',
         },
       )}>
-        
       <Box className={classes.appsContainer}>
         <AppSidebar />
 
@@ -36,13 +35,10 @@ const StandardLayout = () => {
               height: '100%',
               display: 'flex',
               flexDirection: 'column',
-            }}>
-          </Card>
+            }}></Card>
           <InfoView />
         </Box>
       </Box>
-      
-      
 
       <Box className={classes.mainContent}>
         <Hidden mdDown>

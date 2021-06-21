@@ -1,8 +1,8 @@
-import React, {useEffect,useRef,useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch,useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
   onShow,
@@ -15,28 +15,23 @@ import Slide from '@material-ui/core/Slide';
 import UsuarioForm from './UsuarioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {LONGITUD_MAXIMA_TELEFONOS,LONGITUD_MINIMA_TELEFONOS} from './../../../../shared/constants/Constantes'
-
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+} from './../../../../shared/constants/Constantes';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
-
 const UsuarioCreador = (props) => {
-  const {
-    usuario,
-    handleOnClose,
-    accion,
-    updateColeccion,
-    asociados,
-    roles,
-  } = props;
+  const {usuario, handleOnClose, accion, updateColeccion, asociados, roles} =
+    props;
 
   let validationSchema = yup.object({
     nombre: yup.string().required('Requerido'),
     identificacion_usuario: yup.string().required('Requerido'),
-    asociado_id: yup.string().equals(['1'],'ssss').required('Requerido'),
+    asociado_id: yup.string().required('Requerido'),
     rol_id: yup.number().required('Requerido'),
     email: yup
       .string()
@@ -45,15 +40,21 @@ const UsuarioCreador = (props) => {
     numero_celular: yup
       .string()
       .required('Requerido')
-      .max(LONGITUD_MAXIMA_TELEFONOS,'Debe Tener Máximo ' +LONGITUD_MAXIMA_TELEFONOS +' Números')
-      .min(LONGITUD_MINIMA_TELEFONOS,'Debe Tener Mínimo ' + LONGITUD_MINIMA_TELEFONOS + ' Números'),
+      .max(
+        LONGITUD_MAXIMA_TELEFONOS,
+        'Debe Tener Máximo ' + LONGITUD_MAXIMA_TELEFONOS + ' Números',
+      )
+      .min(
+        LONGITUD_MINIMA_TELEFONOS,
+        'Debe Tener Mínimo ' + LONGITUD_MINIMA_TELEFONOS + ' Números',
+      ),
   });
 
-  if (accion==='crear'){
+  if (accion === 'crear') {
     validationSchema = yup.object({
       nombre: yup.string().required('Requerido'),
       identificacion_usuario: yup.string().required('Requerido'),
-      asociado_id: yup.string().equals(['1'],'ssss').required('Requerido'),
+      asociado_id: yup.string().required('Requerido'),
       rol_id: yup.number().required('Requerido'),
       email: yup
         .string()
@@ -62,14 +63,18 @@ const UsuarioCreador = (props) => {
       numero_celular: yup
         .string()
         .required('Requerido')
-        .max(LONGITUD_MAXIMA_TELEFONOS,'Debe Tener Máximo ' +LONGITUD_MAXIMA_TELEFONOS +' Números')
-        .min(LONGITUD_MINIMA_TELEFONOS,'Debe Tener Mínimo ' + LONGITUD_MINIMA_TELEFONOS + ' Números'),
-      clave:yup
-        .string()
-        .required('Requerido')
+        .max(
+          LONGITUD_MAXIMA_TELEFONOS,
+          'Debe Tener Máximo ' + LONGITUD_MAXIMA_TELEFONOS + ' Números',
+        )
+        .min(
+          LONGITUD_MINIMA_TELEFONOS,
+          'Debe Tener Mínimo ' + LONGITUD_MINIMA_TELEFONOS + ' Números',
+        ),
+      clave: yup.string().required('Requerido'),
     });
   }
-  
+
   const dispatch = useDispatch();
 
   const useStyles = makeStyles((theme) => ({
@@ -88,98 +93,101 @@ const UsuarioCreador = (props) => {
 
   const classes = useStyles(props);
 
-  const [showForm,setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
   selectedRow = useSelector(({usuarioReducer}) => usuarioReducer.selectedRow);
 
-  const initializeSelectedRow = ()=> {
-    selectedRow=null;
-  }
-  useEffect(()=>{
+  const initializeSelectedRow = () => {
+    selectedRow = null;
+  };
+  useEffect(() => {
     initializeSelectedRow();
-  },[])
+  }, []);
 
-  if (accion==='crear') {
+  if (accion === 'crear') {
     initializeSelectedRow();
   }
-  
-  useEffect(()=>{
-    if(selectedRow){
+
+  useEffect(() => {
+    if (selectedRow) {
       setShowForm(true);
-    } else if(accion==='crear') {
+    } else if (accion === 'crear') {
       setShowForm(true);
     } else {
       setShowForm(false);
     }
-  },[selectedRow,accion])
+  }, [selectedRow, accion]);
 
-  useEffect(()=>{
-    if (accion==='editar' | accion==='ver'){
-      dispatch(
-        onShow(usuario),
-      );
+  useEffect(() => {
+    if ((accion === 'editar') | (accion === 'ver')) {
+      dispatch(onShow(usuario));
     }
-  },[accion,dispatch,usuario])
-  
+  }, [accion, dispatch, usuario]);
+
   return (
-    showForm&&
-    <Dialog
-      open= {showForm}
-      onClose={handleOnClose}
-      aria-labelledby='simple-modal-title'
-      TransitionComponent={Transition}
-      aria-describedby='simple-modal-description'
-      className={classes.dialogBox}
-      disableBackdropClick = {true}
-      maxWidth={'sm'}
-    >
-      <Scrollbar>
-        <Formik
-          initialStatus={false}
-          enableReinitialize={true}
-          validateOnBlur={false}
-          initialValues={{
-            id: selectedRow ? selectedRow.id : '',
-            identificacion_usuario: selectedRow ? selectedRow.identificacion_usuario : '',
-            nombre: selectedRow ? selectedRow.nombre : '',
-            asociado_id: selectedRow ? selectedRow.asociado_id : '',
-            rol_id: selectedRow ? selectedRow.rol_id : '',
-            email: selectedRow ? selectedRow.email : '',
-            cargo: selectedRow ? selectedRow.cargo : '',
-            numero_celular: selectedRow ? selectedRow.numero_celular : '',
-            estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
-            clave: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(data, {setSubmitting, resetForm}) => {
-            setSubmitting(true);
-            if (accion==='crear'){
-              dispatch(onCreate(data,handleOnClose,updateColeccion));
-            } else if(accion==='editar') {
-              if (selectedRow) {
-                dispatch(onUpdate(data,handleOnClose,updateColeccion));
-              } 
-            }
-            // resetForm();
-            setSubmitting(false);
-            // handleOnClose();
-            // updateColeccion();
-        }}
-        >
-          {({values,initialValues, setFieldValue}) => (
-            <UsuarioForm
-              values={values}
-              setFieldValue={setFieldValue}
-              handleOnClose={handleOnClose}
-              accion={accion}
-              asociados={asociados}
-              roles={roles}
-              initialValues={initialValues}
-            />
-          )}
-        </Formik>
-      </Scrollbar>
-    </Dialog>
+    showForm && (
+      <Dialog
+        open={showForm}
+        onClose={handleOnClose}
+        aria-labelledby='simple-modal-title'
+        TransitionComponent={Transition}
+        aria-describedby='simple-modal-description'
+        className={classes.dialogBox}
+        disableBackdropClick={true}
+        maxWidth={'sm'}>
+        <Scrollbar>
+          <Formik
+            initialStatus={false}
+            enableReinitialize={true}
+            validateOnBlur={false}
+            initialValues={{
+              id: selectedRow ? selectedRow.id : '',
+              identificacion_usuario: selectedRow
+                ? selectedRow.identificacion_usuario
+                : '',
+              nombre: selectedRow ? selectedRow.nombre : '',
+              asociado_id: selectedRow ? selectedRow.asociado_id : '',
+              rol_id: selectedRow ? selectedRow.rol_id : '',
+              email: selectedRow ? selectedRow.email : '',
+              cargo: selectedRow ? selectedRow.cargo : '',
+              numero_celular: selectedRow ? selectedRow.numero_celular : '',
+              estado: selectedRow
+                ? selectedRow.estado === 1
+                  ? '1'
+                  : '0'
+                : '1',
+              clave: '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(data, {setSubmitting, resetForm}) => {
+              setSubmitting(true);
+              if (accion === 'crear') {
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
+              } else if (accion === 'editar') {
+                if (selectedRow) {
+                  dispatch(onUpdate(data, handleOnClose, updateColeccion));
+                }
+              }
+              // resetForm();
+              setSubmitting(false);
+              // handleOnClose();
+              // updateColeccion();
+            }}>
+            {({values, initialValues, setFieldValue}) => (
+              <UsuarioForm
+                values={values}
+                setFieldValue={setFieldValue}
+                handleOnClose={handleOnClose}
+                accion={accion}
+                asociados={asociados}
+                roles={roles}
+                initialValues={initialValues}
+              />
+            )}
+          </Formik>
+        </Scrollbar>
+      </Dialog>
+    )
   );
 };
 

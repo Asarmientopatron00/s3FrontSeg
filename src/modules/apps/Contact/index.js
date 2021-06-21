@@ -21,7 +21,7 @@ const Contact = () => {
 
   const {messages} = useIntl();
   return (
-    <AppsContainer title={messages['configuracion.tiposDocumentos']} >
+    <AppsContainer title={messages['configuracion.tiposDocumentos']}>
       <ContactListing />
     </AppsContainer>
   );

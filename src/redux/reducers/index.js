@@ -21,8 +21,6 @@ import ServicioReducer from './ServicioReducer';
 import TerceroServicioReducer from './TerceroServicioReducer';
 import EventoNotificacionReducer from './EventoNotificacionReducer';
 
-
-
 const reducers = (history) =>
   combineReducers({
     router: connectRouter(history),

@@ -7,9 +7,10 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '.01%',
     overflowX: 'auto',
     '-webkit-overflow-scrolling': 'auto',
-    '& > thead > tr > th, > tbody > tr > th, > tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td': {
-      whiteSpace: 'nowrap',
-    },
+    '& > thead > tr > th, > tbody > tr > th, > tfoot > tr > th, thead > tr > td, tbody > tr > td, tfoot > tr > td':
+      {
+        whiteSpace: 'nowrap',
+      },
     '@media (max-width: 767px)': {
       width: '100%',
       marginBottom: 15,

@@ -2,14 +2,10 @@ import React from 'react';
 import {useDropzone} from 'react-dropzone';
 
 const SpecificFileTypes = (props) => {
-  const {
-    acceptedFiles,
-    rejectedFiles,
-    getRootProps,
-    getInputProps,
-  } = useDropzone({
-    accept: 'image/jpeg, image/png',
-  });
+  const {acceptedFiles, rejectedFiles, getRootProps, getInputProps} =
+    useDropzone({
+      accept: 'image/jpeg, image/png',
+    });
 
   const acceptedFilesItems =
     acceptedFiles &&

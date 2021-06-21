@@ -1,8 +1,8 @@
-import React, {useEffect,useRef,useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch,useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
   onShow,
@@ -21,18 +21,22 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const validationSchema = yup.object({
-  codigo_parametro: yup.string().required('Requerido').max('128','Debe tener máximo 128 Caracteres'),
-  descripcion_parametro: yup.string().required('Requerido').max('128','Debe tener máximo 128 Caracteres'),
-  valor_parametro: yup.string().required('Requerido').max('2000','Debe tener máximo 2000 Caracteres'),
+  codigo_parametro: yup
+    .string()
+    .required('Requerido')
+    .max('128', 'Debe tener máximo 128 Caracteres'),
+  descripcion_parametro: yup
+    .string()
+    .required('Requerido')
+    .max('128', 'Debe tener máximo 128 Caracteres'),
+  valor_parametro: yup
+    .string()
+    .required('Requerido')
+    .max('2000', 'Debe tener máximo 2000 Caracteres'),
 });
 
 const ParametroConstanteCreator = (props) => {
-  const {
-    parametroConstante,
-    handleOnClose,
-    accion,
-    updateColeccion,
-  } = props;
+  const {parametroConstante, handleOnClose, accion, updateColeccion} = props;
 
   const dispatch = useDispatch();
 
@@ -52,91 +56,96 @@ const ParametroConstanteCreator = (props) => {
 
   const classes = useStyles(props);
 
-  const [showForm,setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({parametroConstanteReducer}) => parametroConstanteReducer.selectedRow);
+  selectedRow = useSelector(
+    ({parametroConstanteReducer}) => parametroConstanteReducer.selectedRow,
+  );
 
-  const initializeSelectedRow = ()=> {
-    selectedRow=null;
-  }
-  useEffect(()=>{
+  const initializeSelectedRow = () => {
+    selectedRow = null;
+  };
+  useEffect(() => {
     initializeSelectedRow();
-  },[])
+  }, []);
 
-  if (accion==='crear') {
+  if (accion === 'crear') {
     initializeSelectedRow();
   }
-  
-  useEffect(()=>{
-    if(selectedRow){
+
+  useEffect(() => {
+    if (selectedRow) {
       setShowForm(true);
-    } else if(accion==='crear') {
+    } else if (accion === 'crear') {
       setShowForm(true);
     } else {
       setShowForm(false);
     }
-  },[selectedRow,accion])
+  }, [selectedRow, accion]);
 
-  useEffect(()=>{
-    if (accion==='editar' | accion==='ver'){
-      dispatch(
-        onShow(parametroConstante),
-      );
+  useEffect(() => {
+    if ((accion === 'editar') | (accion === 'ver')) {
+      dispatch(onShow(parametroConstante));
     }
-  },[accion,dispatch,parametroConstante])
-  
+  }, [accion, dispatch, parametroConstante]);
+
   return (
-    showForm&&
-    <Dialog
-      open= {showForm}
-      onClose={handleOnClose}
-      aria-labelledby='simple-modal-title'
-      TransitionComponent={Transition}
-      aria-describedby='simple-modal-description'
-      className={classes.dialogBox}
-      disableBackdropClick = {true}
-      maxWidth={'sm'}
-    >
-      <Scrollbar>
-        <Formik
-          initialStatus={true}
-          enableReinitialize={true}
-          validateOnBlur={false}
-          initialValues={{
-            id: selectedRow ? selectedRow.id : '',
-            codigo_parametro: selectedRow ? selectedRow.codigo_parametro : '',
-            descripcion_parametro: selectedRow ? selectedRow.descripcion_parametro : '',
-            valor_parametro: selectedRow ? selectedRow.valor_parametro : '',
-            estado: selectedRow ? (selectedRow.estado===1?'1':'0'):'1',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(data, {setSubmitting, resetForm}) => {
-            setSubmitting(true);
-            if (accion==='crear'){
-              dispatch(onCreate(data,handleOnClose,updateColeccion));
-            } else if(accion==='editar') {
-              if (selectedRow) {
-                dispatch(onUpdate(data,handleOnClose,updateColeccion));
-              } 
-            }
-            // resetForm();
-            setSubmitting(false);
-            // handleOnClose();
-            // updateColeccion();
-          }}
-        >
-          {({values,initialValues, setFieldValue}) => (
-            <ParametroConstanteForm
-              values={values}
-              setFieldValue={setFieldValue}
-              handleOnClose={handleOnClose}
-              accion={accion}
-              initialValues={initialValues}
-            />
-          )}
-        </Formik>
-      </Scrollbar>
-    </Dialog>
+    showForm && (
+      <Dialog
+        open={showForm}
+        onClose={handleOnClose}
+        aria-labelledby='simple-modal-title'
+        TransitionComponent={Transition}
+        aria-describedby='simple-modal-description'
+        className={classes.dialogBox}
+        disableBackdropClick={true}
+        maxWidth={'sm'}>
+        <Scrollbar>
+          <Formik
+            initialStatus={true}
+            enableReinitialize={true}
+            validateOnBlur={false}
+            initialValues={{
+              id: selectedRow ? selectedRow.id : '',
+              codigo_parametro: selectedRow ? selectedRow.codigo_parametro : '',
+              descripcion_parametro: selectedRow
+                ? selectedRow.descripcion_parametro
+                : '',
+              valor_parametro: selectedRow ? selectedRow.valor_parametro : '',
+              estado: selectedRow
+                ? selectedRow.estado === 1
+                  ? '1'
+                  : '0'
+                : '1',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(data, {setSubmitting, resetForm}) => {
+              setSubmitting(true);
+              if (accion === 'crear') {
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
+              } else if (accion === 'editar') {
+                if (selectedRow) {
+                  dispatch(onUpdate(data, handleOnClose, updateColeccion));
+                }
+              }
+              // resetForm();
+              setSubmitting(false);
+              // handleOnClose();
+              // updateColeccion();
+            }}>
+            {({values, initialValues, setFieldValue}) => (
+              <ParametroConstanteForm
+                values={values}
+                setFieldValue={setFieldValue}
+                handleOnClose={handleOnClose}
+                accion={accion}
+                initialValues={initialValues}
+              />
+            )}
+          </Formik>
+        </Scrollbar>
+      </Dialog>
+    )
   );
 };
 

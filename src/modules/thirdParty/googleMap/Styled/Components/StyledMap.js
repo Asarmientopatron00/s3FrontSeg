@@ -28,9 +28,8 @@ const StyledMapExampleGoogleMap = withGoogleMap((props) => (
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
 export default class StyledMap extends Component {
-  handleClickFromChildrenOfInfoBox = this.handleClickFromChildrenOfInfoBox.bind(
-    this,
-  );
+  handleClickFromChildrenOfInfoBox =
+    this.handleClickFromChildrenOfInfoBox.bind(this);
 
   handleClickFromChildrenOfInfoBox(e) {
     console.log(e);

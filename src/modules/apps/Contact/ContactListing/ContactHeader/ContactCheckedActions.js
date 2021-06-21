@@ -21,11 +21,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ContactCheckedActions = (props) => {
-  const {
-    checkedContacts,
-    setCheckedContacts,
-    onSelectContactsForDelete,
-  } = props;
+  const {checkedContacts, setCheckedContacts, onSelectContactsForDelete} =
+    props;
 
   const dispatch = useDispatch();
 

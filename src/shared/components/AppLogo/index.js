@@ -13,8 +13,8 @@ const AppLogo = () => {
       flexDirection: 'column',
       cursor: 'pointer',
       alignItems: 'center',
-      marginTop:'20px',
-      marginBottom:'20px',
+      marginTop: '20px',
+      marginBottom: '20px',
     },
     logo: {
       height: 160,
@@ -27,10 +27,11 @@ const AppLogo = () => {
       <Hidden smUp>
         <img
           className={classes.logo}
-          src={'/assets/images/LogoSecSel.png'
+          src={
+            '/assets/images/LogoSecSel.png'
             // themeMode === ThemeMode.DARK
-              // ? '/assets/images/logo-white.png'
-              // : '/assets/images/logo.png'
+            // ? '/assets/images/logo-white.png'
+            // : '/assets/images/logo.png'
           }
           alt='crema-logo'
         />
@@ -38,7 +39,8 @@ const AppLogo = () => {
       <Hidden xsDown>
         <img
           className={classes.logo}
-          src={'/assets/images/LogoSecSel.png'
+          src={
+            '/assets/images/LogoSecSel.png'
             // themeMode === ThemeMode.DARK
             //   ? '/assets/images/logo-white-with-name.png'
             //   : '/assets/images/logo-with-name.png'

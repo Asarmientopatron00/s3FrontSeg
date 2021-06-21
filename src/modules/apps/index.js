@@ -36,7 +36,10 @@ export const appsConfig = [
         component: React.lazy(() => import('./Contact')),
       },
       {
-        path: ['/configuracion/tipos-documentos/:name', '/configuracion/tipos-documentos/:name'],
+        path: [
+          '/configuracion/tipos-documentos/:name',
+          '/configuracion/tipos-documentos/:name',
+        ],
         component: React.lazy(() => import('./Contact')),
       },
       {

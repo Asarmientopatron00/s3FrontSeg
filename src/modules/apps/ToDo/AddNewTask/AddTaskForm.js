@@ -121,13 +121,8 @@ const MyTextField = (props) => {
 };
 
 const AddTaskForm = (props) => {
-  const {
-    values,
-    setFieldValue,
-    isSubmitting,
-    setTaskLabels,
-    taskLabels,
-  } = props;
+  const {values, setFieldValue, isSubmitting, setTaskLabels, taskLabels} =
+    props;
 
   const labelList = useSelector(({todoApp}) => todoApp.labelList);
 

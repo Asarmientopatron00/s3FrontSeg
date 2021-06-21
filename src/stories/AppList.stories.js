@@ -20,27 +20,10 @@ const events = actions('onEndReached', 'onClick');
 export const Default = () => (
   <AppList
     border={boolean('border', false)}
-    data={array('data', [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-    ])}
+    data={array(
+      'data',
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    )}
     renderRow={renderRow}
     {...events}
   />
@@ -64,27 +47,10 @@ export const EmptyList = () => (
 
 export const ListWithFooter = () => (
   <AppList
-    data={array('data', [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-    ])}
+    data={array(
+      'data',
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    )}
     renderRow={renderRow}
     border={boolean('border', true)}
     {...events}

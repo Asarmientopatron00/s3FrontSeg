@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => {
       position: 'relative',
       backgroundColor: theme.palette.background.default,
       paddingTop: 52,
-      marginTop:15,
+      marginTop: 15,
       [theme.breakpoints.up('sm')]: {
         paddingTop: 52,
       },
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => {
         maxWidth: 1260,
         marginLeft: 'auto',
         marginRight: 'auto',
-         boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.12)',
+        boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.12)',
         '& .app-sidebar': {
           position: 'absolute',
         },

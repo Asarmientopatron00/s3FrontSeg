@@ -3,3 +3,4 @@ export const LONGITUD_MAXIMA_DOCUMENTOS = 13;
 export const LONGITUD_MINIMA_TELEFONOS = 7;
 export const VALIDACION_REGEX_TELEFONOS = '^[+]?[0-9]*$';
 export const VALIDACION_REGEX_DOCUMENTOS = '^[0-9]*$';
+export const VALIDACION_REGEX_NUMEROS = '^[0-9]*$';

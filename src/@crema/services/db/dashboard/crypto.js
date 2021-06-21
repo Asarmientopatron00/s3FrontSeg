@@ -295,24 +295,21 @@ const cryptoData = {
   newsData: [
     {
       id: 1,
-      news:
-        'Power Ledger’s Jemma Green Is Fighting Climate Change by Helping Trade Neighbors Energy. Binance Coin Spikes Almost 20 Percent as...',
+      news: 'Power Ledger’s Jemma Green Is Fighting Climate Change by Helping Trade Neighbors Energy. Binance Coin Spikes Almost 20 Percent as...',
       created: '16 mins',
       image: 'https://via.placeholder.com/200x100',
       by: 'BTC EHTD USD',
     },
     {
       id: 2,
-      news:
-        'Binance Coin Spikes Almost 20 Percent as Bitcoin and Crypto Market Take a Break After Red Wave. Bitcoin with other major coins have dropped...',
+      news: 'Binance Coin Spikes Almost 20 Percent as Bitcoin and Crypto Market Take a Break After Red Wave. Bitcoin with other major coins have dropped...',
       created: '45 mins',
       image: 'https://via.placeholder.com/200x100',
       by: 'BTC EHTD USD',
     },
     {
       id: 3,
-      news:
-        'Power Ledger’s Jemma Green Is Fighting Climate Change by Helping Trade Neighbors Energy. Binance Coin Spikes Almost 20 Percent as...',
+      news: 'Power Ledger’s Jemma Green Is Fighting Climate Change by Helping Trade Neighbors Energy. Binance Coin Spikes Almost 20 Percent as...',
       created: '1 Hrs',
       image: 'https://via.placeholder.com/200x100',
       by: 'BTC EHTD USD',

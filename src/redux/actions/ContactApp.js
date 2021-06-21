@@ -30,7 +30,7 @@ export const onGetContactList = (type, name, currentPage) => {
       },
     })
       .then((data) => {
-        const data1 = {list:data.data,total:data.data.length};
+        const data1 = {list: data.data, total: data.data.length};
         console.log(data1);
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import {Form, Formik, useField} from 'formik';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import { onSetNewCognitoPassword} from '../../redux/actions';
-import {useHistory,useParams} from 'react-router-dom';
+import {onSetNewCognitoPassword} from '../../redux/actions';
+import {useHistory, useParams} from 'react-router-dom';
 import InfoView from '@crema/core/InfoView';
 import Box from '@material-ui/core/Box';
 import IntlMessages from '../../@crema/utility/IntlMessages';
@@ -27,20 +27,14 @@ const MyTextField = (props) => {
 };
 
 const validationSchema = yup.object({
-  email: yup
-    .string()
-    .required('Requerido'),
-  newPassword: yup
-    .string()
-    .required('Requerido'),
-  confirmPassword: yup
-    .string()
-    .required('Requerido'),
+  email: yup.string().required('Requerido'),
+  newPassword: yup.string().required('Requerido'),
+  confirmPassword: yup.string().required('Requerido'),
 });
 
 const ResetPasswordAwsCognito = (props) => {
   const dispatch = useDispatch();
-  const { token } = useParams();
+  const {token} = useParams();
 
   const history = useHistory();
 
@@ -74,7 +68,7 @@ const ResetPasswordAwsCognito = (props) => {
     },
     myTextFieldRoot: {
       width: '100%',
-      height:'70px',
+      height: '70px',
     },
     btnRoot: {
       width: '100%',
@@ -83,14 +77,14 @@ const ResetPasswordAwsCognito = (props) => {
       textTransform: 'capitalize',
       paddingLeft: 15,
       paddingRight: 15,
-      color:'white',
-      "&:hover": {
+      color: 'white',
+      '&:hover': {
         backgroundColor: theme.palette.colorHover,
-        cursor:'pointer',
-      }
+        cursor: 'pointer',
+      },
     },
-    btnPrymary:{
-      backgroundColor:theme.palette.primary.main,
+    btnPrymary: {
+      backgroundColor: theme.palette.primary.main,
     },
   }));
   const classes = useStyles(props);
@@ -116,8 +110,7 @@ const ResetPasswordAwsCognito = (props) => {
             mb={{xs: 6, xl: 8}}
             color='text.primary'
             fontWeight={Fonts.REGULAR}
-            fontSize={{xs: 24, sm: 26}}
-          >
+            fontSize={{xs: 24, sm: 26}}>
             <IntlMessages id='common.resetPassword' />
           </Box>
           <Formik
@@ -184,8 +177,7 @@ const ResetPasswordAwsCognito = (props) => {
                   type='submit'
                   disabled={isSubmitting}
                   color='secondary'
-                  className={`${classes.btnRoot} ${classes.btnPrymary}`}
-                >
+                  className={`${classes.btnRoot} ${classes.btnPrymary}`}>
                   <IntlMessages id='login.restablecer' />
                 </Button>
               </Form>

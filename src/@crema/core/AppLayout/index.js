@@ -15,14 +15,14 @@ const useStyle = makeStyles((theme) => ({
     height: '100vh',
     backgroundColor: theme.palette.gray[200],
     backgroundSize: 'cover',
-    padding:0,
+    padding: 0,
     '& .scrollbar-container': {
       flex: 1,
       display: 'flex',
       flexDirection: 'column',
     },
     '& .main-content-view': {
-      justifyContent:'center',
+      justifyContent: 'center',
     },
     '& .footer': {
       marginRight: 0,

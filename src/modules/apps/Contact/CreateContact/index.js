@@ -31,12 +31,8 @@ const validationSchema = yup.object({
 });
 
 const CreateContact = (props) => {
-  const {
-    isAddContact,
-    handleAddContactClose,
-    selectContact,
-    onUpdateContact,
-  } = props;
+  const {isAddContact, handleAddContactClose, selectContact, onUpdateContact} =
+    props;
   const dispatch = useDispatch();
 
   const [userImage, setUserImage] = useState(

@@ -13,38 +13,44 @@ import {
 import Api from '../../@crema/services/ApiConfig';
 import {appIntl} from '../../@crema/utility/Utils';
 
-export const onGetColeccion = (currentPage,rowsPerPage,nombre,orderByToSend,pais) => {
+export const onGetColeccion = (
+  currentPage,
+  rowsPerPage,
+  nombre,
+  orderByToSend,
+  pais,
+) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
-  const nombreAux = nombre ? nombre : "";
-  const paisAux = pais ? pais : "";
-  const ordenar_por = orderByToSend ? orderByToSend : "";
-  
+  const nombreAux = nombre ? nombre : '';
+  const paisAux = pais ? pais : '';
+  const ordenar_por = orderByToSend ? orderByToSend : '';
+
   return (dispatch) => {
     dispatch({type: FETCH_START});
     Api.get('http://solicitudesservicio.test/api/departamentos', {
       params: {
         page: page,
-        limite:rowsPerPage,
-        nombre:nombreAux,
-        pais:paisAux,
-        ordenar_por:ordenar_por,
+        limite: rowsPerPage,
+        nombre: nombreAux,
+        pais: paisAux,
+        ordenar_por: ordenar_por,
       },
     })
-    .then((data) => {
-      if (data.status === 200) {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_COLECCION_DEPARTAMENTO, payload: data});
-      } else {
-        dispatch({
-          type: FETCH_ERROR,
-          payload: messages['message.somethingWentWrong'],
-        });
-      }
-    })
-    .catch((error) => {
-      dispatch({type: FETCH_ERROR, payload: error.message});
-    });
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_COLECCION_DEPARTAMENTO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
   };
 };
 
@@ -57,29 +63,29 @@ export const onGetColeccionLigera = () => {
         ligera: true,
       },
     })
-    .then((data) => {
-      if (data.status === 200) {
-        dispatch({type: FETCH_SUCCESS});
-        dispatch({type: GET_COLECCION_LIGERA_DEPARTAMENTO, payload: data});
-      } else {
-        dispatch({
-          type: FETCH_ERROR,
-          payload: messages['message.somethingWentWrong'],
-        });
-      }
-    })
-    .catch((error) => {
-      dispatch({type: FETCH_ERROR, payload: error.message});
-    });
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_COLECCION_LIGERA_DEPARTAMENTO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
   };
 };
 
 export const onShow = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
-    if(id!==0){
+    if (id !== 0) {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/departamentos/'+id)
+      Api.get('http://solicitudesservicio.test/api/departamentos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -93,15 +99,18 @@ export const onShow = (id) => {
         })
         .catch((error) => {
           dispatch({type: FETCH_ERROR, payload: error.message});
-      });
+        });
     }
   };
 };
 
-export const onUpdate = (params,handleOnClose,updateColeccion) => {
-  return (dispatch) =>  {
+export const onUpdate = (params, handleOnClose, updateColeccion) => {
+  return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('http://solicitudesservicio.test/api/departamentos/' + params.id, params)
+    Api.put(
+      'http://solicitudesservicio.test/api/departamentos/' + params.id,
+      params,
+    )
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -113,7 +122,7 @@ export const onUpdate = (params,handleOnClose,updateColeccion) => {
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
-            payload:data.data.mensajes[0],
+            payload: data.data.mensajes[0],
           });
         } else {
           dispatch({
@@ -123,7 +132,7 @@ export const onUpdate = (params,handleOnClose,updateColeccion) => {
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
@@ -131,31 +140,34 @@ export const onUpdate = (params,handleOnClose,updateColeccion) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/departamentos/'+id)
+    Api.delete('http://solicitudesservicio.test/api/departamentos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({type: DELETE_DEPARTAMENTO, payload: data.data});
         } else {
-          dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
       })
       .catch((error) => {
         console.log(error.response.data);
-        if (error.response.data.mensajes){
-          dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        if (error.response.data.mensajes) {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
         } else {
-          dispatch({type: FETCH_ERROR, payload:error.message});
+          dispatch({type: FETCH_ERROR, payload: error.message});
         }
       });
   };
 };
 
-export const onCreate = (params,handleOnClose,updateColeccion) => {
+export const onCreate = (params, handleOnClose, updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/departamentos',params)
+    Api.post('http://solicitudesservicio.test/api/departamentos', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
@@ -168,16 +180,14 @@ export const onCreate = (params,handleOnClose,updateColeccion) => {
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
-            payload:data.data.mensajes[0],
+            payload: data.data.mensajes[0],
           });
         } else {
-
-          dispatch({type: FETCH_ERROR, payload:data.data.mensajes[0]});
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
-

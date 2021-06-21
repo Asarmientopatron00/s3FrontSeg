@@ -1,8 +1,8 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import {lighten, makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -24,21 +24,21 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ListaDocumentoCreador from './ListaDocumentoCreador'
+import ListaDocumentoCreador from './ListaDocumentoCreador';
 import {
   onGetColeccion,
   onDelete,
 } from '../../../redux/actions/ListaDocumentoAction';
-import {useDispatch,useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
-import ViewColumnIcon from '@material-ui/icons/ViewColumn';
+import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_LISTAS_DOCUMENTOS} from './../../../shared/constants/ListasValores'
+import {TIPOS_LISTAS_DOCUMENTOS} from './../../../shared/constants/ListasValores';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
@@ -69,45 +69,100 @@ import MenuItem from '@material-ui/core/MenuItem';
 //   return stabilizedThis.map((el) => el[0]);
 // }
 
-
 const cells = [
-  {id:'tipo', typeHead: 'string',label: 'Tipo',value:(value)=>TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento)=>tipoDocumento.id===value?tipoDocumento.value:""), align:'left',mostrarInicio:true},
-  {id:'nombre', typeHead: 'string',label: 'Nombre',value:(value)=>value, align:'left',mostrarInicio:true},
-  {id:'obligatorio', typeHead: 'boolean',label: 'Obligatorio',value:(value)=>value==='S'?'Si':'No', align:'center',mostrarInicio:true},
-  {id:'estado', typeHead: 'boolean',label: 'Estado',value:(value)=>value===1?'Activo':'Inactivo', align:'center',mostrarInicio:true,cellColor:(value)=>value===1?'green':'red'},
-  {id:'usuario_modificacion_nombre', typeHead: 'string',label: 'Modificado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:true},
-  {id:'fecha_modificacion', typeHead: 'string',label: 'Fecha Última Modificación',value:(value)=>new Date(value).toLocaleString('es-CL'), align:'left', width: '180px',mostrarInicio:true},
-  {id:'usuario_creacion_nombre', typeHead: 'string',label: 'Creado Por',value:(value)=>value, align:'left', width: '140px',mostrarInicio:false},
-  {id:'fecha_creacion', typeHead: 'string',label: 'Fecha Creación',value:(value)=>new Date(value).toLocaleString('es-CL'), align:'left', width: '180px',mostrarInicio:false},
+  {
+    id: 'tipo',
+    typeHead: 'string',
+    label: 'Tipo',
+    value: (value) =>
+      TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento) =>
+        tipoDocumento.id === value ? tipoDocumento.value : '',
+      ),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'nombre',
+    typeHead: 'string',
+    label: 'Nombre',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'obligatorio',
+    typeHead: 'boolean',
+    label: 'Obligatorio',
+    value: (value) => (value === 'S' ? 'Si' : 'No'),
+    align: 'center',
+    mostrarInicio: true,
+  },
+  {
+    id: 'estado',
+    typeHead: 'boolean',
+    label: 'Estado',
+    value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
+    align: 'center',
+    mostrarInicio: true,
+    cellColor: (value) => (value === 1 ? 'green' : 'red'),
+  },
+  {
+    id: 'usuario_modificacion_nombre',
+    typeHead: 'string',
+    label: 'Modificado Por',
+    value: (value) => value,
+    align: 'left',
+    width: '140px',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_modificacion',
+    typeHead: 'string',
+    label: 'Fecha Última Modificación',
+    value: (value) => new Date(value).toLocaleString('es-CL'),
+    align: 'left',
+    width: '180px',
+    mostrarInicio: true,
+  },
+  {
+    id: 'usuario_creacion_nombre',
+    typeHead: 'string',
+    label: 'Creado Por',
+    value: (value) => value,
+    align: 'left',
+    width: '140px',
+    mostrarInicio: false,
+  },
+  {
+    id: 'fecha_creacion',
+    typeHead: 'string',
+    label: 'Fecha Creación',
+    value: (value) => new Date(value).toLocaleString('es-CL'),
+    align: 'left',
+    width: '180px',
+    mostrarInicio: false,
+  },
 ];
 
-
-const MyCell = (props)=>{
-  const {align,width,claseBase,value,cellColor} = props;
-  const classes= useStyles({width:width,cellColor:cellColor});
+const MyCell = (props) => {
+  const {align, width, claseBase, value, cellColor} = props;
+  const classes = useStyles({width: width, cellColor: cellColor});
 
   let allClassName = claseBase;
 
-  if (width!== undefined){
+  if (width !== undefined) {
     allClassName = `${allClassName} ${classes.cellWidth}`;
   }
-  
+
   return (
-    <TableCell 
-      align={align} 
-      className={allClassName} 
-    >
-      <span 
-        className={cellColor?classes.cellColor:''}
-      >
-        {value}
-      </span>
+    <TableCell align={align} className={allClassName}>
+      <span className={cellColor ? classes.cellColor : ''}>{value}</span>
     </TableCell>
-  )
-}
+  );
+};
 
 function EnhancedTableHead(props) {
-  const {classes, order, orderBy, onRequestSort,columnasMostradas} = props;
+  const {classes, order, orderBy, onRequestSort, columnasMostradas} = props;
   // const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
   // const createSortHandler = (property) => (event) => {
   //   onRequestSort(event, property);
@@ -115,7 +170,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-      <TableRow className={classes.head}> 
+      <TableRow className={classes.head}>
         {/* <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -129,34 +184,40 @@ function EnhancedTableHead(props) {
         </TableCell>
         {columnasMostradas.map((cell) => {
           if (cell.mostrar) {
-            return(
+            return (
               <TableCell
                 key={cell.id}
-                align={cell.typeHead === 'string' ? 'left' : (cell.typeHead === 'numeric' ? 'right': 'center')}
+                align={
+                  cell.typeHead === 'string'
+                    ? 'left'
+                    : cell.typeHead === 'numeric'
+                    ? 'right'
+                    : 'center'
+                }
                 className={classes.cell}
-                sortDirection={orderBy === cell.id ? order : false}
-              >
+                sortDirection={orderBy === cell.id ? order : false}>
                 <TableSortLabel
                   active={orderBy === cell.id}
                   direction={orderBy === cell.id ? order : 'asc'}
                   // onClick={createSortHandler(cell.id)}
-                  onClick={()=>{onRequestSort(cell.id)}}
-                >
+                  onClick={() => {
+                    onRequestSort(cell.id);
+                  }}>
                   {cell.label}
                   {orderBy === cell.id ? (
                     <span className={classes.visuallyHidden}>
-                      {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                      {order === 'desc'
+                        ? 'sorted descending'
+                        : 'sorted ascending'}
                     </span>
                   ) : null}
                 </TableSortLabel>
               </TableCell>
-            )
+            );
           } else {
-            return(<th key={cell.id}></th>);
+            return <th key={cell.id}></th>;
           }
-          
-        }
-        )}
+        })}
       </TableRow>
     </TableHead>
   );
@@ -175,10 +236,12 @@ EnhancedTableHead.propTypes = {
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-    alignItems:'flex-start',
-    justifyContent:'space-between'
+    padding: '15px',
+    backgroundColor: 'white',
+    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 20%)',
+    borderRadius: '4px',
+    display: 'grid',
+    gap: '20px',
   },
   highlight:
     theme.palette.type === 'light'
@@ -195,54 +258,55 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
   createButton: {
     backgroundColor: theme.palette.primary.main,
-    color:'white',
-    "&:hover": {
+    color: 'white',
+    '&:hover': {
       backgroundColor: theme.palette.colorHover,
-      cursor:'pointer',
-    }
+      cursor: 'pointer',
+    },
   },
   clearButton: {
     backgroundColor: theme.palette.grayBottoms,
-    color:'white',
-    "&:hover": {
+    color: 'white',
+    '&:hover': {
       backgroundColor: theme.palette.colorHover,
-      cursor:'pointer',
-    }
-  },
-  verticalBottoms: {
-    width: 'min-content',
-    display: 'grid',
-    gap: '5px',
+      cursor: 'pointer',
+    },
   },
   horizontalBottoms: {
     width: 'min-content',
     display: 'flex',
     gap: '5px',
   },
-  rootBottoms: {
+  titleTop: {
     display: 'flex',
-    gap: '5px',
-    alignItems:'flex-start'
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
   },
   columnFilterButton: {
     backgroundColor: theme.palette.secondary.main,
-    color:'white',
-    "&:hover": {
+    color: 'white',
+    '&:hover': {
       backgroundColor: theme.palette.colorHover,
-      cursor:'pointer',
-    }
+      cursor: 'pointer',
+    },
   },
-  contenedorFiltros:{
-    width:'100%',
-    display:'grid',
-    gridTemplateColumns: 'repeat(2,1fr)',
-    gap:'20px',
+  contenedorFiltros: {
+    width: '90%',
+    display: 'grid',
+    gridTemplateColumns: '4fr 4fr 1fr',
+    gap: '20px',
+  },
+  pairFilters: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    gap: '20px',
+    minWidth: '100px',
   },
 }));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { 
+  const {
     numSelected,
     onOpenAddListaDocumento,
     handleOpenPopoverColumns,
@@ -255,34 +319,62 @@ const EnhancedTableToolbar = (props) => {
     <Toolbar
       className={clsx(classes.root, {
         [classes.highlight]: numSelected > 0,
-      })}
-    >
+      })}>
       {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+        <Typography
+          className={classes.title}
+          color='inherit'
+          variant='subtitle1'
+          component='div'>
           {numSelected} selected
         </Typography>
       ) : (
-        <Box width={'100%'}>
-          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            <IntlMessages id='configuracion.listasDocumentos'/>
-          </Typography>
+        <>
+          <Box className={classes.titleTop}>
+            <Typography
+              className={classes.title}
+              variant='h6'
+              id='tableTitle'
+              component='div'>
+              <IntlMessages id='configuracion.listasDocumentos' />
+            </Typography>
 
+            <Box className={classes.horizontalBottoms}>
+              <Tooltip
+                title='Mostrar/Ocultar Columnas'
+                onClick={handleOpenPopoverColumns}>
+                <IconButton
+                  className={classes.columnFilterButton}
+                  aria-label='filter list'>
+                  <TuneIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title='Crear Lista de Documento'
+                onClick={onOpenAddListaDocumento}>
+                <IconButton
+                  className={classes.createButton}
+                  aria-label='filter list'>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label= 'Nombre'
+              label='Nombre'
               name='nombreFiltro'
               id='nombreFiltro'
-              onChange = {queryFilter}
+              onChange={queryFilter}
               value={nombreFiltro}
             />
             <TextField
-              label= 'Tipo'
+              label='Tipo'
               name='tipofiltro'
               id='tipoFiltro'
               select={true}
-              onChange = {queryFilter}
-              value={tipoFiltro}
-            >
+              onChange={queryFilter}
+              value={tipoFiltro}>
               {TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento) => {
                 return (
                   <MenuItem
@@ -292,92 +384,91 @@ const EnhancedTableToolbar = (props) => {
                     className={classes.pointer}>
                     {tipoDocumento.value}
                   </MenuItem>
-                )
-              })
-              }
+                );
+              })}
             </TextField>
+            <Box display='grid'>
+              <Box display='flex' mb={2}>
+                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
+                  <IconButton
+                    className={classes.clearButton}
+                    aria-label='filter list'>
+                    <ClearAllIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
           </Box>
-        </Box>
+        </>
       )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Box className={classes.rootBottoms}>
-          <Box className={classes.horizontalBottoms}>
-            {/* <Tooltip title="Filtros Avanzados">
-              <IconButton aria-label="filter list">
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip> */}
-            <Tooltip title="Mostrar/Ocultar Columnas" onClick={handleOpenPopoverColumns}>
-              <IconButton className={classes.columnFilterButton} aria-label="filter list">
-                <ViewColumnIcon />
-              </IconButton>
-            </Tooltip> 
-          </Box>
-          <Box className={classes.verticalBottoms}>
-            <Tooltip title="Crear Lista de Documento" onClick={onOpenAddListaDocumento}>
-              <IconButton className={classes.createButton} aria-label="filter list">
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Limpiar Filtros" onClick={limpiarFiltros}>
-              <IconButton className={classes.clearButton} aria-label="filter list">
-                <ClearAllIcon />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
-      )}
+      {
+        numSelected > 0 ? (
+          <Tooltip title='Delete'>
+            <IconButton aria-label='delete'>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          ''
+        )
+        //  <Tooltip title="Filtros Avanzados">
+        //   <IconButton aria-label="filter list">
+        //     <FilterListIcon />
+        //   </IconButton>
+        // </Tooltip>
+      }
     </Toolbar>
   );
 };
 
-
-
 const useStyles = makeStyles((theme) => ({
-    root: {
-      width: '100%%',
-      padding:'15px'
+  marcoTabla: {
+    backgroundColor: 'white',
+    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 20%)',
+    borderRadius: '4px',
+    paddingLeft: '15px',
+    paddingRight: '15px',
+    marginTop: '30px',
+  },
+  root: {
+    width: '100%%',
+    padding: '20px',
   },
   head: {
-    borderTop:'2px solid #dee2e6',
-    borderBottom:'2px solid #dee2e6',
+    borderTop: '2px solid #dee2e6',
+    borderBottom: '2px solid #dee2e6',
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
   },
   headCell: {
-    padding:'0px 0px 0px 15px',
+    padding: '0px 0px 0px 15px',
   },
   row: {
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
-    padding:'none',
+    padding: 'none',
   },
-  cell: props=>({
+  cell: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
-    whiteSpace:'nowrap',
+    whiteSpace: 'nowrap',
   }),
-  cellWidth: props=>({
-    minWidth:props.width,
+  cellWidth: (props) => ({
+    minWidth: props.width,
   }),
-  cellColor: props=>({
-    backgroundColor:props.cellColor,
-    color:'white',
+  cellColor: (props) => ({
+    backgroundColor: props.cellColor,
+    color: 'white',
   }),
-  acciones: props=>({
+  acciones: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
-    minWidth:'100px',
+    minWidth: '100px',
   }),
   paper: {
     width: '100%',
     marginBottom: theme.spacing(2),
-    boxShadow:'none',
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
   },
   table: {
     minWidth: '100%',
@@ -393,42 +484,45 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
-  generalIcons:{
-    "&:hover": {
+  generalIcons: {
+    '&:hover': {
       color: theme.palette.colorHover,
-      cursor:'pointer',
-    }
+      cursor: 'pointer',
+    },
   },
-  editIcon:{
+  editIcon: {
     color: theme.palette.primary.main,
   },
-  visivilityIcon:{
+  visivilityIcon: {
     color: theme.palette.grayBottoms,
   },
-  deleteIcon:{
+  deleteIcon: {
     color: theme.palette.redBottoms,
   },
-  popoverColumns:{
+  popoverColumns: {
     display: 'grid',
     padding: '10px',
     color: theme.palette.grayBottoms,
   },
-  paginacion:{
+  paginacion: {
     display: 'flex',
-    justifyContent:'space-between',
-    alignItems:'center',
-    margin:'10px',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: '20px',
+    paddingBottom: '20px',
   },
-  rowsPerPageOptions:{
-    marginRight:'10px',
+  rowsPerPageOptions: {
+    marginRight: '10px',
   },
 }));
 
-const ListaDocumento =  () => {
-  const [showForm,setShowForm]=useState(false);
+const ListaDocumento = () => {
+  const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState('fecha_modificacion:desc');
+  const [orderByToSend, setOrderByToSend] = React.useState(
+    'fecha_modificacion:desc',
+  );
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
@@ -436,87 +530,105 @@ const ListaDocumento =  () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [accion,setAccion] = useState('ver');
-  const [listaDocumentoSeleccionado,setListaDocumentoSeleccionado]= useState(0);
-  const {rows,
-          desde,
-          hasta,
-          ultima_pagina,
-          total,
-        } = useSelector(({listaDocumentoReducer}) => listaDocumentoReducer);
-  const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`
-  const [nombreFiltro,setNombreFiltro]=useState('');
-  const [tipoFiltro,setTipoFiltro]=useState('');
+  const [accion, setAccion] = useState('ver');
+  const [listaDocumentoSeleccionado, setListaDocumentoSeleccionado] =
+    useState(0);
+  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
+    ({listaDocumentoReducer}) => listaDocumentoReducer,
+  );
+  const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
+  const [nombreFiltro, setNombreFiltro] = useState('');
+  const [tipoFiltro, setTipoFiltro] = useState('');
   // const {pathname} = useLocation();
-  const [openPopOver,setOpenPopOver] = useState(false);
+  const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
-
 
   let columnasMostradasInicial = [];
 
-  cells.forEach((cell)=>{
+  cells.forEach((cell) => {
     columnasMostradasInicial.push({
-      id:cell.id,
-      mostrar:cell.mostrarInicio,
-      typeHead:cell.typeHead,
-      label:cell.label,
-      value:cell.value,
-      align:cell.align,
-      width:cell.width,
-      cellColor:cell.cellColor,
+      id: cell.id,
+      mostrar: cell.mostrarInicio,
+      typeHead: cell.typeHead,
+      label: cell.label,
+      value: cell.value,
+      align: cell.align,
+      width: cell.width,
+      cellColor: cell.cellColor,
     });
-  })
+  });
 
-  const [columnasMostradas,setColumnasMostradas]=useState(columnasMostradasInicial);
+  const [columnasMostradas, setColumnasMostradas] = useState(
+    columnasMostradasInicial,
+  );
 
   let vp = '15px';
-  if (dense === true){
+  if (dense === true) {
     vp = '0px';
   }
-  const classes = useStyles({vp:vp});
-  const  dispatch = useDispatch();
+  const classes = useStyles({vp: vp});
+  const dispatch = useDispatch();
 
   useEffect(() => {
-      dispatch(
-        onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend,tipoFiltro),
-      );
-  }, [dispatch,page,rowsPerPage,nombreFiltro,orderByToSend,showForm,tipoFiltro]);
+    dispatch(
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        tipoFiltro,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    nombreFiltro,
+    orderByToSend,
+    showForm,
+    tipoFiltro,
+  ]);
 
-  const updateColeccion = ()=>{
+  const updateColeccion = () => {
     setPage(1);
     dispatch(
-      onGetColeccion(page,rowsPerPage,nombreFiltro,orderByToSend,tipoFiltro),
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        tipoFiltro,
+      ),
     );
-  }
+  };
   useEffect(() => {
-      setPage(1);
-  }, [nombreFiltro,tipoFiltro,orderByToSend]);
+    setPage(1);
+  }, [nombreFiltro, tipoFiltro, orderByToSend]);
 
-  const queryFilter = (e)=> {
-    switch(e.target.name){
-      case('nombreFiltro'):
+  const queryFilter = (e) => {
+    switch (e.target.name) {
+      case 'nombreFiltro':
         setNombreFiltro(e.target.value);
         break;
-      case('tipofiltro'):
+      case 'tipofiltro':
         setTipoFiltro(e.target.value);
         break;
       default:
         break;
     }
-    
-  }
+  };
 
-  const limpiarFiltros = ()=>{
+  const limpiarFiltros = () => {
     setNombreFiltro('');
     setTipoFiltro('');
-  }
+  };
 
-  const changeOrderBy = (id)=>{
-    if (orderBy===id){
-      if (order==='asc'){
+  const changeOrderBy = (id) => {
+    if (orderBy === id) {
+      if (order === 'asc') {
         setOrder('desc');
         setOrderByToSend(id + ':desc');
-      } else{
+      } else {
         setOrder('asc');
         setOrderByToSend(id + ':asc');
       }
@@ -525,8 +637,7 @@ const ListaDocumento =  () => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
-   
-  }
+  };
 
   const onOpenEditListaDocumento = (id) => {
     setListaDocumentoSeleccionado(id);
@@ -534,37 +645,41 @@ const ListaDocumento =  () => {
     setShowForm(true);
   };
 
-  const handleClosePopover = ()=>{
+  const handleClosePopover = () => {
     setOpenPopOver(false);
     setPopoverTarget(null);
-  }
+  };
 
-  const handleOpenPopoverColumns = (e)=>{
+  const handleOpenPopoverColumns = (e) => {
     setPopoverTarget(e.currentTarget);
     setOpenPopOver(true);
-  }
+  };
 
-  const handleOnchangeMostrarColumna = (e)=>{
+  const handleOnchangeMostrarColumna = (e) => {
     let aux = columnasMostradas;
-    setColumnasMostradas(aux.map((column)=>{
-      if(column.id===e.target.id){
-        return {...column,mostrar:!column.mostrar};
-      } else {
-        return column;
-      }
-    }));
-  }
+    setColumnasMostradas(
+      aux.map((column) => {
+        if (column.id === e.target.id) {
+          return {...column, mostrar: !column.mostrar};
+        } else {
+          return column;
+        }
+      }),
+    );
+  };
 
-  const showAllColumns = ()=>{
+  const showAllColumns = () => {
     let aux = columnasMostradas;
-    setColumnasMostradas(aux.map((column)=>{
-      return {...column,mostrar:true};
-    }));
-  }
+    setColumnasMostradas(
+      aux.map((column) => {
+        return {...column, mostrar: true};
+      }),
+    );
+  };
 
-  const reiniciarColumns = ()=>{
-    setColumnasMostradas(columnasMostradasInicial)
-  } 
+  const reiniciarColumns = () => {
+    setColumnasMostradas(columnasMostradasInicial);
+  };
 
   const onOpenViewListaDocumento = (id) => {
     setListaDocumentoSeleccionado(id);
@@ -575,29 +690,27 @@ const ListaDocumento =  () => {
   const onDeleteListaDocumento = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: "¿Seguro Que Desea Eliminar La Lista De Documento?",
+      text: '¿Seguro Que Desea Eliminar La Lista De Documento?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       cancelButtonText: 'NO',
-      confirmButtonText: 'SI'
+      confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
           'La Lista De Documento Fue Eliminado Correctamente',
-          'success'
-        )
-        setTimeout(()=>{
+          'success',
+        );
+        setTimeout(() => {
           updateColeccion();
-        },1000)
+        }, 1000);
       }
-    })
-
-    
+    });
   };
 
   const onOpenAddListaDocumento = () => {
@@ -610,7 +723,7 @@ const ListaDocumento =  () => {
     setShowForm(false);
     setListaDocumentoSeleccionado(0);
     setAccion('ver');
-  }
+  };
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';
   //   setOrder(isAsc ? 'desc' : 'asc');
@@ -641,138 +754,150 @@ const ListaDocumento =  () => {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-// const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  const [showTable,setShowTable] = useState(true);
-  useEffect(()=>{
-    if(rows.length===0){
+  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const [showTable, setShowTable] = useState(true);
+  useEffect(() => {
+    if (rows.length === 0) {
       setShowTable(false);
     } else {
       setShowTable(true);
     }
-  },[rows])
+  }, [rows]);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar 
-          numSelected={selected.length} 
+        <EnhancedTableToolbar
+          numSelected={selected.length}
           onOpenAddListaDocumento={onOpenAddListaDocumento}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           queryFilter={queryFilter}
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
           tipoFiltro={tipoFiltro}
-          />
-        {showTable?
-        <>
+        />
+        {showTable ? (
+          <Box className={classes.marcoTabla}>
+            <Box className={classes.paginacion}>
+              <Box>
+                <p>{textoPaginacion}</p>
+              </Box>
+              <Box className={classes.paginacion}>
+                <select
+                  className={classes.rowsPerPageOptions}
+                  value={rowsPerPage}
+                  onChange={handleChangeRowsPerPage}>
+                  {rowsPerPageOptions.map((option) => {
+                    return (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    );
+                  })}
+                </select>
+                <Pagination
+                  showFirstButton
+                  showLastButton
+                  onChange={handleChangePage}
+                  count={ultima_pagina}
+                  page={page}
+                />
+              </Box>
+            </Box>
 
-        <Box className={classes.paginacion}>
-          <Box>
-            <p>{textoPaginacion}</p>
-          </Box>
-          <Box className={classes.paginacion}>
-            <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-              {
-                rowsPerPageOptions.map((option)=>{
-                  return(<option key = {option} value={option}>{option}</option>)
-                })
-              }
-            </select>
-            <Pagination
-            showFirstButton
-            showLastButton
-            onChange={handleChangePage}
-            count={ultima_pagina}
-            page={page}
-          />
-          </Box>
-        </Box>
-        
-        <TableContainer>
-          <Table
-            className={classes.table}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
-          >
-            <EnhancedTableHead
-              classes={classes}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={changeOrderBy}
-              rowCount={rows.length}
-              columnasMostradas={columnasMostradas}
-            />
-            <TableBody>
-              {
-              // stableSort(rows, getComparator(order, orderBy))
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                rows.map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  
-                  return (
-                    <TableRow
-                      hover
-                      // role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                      className={classes.row}
-                    > 
-                      {/* <TableCell padding="checkbox">
+            <TableContainer>
+              <Table
+                className={classes.table}
+                aria-labelledby='tableTitle'
+                size={dense ? 'small' : 'medium'}
+                aria-label='enhanced table'>
+                <EnhancedTableHead
+                  classes={classes}
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={handleSelectAllClick}
+                  onRequestSort={changeOrderBy}
+                  rowCount={rows.length}
+                  columnasMostradas={columnasMostradas}
+                />
+                <TableBody>
+                  {
+                    // stableSort(rows, getComparator(order, orderBy))
+                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    rows.map((row, index) => {
+                      const isItemSelected = isSelected(row.name);
+
+                      return (
+                        <TableRow
+                          hover
+                          // role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.id}
+                          selected={isItemSelected}
+                          className={classes.row}>
+                          {/* <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell> */}
 
-                      <TableCell align="center" className={classes.acciones}> 
-                        <Tooltip title={<IntlMessages id='boton.editar'/>}>
-                          <EditIcon onClick={()=>onOpenEditListaDocumento(row.id)} className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                        </Tooltip>
-                        <Tooltip title={<IntlMessages id='boton.ver'/>}>
-                          <VisibilityIcon onClick={()=>onOpenViewListaDocumento(row.id)} className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon> 
-                        </Tooltip>
-                        <Tooltip title={<IntlMessages id='boton.eliminar'/>}>
-                          <DeleteIcon  onClick={()=>onDeleteListaDocumento(row.id)} className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon> 
-                        </Tooltip>
-                      </TableCell>
+                          <TableCell
+                            align='center'
+                            className={classes.acciones}>
+                            <Tooltip title={<IntlMessages id='boton.editar' />}>
+                              <EditIcon
+                                onClick={() => onOpenEditListaDocumento(row.id)}
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                            </Tooltip>
+                            <Tooltip title={<IntlMessages id='boton.ver' />}>
+                              <VisibilityIcon
+                                onClick={() => onOpenViewListaDocumento(row.id)}
+                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                            </Tooltip>
+                            <Tooltip
+                              title={<IntlMessages id='boton.eliminar' />}>
+                              <DeleteIcon
+                                onClick={() => onDeleteListaDocumento(row.id)}
+                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
+                          </TableCell>
 
-                      {columnasMostradas.map((columna)=>{
-                        if(columna.mostrar){
-                          return(
-                            <MyCell 
-                              key={row.id + columna.id} 
-                              align={columna.align} 
-                              width={columna.width} 
-                              claseBase={classes.cell} 
-                              value={columna.value(row[columna.id])}
-                              cellColor={columna.cellColor?columna.cellColor(row[columna.id]):''}
-                            />                       
-                          )        
-                        } else {
-                          return(
-                            <th key={row.id + columna.id}></th>
-                          )
-                        }
-                                        
-                      })}
-                    </TableRow>
-                  );
-                })
-              }
-              {/* {emptyRows > 0 && (
+                          {columnasMostradas.map((columna) => {
+                            if (columna.mostrar) {
+                              return (
+                                <MyCell
+                                  key={row.id + columna.id}
+                                  align={columna.align}
+                                  width={columna.width}
+                                  claseBase={classes.cell}
+                                  value={columna.value(row[columna.id])}
+                                  cellColor={
+                                    columna.cellColor
+                                      ? columna.cellColor(row[columna.id])
+                                      : ''
+                                  }
+                                />
+                              );
+                            } else {
+                              return <th key={row.id + columna.id}></th>;
+                            }
+                          })}
+                        </TableRow>
+                      );
+                    })
+                  }
+                  {/* {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )} */}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        {/* <TablePagination
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* <TablePagination
           rowsPerPageOptions={rowsPerPageOptions}
           component="div"
           count={rows.length}
@@ -782,51 +907,59 @@ const ListaDocumento =  () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         /> */}
 
-        <Box className={classes.paginacion}>
-          <Box>
-            <p>{textoPaginacion}</p>
+            <Box className={classes.paginacion}>
+              <Box>
+                <p>{textoPaginacion}</p>
+              </Box>
+              <Box className={classes.paginacion}>
+                <select
+                  className={classes.rowsPerPageOptions}
+                  value={rowsPerPage}
+                  onChange={handleChangeRowsPerPage}>
+                  {rowsPerPageOptions.map((option) => {
+                    return (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    );
+                  })}
+                </select>
+                <Pagination
+                  showFirstButton
+                  showLastButton
+                  onChange={handleChangePage}
+                  count={ultima_pagina}
+                  page={page}
+                />
+              </Box>
+            </Box>
           </Box>
-          <Box className={classes.paginacion}>
-            <select className={classes.rowsPerPageOptions} value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-              {
-                rowsPerPageOptions.map((option)=>{
-                  return(<option key={option} value={option}>{option}</option>)
-                })
-              }
-            </select>
-            <Pagination
-            showFirstButton
-            showLastButton
-            onChange={handleChangePage}
-            count={ultima_pagina}
-            page={page}
-          />
+        ) : (
+          <Box
+            component='h2'
+            padding={4}
+            fontSize={19}
+            className={classes.marcoTabla}>
+            <IntlMessages id='sinResultados' />
           </Box>
-        </Box>
-        </>
-        :<Box
-          component='h2'
-          fontSize={19}
-        >
-          <IntlMessages id='sinResultados' />
-        </Box>
-      }
+        )}
       </Paper>
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
-      {showForm ?
-        <ListaDocumentoCreador 
+      {showForm ? (
+        <ListaDocumentoCreador
           showForm={showForm}
           listaDocumento={listaDocumentoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
         />
-        :""
-      }
+      ) : (
+        ''
+      )}
 
       <Popover
         id='popoverColumns'
@@ -840,19 +973,23 @@ const ListaDocumento =  () => {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'center',
-        }}
-      >
+        }}>
         <Box className={classes.popoverColumns}>
-          {columnasMostradas.map((column)=>{
-            return(
+          {columnasMostradas.map((column) => {
+            return (
               <FormControlLabel
-              key={column.id}
-              control={<Switch id={column.id} checked={column.mostrar} onChange={handleOnchangeMostrarColumna} />}
-              label={column.label}
+                key={column.id}
+                control={
+                  <Switch
+                    id={column.id}
+                    checked={column.mostrar}
+                    onChange={handleOnchangeMostrarColumna}
+                  />
+                }
+                label={column.label}
               />
-            )
-          })
-          }
+            );
+          })}
           <Box>
             <Button onClick={showAllColumns}>Mostrar Todos</Button>
             <Button onClick={reiniciarColumns}>Reiniciar Vista</Button>
@@ -861,8 +998,7 @@ const ListaDocumento =  () => {
       </Popover>
       {/* <MessageView variant='error' message='sss' /> */}
     </div>
-    
   );
-}
+};
 
 export default ListaDocumento;

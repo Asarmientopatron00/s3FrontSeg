@@ -24,16 +24,18 @@ const useStyles = makeStyles((theme) => ({
   },
   [theme.breakpoints.up('lg')]: {
     invoiceTable: {
-      '& > thead > tr > th, & > tbody > tr > th, & > tfoot > tr > th, & > thead > tr > td, & > tbody > tr > td, & > tfoot > tr > td': {
-        padding: 24,
-      },
+      '& > thead > tr > th, & > tbody > tr > th, & > tfoot > tr > th, & > thead > tr > td, & > tbody > tr > td, & > tfoot > tr > td':
+        {
+          padding: 24,
+        },
     },
   },
   [theme.breakpoints.up('xl')]: {
     invoiceTable: {
-      '& > thead > tr > th, & > tbody > tr > th, & > tfoot > tr > th, & > thead > tr > td, & > tbody > tr > td, & > tfoot > tr > td': {
-        padding: 32,
-      },
+      '& > thead > tr > th, & > tbody > tr > th, & > tfoot > tr > th, & > thead > tr > td, & > tbody > tr > td, & > tfoot > tr > td':
+        {
+          padding: 32,
+        },
     },
   },
   textUppercase: {

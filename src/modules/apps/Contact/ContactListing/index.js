@@ -4,7 +4,7 @@ import {useLocation} from 'react-router-dom';
 import {
   onDeleteContacts,
   onGetContactList,
-  onUpdateStarredStatus
+  onUpdateStarredStatus,
 } from '../../../../redux/actions/ContactApp';
 import ContactHeader from './ContactHeader';
 import ConfirmationDialog from '../../../../@crema/core/ConfirmationDialog';
@@ -138,10 +138,7 @@ const ContactListing = () => {
 
   return (
     <>
-    
-
-       <AppsHeader>
-        
+      <AppsHeader>
         <ContactHeader
           checkedContacts={checkedContacts}
           setCheckedContacts={setCheckedContacts}

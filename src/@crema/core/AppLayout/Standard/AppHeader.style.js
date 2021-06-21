@@ -8,12 +8,12 @@ const useStyles = makeStyles((theme) => ({
 
     [theme.breakpoints.up('sm')]: {
       minHeight: 70,
-      justifyContent:'space-between',
+      justifyContent: 'space-between',
     },
     [theme.breakpoints.up('md')]: {
       paddingLeft: 30,
       paddingRight: 30,
-      justifyContent:'flex-end',
+      justifyContent: 'flex-end',
     },
   },
   grow: {
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    backgroundColor:'#26426C',
+    backgroundColor: '#26426C',
     width: '100%',
     boxShadow: '4px 3px 4px 0px rgba(0,0,0,0.12)',
     [theme.breakpoints.up('lg')]: {

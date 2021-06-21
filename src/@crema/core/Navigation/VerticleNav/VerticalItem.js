@@ -15,10 +15,10 @@ const VerticalItem = ({level, item}) => {
   const {themeMode} = useContext(AppContext);
   const classes = useStyles({level, themeMode});
   const {user} = useSelector(({auth}) => auth);
-  const hasPermission = useMemo(() => checkPermission(item.auth, user.role), [
-    item.auth,
-    user.role,
-  ]);
+  const hasPermission = useMemo(
+    () => checkPermission(item.auth, user.role),
+    [item.auth, user.role],
+  );
   if (!hasPermission) {
     return null;
   }

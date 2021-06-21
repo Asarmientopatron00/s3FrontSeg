@@ -92,31 +92,22 @@ const ContactListItem = ({
         key={contact.id}
         className={clsx(classes.root, 'item-hover', {
           rootCheck: checkedContacts.includes(contact.id),
-        })}
-      >
+        })}>
         <Box
           component='span'
           ml='auto'
           mr={{xl: 2}}
           display='flex'
           alignItems='center'
-          flex={1}
-        >  
-          <EditIcon
-            className={classes.labelIconRoot}
-          />
-          <VisibilityIcon 
+          flex={1}>
+          <EditIcon className={classes.labelIconRoot} />
+          <VisibilityIcon
             onClick={() => onViewContactDetail(contact)}
-            className={classes.visibilityIcon} 
+            className={classes.visibilityIcon}
           />
           <DeleteIcon className={classes.deleteIcon} />
         </Box>
-        <Box
-          mr={4}
-          fontWeight={Fonts.MEDIUM}
-          component='span'
-          flex={1}
-        >
+        <Box mr={4} fontWeight={Fonts.MEDIUM} component='span' flex={1}>
           {contact.id}
         </Box>
 
@@ -124,8 +115,7 @@ const ContactListItem = ({
           component='span'
           mr={4}
           flex={1}
-          display={{xs: 'none', sm: 'block'}}
-        >
+          display={{xs: 'none', sm: 'block'}}>
           {contact.nombre}
         </Box>
 
@@ -133,9 +123,24 @@ const ContactListItem = ({
           component='span'
           mr={4}
           flex={1}
-          display={{xs: 'none', md: 'block'}}
-        >
-          {contact.nombre_departamento ? contact.nombre_departamento:''}
+          display={{xs: 'none', md: 'block'}}>
+          {contact.nombre_departamento ? contact.nombre_departamento : ''}
+        </Box>
+
+        <Box
+          component='span'
+          mr={4}
+          flex={1}
+          display={{xs: 'none', md: 'block'}}>
+          {contact.nombre_ciudad ? contact.nombre_ciudad : ''}
+        </Box>
+
+        <Box
+          component='span'
+          mr={4}
+          flex={1}
+          display={{xs: 'none', md: 'block'}}>
+          {contact.nombre_asociado ? contact.nombre_asociado : ''}
         </Box>
 
         <Box
@@ -143,8 +148,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-        >
-          {contact.nombre_ciudad?contact.nombre_ciudad:''}
+          className={classes.truncate}>
+          {contact.codigo_dian ? contact.codigo_dian : ''}
         </Box>
 
         <Box
@@ -152,8 +157,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-        >
-          {contact.nombre_asociado ? contact.nombre_asociado: ''}
+          className={classes.truncate}>
+          {contact.geocerca_id ? contact.geocerca_id : ''}
         </Box>
 
         <Box
@@ -161,9 +166,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.codigo_dian ? contact.codigo_dian: ''}
+          className={classes.truncate}>
+          {contact.geocerca_superior_id ? contact.geocerca_superior_id : ''}
         </Box>
 
         <Box
@@ -171,9 +175,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.geocerca_id ? contact.geocerca_id: ''}
+          className={classes.truncate}>
+          {contact.lugar_unico_asociado ? contact.lugar_unico_asociado : ''}
         </Box>
 
         <Box
@@ -181,9 +184,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.geocerca_superior_id ? contact.geocerca_superior_id: ''}
+          className={classes.truncate}>
+          {contact.observaciones ? contact.observaciones : ''}
         </Box>
 
         <Box
@@ -191,9 +193,8 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.lugar_unico_asociado ? contact.lugar_unico_asociado: ''}
+          className={classes.truncate}>
+          {contact.estado ? contact.estado : ''}
         </Box>
 
         <Box
@@ -201,9 +202,10 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.observaciones ? contact.observaciones: ''}
+          className={classes.truncate}>
+          {contact.usuario_modificacion_nombre
+            ? contact.usuario_modificacion_nombre
+            : ''}
         </Box>
 
         <Box
@@ -211,32 +213,9 @@ const ContactListItem = ({
           mr={4}
           flex={1}
           display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.estado ? contact.estado: ''}
+          className={classes.truncate}>
+          {contact.fecha_modificacion ? contact.fecha_modificacion : ''}
         </Box>
-
-        <Box
-          component='span'
-          mr={4}
-          flex={1}
-          display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.usuario_modificacion_nombre ? contact.usuario_modificacion_nombre: ''}
-        </Box>
-
-        <Box
-          component='span'
-          mr={4}
-          flex={1}
-          display={{xs: 'none', md: 'block'}}
-          className={classes.truncate}
-        >
-          {contact.fecha_modificacion ? contact.fecha_modificacion: ''}
-        </Box>
-
-        
       </ListItem>
     </>
   );

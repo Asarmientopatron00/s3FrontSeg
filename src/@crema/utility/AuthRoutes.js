@@ -15,13 +15,8 @@ const AuthRoutes = ({children}) => {
   const {pathname, search} = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
-  const {
-    routes,
-    changeNavStyle,
-    updateThemeStyle,
-    updateThemeMode,
-    setRTL,
-  } = useContext(AppContext);
+  const {routes, changeNavStyle, updateThemeStyle, updateThemeMode, setRTL} =
+    useContext(AppContext);
 
   const [loading, user] = useAuthToken();
   const initialPath = useSelector(({settings}) => settings.initialPath);
@@ -39,10 +34,13 @@ const AuthRoutes = ({children}) => {
           '/reset-password',
           '/error-pages/error-404',
           '/forget-password',
-        ].indexOf(pathname) === -1
-        && pathname.search('/signin')===-1 && pathname.search('/signup')===-1 
-        && pathname.search('/confirm-signup')===-1 && pathname.search('/reset-password')===-1 
-        && pathname.search('/forget-password')===-1 && pathname.search('/error-pages/error-404')===-1 
+        ].indexOf(pathname) === -1 &&
+        pathname.search('/signin') === -1 &&
+        pathname.search('/signup') === -1 &&
+        pathname.search('/confirm-signup') === -1 &&
+        pathname.search('/reset-password') === -1 &&
+        pathname.search('/forget-password') === -1 &&
+        pathname.search('/error-pages/error-404') === -1
       ) {
         if (isPermitted) {
           dispatch(setInitialPath(pathname));

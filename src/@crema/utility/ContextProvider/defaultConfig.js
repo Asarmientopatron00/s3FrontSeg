@@ -18,12 +18,12 @@ const defaultConfig = {
     direction: 'ltr', //ltr, rtl
     palette: {
       type: ThemeMode.LIGHT,
-      grayBottoms:'#999',
-      redBottoms:'#be1e2d',
-      colorHover:'#4992de',
+      grayBottoms: '#999',
+      redBottoms: '#be1e2d',
+      colorHover: '#4992de',
       background: {
         paper: '#fff',
-        default: '#fff',
+        default: '#f4f7fe',
       },
       primary: {
         main: '#26426C',
@@ -35,13 +35,13 @@ const defaultConfig = {
       sidebar: {
         bgColor: '#26426C',
         textColor: '#FFFFFF',
-        fontSize:'14px',
-        fontWeight:'600',
+        fontSize: '14px',
+        fontWeight: '600',
       },
       gray: {
         50: '#fafafa',
         100: '#f7fafc',
-        200: '#edf2f7',
+        200: '#f4f7fe',
         300: '#E0E0E0',
         400: '#c5c6cb',
         500: '#A8A8A8',

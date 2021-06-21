@@ -291,32 +291,28 @@ const academyData = {
       id: 1,
       icon: '/assets/images/dashboard/academy/learning1.png',
       title: 'Target Audience Learning',
-      desc:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       percentage: 57,
     },
     {
       id: 2,
       icon: '/assets/images/dashboard/academy/learning2.png',
       title: 'The Complete Web',
-      desc:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       percentage: 43,
     },
     {
       id: 3,
       icon: '/assets/images/dashboard/academy/learning3.png',
       title: 'Grow your community',
-      desc:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       percentage: 77,
     },
     {
       id: 4,
       icon: '/assets/images/dashboard/academy/learning1.png',
       title: 'Target Audience Learning',
-      desc:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       percentage: 57,
     },
   ],
@@ -453,16 +449,14 @@ const academyData = {
       {
         id: 1,
         title: 'Collecting Moodboard from dribble.com',
-        desc:
-          'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+        desc: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
         students: 32,
         daysLeft: 1,
       },
       {
         id: 2,
         title: 'Creating beautiful landing page',
-        desc:
-          'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+        desc: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
         students: 12,
         daysLeft: 2,
       },

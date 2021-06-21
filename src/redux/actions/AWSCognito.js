@@ -174,7 +174,7 @@ export const onChangePasswordFirstTime = ({email, password}, user) => {
 
 export const onResetCognitoPassword = (email, history) => {
   return (dispatch) => {
-    const params = {email:email}
+    const params = {email: email};
     dispatch({type: FETCH_START});
     Api.post('http://solicitudesservicio.test/api/forgot-password', params)
       .then((data) => {
@@ -182,28 +182,34 @@ export const onResetCognitoPassword = (email, history) => {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: SHOW_MESSAGE,
-            payload:data.data.mensajes,
+            payload: data.data.mensajes,
           });
           // history.push('/reset-password', {email: email});
           history.push('/signin');
         } else {
-          dispatch({type: FETCH_ERROR, payload:data.mensajes});
+          dispatch({type: FETCH_ERROR, payload: data.mensajes});
         }
       })
       .catch(function (error) {
-        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
 
-export const onSetNewCognitoPassword = (token,email,password,password_confirmation,history) => {
+export const onSetNewCognitoPassword = (
+  token,
+  email,
+  password,
+  password_confirmation,
+  history,
+) => {
   return (dispatch) => {
     const params = {
-      token:token,
-      email:email,
-      password:password,
-      password_confirmation:password_confirmation,
-    }
+      token: token,
+      email: email,
+      password: password,
+      password_confirmation: password_confirmation,
+    };
     dispatch({type: FETCH_START});
     Api.post('http://solicitudesservicio.test/api/reset-password', params)
       .then((data) => {
@@ -211,15 +217,15 @@ export const onSetNewCognitoPassword = (token,email,password,password_confirmati
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: SHOW_MESSAGE,
-            payload:data.data.mensajes,
+            payload: data.data.mensajes,
           });
           history.push('/signin');
         } else {
-          dispatch({type: FETCH_ERROR, payload:data.mensajes});
+          dispatch({type: FETCH_ERROR, payload: data.mensajes});
         }
       })
       .catch(function (error) {
-        dispatch({type: FETCH_ERROR, payload:error.response.data.mensajes[0]});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };

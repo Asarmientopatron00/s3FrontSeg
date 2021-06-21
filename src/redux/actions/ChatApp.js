@@ -87,9 +87,10 @@ export const onSendMessage = (channelId, message) => {
                   ...data.data,
                   userMessages: {
                     ...data.userMessages,
-                    messageData: getState().chatApp.userMessages.messageData.concat(
-                      data.data.userMessages.messageData,
-                    ),
+                    messageData:
+                      getState().chatApp.userMessages.messageData.concat(
+                        data.data.userMessages.messageData,
+                      ),
                   },
                 },
               },

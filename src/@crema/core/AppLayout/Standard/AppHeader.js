@@ -30,9 +30,6 @@ const AppHeader = () => {
     setMobileMoreAnchorEl(null);
   }
 
-
-  
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
