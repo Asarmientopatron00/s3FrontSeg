@@ -107,6 +107,13 @@ export const SHOW_EVENTO_NOTIFICACION = 'show_evento_notificacion';
 export const UPDATE_EVENTO_NOTIFICACION = 'update_evento_notificacion';
 export const CREATE_EVENTO_NOTIFICACION = 'create_evento_notificacion';
 export const DELETE_EVENTO_NOTIFICACION = 'delete_evento_notificacion';
+export const GET_COLECCION_PARAMETRO_CORREO = 'get_coleccion_parametro_correo';
+export const GET_COLECCION_LIGERA_PARAMETRO_CORREO =
+  'get_coleccion_ligera_parametro_correo';
+export const SHOW_PARAMETRO_CORREO = 'show_parametro_correo';
+export const UPDATE_PARAMETRO_CORREO = 'update_parametro_correo';
+export const CREATE_PARAMETRO_CORREO = 'create_parametro_correo';
+export const DELETE_PARAMETRO_CORREO = 'delete_parametro_correo';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

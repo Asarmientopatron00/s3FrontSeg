@@ -51,6 +51,7 @@ const ServicioForm = (props) => {
       [theme.breakpoints.up('xl')]: {
         marginBottom: 24,
       },
+      height: '70px',
     },
     MySelectField: {
       width: 'auto',

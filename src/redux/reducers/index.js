@@ -20,6 +20,7 @@ import CiudadReducer from './CiudadReducer';
 import ServicioReducer from './ServicioReducer';
 import TerceroServicioReducer from './TerceroServicioReducer';
 import EventoNotificacionReducer from './EventoNotificacionReducer';
+import ParametroCorreoReducer from './ParametroCorreoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -44,5 +45,6 @@ const reducers = (history) =>
     servicioReducer: ServicioReducer,
     terceroServicioReducer: TerceroServicioReducer,
     eventoNotificacionReducer: EventoNotificacionReducer,
+    parametroCorreoReducer: ParametroCorreoReducer,
   });
 export default reducers;

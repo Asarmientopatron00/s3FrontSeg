@@ -50,6 +50,14 @@ export const configuracionConfig = [
         path: ['/configuracion/eventos-notificacion'],
         component: React.lazy(() => import('./EventoNotificacion')),
       },
+      {
+        path: ['/configuracion/eventos-notificacion'],
+        component: React.lazy(() => import('./EventoNotificacion')),
+      },
+      {
+        path: ['/configuracion/parametros-correos'],
+        component: React.lazy(() => import('./ParametroCorreo')),
+      },
     ],
   },
 ];

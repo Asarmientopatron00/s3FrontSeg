@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ListaDocumentoCreador from './ListaDocumentoCreador';
+import ParametroCorreoCreador from './ParametroCorreoCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/ListaDocumentoAction';
+} from '../../../redux/actions/ParametroCorreoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,8 +38,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_LISTAS_DOCUMENTOS} from './../../../shared/constants/ListasValores';
-import MenuItem from '@material-ui/core/MenuItem';
+import parse from 'html-react-parser';
 
 // import {MessageView} from '../../../@crema';
 
@@ -71,17 +70,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const cells = [
   {
-    id: 'tipo',
-    typeHead: 'string',
-    label: 'Tipo',
-    value: (value) =>
-      TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento) =>
-        tipoDocumento.id === value ? tipoDocumento.value : '',
-      ),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
     id: 'nombre',
     typeHead: 'string',
     label: 'Nombre',
@@ -90,11 +78,27 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'obligatorio',
-    typeHead: 'boolean',
-    label: 'Obligatorio',
-    value: (value) => (value === 'S' ? 'Si' : 'No'),
-    align: 'center',
+    id: 'asunto',
+    typeHead: 'string',
+    label: 'Asunto',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'texto',
+    typeHead: 'string',
+    label: 'Cuerpo Correo',
+    value: (value) => parse(value),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'parametros',
+    typeHead: 'string',
+    label: 'Parámetros',
+    value: (value) => value,
+    align: 'left',
     mostrarInicio: true,
   },
   {
@@ -299,7 +303,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '4fr 4fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: '20px',
   },
   pairFilters: {
@@ -314,11 +318,10 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    onOpenAddListaDocumento,
+    onOpenAddParametroCorreo,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
-    tipoFiltro,
     limpiarFiltros,
   } = props;
   return (
@@ -342,9 +345,8 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='configuracion.listasDocumentos' />
+              <IntlMessages id='configuracion.parametrosCorreos' />
             </Typography>
-
             <Box className={classes.horizontalBottoms}>
               <Tooltip
                 title='Mostrar/Ocultar Columnas'
@@ -356,8 +358,8 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title='Crear Lista de Documento'
-                onClick={onOpenAddListaDocumento}>
+                title='Crear Parámetro Correo'
+                onClick={onOpenAddParametroCorreo}>
                 <IconButton
                   className={classes.createButton}
                   aria-label='filter list'>
@@ -374,25 +376,6 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={nombreFiltro}
             />
-            <TextField
-              label='Tipo'
-              name='tipofiltro'
-              id='tipoFiltro'
-              select={true}
-              onChange={queryFilter}
-              value={tipoFiltro}>
-              {TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento) => {
-                return (
-                  <MenuItem
-                    value={tipoDocumento.id}
-                    key={tipoDocumento.id}
-                    id={tipoDocumento.id}
-                    className={classes.pointer}>
-                    {tipoDocumento.value}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -419,10 +402,10 @@ const EnhancedTableToolbar = (props) => {
           ''
         )
         //  <Tooltip title="Filtros Avanzados">
-        //   <IconButton aria-label="filter list">
-        //     <FilterListIcon />
-        //   </IconButton>
-        // </Tooltip>
+        //       <IconButton aria-label="filter list">
+        //         <FilterListIcon />
+        //       </IconButton>
+        //     </Tooltip>
       }
     </Toolbar>
   );
@@ -522,7 +505,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListaDocumento = () => {
+const ParametroCorreo = () => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -537,14 +520,13 @@ const ListaDocumento = () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [listaDocumentoSeleccionado, setListaDocumentoSeleccionado] =
+  const [parametroCorreoSeleccionado, setParametroCorreoSeleccionado] =
     useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({listaDocumentoReducer}) => listaDocumentoReducer,
+    ({parametroCorreoReducer}) => parametroCorreoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setNombreFiltro] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -576,48 +558,21 @@ const ListaDocumento = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        tipoFiltro,
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    nombreFiltro,
-    orderByToSend,
-    showForm,
-    tipoFiltro,
-  ]);
+    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        tipoFiltro,
-      ),
-    );
+    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, tipoFiltro, orderByToSend]);
+  }, [nombreFiltro, orderByToSend]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'nombreFiltro':
         setNombreFiltro(e.target.value);
-        break;
-      case 'tipofiltro':
-        setTipoFiltro(e.target.value);
         break;
       default:
         break;
@@ -626,7 +581,6 @@ const ListaDocumento = () => {
 
   const limpiarFiltros = () => {
     setNombreFiltro('');
-    setTipoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -645,8 +599,8 @@ const ListaDocumento = () => {
     }
   };
 
-  const onOpenEditListaDocumento = (id) => {
-    setListaDocumentoSeleccionado(id);
+  const onOpenEditParametroCorreo = (id) => {
+    setParametroCorreoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -687,16 +641,16 @@ const ListaDocumento = () => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewListaDocumento = (id) => {
-    setListaDocumentoSeleccionado(id);
+  const onOpenViewParametroCorreo = (id) => {
+    setParametroCorreoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteListaDocumento = (id) => {
+  const onDeleteParametroCorreo = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar La Lista De Documento?',
+      text: '¿Seguro Que Desea Eliminar El Parámetro Correo?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -709,7 +663,7 @@ const ListaDocumento = () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'La Lista De Documento Fue Eliminado Correctamente',
+          'El Parámetro Correo Fue Eliminado Correctamente',
           'success',
         );
         setTimeout(() => {
@@ -719,15 +673,15 @@ const ListaDocumento = () => {
     });
   };
 
-  const onOpenAddListaDocumento = () => {
-    setListaDocumentoSeleccionado(0);
+  const onOpenAddParametroCorreo = () => {
+    setParametroCorreoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setListaDocumentoSeleccionado(0);
+    setParametroCorreoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -775,12 +729,11 @@ const ListaDocumento = () => {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
-          onOpenAddListaDocumento={onOpenAddListaDocumento}
+          onOpenAddParametroCorreo={onOpenAddParametroCorreo}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           queryFilter={queryFilter}
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
-          tipoFiltro={tipoFiltro}
         />
         {showTable ? (
           <Box className={classes.marcoTabla}>
@@ -855,18 +808,22 @@ const ListaDocumento = () => {
                             className={classes.acciones}>
                             <Tooltip title={<IntlMessages id='boton.editar' />}>
                               <EditIcon
-                                onClick={() => onOpenEditListaDocumento(row.id)}
+                                onClick={() =>
+                                  onOpenEditParametroCorreo(row.id)
+                                }
                                 className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                             </Tooltip>
                             <Tooltip title={<IntlMessages id='boton.ver' />}>
                               <VisibilityIcon
-                                onClick={() => onOpenViewListaDocumento(row.id)}
+                                onClick={() =>
+                                  onOpenViewParametroCorreo(row.id)
+                                }
                                 className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                             </Tooltip>
                             <Tooltip
                               title={<IntlMessages id='boton.eliminar' />}>
                               <DeleteIcon
-                                onClick={() => onDeleteListaDocumento(row.id)}
+                                onClick={() => onDeleteParametroCorreo(row.id)}
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                             </Tooltip>
                           </TableCell>
@@ -956,9 +913,9 @@ const ListaDocumento = () => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <ListaDocumentoCreador
+        <ParametroCorreoCreador
           showForm={showForm}
-          listaDocumento={listaDocumentoSeleccionado}
+          parametroCorreo={parametroCorreoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -1007,4 +964,4 @@ const ListaDocumento = () => {
   );
 };
 
-export default ListaDocumento;
+export default ParametroCorreo;

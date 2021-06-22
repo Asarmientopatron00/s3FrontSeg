@@ -85,6 +85,13 @@ const routesConfig = [
         type: 'item',
         url: '/configuracion/eventos-notificacion',
       },
+      {
+        id: 'parametros-correos',
+        title: 'configuracion.parametrosCorreos',
+        messageId: 'configuracion.parametrosCorreos',
+        type: 'item',
+        url: '/configuracion/parametros-correos',
+      },
     ],
   },
   {

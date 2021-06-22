@@ -9,6 +9,8 @@ import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -23,7 +25,7 @@ const MyTextField = (props) => {
   );
 };
 
-const PaisForm = (props) => {
+const ParametroCorreoForm = (props) => {
   const {handleOnClose, accion, values, initialValues} = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -52,6 +54,9 @@ const PaisForm = (props) => {
         marginBottom: 24,
       },
       height: '70px',
+    },
+    myTextFieldHidden: {
+      width: '100%',
     },
     MySelectField: {
       width: 'auto',
@@ -98,7 +103,7 @@ const PaisForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.paises' />
+            <IntlMessages id='configuracion.parametrosCorreos' />
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
@@ -112,20 +117,38 @@ const PaisForm = (props) => {
 
             <MyTextField
               className={classes.myTextField}
-              label='Código Externo'
-              name='codigo_externo'
+              label='Asunto'
+              name='asunto'
               disabled={disabled}
               required
-              inputProps={{maxLength: 3}}
+            />
+
+            <Box component='h6' mb={3}>
+              Cuerpo Correo*
+            </Box>
+            <CKEditor
+              editor={ClassicEditor}
+              data={values.texto}
+              onChange={(event, editor) => {
+                values.texto = editor.getData();
+                console.log(editor.getData());
+              }}
+            />
+            <MyTextField
+              className={classes.myTextFieldHidden}
+              label=''
+              id='texto'
+              name='texto'
+              disabled={disabled}
+              required
+              type='hidden'
             />
 
             <MyTextField
               className={classes.myTextField}
-              label='Geocerca Id'
-              name='geocerca_id'
+              label='Parámetros'
+              name='parametros'
               disabled={disabled}
-              required
-              inputProps={{maxLength: 2}}
             />
 
             <FormControl className={classes.widthFull} component='fieldset'>
@@ -178,4 +201,4 @@ const PaisForm = (props) => {
   );
 };
 
-export default PaisForm;
+export default ParametroCorreoForm;

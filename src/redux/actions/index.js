@@ -25,3 +25,4 @@ export * from './CiudadAction';
 export * from './ServicioAction';
 export * from './TerceroServicioAction';
 export * from './EventoNotificacionAction';
+export * from './ParametroCorreoAction';
