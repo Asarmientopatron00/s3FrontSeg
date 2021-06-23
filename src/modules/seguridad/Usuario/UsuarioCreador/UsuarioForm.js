@@ -180,7 +180,8 @@ const UsuarioForm = (props) => {
                   <MenuItem
                     value={asociado.id}
                     key={asociado.id}
-                    className={classes.pointer}>
+                    className={classes.pointer}
+                    style={asociado.estado === 0 ? {display: 'none'} : {}}>
                     {asociado.nombre}
                   </MenuItem>
                 );

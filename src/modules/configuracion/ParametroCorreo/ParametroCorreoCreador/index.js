@@ -109,7 +109,7 @@ const ParametroCorreoCreator = (props) => {
               nombre: selectedRow ? selectedRow.nombre : '',
               asunto: selectedRow ? selectedRow.asunto : '',
               texto: selectedRow ? selectedRow.texto : '',
-              parametro: selectedRow ? selectedRow.parametro : '',
+              parametros: selectedRow ? selectedRow.parametros : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'

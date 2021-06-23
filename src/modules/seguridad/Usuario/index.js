@@ -26,7 +26,7 @@ import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import UsuarioCreador from './UsuarioCreador';
 import {onGetColeccion, onDelete} from '../../../redux/actions/UsuarioAction';
-import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../redux/actions/Asociado';
+import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../redux/actions/AsociadoAction';
 import {onGetColeccionLigera as rolColeccionLigera} from '../../../redux/actions/RolAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -460,7 +460,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '4px',
     paddingLeft: '15px',
     paddingRight: '15px',
-    marginTop: '30px',
+    marginTop: '15px',
   },
   root: {
     width: '100%%',
@@ -603,7 +603,7 @@ const Usuarios = () => {
     dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
   }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
 
-  const asociados = useSelector(({asociado}) => asociado.ligera);
+  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
   useEffect(() => {
     dispatch(asociadoColeccionLigera());
   }, [dispatch]);

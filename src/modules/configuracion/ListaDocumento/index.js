@@ -435,7 +435,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '4px',
     paddingLeft: '15px',
     paddingRight: '15px',
-    marginTop: '30px',
+    marginTop: '15px',
   },
   root: {
     width: '100%%',

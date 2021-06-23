@@ -10,14 +10,13 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import {TIPOS_TERCEROS} from './../../../../shared/constants/ListasValores';
 import MenuItem from '@material-ui/core/MenuItem';
 import {
-  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
-} from './../../../../shared/constants/Constantes';
+} from '../../../../shared/constants/Constantes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -65,8 +64,6 @@ const TerceroServicioForm = (props) => {
     values,
     initialValues,
     tiposDocumentos,
-    departamentos,
-    ciudades,
     onChangeDepartamento,
   } = props;
 
@@ -151,7 +148,6 @@ const TerceroServicioForm = (props) => {
     MySelectField: {
       width: 'auto',
       marginBottom: 16,
-
       [theme.breakpoints.up('xl')]: {
         marginBottom: 24,
       },
@@ -200,30 +196,12 @@ const TerceroServicioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.terceroServicio' />
+            <IntlMessages id='asociados' /> <span> - </span>
+            <IntlMessages id='asociados.datosBasicos' />
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box className={classes.inputs_2}>
-              <MyTextField
-                className={classes.myTextField}
-                label='Tipo de Tercero'
-                name='tipo'
-                disabled={disabled}
-                select={true}
-                required>
-                {TIPOS_TERCEROS.map((tipoTercero) => {
-                  return (
-                    <MenuItem
-                      value={tipoTercero.id}
-                      key={tipoTercero.id}
-                      className={classes.pointer}>
-                      {tipoTercero.value}
-                    </MenuItem>
-                  );
-                })}
-              </MyTextField>
-
+            <Box className={classes.inputs_2} minHeight='80px'>
               <MyRadioField
                 label='Tipo de Persona'
                 className={classes.MyRadioField}
@@ -235,7 +213,9 @@ const TerceroServicioForm = (props) => {
                   {value: 'J', label: 'Jurídica'},
                 ]}
               />
+            </Box>
 
+            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Tipo de Documento'
@@ -320,146 +300,68 @@ const TerceroServicioForm = (props) => {
               ) : (
                 ''
               )}
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Departamento'
-                name='departamento_id'
-                disabled={disabled}
-                select={true}
-                required>
-                {departamentos.map((departamento) => {
-                  return (
-                    <MenuItem
-                      value={departamento.id}
-                      key={departamento.id}
-                      className={classes.pointer}
-                      style={
-                        departamento.estado === 0 ? {display: 'none'} : {}
-                      }>
-                      {departamento.nombre}
-                    </MenuItem>
-                  );
-                })}
-              </MyTextField>
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Ciudad'
-                name='ciudad_id'
-                disabled={disabled}
-                select={true}
-                required>
-                {ciudades.map((ciudad) => {
-                  return (
-                    <MenuItem
-                      value={ciudad.id}
-                      key={ciudad.id}
-                      className={classes.pointer}
-                      style={ciudad.estado === 0 ? {display: 'none'} : {}}>
-                      {ciudad.nombre}
-                    </MenuItem>
-                  );
-                })}
-              </MyTextField>
             </Box>
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Dirección'
-              name='direccion'
-              disabled={disabled}
-              required
-            />
+            <Box component='h6' fontSize={16} fontWeight={Fonts.MEDIUM}>
+              Contacto
+            </Box>
 
             <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
-                label='Teléfono'
-                name='telefono'
+                label='Identificación Usuario'
+                name='identificacion_usuario'
                 disabled={disabled}
                 required
-                inputProps={{
-                  maxLength: LONGITUD_MAXIMA_TELEFONOS,
-                  minLength: LONGITUD_MINIMA_TELEFONOS,
-                }}
+              />
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Nombre Completo'
+                name='nombre_usuario'
+                disabled={disabled}
+                required
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Cargo'
+                name='cargo_usuario'
+                disabled={disabled}
+                required
               />
 
               <MyTextField
                 className={classes.myTextField}
                 label='Celular'
-                name='celular'
+                name='celular_usuario'
                 disabled={disabled}
                 inputProps={{
                   maxLength: LONGITUD_MAXIMA_TELEFONOS,
                   minLength: LONGITUD_MINIMA_TELEFONOS,
                 }}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Correo Electrónico'
-                name='email'
-                disabled={disabled}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Página Web'
-                name='pagina_web'
-                disabled={disabled}
-              />
-            </Box>
-
-            <Box component='h6' fontSize={16} fontWeight={Fonts.MEDIUM}>
-              Contacto de Servicio
-            </Box>
-
-            <Box className={classes.inputs_2}>
-              <MyTextField
-                className={classes.myTextField}
-                label='Nombre'
-                name='nombre_contacto'
-                disabled={disabled}
                 required
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Cargo'
-                name='cargo_contacto'
-                disabled={disabled}
               />
 
               <MyTextField
                 className={classes.myTextField}
                 label='Correo electrónico'
-                name='email_contacto'
-                disabled={disabled}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Telefono'
-                name='telefono_contacto'
+                name='email_usuario'
                 disabled={disabled}
                 required
-                inputProps={{
-                  maxLength: LONGITUD_MAXIMA_TELEFONOS,
-                  minLength: LONGITUD_MINIMA_TELEFONOS,
-                }}
               />
 
-              <MyTextField
-                className={classes.myTextField}
-                label='Celular'
-                name='celular_contacto'
-                disabled={disabled}
-                inputProps={{
-                  maxLength: LONGITUD_MAXIMA_TELEFONOS,
-                  minLength: LONGITUD_MINIMA_TELEFONOS,
-                }}
-              />
+              {accion === 'crear' ? (
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Contraseña'
+                  name='clave'
+                  disabled={disabled}
+                  required
+                  type='password'
+                />
+              ) : (
+                ''
+              )}
 
               <FormControl className={classes.widthFull} component='fieldset'>
                 <FormLabel component='legend'>Estado*</FormLabel>

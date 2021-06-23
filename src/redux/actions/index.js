@@ -12,7 +12,7 @@ export * from './Setting';
 export * from './JWTAuth';
 export * from './Wall';
 export * from './UsuarioAction';
-export * from './Asociado';
+export * from './AsociadoAction';
 export * from './RolAction';
 export * from './TipoDocumentoAction';
 export * from './PaisAction';

@@ -117,6 +117,22 @@ const routesConfig = [
       },
     ],
   },
+  {
+    id: 'asociados',
+    title: 'asociados',
+    messageId: 'asociados',
+    type: 'collapse',
+    icon: 'peopleIcon',
+    children: [
+      {
+        id: 'datos-basicos',
+        title: 'asociados.datosBasicos',
+        messageId: 'asociados.datosBasicos',
+        type: 'item',
+        url: '/asociados/datos-basicos',
+      },
+    ],
+  },
 
   // {
   //   id: 'app',

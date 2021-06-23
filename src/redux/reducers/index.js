@@ -6,7 +6,7 @@ import Auth from './Auth';
 import Common from './Common';
 import UsuarioReducer from './UsuarioReducer';
 import ContactApp from './ContactApp';
-import Asociado from './Asociado';
+import AsociadoReducer from './AsociadoReducer';
 import RolReducer from './RolReducer';
 import Close from './Close';
 import PaisReducer from './PaisReducer';
@@ -31,7 +31,7 @@ const reducers = (history) =>
     common: Common,
     contactApp: ContactApp,
     usuarioReducer: UsuarioReducer,
-    asociado: Asociado,
+    asociadoReducer: AsociadoReducer,
     close: Close,
     tipoDocumentoReducer: TipoDocumentoReducer,
     paisReducer: PaisReducer,

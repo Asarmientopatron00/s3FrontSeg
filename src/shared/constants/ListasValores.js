@@ -30,3 +30,9 @@ export const TIPOS_TERCEROS = [
   {id: 'AS', value: 'Aseguradora'},
   {id: 'GC', value: 'Generador de Carga'},
 ];
+
+export const ESTADOS_PROCESO_ASOCIADOS = [
+  {id: 'REG', value: 'REGISTRADO'},
+  {id: 'APR', value: 'APROBADO'},
+  {id: 'ACT', value: 'ACTIVO'},
+];

@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ParametroCorreoCreador from './ParametroCorreoCreador';
+import AsociadoDatoBasicoCreador from './AsociadoDatoBasicoCreador';
 import {
-  onGetColeccion,
+  onGetColeccionDatosBasicos,
   onDelete,
-} from '../../../redux/actions/ParametroCorreoAction';
+} from '../../../redux/actions/AsociadoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,7 +38,9 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import parse from 'html-react-parser';
+import {ESTADOS_PROCESO_ASOCIADOS} from './../../../shared/constants/ListasValores';
+
+// import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
 
@@ -70,6 +72,30 @@ import parse from 'html-react-parser';
 
 const cells = [
   {
+    id: 'nombre_tipo_documento',
+    typeHead: 'string',
+    label: 'Tipo Documento',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'numero_documento',
+    typeHead: 'numeric',
+    label: 'Documento',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'tipo_persona',
+    typeHead: 'string',
+    label: 'Tipo Persona',
+    value: (value) => (value === 'N' ? 'Natural' : 'Jurídica'),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'nombre',
     typeHead: 'string',
     label: 'Nombre',
@@ -78,26 +104,53 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'asunto',
-    typeHead: 'string',
-    label: 'Asunto',
+    id: 'identificacion_usuario',
+    typeHead: 'numeric',
+    label: 'Identificación Usuario',
     value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
+    align: 'right',
+    mostrarInicio: false,
   },
   {
-    id: 'texto',
+    id: 'nombre_usuario',
     typeHead: 'string',
-    label: 'Cuerpo Correo',
-    value: (value) => parse(value),
+    label: 'Nombre Usuario',
+    value: (value) => value,
     align: 'left',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
-    id: 'parametros',
+    id: 'cargo_usuario',
     typeHead: 'string',
-    label: 'Parámetros',
+    label: 'Cargo',
     value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'numero_celular',
+    typeHead: 'string',
+    label: 'Número Celular',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'email_usuario',
+    typeHead: 'string',
+    label: 'Correo Electrónico',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'estado_proceso_asociado',
+    typeHead: 'string',
+    label: 'Estado Proceso',
+    value: (value) =>
+      ESTADOS_PROCESO_ASOCIADOS.map((estado) =>
+        estado.id === value ? estado.value : '',
+      ),
     align: 'left',
     mostrarInicio: true,
   },
@@ -303,7 +356,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '4fr 4fr 1fr',
     gap: '20px',
   },
   pairFilters: {
@@ -318,10 +371,11 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    onOpenAddParametroCorreo,
+    onOpenAddAsociadoDatoBasico,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
+    numeroDocumentoFiltro,
     limpiarFiltros,
   } = props;
   return (
@@ -345,7 +399,8 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='configuracion.parametrosCorreos' />
+              <IntlMessages id='asociados' /> <span> - </span>
+              <IntlMessages id='asociados.datosBasicos' />
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -358,8 +413,8 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title='Crear Parámetro Correo'
-                onClick={onOpenAddParametroCorreo}>
+                title='Crear Asociado'
+                onClick={onOpenAddAsociadoDatoBasico}>
                 <IconButton
                   className={classes.createButton}
                   aria-label='filter list'>
@@ -375,6 +430,13 @@ const EnhancedTableToolbar = (props) => {
               id='nombreFiltro'
               onChange={queryFilter}
               value={nombreFiltro}
+            />
+            <TextField
+              label='Número Documento'
+              name='numeroDocumentoFiltro'
+              id='numeroDocumentoFiltro'
+              onChange={queryFilter}
+              value={numeroDocumentoFiltro}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -401,14 +463,24 @@ const EnhancedTableToolbar = (props) => {
         ) : (
           ''
         )
-        //  <Tooltip title="Filtros Avanzados">
-        //       <IconButton aria-label="filter list">
-        //         <FilterListIcon />
-        //       </IconButton>
-        //     </Tooltip>
+        // <Tooltip title="Filtros Avanzados">
+        //         <IconButton aria-label="filter list">
+        //           <FilterListIcon />
+        //         </IconButton>
+        //       </Tooltip>
       }
     </Toolbar>
   );
+};
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onOpenAddAsociadoDatoBasico: PropTypes.func.isRequired,
+  handleOpenPopoverColumns: PropTypes.func.isRequired,
+  queryFilter: PropTypes.func.isRequired,
+  limpiarFiltros: PropTypes.func.isRequired,
+  nombreFiltro: PropTypes.string.isRequired,
+  numeroDocumentoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -505,7 +577,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ParametroCorreo = () => {
+const AsociadoDatoBasico = () => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -520,13 +592,14 @@ const ParametroCorreo = () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [parametroCorreoSeleccionado, setParametroCorreoSeleccionado] =
+  const [asociadoDatoBasicoSeleccionado, setAsociadoDatoBasicoSeleccionado] =
     useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({parametroCorreoReducer}) => parametroCorreoReducer,
+    ({asociadoReducer}) => asociadoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setNombreFiltro] = useState('');
+  const [numeroDocumentoFiltro, setNumeroDocumentoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -558,21 +631,48 @@ const ParametroCorreo = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
-  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
+    dispatch(
+      onGetColeccionDatosBasicos(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        numeroDocumentoFiltro,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    nombreFiltro,
+    orderByToSend,
+    showForm,
+    numeroDocumentoFiltro,
+  ]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+    dispatch(
+      onGetColeccionDatosBasicos(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        numeroDocumentoFiltro,
+      ),
+    );
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend]);
+  }, [nombreFiltro, orderByToSend, numeroDocumentoFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'nombreFiltro':
         setNombreFiltro(e.target.value);
+        break;
+      case 'numeroDocumentoFiltro':
+        setNumeroDocumentoFiltro(e.target.value);
         break;
       default:
         break;
@@ -581,6 +681,7 @@ const ParametroCorreo = () => {
 
   const limpiarFiltros = () => {
     setNombreFiltro('');
+    setNumeroDocumentoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -599,8 +700,8 @@ const ParametroCorreo = () => {
     }
   };
 
-  const onOpenEditParametroCorreo = (id) => {
-    setParametroCorreoSeleccionado(id);
+  const onOpenEditAsociadoDatoBasico = (id) => {
+    setAsociadoDatoBasicoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -641,16 +742,16 @@ const ParametroCorreo = () => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewParametroCorreo = (id) => {
-    setParametroCorreoSeleccionado(id);
+  const onOpenViewAsociadoDatoBasico = (id) => {
+    setAsociadoDatoBasicoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteParametroCorreo = (id) => {
+  const onDeleteAsociadoDatoBasico = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar El Parámetro Correo?',
+      text: '¿Seguro Que Desea Eliminar El Asociado?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -663,7 +764,7 @@ const ParametroCorreo = () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Parámetro Correo Fue Eliminado Correctamente',
+          'El Asociado Fue Eliminado Correctamente',
           'success',
         );
         setTimeout(() => {
@@ -673,15 +774,15 @@ const ParametroCorreo = () => {
     });
   };
 
-  const onOpenAddParametroCorreo = () => {
-    setParametroCorreoSeleccionado(0);
+  const onOpenAddAsociadoDatoBasico = () => {
+    setAsociadoDatoBasicoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setParametroCorreoSeleccionado(0);
+    setAsociadoDatoBasicoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -729,11 +830,12 @@ const ParametroCorreo = () => {
       <Paper className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
-          onOpenAddParametroCorreo={onOpenAddParametroCorreo}
+          onOpenAddAsociadoDatoBasico={onOpenAddAsociadoDatoBasico}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           queryFilter={queryFilter}
           limpiarFiltros={limpiarFiltros}
           nombreFiltro={nombreFiltro}
+          numeroDocumentoFiltro={numeroDocumentoFiltro}
         />
         {showTable ? (
           <Box className={classes.marcoTabla}>
@@ -809,21 +911,23 @@ const ParametroCorreo = () => {
                             <Tooltip title={<IntlMessages id='boton.editar' />}>
                               <EditIcon
                                 onClick={() =>
-                                  onOpenEditParametroCorreo(row.id)
+                                  onOpenEditAsociadoDatoBasico(row.id)
                                 }
                                 className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                             </Tooltip>
                             <Tooltip title={<IntlMessages id='boton.ver' />}>
                               <VisibilityIcon
                                 onClick={() =>
-                                  onOpenViewParametroCorreo(row.id)
+                                  onOpenViewAsociadoDatoBasico(row.id)
                                 }
                                 className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                             </Tooltip>
                             <Tooltip
                               title={<IntlMessages id='boton.eliminar' />}>
                               <DeleteIcon
-                                onClick={() => onDeleteParametroCorreo(row.id)}
+                                onClick={() =>
+                                  onDeleteAsociadoDatoBasico(row.id)
+                                }
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                             </Tooltip>
                           </TableCell>
@@ -913,9 +1017,9 @@ const ParametroCorreo = () => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <ParametroCorreoCreador
+        <AsociadoDatoBasicoCreador
           showForm={showForm}
-          parametroCorreo={parametroCorreoSeleccionado}
+          asociadoDatoBasico={asociadoDatoBasicoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -964,4 +1068,4 @@ const ParametroCorreo = () => {
   );
 };
 
-export default ParametroCorreo;
+export default AsociadoDatoBasico;

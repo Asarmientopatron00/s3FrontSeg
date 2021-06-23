@@ -19,7 +19,8 @@ import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../
 import {onGetColeccionLigera as departamentosColeccionLigera} from '../../../../redux/actions/DepartamentoAction';
 import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
 import {
-  LONGITUD_MAXIMA_DOCUMENTOS,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
   VALIDACION_REGEX_TELEFONOS,
@@ -41,10 +42,24 @@ const validationSchema = yup.object({
     .string()
     .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
     .required('Requerido')
-    .max(
-      LONGITUD_MAXIMA_DOCUMENTOS,
-      mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS),
-    ),
+    .when('tipo_persona', {
+      is: 'N',
+      then: yup
+        .string()
+        .max(
+          LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+          mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
+        ),
+    })
+    .when('tipo_persona', {
+      is: 'J',
+      then: yup
+        .string()
+        .max(
+          LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
+          mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
+        ),
+    }),
   nombre: yup
     .string()
     .required('Requerido')

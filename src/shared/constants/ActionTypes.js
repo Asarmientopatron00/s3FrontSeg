@@ -10,8 +10,14 @@ export const UPDATING_CONTENT = 'updating_content';
 export const GET_COLECCION = 'get_coleccion';
 export const CLOSE = 'close';
 export const NO_CLOSE = 'no_close';
-export const GET_COLECCION_LIGERA = 'get_coleccion_ligera';
+export const GET_COLECCION_ASOCIADO = 'get_coleccion_asociado';
 export const GET_COLECCION_LIGERA_ASOCIADO = 'get_coleccion_ligera_asociado';
+export const GET_COLECCION_DATOS_BASICOS_ASOCIADO =
+  'get_coleccion_datos_basicos_ligera_asociado';
+export const SHOW_ASOCIADO = 'show_asociado';
+export const UPDATE_ASOCIADO = 'update_asociado';
+export const CREATE_ASOCIADO = 'create_asociado';
+export const DELETE_ASOCIADO = 'delete_asociado';
 export const SHOW = 'show';
 export const UPDATE = 'update';
 export const CREATE = 'create';
