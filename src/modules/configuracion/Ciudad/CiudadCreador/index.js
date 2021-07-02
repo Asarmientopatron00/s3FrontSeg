@@ -102,7 +102,11 @@ const CiudadCreator = (props) => {
               id: selectedRow ? selectedRow.id : '',
               nombre: selectedRow ? selectedRow.nombre : '',
               codigo_dane: selectedRow ? selectedRow.codigo_dane : '',
-              departamento_id: selectedRow ? selectedRow.departamento_id : '',
+              departamento_id: selectedRow
+                ? selectedRow.departamento_id
+                  ? selectedRow.departamento_id
+                  : ''
+                : '',
               geocerca_id: selectedRow ? selectedRow.geocerca_id : '',
               estado: selectedRow
                 ? selectedRow.estado === 1

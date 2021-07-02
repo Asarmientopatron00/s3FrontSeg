@@ -6,6 +6,10 @@ import {
   DELETE_ASOCIADO,
   CREATE_ASOCIADO,
   GET_COLECCION_DATOS_BASICOS_ASOCIADO,
+  GET_COLECCION_LIGERA_ASOCIADO_CIUDAD,
+  GET_COLECCION_LIGERA_ASOCIADO_CIUDAD_OTRA,
+  GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA,
+  GET_CLAUSULAS,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -18,6 +22,10 @@ const initialState = {
   pagina_actual: 1,
   ultima_pagina: 1,
   total: 1,
+  ciudades: [],
+  ciudades_otra: [],
+  actividades_economicas: [],
+  clausulas: [],
 };
 
 const asociadoReducer = (state = initialState, action) => {
@@ -39,7 +47,26 @@ const asociadoReducer = (state = initialState, action) => {
         ...state,
         ligera: action.payload.data,
       };
-
+    case GET_COLECCION_LIGERA_ASOCIADO_CIUDAD:
+      return {
+        ...state,
+        ciudades: action.payload.data,
+      };
+    case GET_COLECCION_LIGERA_ASOCIADO_CIUDAD_OTRA:
+      return {
+        ...state,
+        ciudades_otra: action.payload.data,
+      };
+    case GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA:
+      return {
+        ...state,
+        actividades_economicas: action.payload.data,
+      };
+    case GET_CLAUSULAS:
+      return {
+        ...state,
+        clausulas: action.payload.data,
+      };
     case GET_COLECCION_DATOS_BASICOS_ASOCIADO:
       return {
         ...state,

@@ -131,6 +131,13 @@ const routesConfig = [
         type: 'item',
         url: '/asociados/datos-basicos',
       },
+      {
+        id: 'asociados-negocios',
+        title: 'asociados',
+        messageId: 'asociados',
+        type: 'item',
+        url: '/asociados/asociados-negocios',
+      },
     ],
   },
 

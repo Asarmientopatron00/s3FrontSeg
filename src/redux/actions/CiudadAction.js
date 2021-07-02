@@ -148,7 +148,6 @@ export const onDelete = (id) => {
         }
       })
       .catch((error) => {
-        console.log(error.response.data);
         if (error.response.data.mensajes) {
           dispatch({
             type: FETCH_ERROR,

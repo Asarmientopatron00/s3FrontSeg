@@ -21,6 +21,12 @@ import ServicioReducer from './ServicioReducer';
 import TerceroServicioReducer from './TerceroServicioReducer';
 import EventoNotificacionReducer from './EventoNotificacionReducer';
 import ParametroCorreoReducer from './ParametroCorreoReducer';
+import AsociadoContactoLegalReducer from './AsociadoContactoLegalReducer';
+import AsociadoContactoReducer from './AsociadoContactoReducer';
+import AsociadoBancariaReducer from './AsociadoBancariaReducer';
+import AsociadoComercialReducer from './AsociadoComercialReducer';
+import AsociadoRequisitoSeguridadReducer from './AsociadoRequisitoSeguridadReducer';
+import AsociadoDocumentoReducer from './AsociadoDocumentoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -46,5 +52,11 @@ const reducers = (history) =>
     terceroServicioReducer: TerceroServicioReducer,
     eventoNotificacionReducer: EventoNotificacionReducer,
     parametroCorreoReducer: ParametroCorreoReducer,
+    asociadoContactoLegalReducer: AsociadoContactoLegalReducer,
+    asociadoContactoReducer: AsociadoContactoReducer,
+    asociadoBancariaReducer: AsociadoBancariaReducer,
+    asociadoComercialReducer: AsociadoComercialReducer,
+    asociadoRequisitoSeguridadReducer: AsociadoRequisitoSeguridadReducer,
+    asociadoDocumentoReducer: AsociadoDocumentoReducer,
   });
 export default reducers;

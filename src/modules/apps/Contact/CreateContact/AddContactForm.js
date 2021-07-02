@@ -66,9 +66,9 @@ const AddContactForm = (props) => {
     },
     myTextField: {
       width: '100%',
-      marginBottom: 16,
+      marginBottom: 5,
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
+        marginBottom: 5,
       },
       height: '70px',
     },

@@ -18,21 +18,28 @@ export const TIPOS_REQUISITOS_SEGURIDAD = [
   {id: '4', value: '4. Controles de acceso físico'},
   {id: '5', value: '5. Seguridad del personal'},
   {id: '6', value: '6. Seguridad de los procesos'},
-  {id: '7', value: '7. Seguridad Física'},
+  {id: '7', value: '7. Seguridad física'},
   {id: '8', value: '8. Seguridad en tecnología de la información'},
   {id: '9', value: '9.Entrenamiento en seguridad y conciencia de amenazas'},
 ];
 
 export const TIPOS_TERCEROS = [
   {id: 'TR', value: 'Transportador'},
-  {id: 'AA', value: 'Agente de Aduanas'},
-  {id: 'AC', value: 'Agente de Carga'},
+  {id: 'AA', value: 'Agente de aduanas'},
+  {id: 'AC', value: 'Agente de carga'},
   {id: 'AS', value: 'Aseguradora'},
-  {id: 'GC', value: 'Generador de Carga'},
+  {id: 'GC', value: 'Generador de carga'},
 ];
 
 export const ESTADOS_PROCESO_ASOCIADOS = [
   {id: 'REG', value: 'REGISTRADO'},
   {id: 'APR', value: 'APROBADO'},
   {id: 'ACT', value: 'ACTIVO'},
+];
+
+export const TIPOS_CONTACTOS = [
+  {id: 'FR', value: 'Facturación'},
+  {id: 'LG', value: 'Logística'},
+  {id: 'CM', value: 'Comercial'},
+  {id: 'OT', value: 'Otros'},
 ];

@@ -132,9 +132,9 @@ const TerceroServicioForm = (props) => {
     },
     myTextField: {
       width: '100%',
-      marginBottom: 16,
+      marginBottom: 5,
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
+        marginBottom: 5,
       },
       height: '70px',
     },
@@ -181,7 +181,7 @@ const TerceroServicioForm = (props) => {
       width: '100%',
       display: 'grid',
       gridTemplateColumns: 'repeat(2,1fr)',
-      gap: '20px',
+      columnGap: '20px',
     },
   }));
 
@@ -302,7 +302,7 @@ const TerceroServicioForm = (props) => {
               )}
             </Box>
 
-            <Box component='h6' fontSize={16} fontWeight={Fonts.MEDIUM}>
+            <Box component='h6' fontSize={16} fontWeight='bold'>
               Contacto
             </Box>
 
@@ -358,13 +358,14 @@ const TerceroServicioForm = (props) => {
                   disabled={disabled}
                   required
                   type='password'
+                  autoComplete={false}
                 />
               ) : (
                 ''
               )}
 
               <FormControl className={classes.widthFull} component='fieldset'>
-                <FormLabel component='legend'>Estado*</FormLabel>
+                <FormLabel>Estado*</FormLabel>
                 <Field
                   name='estado'
                   type='radio'

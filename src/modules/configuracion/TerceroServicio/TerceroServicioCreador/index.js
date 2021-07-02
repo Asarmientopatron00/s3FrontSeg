@@ -263,8 +263,16 @@ const TerceroServicioCreator = (props) => {
                   : ''
                 : '',
               tipo: selectedRow ? selectedRow.tipo : '',
-              departamento_id: selectedRow ? selectedRow.departamento_id : '',
-              ciudad_id: selectedRow ? selectedRow.ciudad_id : '',
+              departamento_id: selectedRow
+                ? selectedRow.departamento_id
+                  ? selectedRow.departamento_id
+                  : ''
+                : '',
+              ciudad_id: selectedRow
+                ? selectedRow.ciudad_id
+                  ? selectedRow.ciudad_id
+                  : ''
+                : '',
               direccion: selectedRow ? selectedRow.direccion : '',
               telefono: selectedRow ? selectedRow.telefono : '',
               celular: selectedRow ? selectedRow.celular : '',

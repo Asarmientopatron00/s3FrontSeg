@@ -242,7 +242,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   root: {
     padding: '15px',
     backgroundColor: 'white',
-    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 20%)',
+    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     display: 'grid',
     gap: '20px',
@@ -414,11 +414,11 @@ const EnhancedTableToolbar = (props) => {
 const useStyles = makeStyles((theme) => ({
   marcoTabla: {
     backgroundColor: 'white',
-    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 20%)',
+    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     paddingLeft: '15px',
     paddingRight: '15px',
-    marginTop: '15px',
+    marginTop: '5px',
   },
   root: {
     width: '100%%',
@@ -497,8 +497,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: '20px',
-    paddingBottom: '20px',
+    paddingTop: '10px',
+    paddingBottom: '5px',
   },
   rowsPerPageOptions: {
     marginRight: '10px',

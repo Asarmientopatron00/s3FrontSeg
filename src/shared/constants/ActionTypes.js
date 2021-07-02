@@ -14,10 +14,17 @@ export const GET_COLECCION_ASOCIADO = 'get_coleccion_asociado';
 export const GET_COLECCION_LIGERA_ASOCIADO = 'get_coleccion_ligera_asociado';
 export const GET_COLECCION_DATOS_BASICOS_ASOCIADO =
   'get_coleccion_datos_basicos_ligera_asociado';
+export const GET_COLECCION_LIGERA_ASOCIADO_CIUDAD =
+  'get_coleccion_datos_basicos_ligera_asociado_ciudad';
+export const GET_COLECCION_LIGERA_ASOCIADO_CIUDAD_OTRA =
+  'get_coleccion_datos_basicos_ligera_asociado_ciudad_otra';
+export const GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA =
+  'get_coleccion_datos_basicos_ligera_asociado_actividad_economica';
 export const SHOW_ASOCIADO = 'show_asociado';
 export const UPDATE_ASOCIADO = 'update_asociado';
 export const CREATE_ASOCIADO = 'create_asociado';
 export const DELETE_ASOCIADO = 'delete_asociado';
+export const GET_CLAUSULAS = 'get_clausulas';
 export const SHOW = 'show';
 export const UPDATE = 'update';
 export const CREATE = 'create';
@@ -120,6 +127,41 @@ export const SHOW_PARAMETRO_CORREO = 'show_parametro_correo';
 export const UPDATE_PARAMETRO_CORREO = 'update_parametro_correo';
 export const CREATE_PARAMETRO_CORREO = 'create_parametro_correo';
 export const DELETE_PARAMETRO_CORREO = 'delete_parametro_correo';
+export const GET_COLECCION_ASOCIADO_CONTACTO_LEGAL =
+  'get_coleccion_asociado_contacto_legal';
+export const SHOW_ASOCIADO_CONTACTO_LEGAL = 'show_asociado_contacto_legal';
+export const UPDATE_ASOCIADO_CONTACTO_LEGAL = 'update_asociado_contacto_legal';
+export const CREATE_ASOCIADO_CONTACTO_LEGAL = 'create_asociado_contacto_legal';
+export const DELETE_ASOCIADO_CONTACTO_LEGAL = 'delete_asociado_contacto_legal';
+export const GET_COLECCION_ASOCIADO_CONTACTO =
+  'get_coleccion_asociado_contacto';
+export const SHOW_ASOCIADO_CONTACTO = 'show_asociado_contacto';
+export const UPDATE_ASOCIADO_CONTACTO = 'update_asociado_contacto';
+export const CREATE_ASOCIADO_CONTACTO = 'create_asociado_contacto';
+export const DELETE_ASOCIADO_CONTACTO = 'delete_asociado_contacto';
+export const GET_COLECCION_ASOCIADO_BANCARIA =
+  'get_coleccion_asociado_bancaria';
+export const SHOW_ASOCIADO_BANCARIA = 'show_asociado_bancaria';
+export const UPDATE_ASOCIADO_BANCARIA = 'update_asociado_bancaria';
+export const CREATE_ASOCIADO_BANCARIA = 'create_asociado_bancaria';
+export const DELETE_ASOCIADO_BANCARIA = 'delete_asociado_bancaria';
+export const GET_COLECCION_ASOCIADO_COMERCIAL =
+  'get_coleccion_asociado_comercial';
+export const SHOW_ASOCIADO_COMERCIAL = 'show_asociado_comercial';
+export const UPDATE_ASOCIADO_COMERCIAL = 'update_asociado_comercial';
+export const CREATE_ASOCIADO_COMERCIAL = 'create_asociado_comercial';
+export const DELETE_ASOCIADO_COMERCIAL = 'delete_asociado_comercial';
+export const GET_COLECCION_ASOCIADO_REQUISITO_SEGURIDAD =
+  'get_coleccion_asociado_requisito_seguridad';
+export const SHOW_ASOCIADO_REQUISITO_SEGURIDAD =
+  'show_asociado_requisito_seguridad';
+export const UPDATE_ASOCIADO_REQUISITO_SEGURIDAD =
+  'update_asociado_requisito_seguridad';
+export const GET_COLECCION_ASOCIADO_DOCUMENTO =
+  'get_coleccion_asociado_documento';
+export const SHOW_ASOCIADO_DOCUMENTO = 'show_asociado_documento';
+export const CREATE_ASOCIADO_DOCUMENTO = 'create_asociado_documento';
+export const DELETE_ASOCIADO_DOCUMENTO = 'delete_asociado_documento';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

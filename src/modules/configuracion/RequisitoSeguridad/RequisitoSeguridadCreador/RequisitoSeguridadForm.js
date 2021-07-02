@@ -49,9 +49,9 @@ const RequisitoSeguridadForm = (props) => {
     },
     myTextField: {
       width: '100%',
-      marginBottom: 16,
+      marginBottom: 5,
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
+        marginBottom: 5,
       },
       height: '70px',
     },
@@ -132,7 +132,7 @@ const RequisitoSeguridadForm = (props) => {
             </MyTextField>
 
             <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel component='legend'>Estado*</FormLabel>
+              <FormLabel>Estado*</FormLabel>
               <Field
                 name='estado'
                 type='radio'
