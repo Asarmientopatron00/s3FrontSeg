@@ -741,6 +741,12 @@ const AsociadoBancaria = () => {
   const handleOnClose = () => {
     history.goBack();
   };
+
+  const handleOnCloseForm = () => {
+    setShowForm(false);
+    setAsociadoBancariaSeleccionado(0);
+    setAccion('ver');
+  };
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';
   //   setOrder(isAsc ? 'desc' : 'asc');
@@ -1008,7 +1014,7 @@ const AsociadoBancaria = () => {
           showForm={showForm}
           asociadoBancaria={asociadoBancariaSeleccionado}
           accion={accion}
-          handleOnClose={handleOnClose}
+          handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
           asociado_id={asociado_id}
         />

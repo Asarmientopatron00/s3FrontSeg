@@ -544,7 +544,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '0px 0px 0px 15px',
   },
   headCellWoMargin: {
-    padding: '5px',
+    padding: '0px',
     width: 'fit-content',
     fontSize: '12px',
     [theme.breakpoints.up('xl')]: {
@@ -792,7 +792,7 @@ const AsociadoDatoBasico = () => {
   };
 
   const onOpenEditAsociadoRequisitoSeguridad = (id) => {
-    history.replace(history.location.pathname + '-requisitos-seguridad/' + id);
+    history.push(history.location.pathname + '-requisitos-seguridad/' + id);
   };
 
   const handleClosePopover = () => {
@@ -1041,7 +1041,7 @@ const AsociadoDatoBasico = () => {
                                 className={`${classes.generalIcons} ${classes.legalIcon}`}></SchoolIcon>
                             </Tooltip>
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.contactos' />}>
                               <SupervisorAccountIcon
@@ -1049,7 +1049,7 @@ const AsociadoDatoBasico = () => {
                                 className={`${classes.generalIcons} ${classes.contactIcon}`}></SupervisorAccountIcon>
                             </Tooltip>
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.bancarias' />}>
                               <AccountBalanceIcon
@@ -1057,7 +1057,7 @@ const AsociadoDatoBasico = () => {
                                 className={`${classes.generalIcons} ${classes.bancariaIcon}`}></AccountBalanceIcon>
                             </Tooltip>
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.comerciales' />}>
                               <StoreIcon
@@ -1067,7 +1067,7 @@ const AsociadoDatoBasico = () => {
                                 className={`${classes.generalIcons} ${classes.comercialIcon}`}></StoreIcon>
                             </Tooltip>
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.documentos' />}>
                               <AssignmentIcon
@@ -1077,7 +1077,7 @@ const AsociadoDatoBasico = () => {
                                 className={`${classes.generalIcons} ${classes.documentosIcon}`}></AssignmentIcon>
                             </Tooltip>
                           </TableCell>
-                          <TableCell align='center'>
+                          <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={
                                 <IntlMessages id='boton.requisitosDeSeguridad' />

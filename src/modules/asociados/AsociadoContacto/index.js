@@ -766,6 +766,12 @@ const AsociadoContacto = () => {
   const handleOnClose = () => {
     history.goBack();
   };
+
+  const handleOnCloseForm = () => {
+    setShowForm(false);
+    setAsociadoContactoSeleccionado(0);
+    setAccion('ver');
+  };
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';
   //   setOrder(isAsc ? 'desc' : 'asc');
@@ -1033,7 +1039,7 @@ const AsociadoContacto = () => {
           showForm={showForm}
           asociadoContacto={asociadoContactoSeleccionado}
           accion={accion}
-          handleOnClose={handleOnClose}
+          handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
           asociado_id={asociado_id}
         />

@@ -740,6 +740,13 @@ const AsociadoComercial = () => {
   const handleOnClose = () => {
     history.goBack();
   };
+
+  const handleOnCloseForm = () => {
+    setShowForm(false);
+    setAsociadoComercialSeleccionado(0);
+    setAccion('ver');
+  };
+
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';
   //   setOrder(isAsc ? 'desc' : 'asc');
@@ -1009,7 +1016,7 @@ const AsociadoComercial = () => {
           showForm={showForm}
           asociadoComercial={asociadoComercialSeleccionado}
           accion={accion}
-          handleOnClose={handleOnClose}
+          handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
           asociado_id={asociado_id}
         />

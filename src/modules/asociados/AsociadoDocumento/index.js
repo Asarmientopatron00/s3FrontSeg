@@ -37,9 +37,11 @@ import FormControl from '@material-ui/core/FormControl';
 import {RadioGroup, Radio} from '@material-ui/core';
 import {Formik, Form, useField} from 'formik';
 import {useDropzone} from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import Swal from 'sweetalert2';
 import {history} from 'redux/store';
+import * as yup from 'yup';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -434,10 +436,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   dialogBox: {
+    minHeight: '600px',
     position: 'relative',
     '& .MuiDialog-paperWidthSm': {
-      maxWidth: 600,
       width: '100%',
+      minHeight: '800px',
       // maxHeight:'fit-content'
     },
     '& .MuiTypography-h6': {
@@ -674,6 +677,13 @@ const AsociadoDocumento = () => {
     history.goBack();
   };
 
+  const handleOnCloseForm = () => {
+    setDocumentoId(0);
+    setNombreDocumento('');
+    setShowForm(false);
+    updateColeccion();
+  };
+
   const updateColeccion = () => {
     dispatch(onGetColeccion(asociado_id));
   };
@@ -726,6 +736,7 @@ const AsociadoDocumento = () => {
     color: '#bdbdbd',
     outline: 'none',
     transition: 'border .24s ease-in-out',
+    height: '100px',
   };
   const activeStyle = {
     borderColor: '#2196f3',
@@ -737,13 +748,7 @@ const AsociadoDocumento = () => {
     borderColor: '#ff1744',
   };
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone();
+  const {isDragActive, isDragAccept, isDragReject} = useDropzone();
 
   const style = useMemo(
     () => ({
@@ -763,8 +768,10 @@ const AsociadoDocumento = () => {
     ],
   );
 
-  // const archivoCargado =  acceptedFiles.map((file)=>file.name);
-  // const archivo= acceptedFiles.map((file)=>file);
+  const validationSchema = yup.object({
+    nombre_archivo: yup.string().required('Requerido'),
+  });
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -938,12 +945,13 @@ const AsociadoDocumento = () => {
       {showForm ? (
         <Dialog
           open={showForm}
-          onClose={handleOnClose}
+          onClose={handleOnCloseForm}
           aria-labelledby='simple-modal-title'
           aria-describedby='simple-modal-description'
           className={classes.dialogBox}
           disableBackdropClick={true}
-          maxWidth={'md'}>
+          maxWidth='md'
+          fullWidth={true}>
           <Formik
             initialStatus={true}
             enableReinitialize={true}
@@ -954,10 +962,10 @@ const AsociadoDocumento = () => {
               nombre_archivo: nombreDocumento ? nombreDocumento : '',
               archivo: '',
             }}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
-              dispatch(onCreate(data, handleOnClose));
+              dispatch(onCreate(data, handleOnCloseForm));
 
               // resetForm();
               setSubmitting(false);
@@ -967,35 +975,55 @@ const AsociadoDocumento = () => {
               //  values.nombre_archivo = archivoCargado;
               return (
                 <Form encType='multipart/form-data'>
-                  <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
-                    <div {...getRootProps({style})}>
-                      <input
-                        {...getInputProps()}
-                        name='archivo'
-                        type='file'
-                        id='archivo'
-                        onChange={(event) => {
-                          setFieldValue(
-                            'archivo',
-                            event.currentTarget.files[0],
-                          );
-                          setFieldValue(
-                            'nombre_archivo',
-                            event.currentTarget.files[0].name,
-                          );
-                        }}
-                      />
-                      <p>Arrastra un archivo o haz click para cargarlo</p>
-                      <MyTextField
-                        name='nombre_archivo'
-                        id='nombre_archivo'
-                        variant='outlined'
-                        inputProps={{
-                          readOnly: true,
-                          style: {padding: '0px', border: '0px'},
-                        }}
-                      />
-                    </div>
+                  <Box py={5} px={{xs: 5, lg: 8, xl: 10}} height='200px'>
+                    <Dropzone
+                      onDrop={(event) => {
+                        setFieldValue('archivo', event[0]);
+                        setFieldValue('nombre_archivo', event[0].name);
+                      }}>
+                      {({getRootProps, getInputProps}) => (
+                        <div {...getRootProps({style})}>
+                          <input
+                            {...getInputProps()}
+                            name='archivo'
+                            type='file'
+                            id='archivo'
+                            onChange={(event) => {
+                              setFieldValue(
+                                'archivo',
+                                event.currentTarget.files[0],
+                              );
+                              setFieldValue(
+                                'nombre_archivo',
+                                event.currentTarget.files[0].name,
+                              );
+                            }}
+                          />
+                          <p>Arrastra un archivo o haz click para cargarlo</p>
+                        </div>
+                      )}
+                    </Dropzone>
+                    <MyTextField
+                      name='nombre_archivo'
+                      id='nombre_archivo'
+                      type='hidden'
+                      width='100%'
+                    />
+                    {values.nombre_archivo ? (
+                      <Box component='p' display='flex' justifyContent='center'>
+                        {values.nombre_archivo}
+                        <Tooltip title={<IntlMessages id='boton.eliminar' />}>
+                          <DeleteIcon
+                            onClick={() => {
+                              setFieldValue('archivo', {});
+                              setFieldValue('nombre_archivo', '');
+                            }}
+                            className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                        </Tooltip>
+                      </Box>
+                    ) : (
+                      ''
+                    )}
                   </Box>
                   <Box className={classes.bottomsGroup}>
                     {/* {accion !== 'ver' ? ( */}
@@ -1010,7 +1038,7 @@ const AsociadoDocumento = () => {
                 )} */}
                     <Button
                       className={`${classes.btnRoot} ${classes.btnSecundary}`}
-                      onClick={handleOnClose}>
+                      onClick={handleOnCloseForm}>
                       <IntlMessages id='boton.cancel' />
                     </Button>
                   </Box>

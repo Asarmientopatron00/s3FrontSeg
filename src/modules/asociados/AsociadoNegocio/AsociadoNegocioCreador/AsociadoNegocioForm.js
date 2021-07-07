@@ -310,7 +310,11 @@ const TerceroServicioForm = (props) => {
                     value={tipoDocumento.id}
                     key={tipoDocumento.id}
                     className={classes.pointer}
-                    style={tipoDocumento.estado === 0 ? {display: 'none'} : {}}>
+                    style={
+                      tipoDocumento.estado === 0
+                        ? {display: 'none'}
+                        : {paddingTop: '3px', paddingBotttom: '3px'}
+                    }>
                     {tipoDocumento.nombre}
                   </MenuItem>
                 );
@@ -332,16 +336,16 @@ const TerceroServicioForm = (props) => {
                             LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
                           style: {
                             fontSize: '14px',
-                            paddingBottom: '3px',
-                            paddingTop: '2px',
+                            paddingBottom: '6px',
+                            paddingTop: '8px',
                           },
                         }
                       : {
                           maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
                           style: {
                             fontSize: '14px',
-                            paddingBottom: '3px',
-                            paddingTop: '2px',
+                            paddingBottom: '6px',
+                            paddingTop: '8px',
                           },
                         }
                   }
@@ -672,7 +676,7 @@ const TerceroServicioForm = (props) => {
                     key={actividad.id}
                     className={classes.pointer}
                     style={actividad.estado === 0 ? {display: 'none'} : {}}>
-                    {actividad.codigo_ciiu}
+                    {actividad.codigo_ciiu + '-' + actividad.nombre}
                   </MenuItem>
                 );
               })}

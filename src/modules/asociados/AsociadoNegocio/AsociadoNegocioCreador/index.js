@@ -184,11 +184,18 @@ const AsociadoDatoBasicoCreator = (props) => {
       .max(128, mensajeValidacion('max', 128)),
     pagina_web: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
     departamento_otro_id: yup.number(mensajeValidacion('numero')).nullable(),
-    ciudad_otra_id: yup.number(mensajeValidacion('numero')).nullable(),
+    ciudad_otra_id: yup
+      .number(mensajeValidacion('numero'))
+      .nullable()
+      .when('departamento_otro_id', {
+        is: undefined,
+        then: yup.number().nullable(),
+        otherwise: yup.number().required('Requerido'),
+      }),
     direccion_otra_sede: yup
       .string()
       .max(128, mensajeValidacion('max', 128))
-      .when('ciudad_otra_id', {
+      .when('departamento_otro_id', {
         is: undefined,
         then: yup.string().nullable(),
         otherwise: yup.string().required('Requerido'),

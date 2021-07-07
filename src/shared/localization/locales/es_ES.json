@@ -51,7 +51,7 @@
   "validacion.min2": " dígitos ",
   "validacion.numero": "Debe ser número",
   "validacion.telefono": "Ingrese un telefono válido",
-  "validacion.documento": "Solo se permiten caracteres numéricos",
+  "validacion.documento": "Ingrese un documento válido",
   "sinResultados": "Sin resultados",
   "dashboard.quickStats": "Estadísticas rápidas",
   "dashboard.totalClients": "Clientes totales",

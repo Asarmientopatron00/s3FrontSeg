@@ -97,7 +97,7 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params, handleOnClose) => {
+export const onCreate = (params, handleOnCloseForm) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     var formData = new FormData();
@@ -123,7 +123,7 @@ export const onCreate = (params, handleOnClose) => {
             type: CREATE_ASOCIADO_DOCUMENTO,
             payload: data.data,
           });
-          handleOnClose();
+          handleOnCloseForm();
           dispatch({
             type: SHOW_MESSAGE,
             payload: data.data.mensajes[0],

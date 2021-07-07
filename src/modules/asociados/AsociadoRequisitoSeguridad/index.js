@@ -643,12 +643,16 @@ const AsociadoRequisitoSeguridad = () => {
   useEffect(() => {
     rows.forEach((row, index) => {
       let aux = compromisos;
-      aux[index] = row.compromiso ? row.compromiso : '';
+      aux[index] = row.compromiso !== null ? row.compromiso : '';
       setCompromisos(aux);
       aux = idRequisitos;
       aux[index] = row.id_requisito;
       setIdRequisitos(aux);
     });
+
+    return () => {
+      setCompromisos([]);
+    };
   }, [rows, idRequisitos, compromisos]);
   const validationSchema = yup.object().shape({
     compromisos: yup
