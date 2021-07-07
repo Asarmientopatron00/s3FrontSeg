@@ -71,7 +71,8 @@ const AsociadoDatoBasicoCreator = (props) => {
   let validationSchema = yup.object({
     tipo_persona: yup.string().required('Requerido'),
     tipo_documento_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
     numero_documento: yup
       .string()
@@ -155,7 +156,8 @@ const AsociadoDatoBasicoCreator = (props) => {
     validationSchema = yup.object({
       tipo_persona: yup.string().required('Requerido'),
       tipo_documento_id: yup
-        .number(mensajeValidacion('numero'))
+        .number()
+        .typeError(mensajeValidacion('numero'))
         .required('Requerido'),
       numero_documento: yup
         .string()

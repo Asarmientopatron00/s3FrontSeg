@@ -36,7 +36,8 @@ const validationSchema = yup.object({
   tipo: yup.string().required('Requerido').max(2, mensajeValidacion('max', 2)),
   tipo_persona: yup.string().required('Requerido'),
   tipo_documento_id: yup
-    .number(mensajeValidacion('numero'))
+    .number()
+    .typeError(mensajeValidacion('numero'))
     .required('Requerido'),
   numero_documento: yup
     .string()
@@ -81,9 +82,13 @@ const validationSchema = yup.object({
     .nullable()
     .max(128, mensajeValidacion('max', 128)),
   departamento_id: yup
-    .number(mensajeValidacion('numero'))
+    .number()
+    .typeError(mensajeValidacion('numero'))
     .required('Requerido'),
-  ciudad_id: yup.number(mensajeValidacion('numero')).required('Requerido'),
+  ciudad_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
   direccion: yup
     .string()
     .required('Requerido')

@@ -46,7 +46,6 @@ export const onShow = (id) => {
       Api.get('http://solicitudesservicio.test/api/asociados-documentos/' + id)
         .then((data) => {
           if (data.status === 200) {
-            console.log(data);
             const url = window.URL.createObjectURL(
               new Blob([data.data], {type: 'application/pdf'}),
             );
@@ -116,7 +115,6 @@ export const onCreate = (params, handleOnCloseForm) => {
       },
     )
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({

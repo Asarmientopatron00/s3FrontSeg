@@ -69,7 +69,8 @@ const AsociadoCotnactoLegalCreator = (props) => {
   let validationSchema = yup.object({
     tipo: yup.string().required('Requerido'),
     tipo_documento_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
     numero_documento: yup
       .string()

@@ -49,7 +49,7 @@
   "validacion.max2": " dígitos ",
   "validacion.min1": "Debe tener mínimo ",
   "validacion.min2": " dígitos ",
-  "validacion.numero": "Debe ser número",
+  "validacion.numero": "Debe ser un número",
   "validacion.telefono": "Ingrese un telefono válido",
   "validacion.documento": "Ingrese un documento válido",
   "sinResultados": "Sin resultados",

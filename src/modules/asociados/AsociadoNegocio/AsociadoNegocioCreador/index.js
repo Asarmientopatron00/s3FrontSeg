@@ -95,7 +95,8 @@ const AsociadoDatoBasicoCreator = (props) => {
     tipo_persona: yup.string().required('Requerido'),
     entidad_publica: yup.string().required('Requerido'),
     tipo_documento_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
     numero_documento: yup
       .string()
@@ -146,9 +147,13 @@ const AsociadoDatoBasicoCreator = (props) => {
       .nullable()
       .max(128, mensajeValidacion('max', 128)),
     departamento_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
-    ciudad_id: yup.number(mensajeValidacion('numero')).required('Requerido'),
+    ciudad_id: yup
+      .number()
+      .typeError(mensajeValidacion('numero'))
+      .required('Requerido'),
     direccion: yup
       .string()
       .required('Requerido')
@@ -183,9 +188,13 @@ const AsociadoDatoBasicoCreator = (props) => {
       .email('Debe ser tipo e-mail')
       .max(128, mensajeValidacion('max', 128)),
     pagina_web: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
-    departamento_otro_id: yup.number(mensajeValidacion('numero')).nullable(),
+    departamento_otro_id: yup
+      .number()
+      .typeError(mensajeValidacion('numero'))
+      .nullable(),
     ciudad_otra_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .nullable()
       .when('departamento_otro_id', {
         is: undefined,
@@ -229,9 +238,13 @@ const AsociadoDatoBasicoCreator = (props) => {
       .required('Requerido')
       .max(128, mensajeValidacion('max', 128)),
     actividad_economica_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
-    capital_registrado: yup.number(mensajeValidacion('numero')).nullable(),
+    capital_registrado: yup
+      .number()
+      .typeError(mensajeValidacion('numero'))
+      .nullable(),
     responsable_iva: yup.string().required('Requerido'),
     exento_impuesto_renta: yup.string().required('Requerido'),
     gran_contribuyente: yup.string().required('Requerido'),
@@ -276,7 +289,8 @@ const AsociadoDatoBasicoCreator = (props) => {
       .nullable()
       .max(128, mensajeValidacion('max', 128)),
     tipo_documento_facturacion_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .nullable(),
     numero_documento_facturacion: yup
       .string()
@@ -286,7 +300,8 @@ const AsociadoDatoBasicoCreator = (props) => {
         mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
       ),
     dia_cierre_facturacion: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido')
       .max(31, 'No debe superar 31'),
     codigo_postal_facturacion: yup

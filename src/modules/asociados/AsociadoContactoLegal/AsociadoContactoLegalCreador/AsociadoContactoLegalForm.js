@@ -267,7 +267,7 @@ const AsociadoCotnactoLegal = (props) => {
 
             <MyTextField
               className={classes.myTextField}
-              label='Porcentaje Participación'
+              label='Porcentaje Participación (%)'
               name='porcentaje_participacion'
               disabled={disabled}
             />

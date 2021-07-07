@@ -68,7 +68,8 @@ const AsociadoCotnactoLegalCreator = (props) => {
   let validationSchema = yup.object({
     tipo: yup.string().required('Requerido'),
     tipo_documento_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
     numero_documento: yup
       .string()
@@ -79,14 +80,15 @@ const AsociadoCotnactoLegalCreator = (props) => {
         mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
       ),
     ciudad_expedicion_id: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .required('Requerido'),
     nombre: yup
       .string()
       .required('Requerido')
       .max(128, mensajeValidacion('max', 128)),
     direccion: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
-    ciudad_id: yup.number(mensajeValidacion('numero')).nullable(),
+    ciudad_id: yup.number().typeError(mensajeValidacion('numero')).nullable(),
     telefono: yup
       .string()
       .nullable()
@@ -100,7 +102,8 @@ const AsociadoCotnactoLegalCreator = (props) => {
         mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
       ),
     porcentaje_participacion: yup
-      .number(mensajeValidacion('numero'))
+      .number()
+      .typeError(mensajeValidacion('numero'))
       .nullable(),
   });
 
