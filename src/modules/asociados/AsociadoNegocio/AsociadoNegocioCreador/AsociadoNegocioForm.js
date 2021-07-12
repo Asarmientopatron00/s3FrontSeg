@@ -17,6 +17,7 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -58,6 +59,36 @@ const MyRadioField = (props) => {
     </FormControl>
   );
 };
+
+// const MyAutocomplete =(props)=>{
+//   const [field, meta] = useField(props);
+//   const errorText = meta.error && meta.touched ? meta.error : '';
+//   return (
+//     <Autocomplete
+//       {...props}
+//       renderOption={(option) => (
+//         <React.Fragment>
+//           {option.nombre}
+//         </React.Fragment>
+//       )}
+//       renderInput={(params) => {
+//         console.log(params)
+//         return(
+//           <TextField
+//             {...params}
+//             {...field}
+//             className={props.className}
+//             label = {props.label}
+//             required = {props.required}
+//             helperText={errorText}
+//             error={!!errorText}
+//           />
+//         )
+//       }}
+//     />
+//   )
+// }
+
 const TerceroServicioForm = (props) => {
   const {
     handleOnClose,
@@ -242,6 +273,10 @@ const TerceroServicioForm = (props) => {
       gridTemplateColumns: '1fr 3fr',
     },
   }));
+
+  const [focusedSelect, setFocusedSelect] = useState(false);
+  const onFocus = () => setFocusedSelect(true);
+  const onBlur = () => setFocusedSelect(false);
 
   const classes = useStyles(props);
   return (
@@ -549,6 +584,16 @@ const TerceroServicioForm = (props) => {
                 },
               }}
             />
+
+            {/* <MyAutocomplete
+              className={classes.myTextField}
+              name = 'trial'
+              label = 'trial'
+              options={departamentos}
+              autoHighlight
+              required={true}
+              getOptionLabel={(option) => option.nombre}
+            /> */}
           </Box>
 
           <Box component='h6' fontSize={16} fontWeight='bold' mb={3}>
@@ -668,15 +713,22 @@ const TerceroServicioForm = (props) => {
               name='actividad_economica_id'
               disabled={disabled}
               select={true}
-              required>
+              required
+              SelectProps={{
+                native: false,
+                onOpen: onFocus,
+                onClose: onBlur,
+              }}>
               {actividadesEconomicas.map((actividad) => {
                 return (
                   <MenuItem
-                    value={actividad.id}
                     key={actividad.id}
+                    value={actividad.id}
                     className={classes.pointer}
                     style={actividad.estado === 0 ? {display: 'none'} : {}}>
-                    {actividad.codigo_ciiu + '-' + actividad.nombre}
+                    {focusedSelect
+                      ? actividad.codigo_ciiu + '-' + actividad.nombre
+                      : actividad.codigo_ciiu}
                   </MenuItem>
                 );
               })}
@@ -848,7 +900,7 @@ const TerceroServicioForm = (props) => {
           </Box>
 
           <Box component='h6' fontSize={16} fontWeight='bold' mb={3}>
-            Certificados Sistemas e Gestión::
+            Certificados Sistemas e Gestión:
           </Box>
 
           <Box className={classes.inputs_4}>
@@ -1133,9 +1185,9 @@ const TerceroServicioForm = (props) => {
 
           <Box className={classes.inputs_2}>
             <MyRadioField
-              label='Enviar solicitud de aprobacion del representante legal'
+              label='Información Verificada'
               className={classes.MyRadioField}
-              name='firma_representante_legal'
+              name='informacion_verificada_asociado'
               disabled={disabled}
               required
               options={[
@@ -1145,9 +1197,9 @@ const TerceroServicioForm = (props) => {
             />
 
             <MyRadioField
-              label='Información Verificada'
+              label='Enviar solicitud de aprobacion del representante legal'
               className={classes.MyRadioField}
-              name='informacion_verificada_asociado'
+              name='firma_representante_legal'
               disabled={disabled}
               required
               options={[
@@ -1197,7 +1249,7 @@ const TerceroServicioForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                disabled={disabled}
+                disabled={true}
               />
 
               <MyTextField
@@ -1210,7 +1262,7 @@ const TerceroServicioForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                disabled={disabled}
+                disabled={true}
               />
 
               <MyTextField
@@ -1223,7 +1275,7 @@ const TerceroServicioForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                disabled={disabled}
+                disabled={true}
               />
 
               <MyTextField
@@ -1236,7 +1288,7 @@ const TerceroServicioForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
-                disabled={disabled}
+                disabled={true}
               />
             </Box>
           ) : (

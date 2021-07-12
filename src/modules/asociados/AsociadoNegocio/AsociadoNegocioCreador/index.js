@@ -601,7 +601,7 @@ const AsociadoDatoBasicoCreator = (props) => {
               : 'N'
             : 'N',
           datos_personales: clausulas
-            ? clausulas['TEXT_DATOS_PERSONALES']
+            ? clausulas['TEXTO_DATOS_PERSONALES']
             : ' ',
           autorizacion_datos_personales: selectedRow
             ? selectedRow.autorizacion_datos_personales

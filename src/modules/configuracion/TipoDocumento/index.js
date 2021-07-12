@@ -497,7 +497,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TipoDocumento = () => {
-  console.log(process.env.NODE_ENV);
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
