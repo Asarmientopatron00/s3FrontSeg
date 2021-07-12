@@ -1,4 +1,5 @@
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -23,7 +24,8 @@ import React from 'react';
 export const onGetBalloonBlockData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/balloon-block')
+    jwtAxios
+      .get('/editor/balloon-block')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -43,7 +45,8 @@ export const onGetBalloonBlockData = () => {
 export const onUpdateBalloonBlockData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/balloon-block', data)
+    jwtAxios
+      .put('/editor/balloon-block', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -64,7 +67,8 @@ export const onUpdateBalloonBlockData = (data) => {
 export const onGetBalloonData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/balloon')
+    jwtAxios
+      .get('/editor/balloon')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -84,7 +88,8 @@ export const onGetBalloonData = () => {
 export const onUpdateBalloonData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/balloon', data)
+    jwtAxios
+      .put('/editor/balloon', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -106,7 +111,8 @@ export const onUpdateBalloonData = (data) => {
 export const onGetClassicData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/classic')
+    jwtAxios
+      .get('/editor/classic')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -126,7 +132,8 @@ export const onGetClassicData = () => {
 export const onUpdateClassicData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/classic', data)
+    jwtAxios
+      .put('/editor/classic', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -148,7 +155,8 @@ export const onUpdateClassicData = (data) => {
 export const onGetInlineData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/inline')
+    jwtAxios
+      .get('/editor/inline')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -168,7 +176,8 @@ export const onGetInlineData = () => {
 export const onUpdateInlineData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/inline', data)
+    jwtAxios
+      .put('/editor/inline', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -190,7 +199,8 @@ export const onUpdateInlineData = (data) => {
 export const onGetDocumentData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/document')
+    jwtAxios
+      .get('/editor/document')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -210,7 +220,8 @@ export const onGetDocumentData = () => {
 export const onUpdateDocumentData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/document', data)
+    jwtAxios
+      .put('/editor/document', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -232,7 +243,8 @@ export const onUpdateDocumentData = (data) => {
 export const onGetCustomData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/editor/custom')
+    jwtAxios
+      .get('/editor/custom')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -252,7 +264,8 @@ export const onGetCustomData = () => {
 export const onUpdateCustomData = (data) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/editor/custom', data)
+    jwtAxios
+      .put('/editor/custom', data)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

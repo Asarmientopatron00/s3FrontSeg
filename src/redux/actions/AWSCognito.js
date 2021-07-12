@@ -8,7 +8,7 @@ import {
 import {Auth} from 'aws-amplify';
 import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 export const onConfirmCognitoUserSignup = (username, confirmCode, history) => {
   const code = confirmCode ? confirmCode : '000000';
@@ -176,7 +176,8 @@ export const onResetCognitoPassword = (email, history) => {
   return (dispatch) => {
     const params = {email: email};
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/forgot-password', params)
+    jwtAxios
+      .post('http://solicitudesservicio.test/api/forgot-password', params)
       .then((data) => {
         if (data) {
           dispatch({type: FETCH_SUCCESS});
@@ -211,7 +212,8 @@ export const onSetNewCognitoPassword = (
       password_confirmation: password_confirmation,
     };
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/reset-password', params)
+    jwtAxios
+      .post('http://solicitudesservicio.test/api/reset-password', params)
       .then((data) => {
         if (data) {
           dispatch({type: FETCH_SUCCESS});

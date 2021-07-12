@@ -11,14 +11,16 @@ import {
   SELECT_USER,
   TOGGLE_CHAT_DRAWER,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const getConnectionList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/chatApp/connections')
+    jwtAxios
+      .get('/api/chatApp/connections')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -40,11 +42,12 @@ export const getConnectionMessages = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/chatApp/connection/messages', {
-      params: {
-        id,
-      },
-    })
+    jwtAxios
+      .get('/api/chatApp/connection/messages', {
+        params: {
+          id,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -65,7 +68,8 @@ export const getConnectionMessages = (id) => {
 export const onSendMessage = (channelId, message) => {
   const {messages} = appIntl();
   return (dispatch, getState) => {
-    Api.post('/api/chatApp/message', {channelId, message})
+    jwtAxios
+      .post('/api/chatApp/message', {channelId, message})
       .then((data) => {
         console.log('data', data.data);
         if (data.status === 200) {
@@ -118,7 +122,8 @@ export const onSendMessage = (channelId, message) => {
 export const onEditMessage = (channelId, message) => {
   const {messages} = appIntl();
   return (dispatch) => {
-    Api.put('/api/chatApp/message', {channelId, message})
+    jwtAxios
+      .put('/api/chatApp/message', {channelId, message})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -142,7 +147,8 @@ export const onEditMessage = (channelId, message) => {
 export const onDeleteMessage = (channelId, messageId) => {
   const {messages} = appIntl();
   return (dispatch) => {
-    Api.post('/api/chatApp/delete/message', {channelId, messageId})
+    jwtAxios
+      .post('/api/chatApp/delete/message', {channelId, messageId})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -164,7 +170,8 @@ export const onDeleteConversation = (channelId) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/chatApp/delete/user/messages', {channelId})
+    jwtAxios
+      .post('/api/chatApp/delete/user/messages', {channelId})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

@@ -17,14 +17,16 @@ import {
   GET_SCRUM_LABEL_LIST,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetBoardList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/scrumboard/board/list')
+    jwtAxios
+      .get('/api/scrumboard/board/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -46,7 +48,8 @@ export const onGetScrumLabelList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/scrumboard/label/list')
+    jwtAxios
+      .get('/api/scrumboard/label/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -68,7 +71,8 @@ export const onGetMemberList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/scrumboard/member/list')
+    jwtAxios
+      .get('/api/scrumboard/member/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -90,7 +94,8 @@ export const onEditBoardDetail = (board) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/scrumboard/edit/board', {board})
+    jwtAxios
+      .put('/api/scrumboard/edit/board', {board})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -116,11 +121,12 @@ export const onGetBoardDetail = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/scrumboard/board/', {
-      params: {
-        id: id,
-      },
-    })
+    jwtAxios
+      .get('/api/scrumboard/board/', {
+        params: {
+          id: id,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -142,7 +148,8 @@ export const onAddNewBoard = (board) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/add/board', {board})
+    jwtAxios
+      .post('/api/scrumboard/add/board', {board})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -168,7 +175,8 @@ export const onAddNewList = (boardId, list) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/add/list', {boardId, list})
+    jwtAxios
+      .post('/api/scrumboard/add/list', {boardId, list})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -194,7 +202,8 @@ export const onEditBoardList = (boardId, list) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/scrumboard/edit/list', {boardId, list})
+    jwtAxios
+      .put('/api/scrumboard/edit/list', {boardId, list})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -220,7 +229,8 @@ export const onAddNewCard = (board, list, card) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/add/card', {board, list, card})
+    jwtAxios
+      .post('/api/scrumboard/add/card', {board, list, card})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -246,7 +256,8 @@ export const onEditCardDetails = (board, list, card) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/scrumboard/edit/card', {board, list, card})
+    jwtAxios
+      .put('/api/scrumboard/edit/card', {board, list, card})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -272,7 +283,8 @@ export const onDeleteSelectedCard = (boardId, listId, cardId) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/delete/card', {boardId, listId, cardId})
+    jwtAxios
+      .post('/api/scrumboard/delete/card', {boardId, listId, cardId})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -298,7 +310,8 @@ export const onDeleteSelectedBoard = (boardId) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/delete/board', {boardId})
+    jwtAxios
+      .post('/api/scrumboard/delete/board', {boardId})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -320,7 +333,8 @@ export const onDeleteSelectedList = (boardId, listId) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/scrumboard/delete/list', {boardId, listId})
+    jwtAxios
+      .post('/api/scrumboard/delete/list', {boardId, listId})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

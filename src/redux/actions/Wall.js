@@ -7,14 +7,16 @@ import {
   GET_WALL_DATA,
   UPDATE_POST,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import IntlMessages from '../../@crema/utility/IntlMessages';
 import React from 'react';
 
 export const onGetWallData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/wall')
+    jwtAxios
+      .get('/wall')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -35,7 +37,8 @@ export const onGetWallData = () => {
 export const onGetPostsList = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/wall/posts')
+    jwtAxios
+      .get('/wall/posts')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -56,7 +59,8 @@ export const onGetPostsList = () => {
 export const onCreateNewPost = (post) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/wall/posts', {post})
+    jwtAxios
+      .post('/wall/posts', {post})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -77,7 +81,8 @@ export const onCreateNewPost = (post) => {
 export const onUpdatePostStatus = (postId, status) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/wall/posts', {postId, status})
+    jwtAxios
+      .put('/wall/posts', {postId, status})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -101,7 +106,8 @@ export const onUpdatePostStatus = (postId, status) => {
 export const onAddNewComment = (postId, comment) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/wall/posts/comments', {postId, comment})
+    jwtAxios
+      .post('/wall/posts/comments', {postId, comment})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

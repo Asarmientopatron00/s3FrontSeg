@@ -12,14 +12,15 @@ import {
   SET_PRODUCT_VIEW_TYPE,
   UPDATE_CART_ITEM,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 export const onGetEcommerceData = (filterData) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/ecommerce/list', {
-      params: {filterData},
-    })
+    jwtAxios
+      .get('/api/ecommerce/list', {
+        params: {filterData},
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -39,9 +40,10 @@ export const onGetEcommerceData = (filterData) => {
 export const getProductDetail = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/ecommerce/get', {
-      params: {id: id},
-    })
+    jwtAxios
+      .get('/api/ecommerce/get', {
+        params: {id: id},
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -61,9 +63,10 @@ export const getProductDetail = (id) => {
 export const getRecentOrders = (search, page) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/ecommerce/orders', {
-      params: {search, page},
-    })
+    jwtAxios
+      .get('/api/ecommerce/orders', {
+        params: {search, page},
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -83,9 +86,10 @@ export const getRecentOrders = (search, page) => {
 export const getCustomers = (search, page) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/ecommerce/customers', {
-      params: {search, page},
-    })
+    jwtAxios
+      .get('/api/ecommerce/customers', {
+        params: {search, page},
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -106,7 +110,7 @@ export const getCustomers = (search, page) => {
 export const getCartItems = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    //   Api.get('/api/cart/get')
+    //   jwtAxios.get('/api/cart/get')
     //     .then((data) => {
     //       if (data.status === 200) {
     dispatch({type: FETCH_SUCCESS});

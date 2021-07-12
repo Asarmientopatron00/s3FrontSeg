@@ -10,7 +10,8 @@ import {
   FETCH_SUCCESS,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetColeccion = (
@@ -26,14 +27,15 @@ export const onGetColeccion = (
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/servicios', {
-      params: {
-        page: page,
-        limite: rowsPerPage,
-        nombre: nombreAux,
-        ordenar_por: ordenar_por,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/servicios', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          nombre: nombreAux,
+          ordenar_por: ordenar_por,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -55,11 +57,12 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/servicios', {
-      params: {
-        ligera: true,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/servicios', {
+        params: {
+          ligera: true,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -82,7 +85,8 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/servicios/' + id)
+      jwtAxios
+        .get('http://solicitudesservicio.test/api/servicios/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -104,10 +108,8 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put(
-      'http://solicitudesservicio.test/api/servicios/' + params.id,
-      params,
-    )
+    jwtAxios
+      .put('http://solicitudesservicio.test/api/servicios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -137,7 +139,8 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/servicios/' + id)
+    jwtAxios
+      .delete('http://solicitudesservicio.test/api/servicios/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -163,7 +166,8 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/servicios', params)
+    jwtAxios
+      .post('http://solicitudesservicio.test/api/servicios', params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

@@ -1,4 +1,5 @@
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -11,7 +12,8 @@ import React from 'react';
 export const onGetGalleryPhotos = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/gallery/photos')
+    jwtAxios
+      .get('/gallery/photos')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

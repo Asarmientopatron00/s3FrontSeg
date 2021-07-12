@@ -17,7 +17,8 @@ import {
   UPDATE_TASK_LABEL,
   UPDATE_TASK_STARRED_STATUS,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetTaskList = (type, name, currentPage) => {
@@ -25,13 +26,14 @@ export const onGetTaskList = (type, name, currentPage) => {
   const page = currentPage ? currentPage : null;
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/task/list', {
-      params: {
-        type: type,
-        name: name,
-        page: page,
-      },
-    })
+    jwtAxios
+      .get('/api/todo/task/list', {
+        params: {
+          type: type,
+          name: name,
+          page: page,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -59,7 +61,8 @@ export const onGetToDoLabelList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/labels/list')
+    jwtAxios
+      .get('/api/todo/labels/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -81,7 +84,8 @@ export const onGetToDoStaffList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/staff/list')
+    jwtAxios
+      .get('/api/todo/staff/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -103,7 +107,8 @@ export const onGetToDoPriorityList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/priority/list')
+    jwtAxios
+      .get('/api/todo/priority/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -125,7 +130,8 @@ export const onGetToDoFolderList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/folders/list')
+    jwtAxios
+      .get('/api/todo/folders/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -147,7 +153,8 @@ export const onGetToDoStatusList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/todo/status/list')
+    jwtAxios
+      .get('/api/todo/status/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -169,7 +176,8 @@ export const onUpdateTaskLabels = (taskIds, type) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/todo/update/label', {taskIds, type})
+    jwtAxios
+      .put('/api/todo/update/label', {taskIds, type})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -195,7 +203,8 @@ export const onUpdateTaskStarredStatus = (taskIds, status, folderName) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/todo/update/starred', {taskIds, status})
+    jwtAxios
+      .put('/api/todo/update/starred', {taskIds, status})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -224,7 +233,8 @@ export const onDeleteSelectedTasks = (taskIds, type, name, page) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/todo/update/folder', {taskIds, type, name, page})
+    jwtAxios
+      .put('/api/todo/update/folder', {taskIds, type, name, page})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -250,7 +260,8 @@ export const onCreateTask = (task) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/todoApp/compose', {task})
+    jwtAxios
+      .post('/api/todoApp/compose', {task})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -276,11 +287,12 @@ export const onGetSelectedTask = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get(`/api/todoApp/task/`, {
-      params: {
-        id: id,
-      },
-    })
+    jwtAxios
+      .get(`/api/todoApp/task/`, {
+        params: {
+          id: id,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -302,7 +314,8 @@ export const onUpdateSelectedTask = (task) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/todoApp/task/', {task})
+    jwtAxios
+      .put('/api/todoApp/task/', {task})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

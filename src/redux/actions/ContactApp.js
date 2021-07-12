@@ -13,7 +13,8 @@ import {
   UPDATE_CONTACT_LABEL,
   UPDATE_CONTACT_STARRED_STATUS,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetContactList = (type, name, currentPage) => {
@@ -21,14 +22,15 @@ export const onGetContactList = (type, name, currentPage) => {
   const page = currentPage ? currentPage : 0;
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    // Api.get('/api/contactApp/contact/List', {
-    Api.get('http://solicitudesservicio.test/api/lugares', {
-      params: {
-        type: type,
-        name: name,
-        page: page,
-      },
-    })
+    // jwtAxios.get('/api/contactApp/contact/List', {
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/lugares', {
+        params: {
+          type: type,
+          name: name,
+          page: page,
+        },
+      })
       .then((data) => {
         const data1 = {list: data.data, total: data.data.length};
         console.log(data1);
@@ -53,7 +55,8 @@ export const onGetLabelList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/contactApp/labels/list')
+    jwtAxios
+      .get('/api/contactApp/labels/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -75,7 +78,8 @@ export const onGetFolderList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/contactApp/folders/list')
+    jwtAxios
+      .get('/api/contactApp/folders/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -103,7 +107,8 @@ export const onUpdateContactLabel = (contactIds, type, labelName) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/contactApp/update/label', {contactIds, type})
+    jwtAxios
+      .put('/api/contactApp/update/label', {contactIds, type})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -132,7 +137,8 @@ export const onUpdateStarredStatus = (contactIds, status, folderName) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/contactApp/update/starred', {contactIds, status})
+    jwtAxios
+      .put('/api/contactApp/update/starred', {contactIds, status})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -161,7 +167,8 @@ export const onDeleteContacts = (type, name, contactIds, page) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/contactApp/delete/contact', {type, name, contactIds, page})
+    jwtAxios
+      .post('/api/contactApp/delete/contact', {type, name, contactIds, page})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -187,7 +194,8 @@ export const onUpdateSelectedContact = (contact) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/contactApp/contact/', {contact})
+    jwtAxios
+      .put('/api/contactApp/contact/', {contact})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -213,7 +221,8 @@ export const onCreateContact = (contact) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/contactApp/compose', {contact})
+    jwtAxios
+      .post('/api/contactApp/compose', {contact})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

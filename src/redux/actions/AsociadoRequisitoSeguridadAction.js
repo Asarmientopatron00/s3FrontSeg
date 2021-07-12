@@ -7,7 +7,8 @@ import {
   FETCH_SUCCESS,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetColeccion = (currentPage, orderByToSend, asociado_id) => {
@@ -16,15 +17,16 @@ export const onGetColeccion = (currentPage, orderByToSend, asociado_id) => {
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get(
-      'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
-      {
-        params: {
-          page: page,
-          asociado_id: asociado_id,
+    jwtAxios
+      .get(
+        'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
+        {
+          params: {
+            page: page,
+            asociado_id: asociado_id,
+          },
         },
-      },
-    )
+      )
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -50,10 +52,11 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      Api.get(
-        'http://solicitudesservicio.test/api/asociados-requisitos-seguridad/' +
-          id,
-      )
+      jwtAxios
+        .get(
+          'http://solicitudesservicio.test/api/asociados-requisitos-seguridad/' +
+            id,
+        )
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -78,10 +81,11 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put(
-      'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
-      params,
-    )
+    jwtAxios
+      .put(
+        'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
+        params,
+      )
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

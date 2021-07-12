@@ -15,7 +15,8 @@ import {
   GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA,
   GET_CLAUSULAS,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {appIntl} from '../../@crema/utility/Utils';
 
 export const onGetColeccion = (
@@ -33,15 +34,16 @@ export const onGetColeccion = (
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/asociados-negocio', {
-      params: {
-        page: page,
-        limite: rowsPerPage,
-        nombre: nombreAux,
-        ordenar_por: ordenar_por,
-        numero_documento: numero_documento,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          nombre: nombreAux,
+          ordenar_por: ordenar_por,
+          numero_documento: numero_documento,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -63,11 +65,12 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/asociados-negocio', {
-      params: {
-        ligera: true,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+        params: {
+          ligera: true,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -99,16 +102,17 @@ export const onGetColeccionDatosBasicos = (
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/asociados-negocio', {
-      params: {
-        page: page,
-        limite: rowsPerPage,
-        nombre: nombreAux,
-        ordenar_por: ordenar_por,
-        datos_basicos: true,
-        numero_documento: numero_documento,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          nombre: nombreAux,
+          ordenar_por: ordenar_por,
+          datos_basicos: true,
+          numero_documento: numero_documento,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -131,7 +135,8 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      Api.get('http://solicitudesservicio.test/api/asociados-negocio/' + id)
+      jwtAxios
+        .get('http://solicitudesservicio.test/api/asociados-negocio/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -153,10 +158,11 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put(
-      'http://solicitudesservicio.test/api/asociados-negocio/' + params.id,
-      params,
-    )
+    jwtAxios
+      .put(
+        'http://solicitudesservicio.test/api/asociados-negocio/' + params.id,
+        params,
+      )
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -185,7 +191,8 @@ export const onUpdate = (params, handleOnClose) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.delete('http://solicitudesservicio.test/api/asociados-negocio/' + id)
+    jwtAxios
+      .delete('http://solicitudesservicio.test/api/asociados-negocio/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -211,7 +218,8 @@ export const onCreate = (params, handleOnClose) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('http://solicitudesservicio.test/api/asociados-negocio', params)
+    jwtAxios
+      .post('http://solicitudesservicio.test/api/asociados-negocio', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
@@ -239,12 +247,13 @@ export const onGetColeccionLigeraCiudad = (depto) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/ciudades', {
-      params: {
-        ligera: true,
-        departamento_id: depto,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/ciudades', {
+        params: {
+          ligera: true,
+          departamento_id: depto,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -267,11 +276,12 @@ export const onGetColeccionLigeraActividadesEconomicas = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/actividades-economicas', {
-      params: {
-        ligera: true,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/actividades-economicas', {
+        params: {
+          ligera: true,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -296,12 +306,13 @@ export const onGetColeccionLigeraCiudadOtra = (depto) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('http://solicitudesservicio.test/api/ciudades', {
-      params: {
-        ligera: true,
-        departamento_id: depto,
-      },
-    })
+    jwtAxios
+      .get('http://solicitudesservicio.test/api/ciudades', {
+        params: {
+          ligera: true,
+          departamento_id: depto,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -326,9 +337,10 @@ export const onGetClausulas = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get(
-      'http://solicitudesservicio.test/api/parametros-constantes/clausulas',
-    )
+    jwtAxios
+      .get(
+        'http://solicitudesservicio.test/api/parametros-constantes/clausulas',
+      )
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

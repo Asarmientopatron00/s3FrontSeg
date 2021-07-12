@@ -48,7 +48,7 @@ const Checkboxes = () => {
             title='Checkboxes with FormGroup'
             component={CheckboxesFormGroup}
             source={CheckboxesFormGroupSource}
-            description='FormGroup is a helpful wrapper used to group selection controls components that provides an easier API.'
+            description='FormGroup is a helpful wrapper used to group selection controls components that provides an easier jwtAxios.'
           />
         </Grid>
         <Grid item xs={12} lg={6}>

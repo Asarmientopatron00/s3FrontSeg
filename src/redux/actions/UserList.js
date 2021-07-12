@@ -4,14 +4,16 @@ import {
   FETCH_SUCCESS,
   GET_USER_LIST,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import IntlMessages from '../../@crema/utility/IntlMessages';
 import React from 'react';
 
 export const onGetUserList = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/user/list')
+    jwtAxios
+      .get('/api/user/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

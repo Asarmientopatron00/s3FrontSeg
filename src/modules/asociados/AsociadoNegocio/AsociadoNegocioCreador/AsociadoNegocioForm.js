@@ -17,7 +17,7 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -60,34 +60,32 @@ const MyRadioField = (props) => {
   );
 };
 
-// const MyAutocomplete =(props)=>{
-//   const [field, meta] = useField(props);
-//   const errorText = meta.error && meta.touched ? meta.error : '';
-//   return (
-//     <Autocomplete
-//       {...props}
-//       renderOption={(option) => (
-//         <React.Fragment>
-//           {option.nombre}
-//         </React.Fragment>
-//       )}
-//       renderInput={(params) => {
-//         console.log(params)
-//         return(
-//           <TextField
-//             {...params}
-//             {...field}
-//             className={props.className}
-//             label = {props.label}
-//             required = {props.required}
-//             helperText={errorText}
-//             error={!!errorText}
-//           />
-//         )
-//       }}
-//     />
-//   )
-// }
+const MyAutocomplete = (props) => {
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  return (
+    <Autocomplete
+      {...props}
+      renderOption={(option) => (
+        <React.Fragment>{option.nombre}</React.Fragment>
+      )}
+      renderInput={(params) => {
+        console.log(params);
+        return (
+          <TextField
+            {...params}
+            {...field}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
+    />
+  );
+};
 
 const TerceroServicioForm = (props) => {
   const {
@@ -585,15 +583,15 @@ const TerceroServicioForm = (props) => {
               }}
             />
 
-            {/* <MyAutocomplete
+            <MyAutocomplete
               className={classes.myTextField}
-              name = 'trial'
-              label = 'trial'
+              name='trial'
+              label='trial'
               options={departamentos}
               autoHighlight
               required={true}
               getOptionLabel={(option) => option.nombre}
-            /> */}
+            />
           </Box>
 
           <Box component='h6' fontSize={16} fontWeight='bold' mb={3}>

@@ -17,7 +17,8 @@ import {
   UPDATE_STARRED_STATUS,
   UPDATED_MAIL_DETAIL,
 } from '../../shared/constants/ActionTypes';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {mailListMessages} from '../../@crema/services/db/apps/mail/folderList';
 import {appIntl} from '../../@crema/utility/Utils';
 
@@ -26,13 +27,14 @@ export const onGetMailList = (type, name, currentPage) => {
   const page = currentPage ? currentPage : null;
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/mailApp/folder/mail/List', {
-      params: {
-        type: type,
-        name: name,
-        page: page,
-      },
-    })
+    jwtAxios
+      .get('/api/mailApp/folder/mail/List', {
+        params: {
+          type: type,
+          name: name,
+          page: page,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -54,7 +56,8 @@ export const onGetLabelList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/mailApp/labels/list')
+    jwtAxios
+      .get('/api/mailApp/labels/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -82,7 +85,8 @@ export const onGetFolderList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/mailApp/folders/list')
+    jwtAxios
+      .get('/api/mailApp/folders/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -104,7 +108,8 @@ export const onGetConnectionList = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/api/mailApp/connection/list')
+    jwtAxios
+      .get('/api/mailApp/connection/list')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -126,7 +131,8 @@ export const onUpdateMailLabels = (mailIds, type) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/mailApp/update/label', {mailIds, type})
+    jwtAxios
+      .put('/api/mailApp/update/label', {mailIds, type})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -152,7 +158,8 @@ export const onUpdateStarredStatus = (mailIds, status, folderName) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/mailApp/update/starred', {mailIds, status})
+    jwtAxios
+      .put('/api/mailApp/update/starred', {mailIds, status})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -181,7 +188,8 @@ export const onUpdateMailFolders = (mailIds, type) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/mailApp/update/folder', {mailIds, type})
+    jwtAxios
+      .put('/api/mailApp/update/folder', {mailIds, type})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -208,7 +216,8 @@ export const onUpdateReadStatus = (mailIds, status) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/mailApp/update/read', {mailIds, status})
+    jwtAxios
+      .put('/api/mailApp/update/read', {mailIds, status})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -234,11 +243,12 @@ export const onGetSelectedMail = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get(`/api/mailApp/mail/`, {
-      params: {
-        id: id,
-      },
-    })
+    jwtAxios
+      .get(`/api/mailApp/mail/`, {
+        params: {
+          id: id,
+        },
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -260,7 +270,8 @@ export const onUpdateSelectedMail = (mail) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.put('/api/mailApp/mail/', {mail})
+    jwtAxios
+      .put('/api/mailApp/mail/', {mail})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -286,7 +297,8 @@ export const onComposeMail = (mail, pathname) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.post('/api/mailApp/compose', {mail})
+    jwtAxios
+      .post('/api/mailApp/compose', {mail})
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

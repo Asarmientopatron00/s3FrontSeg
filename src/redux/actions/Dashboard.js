@@ -1,5 +1,6 @@
 import React from 'react';
-import Api from '../../@crema/services/ApiConfig';
+import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -18,7 +19,8 @@ import IntlMessages from '../../@crema/utility/IntlMessages';
 export const onGetAnalyticsData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/analytics')
+    jwtAxios
+      .get('/dashboard/analytics')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -39,7 +41,8 @@ export const onGetAnalyticsData = () => {
 export const onGetECommerceData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/ecommerce')
+    jwtAxios
+      .get('/dashboard/ecommerce')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -60,7 +63,8 @@ export const onGetECommerceData = () => {
 export const onGetAcademyData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/academy')
+    jwtAxios
+      .get('/dashboard/academy')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -81,7 +85,8 @@ export const onGetAcademyData = () => {
 export const onGetHCData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/health_care')
+    jwtAxios
+      .get('/dashboard/health_care')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -102,7 +107,8 @@ export const onGetHCData = () => {
 export const onGetCrmData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/crm')
+    jwtAxios
+      .get('/dashboard/crm')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -123,7 +129,8 @@ export const onGetCrmData = () => {
 export const onGetCryptoData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/crypto')
+    jwtAxios
+      .get('/dashboard/crypto')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -144,7 +151,8 @@ export const onGetCryptoData = () => {
 export const onGetMetricsData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/metrics')
+    jwtAxios
+      .get('/dashboard/metrics')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -165,7 +173,8 @@ export const onGetMetricsData = () => {
 export const onGetWidgetsData = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    Api.get('/dashboard/widgets')
+    jwtAxios
+      .get('/dashboard/widgets')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});

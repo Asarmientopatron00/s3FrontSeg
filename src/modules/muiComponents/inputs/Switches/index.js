@@ -53,7 +53,7 @@ const Switches = () => {
             title='Switches with FormGroup'
             component={SwitchesWithFormGroup}
             source={SwitchesWithFormGroupSource}
-            description='FormGroup is a helpful wrapper used to group selection controls components that provides an easier API. However, we encourage you to use a Checkbox instead.'
+            description='FormGroup is a helpful wrapper used to group selection controls components that provides an easier jwtAxios. However, we encourage you to use a Checkbox instead.'
           />
         </Grid>
         <Grid item xs={12} lg={6}>
