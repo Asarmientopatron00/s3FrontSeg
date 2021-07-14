@@ -28,7 +28,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/actividades-economicas', {
+      .get('actividades-economicas', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -58,7 +58,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/actividades-economicas', {
+      .get('actividades-economicas', {
         params: {
           ligera: true,
         },
@@ -89,7 +89,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/actividades-economicas/' + id)
+        .get('actividades-economicas/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -112,11 +112,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/actividades-economicas/' +
-          params.id,
-        params,
-      )
+      .put('actividades-economicas/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -147,9 +143,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete(
-        'http://solicitudesservicio.test/api/actividades-economicas/' + id,
-      )
+      .delete('actividades-economicas/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -176,10 +170,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post(
-        'http://solicitudesservicio.test/api/actividades-economicas',
-        params,
-      )
+      .post('actividades-economicas', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {

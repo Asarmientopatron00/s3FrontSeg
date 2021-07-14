@@ -177,7 +177,7 @@ export const onResetCognitoPassword = (email, history) => {
     const params = {email: email};
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/forgot-password', params)
+      .post('forgot-password', params)
       .then((data) => {
         if (data) {
           dispatch({type: FETCH_SUCCESS});
@@ -213,7 +213,7 @@ export const onSetNewCognitoPassword = (
     };
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/reset-password', params)
+      .post('reset-password', params)
       .then((data) => {
         if (data) {
           dispatch({type: FETCH_SUCCESS});

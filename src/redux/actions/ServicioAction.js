@@ -28,7 +28,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/servicios', {
+      .get('servicios', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -58,7 +58,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/servicios', {
+      .get('servicios', {
         params: {
           ligera: true,
         },
@@ -86,7 +86,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/servicios/' + id)
+        .get('servicios/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -109,7 +109,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('http://solicitudesservicio.test/api/servicios/' + params.id, params)
+      .put('servicios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -140,7 +140,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/servicios/' + id)
+      .delete('servicios/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -167,7 +167,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/servicios', params)
+      .post('servicios', params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

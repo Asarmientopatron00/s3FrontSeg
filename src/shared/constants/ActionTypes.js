@@ -25,6 +25,7 @@ export const UPDATE_ASOCIADO = 'update_asociado';
 export const CREATE_ASOCIADO = 'create_asociado';
 export const DELETE_ASOCIADO = 'delete_asociado';
 export const GET_CLAUSULAS = 'get_clausulas';
+export const GET_TIPO_ROL = 'get_tipo_rol';
 export const SHOW = 'show';
 export const UPDATE = 'update';
 export const CREATE = 'create';
@@ -35,6 +36,7 @@ export const SHOW_USUARIO = 'show_usuario';
 export const UPDATE_USUARIO = 'update_usuario';
 export const CREATE_USUARIO = 'create_usuario';
 export const DELETE_USUARIO = 'delete_usuario';
+export const VERIFICAR_ASOCIADO = 'verificar_asociado';
 export const GET_COLECCION_TIPO_DOCUMENTO = 'get_coleccion_tipo_documento';
 export const GET_COLECCION_LIGERA_TIPO_DOCUMENTO =
   'get_coleccion_ligera_tipo_documento';

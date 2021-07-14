@@ -24,7 +24,7 @@ export const onGetContactList = (type, name, currentPage) => {
     dispatch({type: FETCH_START});
     // jwtAxios.get('/api/contactApp/contact/List', {
     jwtAxios
-      .get('http://solicitudesservicio.test/api/lugares', {
+      .get('lugares', {
         params: {
           type: type,
           name: name,

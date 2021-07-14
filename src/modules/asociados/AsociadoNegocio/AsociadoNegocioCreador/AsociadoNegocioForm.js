@@ -17,7 +17,13 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  FETCH_ERROR,
+  FETCH_START,
+} from '../../../../shared/constants/ActionTypes';
+import {useDispatch, useSelector} from 'react-redux';
+import {onGetTipoRol} from '../../../../redux/actions/AsociadoAction';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -60,34 +66,44 @@ const MyRadioField = (props) => {
   );
 };
 
-const MyAutocomplete = (props) => {
-  const [field, meta] = useField(props);
-  const errorText = meta.error && meta.touched ? meta.error : '';
-  return (
-    <Autocomplete
-      {...props}
-      renderOption={(option) => (
-        <React.Fragment>{option.nombre}</React.Fragment>
-      )}
-      renderInput={(params) => {
-        console.log(params);
-        return (
-          <TextField
-            {...params}
-            {...field}
-            className={props.className}
-            label={props.label}
-            required={props.required}
-            helperText={errorText}
-            error={!!errorText}
-          />
-        );
-      }}
-    />
-  );
-};
+// const MyAutocomplete = (props) => {
+//   const [field, meta] = useField(props);
+//   const errorText = meta.error && meta.touched ? meta.error : '';
 
-const TerceroServicioForm = (props) => {
+//   const onChange = (event)=>{
+//     props.options.forEach(option => {
+//       if (event.target.innerHTML === option.nombre){
+//         field.value = option.id;
+//       }
+//       console.log(field)
+//     })
+//   }
+//   return (
+//     <Autocomplete
+//       {...props}
+//       renderOption={(option) => (
+//         <React.Fragment>{option.nombre}</React.Fragment>
+//       )}
+//       onChange = {onChange}
+//       renderInput={(params) => {
+//         return (
+//           <TextField
+//             {...params}
+//             {...field}
+//             name = {props.name}
+//             className={props.className}
+//             label={props.label}
+//             required={props.required}
+//             helperText={errorText}
+//             error={!!errorText}
+//           />
+//         );
+//       }}
+//     />
+//   );
+// };
+
+const AsociadoNegocioForm = (props) => {
   const {
     handleOnClose,
     accion,
@@ -100,7 +116,10 @@ const TerceroServicioForm = (props) => {
     ciudadesOtra,
     onChangeDepartamentoOtra,
     actividadesEconomicas,
+    usuario,
   } = props;
+
+  const dispatch = useDispatch();
 
   // const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
 
@@ -171,6 +190,7 @@ const TerceroServicioForm = (props) => {
       return actividad.nombre;
     });
   };
+
   useEffect(() => {
     changeActividadEconomica();
   }, [values.actividad_economica_id, actividadesEconomicas]);
@@ -179,6 +199,12 @@ const TerceroServicioForm = (props) => {
   useEffect(() => {
     setTipoPersona(values.tipo_persona);
   }, [values.tipo_persona]);
+
+  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+
+  useEffect(() => {
+    dispatch(onGetTipoRol());
+  }, [dispatch]);
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -275,8 +301,8 @@ const TerceroServicioForm = (props) => {
   const [focusedSelect, setFocusedSelect] = useState(false);
   const onFocus = () => setFocusedSelect(true);
   const onBlur = () => setFocusedSelect(false);
-
   const classes = useStyles(props);
+
   return (
     <Form noValidate autoComplete='off' className={classes.root}>
       <Box className={classes.marco}>
@@ -581,16 +607,6 @@ const TerceroServicioForm = (props) => {
                   paddingTop: '2px',
                 },
               }}
-            />
-
-            <MyAutocomplete
-              className={classes.myTextField}
-              name='trial'
-              label='trial'
-              options={departamentos}
-              autoHighlight
-              required={true}
-              getOptionLabel={(option) => option.nombre}
             />
           </Box>
 
@@ -1003,6 +1019,15 @@ const TerceroServicioForm = (props) => {
               })}
             </MyTextField>
 
+            {/* <MyAutocomplete
+              className={classes.myTextField}
+              name='tipo_documento_facturacion_id'
+              label='Tipo de Documento'
+              options={tiposDocumentos}
+              autoHighlight
+              getOptionLabel={(option) => option.nombre}
+            /> */}
+
             <MyTextField
               className={classes.myTextField}
               label='Número Documento Empresa Facturación'
@@ -1181,31 +1206,55 @@ const TerceroServicioForm = (props) => {
             />
           </Box>
 
-          <Box className={classes.inputs_2}>
-            <MyRadioField
-              label='Información Verificada'
-              className={classes.MyRadioField}
-              name='informacion_verificada_asociado'
-              disabled={disabled}
-              required
-              options={[
-                {value: 'S', label: 'Si'},
-                {value: 'N', label: 'No'},
-              ]}
-            />
+          {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] ? (
+            <Box className={classes.inputs_2}>
+              <MyRadioField
+                label='Información Verificada'
+                className={classes.MyRadioField}
+                name='informacion_verificada_asociado'
+                disabled={disabled}
+                required
+                onClick={(event) => {
+                  setTimeout(function () {
+                    dispatch({type: FETCH_START});
+                  }, 1000);
 
-            <MyRadioField
-              label='Enviar solicitud de aprobacion del representante legal'
-              className={classes.MyRadioField}
-              name='firma_representante_legal'
-              disabled={disabled}
-              required
-              options={[
-                {value: 'S', label: 'Si'},
-                {value: 'N', label: 'No'},
-              ]}
-            />
-          </Box>
+                  if (event.target.value === 'S') {
+                    if (
+                      values.autorizacion_clausula_confidencialidad === 'N' ||
+                      values.autorizacion_clausula_confidencialidad === 'N' ||
+                      values.aceptar_condiciones_circular_070 === 'N'
+                    ) {
+                      event.target.value = 'N';
+                      dispatch({
+                        type: FETCH_ERROR,
+                        payload:
+                          'No cumple condiciones para dar información por verificada',
+                      });
+                    }
+                  }
+                }}
+                options={[
+                  {value: 'S', label: 'Si'},
+                  {value: 'N', label: 'No'},
+                ]}
+              />
+
+              <MyRadioField
+                label='Enviar solicitud de aprobacion del representante legal'
+                className={classes.MyRadioField}
+                name='firma_representante_legal'
+                disabled={disabled}
+                required
+                options={[
+                  {value: 'S', label: 'Si'},
+                  {value: 'N', label: 'No'},
+                ]}
+              />
+            </Box>
+          ) : (
+            ''
+          )}
 
           <Box className={classes.inputs_2}>
             <FormControl className={classes.widthFull} component='fieldset'>
@@ -1316,4 +1365,4 @@ const TerceroServicioForm = (props) => {
   );
 };
 
-export default TerceroServicioForm;
+export default AsociadoNegocioForm;

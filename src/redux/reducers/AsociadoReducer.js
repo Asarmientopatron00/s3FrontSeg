@@ -10,6 +10,8 @@ import {
   GET_COLECCION_LIGERA_ASOCIADO_CIUDAD_OTRA,
   GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA,
   GET_CLAUSULAS,
+  GET_TIPO_ROL,
+  VERIFICAR_ASOCIADO,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -26,6 +28,7 @@ const initialState = {
   ciudades_otra: [],
   actividades_economicas: [],
   clausulas: [],
+  tipo_rol: [],
 };
 
 const asociadoReducer = (state = initialState, action) => {
@@ -67,6 +70,11 @@ const asociadoReducer = (state = initialState, action) => {
         ...state,
         clausulas: action.payload.data,
       };
+    case GET_TIPO_ROL:
+      return {
+        ...state,
+        tipo_rol: action.payload.data,
+      };
     case GET_COLECCION_DATOS_BASICOS_ASOCIADO:
       return {
         ...state,
@@ -80,6 +88,12 @@ const asociadoReducer = (state = initialState, action) => {
       };
 
     case SHOW_ASOCIADO:
+      return {
+        ...state,
+        selectedRow: action.payload,
+      };
+
+    case VERIFICAR_ASOCIADO:
       return {
         ...state,
         selectedRow: action.payload,

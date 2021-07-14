@@ -28,7 +28,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/parametros-correos', {
+      .get('parametros-correos', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -58,7 +58,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/parametros-correos', {
+      .get('parametros-correos', {
         params: {
           ligera: true,
         },
@@ -89,7 +89,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/parametros-correos/' + id)
+        .get('parametros-correos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -112,10 +112,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/parametros-correos/' + params.id,
-        params,
-      )
+      .put('parametros-correos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -146,7 +143,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/parametros-correos/' + id)
+      .delete('parametros-correos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -173,7 +170,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/parametros-correos', params)
+      .post('parametros-correos', params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

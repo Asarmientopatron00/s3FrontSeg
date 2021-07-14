@@ -16,7 +16,7 @@ import {
 // import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import AsociadoDatoBasicoForm from './AsociadoNegocioForm';
+import AsociadoNegocioForm from './AsociadoNegocioForm';
 // import {Fonts} from '../../../../shared/constants/AppEnums';
 // import {makeStyles} from '@material-ui/core/styles/index';
 import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
@@ -33,7 +33,7 @@ import {
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 import {useParams} from 'react-router-dom';
 import {history} from 'redux/store';
-
+import GetUsuario from '../../../../shared/functions/GetUsuario';
 // const Transition = React.forwardRef(function Transition(props, ref) {
 //   return <Slide direction='down' ref={ref} {...props} />;
 // });
@@ -43,6 +43,8 @@ const AsociadoDatoBasicoCreator = (props) => {
   const handleOnClose = () => {
     history.goBack();
   };
+
+  const usuario = GetUsuario();
 
   const dispatch = useDispatch();
 
@@ -665,7 +667,8 @@ const AsociadoDatoBasicoCreator = (props) => {
           // updateColeccion();
         }}>
         {({values, initialValues, setFieldValue}) => (
-          <AsociadoDatoBasicoForm
+          <AsociadoNegocioForm
+            usuario={usuario}
             values={values}
             setFieldValue={setFieldValue}
             handleOnClose={handleOnClose}

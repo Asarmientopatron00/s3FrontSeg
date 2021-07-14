@@ -18,15 +18,12 @@ export const onGetColeccion = (currentPage, orderByToSend, asociado_id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get(
-        'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
-        {
-          params: {
-            page: page,
-            asociado_id: asociado_id,
-          },
+      .get('asociados-requisitos-seguridad', {
+        params: {
+          page: page,
+          asociado_id: asociado_id,
         },
-      )
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -53,10 +50,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get(
-          'http://solicitudesservicio.test/api/asociados-requisitos-seguridad/' +
-            id,
-        )
+        .get('asociados-requisitos-seguridad/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -78,14 +72,11 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose) => {
+export const onUpdate = (params, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/asociados-requisitos-seguridad',
-        params,
-      )
+      .put('asociados-requisitos-seguridad', params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
@@ -93,7 +84,7 @@ export const onUpdate = (params, handleOnClose) => {
             type: UPDATE_ASOCIADO_REQUISITO_SEGURIDAD,
             payload: data.data,
           });
-          // handleOnClose();
+          updateColeccion();
           dispatch({
             type: SHOW_MESSAGE,
             payload: data.data.mensajes[0],

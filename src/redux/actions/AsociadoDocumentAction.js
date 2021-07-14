@@ -18,7 +18,7 @@ export const onGetColeccion = (asociado_id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/asociados-documentos', {
+      .get('asociados-documentos', {
         params: {
           asociado_id: asociado_id,
         },
@@ -46,7 +46,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/asociados-documentos/' + id)
+        .get('asociados-documentos/' + id)
         .then((data) => {
           if (data.status === 200) {
             const url = window.URL.createObjectURL(
@@ -78,7 +78,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/asociados-documentos/' + id)
+      .delete('asociados-documentos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -110,15 +110,11 @@ export const onCreate = (params, handleOnCloseForm) => {
     formData.append('asociado_id', params['asociado_id']);
     dispatch({type: FETCH_START});
     jwtAxios
-      .post(
-        'http://solicitudesservicio.test/api/asociados-documentos',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+      .post('asociados-documentos', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
         },
-      )
+      })
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

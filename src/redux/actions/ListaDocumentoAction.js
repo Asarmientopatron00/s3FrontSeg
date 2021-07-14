@@ -30,7 +30,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/listas-de-documentos', {
+      .get('listas-de-documentos', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -61,7 +61,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/listas-de-documentos', {
+      .get('listas-de-documentos', {
         params: {
           ligera: true,
         },
@@ -89,7 +89,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/listas-de-documentos/' + id)
+        .get('listas-de-documentos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -112,10 +112,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/listas-de-documentos/' + params.id,
-        params,
-      )
+      .put('listas-de-documentos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -146,7 +143,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/listas-de-documentos/' + id)
+      .delete('listas-de-documentos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -173,7 +170,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/listas-de-documentos', params)
+      .post('listas-de-documentos', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {

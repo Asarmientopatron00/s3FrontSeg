@@ -14,6 +14,8 @@ import {
   GET_COLECCION_LIGERA_ASOCIADO_CIUDAD_OTRA,
   GET_COLECCION_LIGERA_ASOCIADO_ACTIVIDAD_ECONOMICA,
   GET_CLAUSULAS,
+  GET_TIPO_ROL,
+  VERIFICAR_ASOCIADO,
 } from '../../shared/constants/ActionTypes';
 import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
 
@@ -35,7 +37,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+      .get('asociados-negocio', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -66,7 +68,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+      .get('asociados-negocio', {
         params: {
           ligera: true,
         },
@@ -103,7 +105,7 @@ export const onGetColeccionDatosBasicos = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/asociados-negocio', {
+      .get('asociados-negocio', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -136,7 +138,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/asociados-negocio/' + id)
+        .get('asociados-negocio/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -159,10 +161,7 @@ export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/asociados-negocio/' + params.id,
-        params,
-      )
+      .put('asociados-negocio/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -192,7 +191,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/asociados-negocio/' + id)
+      .delete('asociados-negocio/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -219,7 +218,7 @@ export const onCreate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/asociados-negocio', params)
+      .post('asociados-negocio', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
@@ -248,7 +247,7 @@ export const onGetColeccionLigeraCiudad = (depto) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/ciudades', {
+      .get('ciudades', {
         params: {
           ligera: true,
           departamento_id: depto,
@@ -277,7 +276,7 @@ export const onGetColeccionLigeraActividadesEconomicas = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/actividades-economicas', {
+      .get('actividades-economicas', {
         params: {
           ligera: true,
         },
@@ -307,7 +306,7 @@ export const onGetColeccionLigeraCiudadOtra = (depto) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/ciudades', {
+      .get('ciudades', {
         params: {
           ligera: true,
           departamento_id: depto,
@@ -338,9 +337,7 @@ export const onGetClausulas = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get(
-        'http://solicitudesservicio.test/api/parametros-constantes/clausulas',
-      )
+      .get('parametros-constantes/clausulas')
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -354,6 +351,58 @@ export const onGetClausulas = () => {
       })
       .catch((error) => {
         dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetTipoRol = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('parametros-constantes/tipos-rol')
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_TIPO_ROL, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onVerificarInformacion = (params) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .put('asociados-negocio/verificar-informacion/' + params.id, params)
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: VERIFICAR_ASOCIADO,
+            payload: data.data,
+          });
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: data.data.mensajes[0],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };

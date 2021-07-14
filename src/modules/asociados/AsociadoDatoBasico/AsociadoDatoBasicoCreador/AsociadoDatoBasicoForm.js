@@ -57,7 +57,7 @@ const MyRadioField = (props) => {
     </FormControl>
   );
 };
-const TerceroServicioForm = (props) => {
+const AsociadoDatoBasicoForm = (props) => {
   const {
     handleOnClose,
     accion,
@@ -415,4 +415,4 @@ const TerceroServicioForm = (props) => {
   );
 };
 
-export default TerceroServicioForm;
+export default AsociadoDatoBasicoForm;

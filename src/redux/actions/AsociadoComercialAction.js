@@ -26,17 +26,14 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get(
-        'http://solicitudesservicio.test/api/asociados-referencias-comerciales',
-        {
-          params: {
-            page: page,
-            limite: rowsPerPage,
-            asociado_id: asociado_id,
-            ordenar_por: ordenar_por,
-          },
+      .get('asociados-referencias-comerciales', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          asociado_id: asociado_id,
+          ordenar_por: ordenar_por,
         },
-      )
+      })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -60,10 +57,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get(
-          'http://solicitudesservicio.test/api/asociados-referencias-comerciales/' +
-            id,
-        )
+        .get('asociados-referencias-comerciales/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -86,11 +80,7 @@ export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/asociados-referencias-comerciales/' +
-          params.id,
-        params,
-      )
+      .put('asociados-referencias-comerciales/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -120,10 +110,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete(
-        'http://solicitudesservicio.test/api/asociados-referencias-comerciales/' +
-          id,
-      )
+      .delete('asociados-referencias-comerciales/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -150,10 +137,7 @@ export const onCreate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post(
-        'http://solicitudesservicio.test/api/asociados-referencias-comerciales',
-        params,
-      )
+      .post('asociados-referencias-comerciales', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {

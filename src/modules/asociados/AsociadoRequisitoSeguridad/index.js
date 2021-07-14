@@ -37,6 +37,10 @@ import {Formik, Form, Field, useField} from 'formik';
 import {history} from 'redux/store';
 import * as yup from 'yup';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import {FETCH_ERROR, FETCH_START} from '../../../shared/constants/ActionTypes';
+import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
+import GetUsuario from '../../../shared/functions/GetUsuario';
+import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
 
 const MyRadioField = (props) => {
   const [field, meta] = useField(props);
@@ -555,7 +559,7 @@ const AsociadoRequisitoSeguridad = () => {
   );
   // const {pathname} = useLocation();
 
-  const [compromisos, setCompromisos] = useState([]);
+  const [compromisos, setCompromisos] = useState(Array(100).fill(''));
   const [idRequisitos, setIdRequisitos] = useState([]);
 
   let columnasMostradasInicial = [];
@@ -585,6 +589,10 @@ const AsociadoRequisitoSeguridad = () => {
   useEffect(() => {
     dispatch(onGetColeccion(page, orderByToSend, asociado_id));
   }, [dispatch, page, orderByToSend, asociado_id]);
+
+  const updateColeccion = () => {
+    dispatch(onGetColeccion(page, orderByToSend, asociado_id));
+  };
 
   useEffect(() => {
     setPage(1);
@@ -640,6 +648,14 @@ const AsociadoRequisitoSeguridad = () => {
     }
   }, [rows]);
 
+  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+
+  useEffect(() => {
+    dispatch(onGetTipoRol());
+  }, [dispatch]);
+
+  const usuario = GetUsuario();
+
   useEffect(() => {
     rows.forEach((row, index) => {
       let aux = compromisos;
@@ -685,7 +701,7 @@ const AsociadoRequisitoSeguridad = () => {
 
                 // } else if (accion === 'editar') {
                 // if (selectedRow) {
-                dispatch(onUpdate(data, handleOnClose));
+                dispatch(onUpdate(data, updateColeccion));
                 //   }
                 // }
                 // resetForm();
@@ -717,7 +733,6 @@ const AsociadoRequisitoSeguridad = () => {
                           // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                           rows.map((row, index) => {
                             const isItemSelected = isSelected(row.name);
-
                             return (
                               <TableRow
                                 hover
@@ -776,43 +791,90 @@ const AsociadoRequisitoSeguridad = () => {
                     </Table>
                   </TableContainer>
                   <Box
-                    my={8}
-                    mx={4}
-                    display='flex'
-                    justifyContent='space-between'>
-                    <FormControl>
-                      <Box
-                        display='flex'
-                        alignItems='center'
-                        style={{gap: '20px'}}>
-                        <FormLabel>Información Verificada</FormLabel>
-                        <RadioGroup row>
-                          <FormControlLabel
-                            value='S'
-                            control={<Radio color='primary' />}
-                            label='Si'
-                            labelPlacement='end'
-                          />
-                          <FormControlLabel
-                            value='N'
-                            control={<Radio color='primary' />}
-                            label='No'
-                            labelPlacement='end'
-                          />
-                        </RadioGroup>
-                      </Box>
-                    </FormControl>
+                    py={6}
+                    px={4}
+                    display='grid'
+                    gridTemplateColumns='1fr 1fr'>
+                    <Box>
+                      {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
+                        <FormControl>
+                          <Box
+                            display='flex'
+                            alignItems='center'
+                            style={{gap: '20px'}}>
+                            <FormLabel>Información Verificada</FormLabel>
+                            <RadioGroup
+                              row
+                              defaultValue={
+                                encabezado.informacion_verificada_seguridad ===
+                                'S'
+                                  ? 'S'
+                                  : encabezado.informacion_verificada_seguridad ===
+                                    'N'
+                                  ? 'N'
+                                  : ''
+                              }
+                              onClick={(event) => {
+                                setTimeout(function () {
+                                  dispatch({type: FETCH_START});
+                                }, 1000);
+
+                                if (event.target.value === 'S') {
+                                  let verificada = true;
+                                  rows.forEach((row) => {
+                                    console.log(row.compromiso);
+                                    if (
+                                      (row.compromiso !== 'S') &
+                                      (row.compromiso !== 'N') &
+                                      (row.compromiso !== 'A')
+                                    ) {
+                                      verificada = false;
+                                    }
+                                  });
+                                  if (!verificada) {
+                                    event.target.value = 'N';
+                                    dispatch({
+                                      type: FETCH_ERROR,
+                                      payload:
+                                        'No cumple condiciones para dar información por verificada',
+                                    });
+                                  } else {
+                                    dispatch(
+                                      onVerificarInformacion({
+                                        id: asociado_id,
+                                        tipo_informacion:
+                                          'informacion_verificada_seguridad',
+                                        valor: 'S',
+                                        verificar: true,
+                                      }),
+                                    );
+                                  }
+                                }
+                              }}>
+                              <FormControlLabel
+                                value='S'
+                                control={<Radio color='primary' />}
+                                label='Si'
+                                labelPlacement='end'
+                              />
+                              <FormControlLabel
+                                value='N'
+                                control={<Radio color='primary' />}
+                                label='No'
+                                labelPlacement='end'
+                              />
+                            </RadioGroup>
+                          </Box>
+                        </FormControl>
+                      )}
+                    </Box>
                     <Box className={classes.bottomsGroup}>
-                      {/* {accion !== 'ver' ? ( */}
                       <Button
                         className={`${classes.btnRoot} ${classes.btnPrymary}`}
                         variant='contained'
                         type='submit'>
                         <IntlMessages id='boton.submit' />
                       </Button>
-                      {/* ) : (
-                      ''
-                    )} */}
                       <Button
                         className={`${classes.btnRoot} ${classes.btnSecundary}`}
                         onClick={handleOnClose}>

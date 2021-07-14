@@ -23,7 +23,7 @@ const MyTextField = (props) => {
   );
 };
 
-const TerceroServicioForm = (props) => {
+const EventoNotificacionForm = (props) => {
   const {handleOnClose, accion, values, initialValues} = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -166,4 +166,4 @@ const TerceroServicioForm = (props) => {
   );
 };
 
-export default TerceroServicioForm;
+export default EventoNotificacionForm;

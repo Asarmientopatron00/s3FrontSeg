@@ -26,7 +26,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/asociados-contactos', {
+      .get('asociados-contactos', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -57,7 +57,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/asociados-contactos/' + id)
+        .get('asociados-contactos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -80,10 +80,7 @@ export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/asociados-contactos/' + params.id,
-        params,
-      )
+      .put('asociados-contactos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -113,7 +110,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/asociados-contactos/' + id)
+      .delete('asociados-contactos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -140,7 +137,7 @@ export const onCreate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('http://solicitudesservicio.test/api/asociados-contactos', params)
+      .post('asociados-contactos', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {

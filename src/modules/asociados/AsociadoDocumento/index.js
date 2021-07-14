@@ -42,6 +42,10 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import Swal from 'sweetalert2';
 import {history} from 'redux/store';
 import * as yup from 'yup';
+import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
+import {FETCH_ERROR, FETCH_START} from '../../../shared/constants/ActionTypes';
+import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
+import GetUsuario from '../../../shared/functions/GetUsuario';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -667,6 +671,14 @@ const AsociadoDocumento = () => {
     }
   }, [rows]);
 
+  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+
+  useEffect(() => {
+    dispatch(onGetTipoRol());
+  }, [dispatch]);
+
+  const usuario = GetUsuario();
+
   const onUploadAsociadoDocumento = (id, nombre) => {
     setDocumentoId(id);
     setNombreDocumento(nombre);
@@ -891,36 +903,6 @@ const AsociadoDocumento = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Box mt={5}>
-              <Box my={8} mx={4} display='flex' justifyContent='space-between'>
-                <FormControl>
-                  <Box display='flex' alignItems='center' style={{gap: '20px'}}>
-                    <FormLabel>Información Verificada</FormLabel>
-                    <RadioGroup row>
-                      <FormControlLabel
-                        value='S'
-                        control={<Radio color='primary' />}
-                        label='Si'
-                        labelPlacement='end'
-                      />
-                      <FormControlLabel
-                        value='N'
-                        control={<Radio color='primary' />}
-                        label='No'
-                        labelPlacement='end'
-                      />
-                    </RadioGroup>
-                  </Box>
-                </FormControl>
-                <Box className={classes.bottomsGroup}>
-                  <Button
-                    className={`${classes.btnRoot} ${classes.btnSecundary}`}
-                    onClick={handleOnClose}>
-                    <IntlMessages id='boton.cancel' />
-                  </Button>
-                </Box>
-              </Box>
-            </Box>
           </Box>
         ) : (
           <Box
@@ -931,15 +913,90 @@ const AsociadoDocumento = () => {
             display='flex'
             justifyContent='space-between'>
             <IntlMessages id='sinResultados' />
-            <Box className={classes.bottomsGroup}>
-              <Button
-                className={`${classes.btnRoot} ${classes.btnSecundary}`}
-                onClick={handleOnClose}>
-                <IntlMessages id='boton.cancel' />
-              </Button>
-            </Box>
           </Box>
         )}
+        <Box
+          py={6}
+          px={4}
+          display='grid'
+          gridTemplateColumns='1fr 1fr'
+          className={classes.marcoTabla}>
+          <Box>
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
+              <FormControl>
+                <Box display='flex' alignItems='center' style={{gap: '20px'}}>
+                  <FormLabel>Información Verificada</FormLabel>
+                  <RadioGroup
+                    row
+                    defaultValue={
+                      encabezado.informacion_verificada_documentos === 'S'
+                        ? 'S'
+                        : encabezado.informacion_verificada_documentos === 'N'
+                        ? 'N'
+                        : ''
+                    }
+                    onClick={(event) => {
+                      setTimeout(function () {
+                        dispatch({type: FETCH_START});
+                      }, 1000);
+
+                      if (event.target.value === 'S') {
+                        let verificada = true;
+                        rows.forEach((row) => {
+                          if (
+                            (row.obligatorio === 'S') &
+                            ((row.nombre_archivo === '') |
+                              (row.nombre_archivo === null) |
+                              (row.nombre_archivo === undefined))
+                          ) {
+                            verificada = false;
+                          }
+                        });
+                        if (!verificada) {
+                          event.target.value = 'N';
+                          dispatch({
+                            type: FETCH_ERROR,
+                            payload:
+                              'No cumple condiciones para dar información por verificada',
+                          });
+                        } else {
+                          dispatch(
+                            onVerificarInformacion({
+                              id: asociado_id,
+                              tipo_informacion:
+                                'informacion_verificada_documentos',
+                              valor: 'S',
+                              verificar: true,
+                            }),
+                          );
+                        }
+                      }
+                    }}>
+                    <FormControlLabel
+                      value='S'
+                      control={<Radio color='primary' />}
+                      label='Si'
+                      labelPlacement='end'
+                    />
+                    <FormControlLabel
+                      value='N'
+                      control={<Radio color='primary' />}
+                      label='No'
+                      labelPlacement='end'
+                    />
+                  </RadioGroup>
+                </Box>
+              </FormControl>
+            )}
+          </Box>
+          <Box className={classes.bottomsGroup}>
+            <Button
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+              onClick={handleOnClose}>
+              <IntlMessages id='boton.cancel' />
+            </Button>
+          </Box>
+        </Box>
       </Paper>
 
       {showForm ? (

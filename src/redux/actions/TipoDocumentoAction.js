@@ -28,7 +28,7 @@ export const onGetColeccion = (
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/tipos-de-documentos', {
+      .get('tipos-de-documentos', {
         params: {
           page: page,
           limite: rowsPerPage,
@@ -58,7 +58,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('http://solicitudesservicio.test/api/tipos-de-documentos', {
+      .get('tipos-de-documentos', {
         params: {
           ligera: true,
         },
@@ -86,7 +86,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('http://solicitudesservicio.test/api/tipos-de-documentos/' + id)
+        .get('tipos-de-documentos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -109,10 +109,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put(
-        'http://solicitudesservicio.test/api/tipos-de-documentos/' + params.id,
-        params,
-      )
+      .put('tipos-de-documentos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -143,7 +140,7 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('http://solicitudesservicio.test/api/tipos-de-documentos/' + id)
+      .delete('tipos-de-documentos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -170,7 +167,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return async (dispatch) => {
     dispatch({type: FETCH_START});
     await jwtAxios
-      .post('http://solicitudesservicio.test/api/tipos-de-documentos', params)
+      .post('tipos-de-documentos', params)
       .then((data) => {
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});

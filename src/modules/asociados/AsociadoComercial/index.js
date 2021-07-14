@@ -42,6 +42,10 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import {RadioGroup, Radio} from '@material-ui/core';
 import {history} from 'redux/store';
+import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
+import {FETCH_ERROR, FETCH_START} from '../../../shared/constants/ActionTypes';
+import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
+import GetUsuario from '../../../shared/functions/GetUsuario';
 
 // import MenuItem from '@material-ui/core/MenuItem';
 
@@ -468,6 +472,10 @@ EnhancedTableToolbar.propTypes = {
 };
 
 const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   marcoTabla: {
     backgroundColor: 'white',
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
@@ -786,6 +794,15 @@ const AsociadoComercial = () => {
       setShowTable(true);
     }
   }, [rows]);
+
+  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+
+  useEffect(() => {
+    dispatch(onGetTipoRol());
+  }, [dispatch]);
+
+  const usuario = GetUsuario();
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -958,11 +975,64 @@ const AsociadoComercial = () => {
                 />
               </Box>
             </Box>
-            <Box my={8} mx={4} display='flex' justifyContent='space-between'>
+          </Box>
+        ) : (
+          <Box
+            component='h2'
+            padding={4}
+            fontSize={19}
+            className={classes.marcoTabla}
+            display='flex'
+            justifyContent='space-between'>
+            <IntlMessages id='sinResultados' />
+          </Box>
+        )}
+        <Box
+          py={6}
+          px={4}
+          display='grid'
+          gridTemplateColumns='1fr 1fr'
+          className={classes.marcoTabla}>
+          <Box>
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
               <FormControl>
                 <Box display='flex' alignItems='center' style={{gap: '20px'}}>
                   <FormLabel>Información Verificada</FormLabel>
-                  <RadioGroup row>
+                  <RadioGroup
+                    row
+                    defaultValue={
+                      encabezado.informacion_verificada_comerciales === 'S'
+                        ? 'S'
+                        : encabezado.informacion_verificada_comerciales === 'N'
+                        ? 'N'
+                        : ''
+                    }
+                    onClick={(event) => {
+                      setTimeout(function () {
+                        dispatch({type: FETCH_START});
+                      }, 1000);
+
+                      if (event.target.value === 'S') {
+                        if (rows.length === 0) {
+                          event.target.value = 'N';
+                          dispatch({
+                            type: FETCH_ERROR,
+                            payload:
+                              'No cumple condiciones para dar información por verificada',
+                          });
+                        } else {
+                          dispatch(
+                            onVerificarInformacion({
+                              id: asociado_id,
+                              tipo_informacion:
+                                'informacion_verificada_comerciales',
+                              valor: 'S',
+                              verificar: true,
+                            }),
+                          );
+                        }
+                      }
+                    }}>
                     <FormControlLabel
                       value='S'
                       control={<Radio color='primary' />}
@@ -978,33 +1048,16 @@ const AsociadoComercial = () => {
                   </RadioGroup>
                 </Box>
               </FormControl>
-              <Box className={classes.bottomsGroup}>
-                <Button
-                  className={`${classes.btnRoot} ${classes.btnSecundary}`}
-                  onClick={handleOnClose}>
-                  <IntlMessages id='boton.cancel' />
-                </Button>
-              </Box>
-            </Box>
+            )}
           </Box>
-        ) : (
-          <Box
-            component='h2'
-            padding={4}
-            fontSize={19}
-            className={classes.marcoTabla}
-            display='flex'
-            justifyContent='space-between'>
-            <IntlMessages id='sinResultados' />
-            <Box className={classes.bottomsGroup}>
-              <Button
-                className={`${classes.btnRoot} ${classes.btnSecundary}`}
-                onClick={handleOnClose}>
-                <IntlMessages id='boton.cancel' />
-              </Button>
-            </Box>
+          <Box className={classes.bottomsGroup}>
+            <Button
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+              onClick={handleOnClose}>
+              <IntlMessages id='boton.cancel' />
+            </Button>
           </Box>
-        )}
+        </Box>
       </Paper>
 
       {/* <FormControlLabel
