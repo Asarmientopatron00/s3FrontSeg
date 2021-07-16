@@ -8,14 +8,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-// import TablePagination from '@material-ui/core/TablePagination';
 import Pagination from '@material-ui/lab/Pagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -24,34 +22,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import AsociadoBancariaCreador from './AsociadoBancariaCreador';
+import AplicacionCreator from './AplicacionCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/AsociadoBancariaAction';
+} from '../../../redux/actions/AplicacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
+import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {useParams} from 'react-router-dom';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import {RadioGroup, Radio} from '@material-ui/core';
-import {history} from 'redux/store';
-import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
-import {
-  FETCH_ERROR,
-  FETCH_START,
-  FETCH_SUCCESS,
-} from '../../../shared/constants/ActionTypes';
-import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
-import GetUsuario from '../../../shared/functions/GetUsuario';
-// import MenuItem from '@material-ui/core/MenuItem';
-
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -82,45 +66,12 @@ import GetUsuario from '../../../shared/functions/GetUsuario';
 
 const cells = [
   {
-    id: 'banco',
+    id: 'nombre',
     typeHead: 'string',
-    label: 'Banco',
+    label: 'Nombre',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
-  },
-  {
-    id: 'numero_cuenta',
-    typeHead: 'numeric',
-    label: 'Número Cuenta',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_cuenta',
-    typeHead: 'string',
-    label: 'Tipo Cuenta',
-    value: (value) =>
-      value === 'A' ? 'Ahorros' : value === 'C' ? 'Corriente' : '',
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'sucursal',
-    typeHead: 'string',
-    label: 'Sucursal',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'telefono',
-    typeHead: 'string',
-    label: 'Telefono',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
   },
   {
     id: 'estado',
@@ -128,7 +79,7 @@ const cells = [
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: false,
+    mostrarInicio: true,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
@@ -138,7 +89,7 @@ const cells = [
     value: (value) => value,
     align: 'left',
     width: '140px',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'fecha_modificacion',
@@ -147,7 +98,7 @@ const cells = [
     value: (value) => new Date(value).toLocaleString('es-CL'),
     align: 'left',
     width: '180px',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'usuario_creacion_nombre',
@@ -266,6 +217,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     display: 'grid',
+    gap: '20px',
   },
   highlight:
     theme.palette.type === 'light'
@@ -324,6 +276,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     width: '90%',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
+    gap: '20px',
   },
   pairFilters: {
     display: 'flex',
@@ -337,9 +290,11 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    onOpenAddAsociadoBancaria,
+    onOpenAddAplicacion,
     handleOpenPopoverColumns,
-    encabezado,
+    queryFilter,
+    nombreFiltro,
+    limpiarFiltros,
   } = props;
   return (
     <Toolbar
@@ -362,8 +317,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='asociados' /> <span> - </span>
-              <IntlMessages id='asociados.bancarias' />
+              <IntlMessages id='seguridad.aplicaciones' />
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -375,9 +329,7 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip
-                title='Crear Asociado'
-                onClick={onOpenAddAsociadoBancaria}>
+              <Tooltip title='Crear Aplicación' onClick={onOpenAddAplicacion}>
                 <IconButton
                   className={classes.createButton}
                   aria-label='filter list'>
@@ -388,63 +340,24 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Tipo Documento'
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontWeight: 'bold',
-                  color: 'black',
-                },
-              }}
-              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
-              name='tipoDocumento'
-              value={encabezado.tipo_documento ? encabezado.tipo_documento : ''}
-              disabled={true}
-            />
-            <TextField
-              label='Número Documento'
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontWeight: 'bold',
-                  color: 'black',
-                },
-              }}
-              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
-              name='numeroDocumento'
-              value={
-                encabezado.numero_documento ? encabezado.numero_documento : ''
-              }
-              disabled={true}
-            />
-            <TextField
               label='Nombre'
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontWeight: 'bold',
-                  color: 'black',
-                },
-              }}
-              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
               name='nombre'
-              value={encabezado.nombre ? encabezado.nombre : ''}
-              disabled={true}
+              id='nombreFiltro'
+              onChange={queryFilter}
+              value={nombreFiltro}
+              className={classes.inputFiltros}
             />
-            <TextField
-              label='Ciudad'
-              InputLabelProps={{
-                shrink: true,
-                style: {
-                  fontWeight: 'bold',
-                  color: 'black',
-                },
-              }}
-              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
-              name='ciudad'
-              value={encabezado.ciudad ? encabezado.ciudad : ''}
-              disabled={true}
-            />
+            <Box display='grid'>
+              <Box display='flex' mb={2}>
+                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
+                  <IconButton
+                    className={classes.clearButton}
+                    aria-label='filter list'>
+                    <ClearAllIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
           </Box>
         </>
       )}
@@ -460,10 +373,10 @@ const EnhancedTableToolbar = (props) => {
           ''
         )
         // <Tooltip title="Filtros Avanzados">
-        //         <IconButton aria-label="filter list">
-        //           <FilterListIcon />
-        //         </IconButton>
-        //       </Tooltip>
+        //     <IconButton aria-label="filter list">
+        //       <FilterListIcon />
+        //     </IconButton>
+        //   </Tooltip>
       }
     </Toolbar>
   );
@@ -471,15 +384,14 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAsociadoBancaria: PropTypes.func.isRequired,
+  onOpenAddAplicacion: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
+  queryFilter: PropTypes.func.isRequired,
+  limpiarFiltros: PropTypes.func.isRequired,
+  nombreFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
-  bottomsGroup: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
   marcoTabla: {
     backgroundColor: 'white',
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
@@ -487,21 +399,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginTop: '5px',
-  },
-  btnRoot: {
-    paddingLeft: 15,
-    paddingRight: 15,
-    color: 'white',
-    '&:hover': {
-      backgroundColor: theme.palette.colorHover,
-      cursor: 'pointer',
-    },
-  },
-  btnPrymary: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  btnSecundary: {
-    backgroundColor: theme.palette.grayBottoms,
   },
   root: {
     width: '100%%',
@@ -588,9 +485,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AsociadoBancaria = () => {
-  const {asociado_id} = useParams();
-
+const Aplicaciones = () => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -605,12 +500,12 @@ const AsociadoBancaria = () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [asociadoBancariaSeleccionado, setAsociadoBancariaSeleccionado] =
-    useState(0);
-  const {rows, desde, hasta, ultima_pagina, total, encabezado} = useSelector(
-    ({asociadoBancariaReducer}) => asociadoBancariaReducer,
+  const [aplicacionSeleccionado, setAplicacionSeleccionado] = useState(0);
+  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
+    ({aplicacionReducer}) => aplicacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
+  const [nombreFiltro, setNombreFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -642,16 +537,24 @@ const AsociadoBancaria = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
-  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, asociado_id]);
+    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
+    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
   };
   useEffect(() => {
     setPage(1);
-  }, [orderByToSend]);
+  }, [nombreFiltro, orderByToSend]);
+
+  const queryFilter = (e) => {
+    setNombreFiltro(e.target.value);
+  };
+
+  const limpiarFiltros = () => {
+    setNombreFiltro('');
+  };
 
   const changeOrderBy = (id) => {
     if (orderBy === id) {
@@ -669,8 +572,8 @@ const AsociadoBancaria = () => {
     }
   };
 
-  const onOpenEditAsociadoBancaria = (id) => {
-    setAsociadoBancariaSeleccionado(id);
+  const onOpenEditAplicacion = (id) => {
+    setAplicacionSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -711,16 +614,16 @@ const AsociadoBancaria = () => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAsociadoBancaria = (id) => {
-    setAsociadoBancariaSeleccionado(id);
+  const onOpenViewAplicacion = (id) => {
+    setAplicacionSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteAsociadoBancaria = (id) => {
+  const onDeleteAplicacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar El Asociado?',
+      text: '¿Seguro Que Desea Eliminar La Aplicacion?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -733,7 +636,7 @@ const AsociadoBancaria = () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Asociado Fue Eliminado Correctamente',
+          'La Aplicación Fue Eliminado Correctamente',
           'success',
         );
         setTimeout(() => {
@@ -743,19 +646,15 @@ const AsociadoBancaria = () => {
     });
   };
 
-  const onOpenAddAsociadoBancaria = () => {
-    setAsociadoBancariaSeleccionado(0);
+  const onOpenAddAplicacion = () => {
+    setAplicacionSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
-    history.goBack();
-  };
-
-  const handleOnCloseForm = () => {
     setShowForm(false);
-    setAsociadoBancariaSeleccionado(0);
+    setAplicacionSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -798,22 +697,16 @@ const AsociadoBancaria = () => {
     }
   }, [rows]);
 
-  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
-
-  useEffect(() => {
-    dispatch(onGetTipoRol());
-  }, [dispatch]);
-
-  const usuario = GetUsuario();
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
-          onOpenAddAsociadoBancaria={onOpenAddAsociadoBancaria}
+          onOpenAddAplicacion={onOpenAddAplicacion}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
-          encabezado={encabezado}
+          queryFilter={queryFilter}
+          limpiarFiltros={limpiarFiltros}
+          nombreFiltro={nombreFiltro}
         />
         {showTable ? (
           <Box className={classes.marcoTabla}>
@@ -870,7 +763,7 @@ const AsociadoBancaria = () => {
                       return (
                         <TableRow
                           hover
-                          // role="checkbox"
+                          // Aplicacione="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
                           key={row.id}
@@ -888,22 +781,18 @@ const AsociadoBancaria = () => {
                             className={classes.acciones}>
                             <Tooltip title={<IntlMessages id='boton.editar' />}>
                               <EditIcon
-                                onClick={() =>
-                                  onOpenEditAsociadoBancaria(row.id)
-                                }
+                                onClick={() => onOpenEditAplicacion(row.id)}
                                 className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                             </Tooltip>
                             <Tooltip title={<IntlMessages id='boton.ver' />}>
                               <VisibilityIcon
-                                onClick={() =>
-                                  onOpenViewAsociadoBancaria(row.id)
-                                }
+                                onClick={() => onOpenViewAplicacion(row.id)}
                                 className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                             </Tooltip>
                             <Tooltip
                               title={<IntlMessages id='boton.eliminar' />}>
                               <DeleteIcon
-                                onClick={() => onDeleteAsociadoBancaria(row.id)}
+                                onClick={() => onDeleteAplicacion(row.id)}
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                             </Tooltip>
                           </TableCell>
@@ -982,101 +871,23 @@ const AsociadoBancaria = () => {
             component='h2'
             padding={4}
             fontSize={19}
-            className={classes.marcoTabla}
-            display='flex'
-            justifyContent='space-between'>
+            className={classes.marcoTabla}>
             <IntlMessages id='sinResultados' />
           </Box>
         )}
-
-        <Box
-          py={6}
-          px={4}
-          display='grid'
-          gridTemplateColumns='1fr 1fr'
-          className={classes.marcoTabla}>
-          <Box>
-            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
-              <FormControl>
-                <Box display='flex' alignItems='center' style={{gap: '20px'}}>
-                  <FormLabel>Información Verificada</FormLabel>
-                  <RadioGroup
-                    row
-                    defaultValue={
-                      encabezado.informacion_verificada_bancarias === 'S'
-                        ? 'S'
-                        : encabezado.informacion_verificada_bancarias === 'N'
-                        ? 'N'
-                        : ''
-                    }
-                    onClick={(event) => {
-                      setTimeout(function () {
-                        dispatch({type: FETCH_START});
-                      }, 1000);
-                      setTimeout(function () {
-                        dispatch({type: FETCH_SUCCESS});
-                      }, 1000);
-
-                      if (event.target.value === 'S') {
-                        if (rows.length === 0) {
-                          event.target.value = 'N';
-                          dispatch({
-                            type: FETCH_ERROR,
-                            payload:
-                              'No cumple condiciones para dar información por verificada',
-                          });
-                        } else {
-                          dispatch(
-                            onVerificarInformacion({
-                              id: asociado_id,
-                              tipo_informacion:
-                                'informacion_verificada_bancarias',
-                              valor: 'S',
-                              verificar: true,
-                            }),
-                          );
-                        }
-                      }
-                    }}>
-                    <FormControlLabel
-                      value='S'
-                      control={<Radio color='primary' />}
-                      label='Si'
-                      labelPlacement='end'
-                    />
-                    <FormControlLabel
-                      value='N'
-                      control={<Radio color='primary' />}
-                      label='No'
-                      labelPlacement='end'
-                    />
-                  </RadioGroup>
-                </Box>
-              </FormControl>
-            )}
-          </Box>
-          <Box className={classes.bottomsGroup}>
-            <Button
-              className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              onClick={handleOnClose}>
-              <IntlMessages id='boton.cancel' />
-            </Button>
-          </Box>
-        </Box>
       </Paper>
 
-      {/* <FormControlLabel
+      {/* <FormContAplicacionLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <AsociadoBancariaCreador
+        <AplicacionCreator
           showForm={showForm}
-          asociadoBancaria={asociadoBancariaSeleccionado}
+          aplicacion={aplicacionSeleccionado}
           accion={accion}
-          handleOnClose={handleOnCloseForm}
+          handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
-          asociado_id={asociado_id}
         />
       ) : (
         ''
@@ -1122,4 +933,4 @@ const AsociadoBancaria = () => {
   );
 };
 
-export default AsociadoBancaria;
+export default Aplicaciones;

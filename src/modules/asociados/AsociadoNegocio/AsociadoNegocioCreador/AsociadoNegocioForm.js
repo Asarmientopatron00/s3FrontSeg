@@ -70,21 +70,13 @@ const MyRadioField = (props) => {
 //   const [field, meta] = useField(props);
 //   const errorText = meta.error && meta.touched ? meta.error : '';
 
-//   const onChange = (event)=>{
-//     props.options.forEach(option => {
-//       if (event.target.innerHTML === option.nombre){
-//         field.value = option.id;
-//       }
-//       console.log(field)
-//     })
-//   }
 //   return (
 //     <Autocomplete
 //       {...props}
 //       renderOption={(option) => (
 //         <React.Fragment>{option.nombre}</React.Fragment>
 //       )}
-//       onChange = {onChange}
+//       onChange = {props.onChange}
 //       renderInput={(params) => {
 //         return (
 //           <TextField
@@ -117,6 +109,7 @@ const AsociadoNegocioForm = (props) => {
     onChangeDepartamentoOtra,
     actividadesEconomicas,
     usuario,
+    // setFieldValue,
   } = props;
 
   const dispatch = useDispatch();
@@ -302,7 +295,6 @@ const AsociadoNegocioForm = (props) => {
   const onFocus = () => setFocusedSelect(true);
   const onBlur = () => setFocusedSelect(false);
   const classes = useStyles(props);
-
   return (
     <Form noValidate autoComplete='off' className={classes.root}>
       <Box className={classes.marco}>
@@ -1025,7 +1017,17 @@ const AsociadoNegocioForm = (props) => {
               label='Tipo de Documento'
               options={tiposDocumentos}
               autoHighlight
+              onBlur = {(event)=>{
+                let valor = '';
+                tiposDocumentos.forEach(tipoDocumento => {
+                  if (tipoDocumento.nombre === event.target.value){
+                    valor = tipoDocumento.id;
+                  }
+                });
+                setFieldValue('tipo_documento_facturacion_id',valor);
+              }}
               getOptionLabel={(option) => option.nombre}
+              filterSelectedOptions
             /> */}
 
             <MyTextField

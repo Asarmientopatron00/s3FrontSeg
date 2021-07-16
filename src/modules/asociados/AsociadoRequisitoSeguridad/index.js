@@ -37,7 +37,11 @@ import {Formik, Form, Field, useField} from 'formik';
 import {history} from 'redux/store';
 import * as yup from 'yup';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {FETCH_ERROR, FETCH_START} from '../../../shared/constants/ActionTypes';
+import {
+  FETCH_ERROR,
+  FETCH_START,
+  FETCH_SUCCESS,
+} from '../../../shared/constants/ActionTypes';
 import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
 import GetUsuario from '../../../shared/functions/GetUsuario';
 import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
@@ -818,7 +822,9 @@ const AsociadoRequisitoSeguridad = () => {
                                 setTimeout(function () {
                                   dispatch({type: FETCH_START});
                                 }, 1000);
-
+                                setTimeout(function () {
+                                  dispatch({type: FETCH_SUCCESS});
+                                }, 1000);
                                 if (event.target.value === 'S') {
                                   let verificada = true;
                                   rows.forEach((row) => {

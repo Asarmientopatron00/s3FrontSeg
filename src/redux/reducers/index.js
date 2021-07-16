@@ -27,6 +27,8 @@ import AsociadoBancariaReducer from './AsociadoBancariaReducer';
 import AsociadoComercialReducer from './AsociadoComercialReducer';
 import AsociadoRequisitoSeguridadReducer from './AsociadoRequisitoSeguridadReducer';
 import AsociadoDocumentoReducer from './AsociadoDocumentoReducer';
+import AplicacionReducer from './AplicacionReducer';
+import ModuloReducer from './ModuloReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -58,5 +60,7 @@ const reducers = (history) =>
     asociadoComercialReducer: AsociadoComercialReducer,
     asociadoRequisitoSeguridadReducer: AsociadoRequisitoSeguridadReducer,
     asociadoDocumentoReducer: AsociadoDocumentoReducer,
+    aplicacionReducer: AplicacionReducer,
+    moduloReducer: ModuloReducer,
   });
 export default reducers;

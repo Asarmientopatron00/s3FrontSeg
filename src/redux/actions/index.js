@@ -32,3 +32,5 @@ export * from './AsociadoBancariaAction';
 export * from './AsociadoComercialAction';
 export * from './AsociadoRequisitoSeguridadAction';
 export * from './AsociadoDocumentAction';
+export * from './AplicacionAction';
+export * from './ModuloAction';

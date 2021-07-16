@@ -294,6 +294,10 @@ const AsociadoDatoBasicoCreator = (props) => {
       .number()
       .typeError(mensajeValidacion('numero'))
       .nullable(),
+    tipo_documento_facturacion: yup
+      .number()
+      .typeError(mensajeValidacion('numero'))
+      .nullable(),
     numero_documento_facturacion: yup
       .string()
       .nullable()
@@ -567,6 +571,11 @@ const AsociadoDatoBasicoCreator = (props) => {
               : ''
             : '',
           tipo_documento_facturacion_id: selectedRow
+            ? selectedRow.tipo_documento_facturacion_id
+              ? selectedRow.tipo_documento_facturacion_id
+              : ''
+            : '',
+          tipo_documento_facturacion: selectedRow
             ? selectedRow.tipo_documento_facturacion_id
               ? selectedRow.tipo_documento_facturacion_id
               : ''

@@ -43,7 +43,11 @@ import Swal from 'sweetalert2';
 import {history} from 'redux/store';
 import * as yup from 'yup';
 import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
-import {FETCH_ERROR, FETCH_START} from '../../../shared/constants/ActionTypes';
+import {
+  FETCH_ERROR,
+  FETCH_START,
+  FETCH_SUCCESS,
+} from '../../../shared/constants/ActionTypes';
 import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
 import GetUsuario from '../../../shared/functions/GetUsuario';
 
@@ -938,6 +942,9 @@ const AsociadoDocumento = () => {
                     onClick={(event) => {
                       setTimeout(function () {
                         dispatch({type: FETCH_START});
+                      }, 1000);
+                      setTimeout(function () {
+                        dispatch({type: FETCH_SUCCESS});
                       }, 1000);
 
                       if (event.target.value === 'S') {

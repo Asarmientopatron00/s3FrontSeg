@@ -115,6 +115,20 @@ const routesConfig = [
         type: 'item',
         url: '/seguridad/usuarios',
       },
+      {
+        id: 'aplicaciones',
+        title: 'seguridad.aplicaciones',
+        messageId: 'seguridad.aplicaciones',
+        type: 'item',
+        url: '/seguridad/aplicaciones',
+      },
+      {
+        id: 'modulos',
+        title: 'seguridad.modulos',
+        messageId: 'seguridad.modulos',
+        type: 'item',
+        url: '/seguridad/modulos',
+      },
     ],
   },
   {

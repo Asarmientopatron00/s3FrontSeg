@@ -14,6 +14,14 @@ export const seguridadConfig = [
         path: ['/seguridad/roles'],
         component: React.lazy(() => import('./Rol')),
       },
+      {
+        path: ['/seguridad/aplicaciones'],
+        component: React.lazy(() => import('./Aplicacion')),
+      },
+      {
+        path: ['/seguridad/modulos'],
+        component: React.lazy(() => import('./Modulo')),
+      },
     ],
   },
 ];

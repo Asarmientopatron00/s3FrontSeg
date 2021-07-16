@@ -15,6 +15,8 @@
   "seguridad": "Seguridad",
   "seguridad.roles": "Roles",
   "seguridad.usuarios": "Usuarios",
+  "seguridad.aplicaciones": "Aplicaciones",
+  "seguridad.modulos": "Módulos",
   "asociados": "Asociados de Negocio",
   "asociados.datosBasicos": "Datos Básicos",
   "asociados.legales": "Contactos Legales",

@@ -164,6 +164,19 @@ export const GET_COLECCION_ASOCIADO_DOCUMENTO =
 export const SHOW_ASOCIADO_DOCUMENTO = 'show_asociado_documento';
 export const CREATE_ASOCIADO_DOCUMENTO = 'create_asociado_documento';
 export const DELETE_ASOCIADO_DOCUMENTO = 'delete_asociado_documento';
+export const GET_COLECCION_APLICACION = 'get_coleccion_aplicacion';
+export const GET_COLECCION_LIGERA_APLICACION =
+  'get_coleccion_ligera_aplicacion';
+export const SHOW_APLICACION = 'show_aplicacion';
+export const UPDATE_APLICACION = 'update_aplicacion';
+export const CREATE_APLICACION = 'create_aplicacion';
+export const DELETE_APLICACION = 'delete_aplicacion';
+export const GET_COLECCION_MODULO = 'get_coleccion_modulo';
+export const GET_COLECCION_LIGERA_MODULO = 'get_coleccion_ligera_modulo';
+export const SHOW_MODULO = 'show_modulo';
+export const UPDATE_MODULO = 'update_modulo';
+export const CREATE_MODULO = 'create_modulo';
+export const DELETE_MODULO = 'delete_modulo';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
