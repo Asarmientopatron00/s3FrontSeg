@@ -129,6 +129,13 @@ const routesConfig = [
         type: 'item',
         url: '/seguridad/modulos',
       },
+      {
+        id: 'opcionesSistema',
+        title: 'seguridad.opcionesSistema',
+        messageId: 'seguridad.opcionesSistema',
+        type: 'item',
+        url: '/seguridad/opciones-sistema',
+      },
     ],
   },
   {

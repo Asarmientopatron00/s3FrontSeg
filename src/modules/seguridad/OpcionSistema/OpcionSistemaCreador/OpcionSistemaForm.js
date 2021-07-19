@@ -57,8 +57,8 @@ const MyTextField = (props) => {
 //   );
 // };
 
-const UsuarioForm = (props) => {
-  const {handleOnClose, accion, values, initialValues, aplicaciones} = props;
+const OpcionSistemaForm = (props) => {
+  const {handleOnClose, accion, values, initialValues, modulos} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -148,7 +148,7 @@ const UsuarioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='seguridad.modulos' />
+            <IntlMessages id='seguridad.opcionesSistema' />
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
@@ -162,23 +162,53 @@ const UsuarioForm = (props) => {
 
             <MyTextField
               className={classes.myTextField}
-              label='Aplicación'
-              name='aplicacion_id'
+              label='Módulo'
+              name='modulo_id'
               disabled={disabled}
               select={true}
               required>
-              {aplicaciones.map((aplicacion) => {
+              {modulos.map((modulo) => {
                 return (
                   <MenuItem
-                    value={aplicacion.id}
-                    key={aplicacion.id}
+                    value={modulo.id}
+                    key={modulo.id}
                     className={classes.pointer}
-                    style={aplicacion.estado === 0 ? {display: 'none'} : {}}>
-                    {aplicacion.nombre}
+                    style={modulo.estado === 0 ? {display: 'none'} : {}}>
+                    {modulo.nombre}
                   </MenuItem>
                 );
               })}
             </MyTextField>
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Posición'
+              name='posicion'
+              disabled={disabled}
+              required
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Ícono'
+              name='icono_menu'
+              disabled={disabled}
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Url'
+              name='url'
+              disabled={disabled}
+              required
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Url Ayuda'
+              name='url_ayuda'
+              disabled={disabled}
+            />
 
             <FormControl className={classes.widthFull} component='fieldset'>
               <FormLabel>Estado*</FormLabel>
@@ -231,12 +261,4 @@ const UsuarioForm = (props) => {
   );
 };
 
-export default UsuarioForm;
-
-// UsuarioForm.prototype = {
-//   values: PropTypes.object.isRequired,
-//   userImage: PropTypes.object.isRequired,
-//   setUserImage: PropTypes.func,
-//   setFieldValue: PropTypes.func,
-//   handleOnClose: PropTypes.func,
-// };
+export default OpcionSistemaForm;

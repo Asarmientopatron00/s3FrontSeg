@@ -177,6 +177,13 @@ export const SHOW_MODULO = 'show_modulo';
 export const UPDATE_MODULO = 'update_modulo';
 export const CREATE_MODULO = 'create_modulo';
 export const DELETE_MODULO = 'delete_modulo';
+export const GET_COLECCION_OPCION_SISTEMA = 'get_coleccion_opcion_sistema';
+export const GET_COLECCION_LIGERA_OPCION_SISTEMA =
+  'get_coleccion_ligera_opcion_sistema';
+export const SHOW_OPCION_SISTEMA = 'show_opcion_sistema';
+export const UPDATE_OPCION_SISTEMA = 'update_opcion_sistema';
+export const CREATE_OPCION_SISTEMA = 'create_opcion_sistema';
+export const DELETE_OPCION_SISTEMA = 'delete_opcion_sistema';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

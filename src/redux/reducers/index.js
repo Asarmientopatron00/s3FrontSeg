@@ -29,6 +29,7 @@ import AsociadoRequisitoSeguridadReducer from './AsociadoRequisitoSeguridadReduc
 import AsociadoDocumentoReducer from './AsociadoDocumentoReducer';
 import AplicacionReducer from './AplicacionReducer';
 import ModuloReducer from './ModuloReducer';
+import OpcionSistemaReducer from './OpcionSistemaReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -62,5 +63,6 @@ const reducers = (history) =>
     asociadoDocumentoReducer: AsociadoDocumentoReducer,
     aplicacionReducer: AplicacionReducer,
     moduloReducer: ModuloReducer,
+    opcionSistemaReducer: OpcionSistemaReducer,
   });
 export default reducers;

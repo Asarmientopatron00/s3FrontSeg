@@ -34,3 +34,4 @@ export * from './AsociadoRequisitoSeguridadAction';
 export * from './AsociadoDocumentAction';
 export * from './AplicacionAction';
 export * from './ModuloAction';
+export * from './OpcionSistemaAction';
