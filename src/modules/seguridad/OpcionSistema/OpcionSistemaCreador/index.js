@@ -22,7 +22,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
-  aplicacion_id: yup.string().required('Requerido'),
+  modulo_id: yup.string().required('Requerido'),
+  posicion: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  icono_menu: yup.string().nullable(),
+  url: yup.string().required('Requerido'),
+  url_ayuda: yup.string().nullable(),
 });
 
 const OpcionSistemaCreador = (props) => {
