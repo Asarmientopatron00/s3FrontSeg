@@ -136,6 +136,13 @@ const routesConfig = [
         type: 'item',
         url: '/seguridad/opciones-sistema',
       },
+      {
+        id: 'permisos',
+        title: 'seguridad.permisos',
+        messageId: 'seguridad.permisos',
+        type: 'item',
+        url: '/seguridad/acciones-permisos',
+      },
     ],
   },
   {

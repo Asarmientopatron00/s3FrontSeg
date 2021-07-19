@@ -184,6 +184,12 @@ export const SHOW_OPCION_SISTEMA = 'show_opcion_sistema';
 export const UPDATE_OPCION_SISTEMA = 'update_opcion_sistema';
 export const CREATE_OPCION_SISTEMA = 'create_opcion_sistema';
 export const DELETE_OPCION_SISTEMA = 'delete_opcion_sistema';
+export const GET_COLECCION_PERMISO = 'get_coleccion_permiso';
+export const GET_COLECCION_LIGERA_PERMISO = 'get_coleccion_ligera_permiso';
+export const SHOW_PERMISO = 'show_permiso';
+export const UPDATE_PERMISO = 'update_permiso';
+export const CREATE_PERMISO = 'create_permiso';
+export const DELETE_PERMISO = 'delete_permiso';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

@@ -26,6 +26,10 @@ export const seguridadConfig = [
         path: ['/seguridad/opciones-sistema'],
         component: React.lazy(() => import('./OpcionSistema')),
       },
+      {
+        path: ['/seguridad/acciones-permisos'],
+        component: React.lazy(() => import('./Permiso')),
+      },
     ],
   },
 ];

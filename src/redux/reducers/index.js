@@ -30,6 +30,7 @@ import AsociadoDocumentoReducer from './AsociadoDocumentoReducer';
 import AplicacionReducer from './AplicacionReducer';
 import ModuloReducer from './ModuloReducer';
 import OpcionSistemaReducer from './OpcionSistemaReducer';
+import PermisoReducer from './PermisoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -64,5 +65,6 @@ const reducers = (history) =>
     aplicacionReducer: AplicacionReducer,
     moduloReducer: ModuloReducer,
     opcionSistemaReducer: OpcionSistemaReducer,
+    permisoReducer: PermisoReducer,
   });
 export default reducers;
