@@ -12,6 +12,31 @@ import FormLabel from '@material-ui/core/FormLabel';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+const custom_config = {
+  // extraPlugins: [ MyCustomUploadAdapterPlugin ],
+  toolbar: {
+    items: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'link',
+      'bulletedList',
+      'numberedList',
+      // '|',
+      // 'blockQuote',
+      // 'insertTable',
+      '|',
+      'imageUpload',
+      'undo',
+      'redo',
+    ],
+  },
+  table: {
+    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
+  },
+};
+
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -128,6 +153,7 @@ const ParametroCorreoForm = (props) => {
             </Box>
             <CKEditor
               editor={ClassicEditor}
+              config={custom_config}
               data={values.texto}
               onChange={(event, editor) => {
                 values.texto = editor.getData();

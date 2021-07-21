@@ -884,6 +884,7 @@ const AsociadoDocumento = () => {
                               className={classes.linkDocumento}
                               href={
                                 'http://solicitudesservicio.test/asociados-documentos/' +
+                                // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-documentos/' +
                                 row.id
                               }
                               target='_blank'
