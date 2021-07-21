@@ -80,6 +80,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'icono_menu',
+    typeHead: 'string',
+    label: 'Icono',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'estado',
     typeHead: 'boolean',
     label: 'Estado',

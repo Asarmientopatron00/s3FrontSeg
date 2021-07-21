@@ -179,7 +179,12 @@ const UsuarioForm = (props) => {
                 );
               })}
             </MyTextField>
-
+            <MyTextField
+              className={classes.myTextField}
+              label='Icono'
+              name='icono_menu'
+              disabled={disabled}
+            />
             <FormControl className={classes.widthFull} component='fieldset'>
               <FormLabel>Estado*</FormLabel>
               <Field

@@ -22,6 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
+  icnono_menu: yup.string().nullable(),
   aplicacion_id: yup.string().required('Requerido'),
 });
 
@@ -95,6 +96,7 @@ const ModuloCreador = (props) => {
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
               nombre: selectedRow ? selectedRow.nombre : '',
+              icono_menu: selectedRow ? selectedRow.icono_menu : '',
               aplicacion_id: selectedRow ? selectedRow.aplicacion_id : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
