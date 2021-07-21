@@ -56,7 +56,7 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = (depto) => {
+export const onGetColeccionLigera = (modulo_id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -64,7 +64,7 @@ export const onGetColeccionLigera = (depto) => {
       .get('opciones-del-sistema', {
         params: {
           ligera: true,
-          departamento_id: depto,
+          modulo_id: modulo_id,
         },
       })
       .then((data) => {

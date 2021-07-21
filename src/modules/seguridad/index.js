@@ -11,6 +11,7 @@ export const seguridadConfig = [
         component: React.lazy(() => import('./Usuario')),
       },
       {
+        exact: true,
         path: ['/seguridad/roles'],
         component: React.lazy(() => import('./Rol')),
       },
@@ -29,6 +30,11 @@ export const seguridadConfig = [
       {
         path: ['/seguridad/acciones-permisos'],
         component: React.lazy(() => import('./Permiso')),
+      },
+      {
+        exact: true,
+        path: ['/seguridad/roles/permisos/:rol_id'],
+        component: React.lazy(() => import('./Permissions')),
       },
     ],
   },

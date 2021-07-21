@@ -291,6 +291,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     width: '90%',
     display: 'grid',
     gridTemplateColumns: '4fr 4fr 1fr',
+    gap: '20px',
   },
   pairFilters: {
     display: 'flex',

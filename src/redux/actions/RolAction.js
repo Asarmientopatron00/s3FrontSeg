@@ -1,6 +1,9 @@
 import {
   GET_COLECCION_ROL,
   GET_COLECCION_LIGERA_ROL,
+  GET_PERMISOS,
+  OTORGAR_PERMISO,
+  REVOCAR_PERMISO,
   SHOW_ROL,
   UPDATE_ROL,
   DELETE_ROL,
@@ -77,6 +80,91 @@ export const onGetColeccionLigera = () => {
       .catch((error) => {
         dispatch({type: FETCH_ERROR, payload: error.message});
       });
+  };
+};
+
+export const onGetPermisos = (id, modulo, opcionSistema) => {
+  const {messages} = appIntl();
+  const moduloAux = modulo ? modulo : '';
+  const opcionSistemaAux = opcionSistema ? opcionSistema : '';
+
+  return (dispatch) => {
+    if (id !== 0) {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .get('roles/permisos/' + id, {
+          params: {
+            modulo_id: moduloAux,
+            option_id: opcionSistemaAux,
+          },
+        })
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({type: GET_PERMISOS, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
+  };
+};
+
+export const onOtorgarPermiso = (params, updateColeccion) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    if (params) {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .post('roles/permisos', params)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            updateColeccion();
+            dispatch({type: OTORGAR_PERMISO, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
+  };
+};
+
+export const onRevocarPermiso = (params, updateColeccion) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    if (params) {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .put('roles/permisos', params)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({type: REVOCAR_PERMISO, payload: data.data});
+            updateColeccion();
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
   };
 };
 

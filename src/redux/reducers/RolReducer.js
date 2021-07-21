@@ -1,10 +1,13 @@
 import {
   GET_COLECCION_ROL,
   GET_COLECCION_LIGERA_ROL,
+  GET_PERMISOS,
   SHOW_ROL,
   UPDATE_ROL,
   DELETE_ROL,
   CREATE_ROL,
+  OTORGAR_PERMISO,
+  REVOCAR_PERMISO,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -43,6 +46,24 @@ const rolReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRow: action.payload,
+      };
+
+    case GET_PERMISOS:
+      return {
+        ...state,
+        rows: action.payload,
+      };
+
+    case OTORGAR_PERMISO:
+      return {
+        ...state,
+        selectedRow: action.payload.datos,
+      };
+
+    case REVOCAR_PERMISO:
+      return {
+        ...state,
+        selectedRow: action.payload.datos,
       };
 
     case UPDATE_ROL:

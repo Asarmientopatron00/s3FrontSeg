@@ -34,6 +34,9 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
 import {TIPOS_ROLES} from './../../../shared/constants/ListasValores';
+import LockIcon from '@material-ui/icons/Lock';
+import {history} from 'redux/store';
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -473,6 +476,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.grayBottoms,
   },
   deleteIcon: {
+    color: theme.palette.secondary.main,
+  },
+  lockIcon: {
     color: theme.palette.redBottoms,
   },
   popoverColumns: {
@@ -625,6 +631,10 @@ const Roles = () => {
     setRolSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
+  };
+
+  const onPermissions = (id) => {
+    history.push(history.location.pathname + '/permisos/' + id);
   };
 
   const onDeleteRol = (id) => {
@@ -797,6 +807,12 @@ const Roles = () => {
                               <DeleteIcon
                                 onClick={() => onDeleteRol(row.id)}
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
+                            <Tooltip
+                              title={<IntlMessages id='boton.permisos' />}>
+                              <LockIcon
+                                onClick={() => onPermissions(row.id)}
+                                className={`${classes.generalIcons} ${classes.lockIcon}`}></LockIcon>
                             </Tooltip>
                           </TableCell>
 
