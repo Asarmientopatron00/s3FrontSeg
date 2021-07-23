@@ -77,6 +77,7 @@ export const loadJWTUser = () => {
           },
           role: defaultUser.role,
           token: res.data._id,
+          permisos: res.data.usuario.permisos,
         },
       });
     } catch (err) {

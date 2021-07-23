@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {Badge, NavLink} from '../../../index';
 import Box from '@material-ui/core/Box';
-import IntlMessages from '../../../utility/IntlMessages';
+// import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './VerticalItem.style';
 import AppContext from '../../../utility/AppContext';
 import {checkPermission} from '../../../utility/Utils';
@@ -30,17 +30,19 @@ const VerticalItem = ({level, item}) => {
       activeClassName='active'
       className={clsx(classes.navItem, 'nav-item')}
       exact={item.exact}>
-      {item.icon && (
-        <Box component='span' mr={6}>
+      {item.icono_menu ? (
+        <Box component='span' mr={2}>
           <Icon
             className={clsx(classes.listIcon, 'nav-item-icon')}
             color='action'>
-            {item.icon}
+            {item.icono_menu}
           </Icon>
         </Box>
+      ) : (
+        <Box width='18px' mr={2}></Box>
       )}
       <ListItemText
-        primary={<IntlMessages id={item.messageId} />}
+        primary={item.nombre}
         classes={{primary: 'nav-item-text'}}
       />
       {item.count && (
@@ -54,7 +56,7 @@ const VerticalItem = ({level, item}) => {
 
 VerticalItem.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string,
     icon: PropTypes.string,
     url: PropTypes.string,

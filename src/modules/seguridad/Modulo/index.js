@@ -88,6 +88,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'posicion',
+    typeHead: 'string',
+    label: 'Posición',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'estado',
     typeHead: 'boolean',
     label: 'Estado',

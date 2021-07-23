@@ -7,33 +7,33 @@ export const seguridadConfig = [
     auth: authRole.user,
     routes: [
       {
-        path: ['/seguridad/usuarios'],
+        path: ['/usuarios'],
         component: React.lazy(() => import('./Usuario')),
       },
       {
         exact: true,
-        path: ['/seguridad/roles'],
+        path: ['/roles'],
         component: React.lazy(() => import('./Rol')),
       },
       {
-        path: ['/seguridad/aplicaciones'],
+        path: ['/aplicaciones'],
         component: React.lazy(() => import('./Aplicacion')),
       },
       {
-        path: ['/seguridad/modulos'],
+        path: ['/modulos'],
         component: React.lazy(() => import('./Modulo')),
       },
       {
-        path: ['/seguridad/opciones-sistema'],
+        path: ['/opciones-sistema'],
         component: React.lazy(() => import('./OpcionSistema')),
       },
       {
-        path: ['/seguridad/acciones-permisos'],
+        path: ['/acciones-permisos'],
         component: React.lazy(() => import('./Permiso')),
       },
       {
         exact: true,
-        path: ['/seguridad/roles/permisos/:rol_id'],
+        path: ['/roles/permisos/:rol_id'],
         component: React.lazy(() => import('./Permissions')),
       },
     ],

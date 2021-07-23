@@ -20,6 +20,7 @@ const initialState = {
   pagina_actual: 1,
   ultima_pagina: 1,
   total: 1,
+  permisos: [],
 };
 
 const rolReducer = (state = initialState, action) => {
@@ -51,7 +52,7 @@ const rolReducer = (state = initialState, action) => {
     case GET_PERMISOS:
       return {
         ...state,
-        rows: action.payload,
+        permisos: action.payload,
       };
 
     case OTORGAR_PERMISO:

@@ -4,17 +4,25 @@ import {ThemeMode} from '../../../../shared/constants/AppEnums';
 const useStyles = makeStyles((theme) => {
   return {
     navItem: {
-      height: 40,
-      marginTop: 2,
-      marginBottom: 2,
+      paddingTop: 2,
+      paddingBottom: 2,
+      width: 'calc(100% - 16px)',
+      [theme.breakpoints.up('xl')]: {
+        paddingTop: 8,
+        paddingBottom: 8,
+      },
+      [theme.breakpoints.down('xl')]: {
+        paddingRight: 0,
+      },
+      height: 'min-content',
+      marginTop: 1,
+      marginBottom: 1,
       cursor: 'pointer',
       textDecoration: 'none !important',
-      width: 'calc(100% - 16px)',
-      borderRadius: '0 30px 30px 0',
-      paddingLeft:
-        theme.direction === 'ltr' ? (props) => 24 + 40 * props.level : 12,
+      borderRadius: '0 15px 15px 0',
+      paddingLeft: theme.direction === 'ltr' ? (props) => 40 * props.level : 12,
       paddingRight:
-        theme.direction === 'rtl' ? (props) => 24 + 40 * props.level : 12,
+        theme.direction === 'rtl' ? (props) => 40 * props.level : 12,
       '&.nav-item-header': {
         textTransform: 'uppercase',
       },

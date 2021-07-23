@@ -8,59 +8,62 @@ export const asociadoConfig = [
     routes: [
       {
         exact: true,
-        path: ['/asociados/datos-basicos'],
+        path: ['/datos-basicos'],
         component: React.lazy(() => import('./AsociadoDatoBasico')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios'],
+        path: ['/asociados-negocios'],
         component: React.lazy(() => import('./AsociadoNegocio')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios/:accion/:id'],
+        path: ['/asociados-negocios/:accion/:id'],
         component: React.lazy(() =>
           import('./AsociadoNegocio/AsociadoNegocioCreador'),
         ),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios/:accion'],
+        path: ['/asociados-negocios/:accion'],
         component: React.lazy(() =>
           import('./AsociadoNegocio/AsociadoNegocioCreador'),
         ),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios-legales/:asociado_id'],
+        path: ['/asociados-negocios-legales/:asociado_id'],
         component: React.lazy(() => import('./AsociadoContactoLegal')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios-contactos/:asociado_id'],
+        path: ['/asociados-negocios-contactos/:asociado_id'],
         component: React.lazy(() => import('./AsociadoContacto')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios-bancarias/:asociado_id'],
+        path: ['/asociados-negocios-bancarias/:asociado_id'],
         component: React.lazy(() => import('./AsociadoBancaria')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios-comerciales/:asociado_id'],
+        path: ['/asociados-negocios-comerciales/:asociado_id'],
         component: React.lazy(() => import('./AsociadoComercial')),
       },
       {
         exact: true,
-        path: [
-          '/asociados/asociados-negocios-requisitos-seguridad/:asociado_id',
-        ],
+        path: ['/asociados-negocios-requisitos-seguridad/:asociado_id'],
         component: React.lazy(() => import('./AsociadoRequisitoSeguridad')),
       },
       {
         exact: true,
-        path: ['/asociados/asociados-negocios-documentos/:asociado_id'],
+        path: ['/asociados-negocios-documentos/:asociado_id'],
         component: React.lazy(() => import('./AsociadoDocumento')),
+      },
+      {
+        exact: true,
+        path: ['/informe-actualizacion-asociados'],
+        component: React.lazy(() => import('./InformeAsociadoNegocio')),
       },
     ],
   },

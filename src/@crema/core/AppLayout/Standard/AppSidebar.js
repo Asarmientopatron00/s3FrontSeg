@@ -49,13 +49,18 @@ const AppSidebar = (props) => {
         </Drawer>
       </Hidden>
       <Hidden mdDown>
-        <Box height='100%' className={clsx(classes.container, 'app-sidebar')}>
+        <Box
+          height='fit-content'
+          className={clsx(classes.container, 'app-sidebar')}>
           <Box className={clsx(classes.sidebarBg, sidebarClasses)}>
             {/* <UserInfo /> */}
             <AppLogo />
-            <Scrollbar scrollToTop={false} className={classes.scrollAppSidebar}>
-              <Navigation />
-            </Scrollbar>
+            <Scrollbar
+              scrollToTop={true}
+              className={classes.scrollAppSidebar}
+              children={
+                <Navigation style={{height: 'max-content'}} />
+              }></Scrollbar>
           </Box>
         </Box>
       </Hidden>

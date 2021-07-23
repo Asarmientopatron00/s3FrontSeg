@@ -99,6 +99,7 @@ export const useAuthToken = () => {
             },
             role: defaultUser.role,
             token: res.data._id,
+            permisos: res.data.usuario.permisos,
           },
         });
         return;

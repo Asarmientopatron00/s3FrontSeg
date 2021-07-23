@@ -4,7 +4,7 @@ const routesConfig = [
   {
     id: 'configuracion',
     title: 'configuracion',
-    messageId: 'configuracion',
+    messageId: 'ttt tt',
     type: 'collapse',
     icon: 'settings',
     children: [

@@ -7,55 +7,55 @@ export const configuracionConfig = [
     auth: authRole.user,
     routes: [
       {
-        path: ['/configuracion/tipos-documentos'],
+        path: ['/tipos-documentos'],
         component: React.lazy(() => import('./TipoDocumento')),
       },
       {
-        path: ['/configuracion/paises'],
+        path: ['/paises'],
         component: React.lazy(() => import('./Pais')),
       },
       {
-        path: ['/configuracion/actividades-economicas'],
+        path: ['/actividades-economicas'],
         component: React.lazy(() => import('./ActividadEconomica')),
       },
       {
-        path: ['/configuracion/listas-documentos'],
+        path: ['/listas-documentos'],
         component: React.lazy(() => import('./ListaDocumento')),
       },
       {
-        path: ['/configuracion/requisitos-seguridad'],
+        path: ['/requisitos-seguridad'],
         component: React.lazy(() => import('./RequisitoSeguridad')),
       },
       {
-        path: ['/configuracion/parametros-constantes'],
+        path: ['/parametros-constantes'],
         component: React.lazy(() => import('./ParametroConstante')),
       },
       {
-        path: ['/configuracion/departamentos'],
+        path: ['/departamentos'],
         component: React.lazy(() => import('./Departamento')),
       },
       {
-        path: ['/configuracion/ciudades'],
+        path: ['/ciudades'],
         component: React.lazy(() => import('./Ciudad')),
       },
       {
-        path: ['/configuracion/servicios'],
+        path: ['/servicios'],
         component: React.lazy(() => import('./Servicio')),
       },
       {
-        path: ['/configuracion/terceros-servicio'],
+        path: ['/terceros-servicio'],
         component: React.lazy(() => import('./TerceroServicio')),
       },
       {
-        path: ['/configuracion/eventos-notificacion'],
+        path: ['/eventos-notificacion'],
         component: React.lazy(() => import('./EventoNotificacion')),
       },
       {
-        path: ['/configuracion/eventos-notificacion'],
+        path: ['/eventos-notificacion'],
         component: React.lazy(() => import('./EventoNotificacion')),
       },
       {
-        path: ['/configuracion/parametros-correos'],
+        path: ['/parametros-correos'],
         component: React.lazy(() => import('./ParametroCorreo')),
       },
     ],

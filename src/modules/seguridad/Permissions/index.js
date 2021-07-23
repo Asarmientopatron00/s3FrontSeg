@@ -33,6 +33,8 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 // import Swal from 'sweetalert2';
 // import {history} from 'redux/store';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
@@ -457,20 +459,19 @@ const Permissions = () => {
   // const [dense, setDense] = React.useState(false);
   const dense = true; //Borrar cuando se use el change
 
-  const {rows} = useSelector(({rolReducer}) => rolReducer);
+  const rows = useSelector(({rolReducer}) => rolReducer.permisos);
 
   const modulos = useSelector(({moduloReducer}) => moduloReducer.ligera);
 
-  const opcionesSistema = useSelector(
-    ({opcionSistemaReducer}) => opcionSistemaReducer.ligera,
-  );
-  // const {pathname} = useLocation();
+  const showModulosLocal =
+    localStorage.getItem('showModulos') !== ''
+      ? JSON.parse(localStorage.getItem('showModulos'))
+      : '';
+  const showOpcionesLocal =
+    localStorage.getItem('showOpciones') !== ''
+      ? JSON.parse(localStorage.getItem('showOpciones'))
+      : '';
 
-  let vp = '15px';
-  if (dense === true) {
-    vp = '0px';
-  }
-  const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -484,6 +485,48 @@ const Permissions = () => {
   useEffect(() => {
     dispatch(onGetColeccionLigeraOpcion(moduloFiltro));
   }, [dispatch, moduloFiltro]);
+
+  let modulosAux = [];
+  rows.forEach((modulo) => {
+    let opcionesAux = [];
+    modulo.opciones.forEach((opcion) => {
+      opcionesAux.push({
+        nombre: opcion.nombre,
+        permisos: opcion.permisos,
+        mostrar:
+          typeof showOpcionesLocal[opcion.id] === 'undefined'
+            ? true
+            : showOpcionesLocal[opcion.id],
+        id: opcion.id,
+      });
+    });
+    modulosAux.push({
+      nombre: modulo.nombre,
+      opciones: opcionesAux,
+      id: modulo.id,
+      mostrar:
+        typeof showModulosLocal[modulo.id] === 'undefined'
+          ? true
+          : showModulosLocal[modulo.id],
+    });
+  });
+  const [showModulos, setShowModulos] = useState([]);
+
+  setTimeout(() => {
+    setShowModulos(modulosAux);
+  }, 1);
+
+  const opcionesSistema = useSelector(
+    ({opcionSistemaReducer}) => opcionSistemaReducer.ligera,
+  );
+  // const {pathname} = useLocation();
+
+  let vp = '15px';
+  if (dense === true) {
+    vp = '0px';
+  }
+
+  const classes = useStyles({vp: vp});
 
   // const changeOrderBy = (id) => {
   //   if (orderBy === id) {
@@ -558,6 +601,42 @@ const Permissions = () => {
   //   );
   // };
 
+  const handleMostrarModulo = (id) => {
+    let aux = localStorage.getItem('showModulos');
+
+    if (aux === '') {
+      aux = {};
+    } else {
+      aux = JSON.parse(aux);
+    }
+
+    if (typeof aux[id] === 'undefined') {
+      aux[id] = false;
+    } else {
+      aux[id] = !aux[id];
+    }
+
+    localStorage.setItem('showModulos', JSON.stringify(aux));
+  };
+
+  const handleMostrarOpcion = (id) => {
+    let aux = localStorage.getItem('showOpciones');
+
+    if (aux === '') {
+      aux = {};
+    } else {
+      aux = JSON.parse(aux);
+    }
+
+    if (typeof aux[id] === 'undefined') {
+      aux[id] = false;
+    } else {
+      aux[id] = !aux[id];
+    }
+
+    localStorage.setItem('showOpciones', JSON.stringify(aux));
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -573,7 +652,7 @@ const Permissions = () => {
 
         {showTable ? (
           <Box className={classes.marcoTabla}>
-            {rows.map((modulo, key) => {
+            {showModulos.map((modulo, key) => {
               return (
                 <div key={key}>
                   <Box
@@ -584,125 +663,97 @@ const Permissions = () => {
                     justifyContent='space-between'
                     alignItems='center'
                     marginTop='10px'
-                    onClick={(event) => {
-                      if (
-                        event.currentTarget.parentElement.lastChild.style
-                          .visibility === 'hidden'
-                      ) {
-                        event.currentTarget.parentElement.lastChild.style.visibility =
-                          'visible';
-                        event.currentTarget.parentElement.lastChild.style.height =
-                          'fit-content';
-                        event.currentTarget.lastChild.style.transform =
-                          'rotate(0deg)';
-                      } else {
-                        event.currentTarget.parentElement.lastChild.style.visibility =
-                          'hidden';
-                        event.currentTarget.parentElement.lastChild.style.height =
-                          '0px';
-                        event.currentTarget.lastChild.style.transform =
-                          'rotate(90deg)';
-                      }
+                    onClick={() => {
+                      handleMostrarModulo(modulo.id);
                     }}>
                     {modulo.nombre}
-                    <KeyboardArrowDownIcon key={'icon-' + modulo.nombre} />
+                    {modulo.mostrar ? (
+                      <KeyboardArrowDownIcon />
+                    ) : (
+                      <KeyboardArrowLeftIcon />
+                    )}
                   </Box>
-                  <Box>
-                    {modulo.opciones.map((opcion) => {
-                      return (
-                        <Box
-                          borderBottom='1px #ddd solid'
-                          marginLeft='10px'
-                          py='10px'
-                          key={opcion.nombre}>
+                  {modulo.mostrar ? (
+                    <Box>
+                      {modulo.opciones.map((opcion) => {
+                        return (
                           <Box
-                            component='h4'
-                            fontWeight='300'
-                            display='flex'
-                            alignItems='center'
-                            onClick={(event) => {
-                              if (
-                                event.currentTarget.parentElement.lastChild
-                                  .style.visibility === 'hidden'
-                              ) {
-                                event.currentTarget.parentElement.lastChild.style.visibility =
-                                  'visible';
-                                event.currentTarget.parentElement.lastChild.style.height =
-                                  'fit-content';
-                                event.currentTarget.parentElement.lastChild.style.paddingTop =
-                                  '10px';
-                                event.currentTarget.parentElement.lastChild.style.paddingBottom =
-                                  '10px';
-                                event.currentTarget.firstChild.style.transform =
-                                  'rotate(0deg)';
-                              } else {
-                                event.currentTarget.parentElement.lastChild.style.visibility =
-                                  'hidden';
-                                event.currentTarget.parentElement.lastChild.style.height =
-                                  '0px';
-                                event.currentTarget.firstChild.style.transform =
-                                  'rotate(-90deg)';
-                                event.currentTarget.parentElement.lastChild.style.paddingTop =
-                                  '0px';
-                                event.currentTarget.parentElement.lastChild.style.paddingBottom =
-                                  '0px';
-                              }
-                            }}>
-                            <KeyboardArrowDownIcon
-                              key={'icon-' + opcion.nombre}
-                            />
-                            {opcion.nombre}
+                            borderBottom='1px #ddd solid'
+                            marginLeft='10px'
+                            py='10px'
+                            key={opcion.nombre}>
+                            <Box
+                              component='h4'
+                              fontWeight='300'
+                              display='flex'
+                              alignItems='center'
+                              onClick={() => {
+                                handleMostrarOpcion(opcion.id);
+                              }}>
+                              {opcion.mostrar ? (
+                                <KeyboardArrowDownIcon />
+                              ) : (
+                                <KeyboardArrowRightIcon />
+                              )}
+                              {opcion.nombre}
+                            </Box>
+                            {opcion.mostrar ? (
+                              <Box
+                                display='grid'
+                                gridTemplateColumns='repeat(4,1fr)'
+                                mx='20px'
+                                gap='20px'
+                                py='10px'>
+                                {opcion.permisos.map((permiso) => {
+                                  return (
+                                    <Box
+                                      key={opcion.nombre + '-' + permiso.nombre}
+                                      component='h4'
+                                      fontWeight='300'
+                                      display='flex'
+                                      alignItems='center'>
+                                      <Checkbox
+                                        key={permiso.id}
+                                        checked={permiso.permitido}
+                                        onChange={(event) => {
+                                          if (event.target.checked) {
+                                            dispatch(
+                                              onOtorgarPermiso(
+                                                {
+                                                  rol_id: rol_id,
+                                                  permission_id: permiso.id,
+                                                },
+                                                updateColeccion,
+                                              ),
+                                            );
+                                          } else {
+                                            dispatch(
+                                              onRevocarPermiso(
+                                                {
+                                                  rol_id: rol_id,
+                                                  permission_id: permiso.id,
+                                                },
+                                                updateColeccion,
+                                              ),
+                                            );
+                                          }
+                                        }}
+                                      />
+                                      {permiso.nombre}
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
+                            ) : (
+                              ''
+                            )}
                           </Box>
-                          <Box
-                            display='grid'
-                            gridTemplateColumns='repeat(4,1fr)'
-                            mx='20px'
-                            gap='20px'
-                            py='10px'>
-                            {opcion.permisos.map((permiso) => {
-                              return (
-                                <Box
-                                  key={opcion.nombre + '-' + permiso.nombre}
-                                  component='h4'
-                                  fontWeight='300'
-                                  display='flex'
-                                  alignItems='center'>
-                                  <Checkbox
-                                    key={permiso.id}
-                                    checked={permiso.permitido}
-                                    onChange={(event) => {
-                                      if (event.target.checked) {
-                                        dispatch(
-                                          onOtorgarPermiso(
-                                            {
-                                              rol_id: rol_id,
-                                              permission_id: permiso.id,
-                                            },
-                                            updateColeccion,
-                                          ),
-                                        );
-                                      } else {
-                                        dispatch(
-                                          onRevocarPermiso(
-                                            {
-                                              rol_id: rol_id,
-                                              permission_id: permiso.id,
-                                            },
-                                            updateColeccion,
-                                          ),
-                                        );
-                                      }
-                                    }}
-                                  />
-                                  {permiso.nombre}
-                                </Box>
-                              );
-                            })}
-                          </Box>
-                        </Box>
-                      );
-                    })}
-                  </Box>
+                        );
+                      })}
+                    </Box>
+                  ) : (
+                    ''
+                  )}
                 </div>
               );
             })}

@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import VerticalItem from './VerticalItem';
 import AppContext from '../../../utility/AppContext';
 import Box from '@material-ui/core/Box';
-import IntlMessages from '../../../utility/IntlMessages';
+// import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './VerticalCollapase.style';
 import {useSelector} from 'react-redux';
 import {checkPermission} from '../../../utility/Utils';
@@ -78,18 +78,18 @@ const VerticalCollapse = ({item, level}) => {
         component='li'
         className={clsx(classes.navItem, 'nav-item', open && 'open')}
         onClick={handleClick}>
-        {item.icon && (
+        {item.icono_menu && (
           <Box component='span' mr={6}>
             <Icon
               color='action'
               className={clsx('nav-item-icon', classes.listIcon)}>
-              {item.icon}
+              {item.icono_menu}
             </Icon>
           </Box>
         )}
         <ListItemText
           classes={{primary: clsx('nav-item-text', classes.listItemText)}}
-          primary={<IntlMessages id={item.messageId} />}
+          primary={item.nombre}
         />
         <Box p={0} clone>
           <IconButton disableRipple>
@@ -104,9 +104,9 @@ const VerticalCollapse = ({item, level}) => {
         </Box>
       </ListItem>
 
-      {item.children && (
+      {item.opciones && (
         <Collapse in={open} className='collapse-children'>
-          {item.children.map((item) => (
+          {item.opciones.map((item) => (
             <React.Fragment key={item.id}>
               {item.type === 'collapse' && (
                 <VerticalCollapse item={item} level={level + 1} />
@@ -125,7 +125,7 @@ const VerticalCollapse = ({item, level}) => {
 
 VerticalCollapse.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string,
     icon: PropTypes.string,
     children: PropTypes.array,

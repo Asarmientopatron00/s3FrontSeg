@@ -4,21 +4,25 @@ import {ThemeMode} from '../../../../shared/constants/AppEnums';
 const useStyles = makeStyles((theme) => {
   return {
     navItem: {
-      height: 40,
+      height: 'min-content',
       marginTop: 2,
       marginBottom: 2,
-      width: 'calc(100% - 16px)',
-      borderRadius: '0 30px 30px 0',
+      marginRight: 1,
+      paddingBottom: 2,
+      paddingTop: 2,
+      width: 'calc(100% - 8px)',
+      borderRadius: '0 15px 15px 0',
       paddingLeft:
         theme.direction === 'ltr' ? (props) => 24 + 40 * props.level : 24,
-      paddingRight:
-        theme.direction === 'rtl' ? (props) => 24 + 40 * props.level : 24,
+      paddingRight: theme.direction === 'rtl' ? (props) => 30 * props.level : 1,
 
       [theme.breakpoints.up('xl')]: {
         paddingLeft:
           theme.direction === 'ltr' ? (props) => 24 + 40 * props.level : 24,
         paddingRight:
-          theme.direction === 'rtl' ? (props) => 24 + 40 * props.level : 24,
+          theme.direction === 'rtl' ? (props) => 40 * props.level : 18,
+        marginRight: 5,
+        width: 'calc(100% - 16px)',
       },
 
       '& .nav-item-text': {
@@ -42,7 +46,11 @@ const useStyles = makeStyles((theme) => {
       },
 
       '& .MuiIconButton-root': {
-        marginRight: -16,
+        marginRight: 0,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 0,
+        paddingLeft: 0,
       },
 
       '&.open, &:hover, &:focus': {
@@ -66,7 +74,7 @@ const useStyles = makeStyles((theme) => {
     listItemText: {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
+      // whiteSpace: 'nowrap',
     },
     listIcon: {
       fontSize: 18,

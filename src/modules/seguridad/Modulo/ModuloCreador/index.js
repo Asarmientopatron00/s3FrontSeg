@@ -15,6 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import ModuloForm from './ModuloForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
+import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -23,6 +24,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const validationSchema = yup.object({
   nombre: yup.string().required('Requerido'),
   icnono_menu: yup.string().nullable(),
+  posicion: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
   aplicacion_id: yup.string().required('Requerido'),
 });
 
@@ -97,6 +102,7 @@ const ModuloCreador = (props) => {
               id: selectedRow ? selectedRow.id : '',
               nombre: selectedRow ? selectedRow.nombre : '',
               icono_menu: selectedRow ? selectedRow.icono_menu : '',
+              posicion: selectedRow ? selectedRow.posicion : '',
               aplicacion_id: selectedRow ? selectedRow.aplicacion_id : '',
               estado: selectedRow
                 ? selectedRow.estado === 1

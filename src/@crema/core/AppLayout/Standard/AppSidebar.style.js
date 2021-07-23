@@ -32,19 +32,19 @@ const useStyles = makeStyles((theme) => {
     scrollAppSidebar: {
       paddingTop: 8,
       paddingBottom: 20,
-      height: 'calc(100vh - 58px) !important',
-
+      height: 'calc(100vh - 200px) !important',
+      // height: 'fit-content!important',
       [theme.breakpoints.up('xl')]: {
-        height: 'calc(100vh - 65px) !important',
+        height: 'calc(100vh - 200px) !important',
       },
     },
     drawerScrollAppSidebar: {
       paddingTop: 8,
       paddingBottom: 20,
-      height: 'calc(100vh - 58px) !important',
+      height: 'calc(100vh - 200px) !important',
 
       [theme.breakpoints.up('xl')]: {
-        height: 'calc(100vh - 65px) !important',
+        height: 'calc(100vh - 200px) !important',
       },
     },
     sidebarStandard: {

@@ -635,6 +635,8 @@ const Roles = () => {
 
   const onPermissions = (id) => {
     history.push(history.location.pathname + '/permisos/' + id);
+    localStorage.setItem('showModulos', '');
+    localStorage.setItem('showOpciones', '');
   };
 
   const onDeleteRol = (id) => {
@@ -808,12 +810,14 @@ const Roles = () => {
                                 onClick={() => onDeleteRol(row.id)}
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                             </Tooltip>
+                            {/* <Link to ={history.location.pathname +'/permisos/' + row.id}> */}
                             <Tooltip
                               title={<IntlMessages id='boton.permisos' />}>
                               <LockIcon
                                 onClick={() => onPermissions(row.id)}
                                 className={`${classes.generalIcons} ${classes.lockIcon}`}></LockIcon>
                             </Tooltip>
+                            {/* </Link> */}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
