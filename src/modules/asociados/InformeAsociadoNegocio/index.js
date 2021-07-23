@@ -26,9 +26,7 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import {Form, Formik, useField} from 'formik';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-
 // import { history } from 'redux/store';
-
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -515,7 +513,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Permissions = () => {
+const InformeActualizacion = () => {
+  console.log(process.env);
   // const [order, setOrder] = React.useState('asc');
   // const [orderBy, setOrderBy] = React.useState('');
   // const [orderByToSend, setOrderByToSend] = React.useState(
@@ -585,4 +584,4 @@ const Permissions = () => {
   );
 };
 
-export default Permissions;
+export default InformeActualizacion;

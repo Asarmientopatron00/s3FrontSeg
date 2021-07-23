@@ -23,7 +23,7 @@ const AppLogo = () => {
   }));
   const classes = useStyles();
   return (
-    <Box className={classes.logoRoot}>
+    <Box className={classes.logoRoot} component='a' href='/'>
       <Hidden smUp>
         <img
           className={classes.logo}
