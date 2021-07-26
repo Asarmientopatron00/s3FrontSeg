@@ -36,6 +36,7 @@ TransitionWrapper.propTypes = {
 };
 
 const ContentView = () => {
+  // console.log(routes);
   return (
     <Scrollbar>
       <Box

@@ -43,6 +43,7 @@
   "button.requisitosDeSeguridad": "Security Requirements",
   "button.cargar": "Upload",
   "sinResultados": "No records",
+  "noAutorizado": "Not authorized",
   "login.forgetPassword": "Forgot password",
   "login.forgetPasswordTitle": "Forget Your Password?",
   "login.forgetPasswordText": "Tell us your identification and we will send your an email to restore the password.",

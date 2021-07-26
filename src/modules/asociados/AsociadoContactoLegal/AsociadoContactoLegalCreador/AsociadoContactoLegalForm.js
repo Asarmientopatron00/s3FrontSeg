@@ -219,22 +219,24 @@ const AsociadoCotnactoLegal = (props) => {
                 );
               })}
             </MyTextField>
+          </Box>
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Nombre Completo'
-              name='nombre'
-              disabled={disabled}
-              required
-            />
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Completo'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Dirección'
-              name='direccion'
-              disabled={disabled}
-            />
+          <MyTextField
+            className={classes.myTextField}
+            label='Dirección'
+            name='direccion'
+            disabled={disabled}
+          />
 
+          <Box className={classes.inputs_2}>
             <MyTextField
               className={classes.myTextField}
               label='Ciudad'

@@ -828,7 +828,6 @@ const AsociadoRequisitoSeguridad = () => {
                                 if (event.target.value === 'S') {
                                   let verificada = true;
                                   rows.forEach((row) => {
-                                    console.log(row.compromiso);
                                     if (
                                       (row.compromiso !== 'S') &
                                       (row.compromiso !== 'N') &

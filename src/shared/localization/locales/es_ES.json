@@ -58,6 +58,7 @@
   "validacion.telefono": "Ingrese un telefono válido",
   "validacion.documento": "Ingrese un documento válido",
   "sinResultados": "Sin resultados",
+  "noAutorizado": "No autorizado",
   "dashboard.quickStats": "Estadísticas rápidas",
   "dashboard.totalClients": "Clientes totales",
   "dashboard.paidInvoices": "Facturas pagadas",

@@ -17,7 +17,7 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -66,34 +66,34 @@ const MyRadioField = (props) => {
   );
 };
 
-const MyAutocomplete = (props) => {
-  const [field, meta] = useField(props);
-  const errorText = meta.error && meta.touched ? meta.error : '';
+// const MyAutocomplete = (props) => {
+//   const [field, meta] = useField(props);
+//   const errorText = meta.error && meta.touched ? meta.error : '';
 
-  return (
-    <Autocomplete
-      {...props}
-      renderOption={(option) => (
-        <React.Fragment>{option.nombre}</React.Fragment>
-      )}
-      onChange={props.onChange}
-      renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            {...field}
-            name={props.name}
-            className={props.className}
-            label={props.label}
-            required={props.required}
-            helperText={errorText}
-            error={!!errorText}
-          />
-        );
-      }}
-    />
-  );
-};
+//   return (
+//     <Autocomplete
+//       {...props}
+//       renderOption={(option) => (
+//         <React.Fragment>{option.nombre}</React.Fragment>
+//       )}
+//       onChange={props.onChange}
+//       renderInput={(params) => {
+//         return (
+//           <TextField
+//             {...params}
+//             {...field}
+//             name={props.name}
+//             className={props.className}
+//             label={props.label}
+//             required={props.required}
+//             helperText={errorText}
+//             error={!!errorText}
+//           />
+//         );
+//       }}
+//     />
+//   );
+// };
 
 const AsociadoNegocioForm = (props) => {
   const {
@@ -109,7 +109,7 @@ const AsociadoNegocioForm = (props) => {
     onChangeDepartamentoOtra,
     actividadesEconomicas,
     usuario,
-    setFieldValue,
+    // setFieldValue,
   } = props;
 
   const dispatch = useDispatch();
@@ -767,6 +767,7 @@ const AsociadoNegocioForm = (props) => {
               name='capital_registrado'
               disabled={disabled}
               type='number'
+              required
               inputProps={{
                 style: {
                   fontSize: '14px',
@@ -1011,7 +1012,7 @@ const AsociadoNegocioForm = (props) => {
               })}
             </MyTextField>
 
-            <MyAutocomplete
+            {/* <MyAutocomplete
               className={classes.myTextField}
               name='tipo_documento_facturacion_id'
               label='Tipo de Documento'
@@ -1028,11 +1029,11 @@ const AsociadoNegocioForm = (props) => {
               }}
               getOptionLabel={(option) => option.nombre}
               filterSelectedOptions
-            />
+            /> */}
 
             <MyTextField
               className={classes.myTextField}
-              label='Número Documento Empresa Facturación'
+              label='Número Documento Empresa Facturación (si es diferente)'
               name='numero_documento_facturacion'
               disabled={disabled}
               inputProps={{

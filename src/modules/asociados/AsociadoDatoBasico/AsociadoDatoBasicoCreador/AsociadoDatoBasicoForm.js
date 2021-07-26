@@ -266,7 +266,9 @@ const AsociadoDatoBasicoForm = (props) => {
                   disabled={true}
                 />
               </Box>
+            </Box>
 
+            <Box>
               <MyTextField
                 className={classes.myTextField}
                 label='Nombre'

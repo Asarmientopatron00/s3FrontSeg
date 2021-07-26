@@ -15,7 +15,7 @@ import {authRouteConfig} from './auth';
 import {initialUrl} from '../shared/constants/AppConst';
 import {menuLevelConfig} from './menu';
 import {configuracionConfig} from './configuracion';
-import {seguridadConfig} from './seguridad';
+import {SeguridadConfig} from './seguridad';
 import {asociadoConfig} from './asociados';
 
 const routeConfigs = [
@@ -31,7 +31,7 @@ const routeConfigs = [
   ...ecommerceConfig,
   ...menuLevelConfig,
   ...configuracionConfig,
-  ...seguridadConfig,
+  ...SeguridadConfig(),
   ...asociadoConfig,
 ];
 

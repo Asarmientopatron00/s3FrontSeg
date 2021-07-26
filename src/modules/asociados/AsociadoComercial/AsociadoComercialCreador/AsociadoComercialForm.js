@@ -179,15 +179,25 @@ const AsociadoComercial = (props) => {
                 maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
               }}
             />
+          </Box>
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Nombre Completo'
-              name='nombre'
-              disabled={disabled}
-              required
-            />
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Completo'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
 
+          <MyTextField
+            className={classes.myTextField}
+            label='Contacto'
+            name='contacto'
+            disabled={disabled}
+            required
+          />
+
+          <Box className={classes.inputs_2}>
             <MyTextField
               className={classes.myTextField}
               label='Telefono'
@@ -197,14 +207,6 @@ const AsociadoComercial = (props) => {
                 maxLength: LONGITUD_MAXIMA_TELEFONOS,
                 minLength: LONGITUD_MINIMA_TELEFONOS,
               }}
-              required
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Contacto'
-              name='contacto'
-              disabled={disabled}
               required
             />
 

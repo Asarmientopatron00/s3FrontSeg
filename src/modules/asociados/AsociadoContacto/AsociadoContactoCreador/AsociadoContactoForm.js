@@ -207,31 +207,32 @@ const AsociadoContacto = (props) => {
                 maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
               }}
             />
+          </Box>
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Completo'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Nombre Completo'
-              name='nombre'
-              disabled={disabled}
-              required
-            />
+          <MyTextField
+            className={classes.myTextField}
+            label='Cargo'
+            name='cargo'
+            disabled={disabled}
+            required
+          />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Cargo'
-              name='cargo'
-              disabled={disabled}
-              required
-            />
+          <MyTextField
+            className={classes.myTextField}
+            label='Correo Electrónico'
+            name='email'
+            disabled={disabled}
+            required
+          />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Correo Electrónico'
-              name='email'
-              disabled={disabled}
-              required
-            />
-
+          <Box className={classes.inputs_2}>
             <MyTextField
               className={classes.myTextField}
               label='Telefono'

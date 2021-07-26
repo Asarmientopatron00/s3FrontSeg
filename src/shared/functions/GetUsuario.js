@@ -12,6 +12,7 @@ const GetUsuario = () => {
       identificacion_usuario: '',
       asociado: {id: '', nombre: '', numero_documento: ''},
       rol: {id: '', nombre: '', tipo: ''},
+      permisos: '',
     };
   }
 };

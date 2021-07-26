@@ -246,7 +246,7 @@ const AsociadoDatoBasicoCreator = (props) => {
     capital_registrado: yup
       .number()
       .typeError(mensajeValidacion('numero'))
-      .nullable(),
+      .required('Requerido'),
     responsable_iva: yup.string().required('Requerido'),
     exento_impuesto_renta: yup.string().required('Requerido'),
     gran_contribuyente: yup.string().required('Requerido'),

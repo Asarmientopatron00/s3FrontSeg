@@ -19,12 +19,12 @@ export const onGetColeccion = (
   rowsPerPage,
   nombre,
   orderByToSend,
-  departamento,
+  modulo,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const nombreAux = nombre ? nombre : '';
-  const departamentoAux = departamento ? departamento : '';
+  const moduloAux = modulo ? modulo : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
 
   return (dispatch) => {
@@ -35,7 +35,7 @@ export const onGetColeccion = (
           page: page,
           limite: rowsPerPage,
           nombre: nombreAux,
-          departamento: departamentoAux,
+          modulo: moduloAux,
           ordenar_por: ordenar_por,
         },
       })

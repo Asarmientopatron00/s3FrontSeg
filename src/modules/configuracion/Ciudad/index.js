@@ -321,6 +321,7 @@ const EnhancedTableToolbar = (props) => {
     nombreFiltro,
     departamentoFiltro,
     limpiarFiltros,
+    permisos,
   } = props;
   return (
     <Toolbar
@@ -355,13 +356,15 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip title='Crear Ciudad' onClick={onOpenAddCiudad}>
-                <IconButton
-                  className={classes.createButton}
-                  aria-label='filter list'>
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
+              {permisos.indexOf('Crear') >= 0 && (
+                <Tooltip title='Crear Ciudad' onClick={onOpenAddCiudad}>
+                  <IconButton
+                    className={classes.createButton}
+                    aria-label='filter list'>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
@@ -519,7 +522,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Ciudad = () => {
+const Ciudad = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -570,6 +573,25 @@ const Ciudad = () => {
   }
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
+
+  const {user} = useSelector(({auth}) => auth);
+  const [permisos, setPermisos] = useState('');
+
+  useEffect(() => {
+    user.permisos.forEach((modulo) => {
+      modulo.opciones.forEach((opcion) => {
+        if (opcion.url === props.route.path[0]) {
+          const permisoAux = [];
+          opcion.permisos.forEach((permiso) => {
+            if (permiso.permitido) {
+              permisoAux.push(permiso.titulo);
+            }
+          });
+          setPermisos(permisoAux);
+        }
+      });
+    });
+  }, [user, props.route]);
 
   useEffect(() => {
     dispatch(
@@ -773,16 +795,19 @@ const Ciudad = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          onOpenAddCiudad={onOpenAddCiudad}
-          handleOpenPopoverColumns={handleOpenPopoverColumns}
-          queryFilter={queryFilter}
-          limpiarFiltros={limpiarFiltros}
-          nombreFiltro={nombreFiltro}
-          departamentoFiltro={departamentoFiltro}
-        />
-        {showTable ? (
+        {permisos && (
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            onOpenAddCiudad={onOpenAddCiudad}
+            handleOpenPopoverColumns={handleOpenPopoverColumns}
+            queryFilter={queryFilter}
+            limpiarFiltros={limpiarFiltros}
+            nombreFiltro={nombreFiltro}
+            departamentoFiltro={departamentoFiltro}
+            permisos={permisos}
+          />
+        )}
+        {showTable && permisos ? (
           <Box className={classes.marcoTabla}>
             <Box className={classes.paginacion}>
               <Box>
@@ -853,22 +878,29 @@ const Ciudad = () => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            <Tooltip title={<IntlMessages id='boton.editar' />}>
-                              <EditIcon
-                                onClick={() => onOpenEditCiudad(row.id)}
-                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                            </Tooltip>
-                            <Tooltip title={<IntlMessages id='boton.ver' />}>
-                              <VisibilityIcon
-                                onClick={() => onOpenViewCiudad(row.id)}
-                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                            </Tooltip>
-                            <Tooltip
-                              title={<IntlMessages id='boton.eliminar' />}>
-                              <DeleteIcon
-                                onClick={() => onDeleteCiudad(row.id)}
-                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                            </Tooltip>
+                            {permisos.indexOf('Modificar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.editar' />}>
+                                <EditIcon
+                                  onClick={() => onOpenEditCiudad(row.id)}
+                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Listar') >= 0 && (
+                              <Tooltip title={<IntlMessages id='boton.ver' />}>
+                                <VisibilityIcon
+                                  onClick={() => onOpenViewCiudad(row.id)}
+                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Eliminar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.eliminar' />}>
+                                <DeleteIcon
+                                  onClick={() => onDeleteCiudad(row.id)}
+                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                              </Tooltip>
+                            )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -940,13 +972,21 @@ const Ciudad = () => {
               </Box>
             </Box>
           </Box>
-        ) : (
+        ) : permisos ? (
           <Box
             component='h2'
             padding={4}
             fontSize={19}
             className={classes.marcoTabla}>
             <IntlMessages id='sinResultados' />
+          </Box>
+        ) : (
+          <Box
+            component='h2'
+            padding={4}
+            fontSize={19}
+            className={classes.marcoTabla}>
+            <IntlMessages id='noAutorizado' />
           </Box>
         )}
       </Paper>

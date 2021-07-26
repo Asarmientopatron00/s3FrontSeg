@@ -37,6 +37,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import MenuItem from '@material-ui/core/MenuItem';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -316,7 +317,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '4fr 4fr 1fr',
     gap: '20px',
   },
   pairFilters: {
@@ -335,7 +336,10 @@ const EnhancedTableToolbar = (props) => {
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
+    moduloFiltro,
+    modulos,
     limpiarFiltros,
+    permisos,
   } = props;
   return (
     <Toolbar
@@ -370,26 +374,47 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              <Tooltip
-                title='Crear Opcion Sistema'
-                onClick={onOpenAddOpcionSistema}>
-                <IconButton
-                  className={classes.createButton}
-                  aria-label='filter list'>
-                  <AddIcon />
-                </IconButton>
-              </Tooltip>
+              {permisos.indexOf('Crear') >= 0 && (
+                <Tooltip
+                  title='Crear Opcion Sistema'
+                  onClick={onOpenAddOpcionSistema}>
+                  <IconButton
+                    className={classes.createButton}
+                    aria-label='filter list'>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
               label='Nombre'
-              name='nombre'
+              name='nombreFiltro'
               id='nombreFiltro'
               onChange={queryFilter}
               value={nombreFiltro}
               className={classes.inputFiltros}
             />
+            <TextField
+              label='Módulo'
+              name='moduloFiltro'
+              id='moduloFiltro'
+              select={true}
+              onChange={queryFilter}
+              value={moduloFiltro}>
+              {modulos.map((modulo) => {
+                return (
+                  <MenuItem
+                    value={modulo.id}
+                    key={modulo.id}
+                    id={modulo.id}
+                    className={classes.pointer}>
+                    {modulo.nombre}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -528,7 +553,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OpcionSistema = () => {
+const OpcionSistema = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -539,6 +564,7 @@ const OpcionSistema = () => {
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
   const dense = true; //Borrar cuando se use el change
+
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
@@ -549,6 +575,8 @@ const OpcionSistema = () => {
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setNombreFiltro] = useState('');
+  const [moduloFiltro, setModuloFiltro] = useState('');
+
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -579,24 +607,77 @@ const OpcionSistema = () => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
+  const {user} = useSelector(({auth}) => auth);
+  const [permisos, setPermisos] = useState('');
+
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
-  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
+    user.permisos.forEach((modulo) => {
+      modulo.opciones.forEach((opcion) => {
+        if (opcion.url === props.route.path[0]) {
+          const permisoAux = [];
+          opcion.permisos.forEach((permiso) => {
+            if (permiso.permitido) {
+              permisoAux.push(permiso.titulo);
+            }
+          });
+          setPermisos(permisoAux);
+        }
+      });
+    });
+  }, [user, props.route]);
+
+  useEffect(() => {
+    dispatch(
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        moduloFiltro,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    nombreFiltro,
+    orderByToSend,
+    showForm,
+    moduloFiltro,
+  ]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+    dispatch(
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        nombreFiltro,
+        orderByToSend,
+        moduloFiltro,
+      ),
+    );
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend]);
+  }, [nombreFiltro, moduloFiltro, orderByToSend]);
 
   const queryFilter = (e) => {
-    setNombreFiltro(e.target.value);
+    switch (e.target.name) {
+      case 'moduloFiltro':
+        setModuloFiltro(e.target.value);
+        break;
+      case 'nombreFiltro':
+        setNombreFiltro(e.target.value);
+        break;
+      default:
+        break;
+    }
   };
 
   const limpiarFiltros = () => {
     setNombreFiltro('');
+    setModuloFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -748,15 +829,20 @@ const OpcionSistema = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          onOpenAddOpcionSistema={onOpenAddOpcionSistema}
-          handleOpenPopoverColumns={handleOpenPopoverColumns}
-          queryFilter={queryFilter}
-          limpiarFiltros={limpiarFiltros}
-          nombreFiltro={nombreFiltro}
-        />
-        {showTable ? (
+        {permisos && (
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            onOpenAddOpcionSistema={onOpenAddOpcionSistema}
+            handleOpenPopoverColumns={handleOpenPopoverColumns}
+            queryFilter={queryFilter}
+            limpiarFiltros={limpiarFiltros}
+            nombreFiltro={nombreFiltro}
+            moduloFiltro={moduloFiltro}
+            modulos={modulos}
+            permisos={permisos}
+          />
+        )}
+        {showTable && permisos ? (
           <Box className={classes.marcoTabla}>
             <Box className={classes.paginacion}>
               <Box>
@@ -818,31 +904,42 @@ const OpcionSistema = () => {
                           selected={isItemSelected}
                           className={classes.row}>
                           {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell> */}
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell> */}
 
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            <Tooltip title={<IntlMessages id='boton.editar' />}>
-                              <EditIcon
-                                onClick={() => onOpenEditOpcionSistema(row.id)}
-                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                            </Tooltip>
-                            <Tooltip title={<IntlMessages id='boton.ver' />}>
-                              <VisibilityIcon
-                                onClick={() => onOpenViewOpcionSistema(row.id)}
-                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                            </Tooltip>
-                            <Tooltip
-                              title={<IntlMessages id='boton.eliminar' />}>
-                              <DeleteIcon
-                                onClick={() => onDeleteOpcionSistema(row.id)}
-                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                            </Tooltip>
+                            {permisos.indexOf('Modificar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.editar' />}>
+                                <EditIcon
+                                  onClick={() =>
+                                    onOpenEditOpcionSistema(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Listar') >= 0 && (
+                              <Tooltip title={<IntlMessages id='boton.ver' />}>
+                                <VisibilityIcon
+                                  onClick={() =>
+                                    onOpenViewOpcionSistema(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Eliminar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.eliminar' />}>
+                                <DeleteIcon
+                                  onClick={() => onDeleteOpcionSistema(row.id)}
+                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                              </Tooltip>
+                            )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -870,22 +967,13 @@ const OpcionSistema = () => {
                     })
                   }
                   {/* {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
+                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )} */}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* <TablePagination
-          rowsPerPageOptions={rowsPerPageOptions}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        /> */}
 
             <Box className={classes.paginacion}>
               <Box>
@@ -914,13 +1002,21 @@ const OpcionSistema = () => {
               </Box>
             </Box>
           </Box>
-        ) : (
+        ) : permisos ? (
           <Box
             component='h2'
             padding={4}
             fontSize={19}
             className={classes.marcoTabla}>
             <IntlMessages id='sinResultados' />
+          </Box>
+        ) : (
+          <Box
+            component='h2'
+            padding={4}
+            fontSize={19}
+            className={classes.marcoTabla}>
+            <IntlMessages id='noAutorizado' />
           </Box>
         )}
       </Paper>
