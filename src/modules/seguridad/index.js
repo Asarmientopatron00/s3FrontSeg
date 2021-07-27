@@ -38,6 +38,11 @@ export const SeguridadConfig = () => {
           path: ['/roles/permisos/:rol_id'],
           component: React.lazy(() => import('./Permissions')),
         },
+        {
+          exact: true,
+          path: ['/consulta-auditoria'],
+          component: React.lazy(() => import('./ConsultaAuditoria')),
+        },
       ],
     },
   ];

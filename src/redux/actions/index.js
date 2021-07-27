@@ -36,3 +36,4 @@ export * from './AplicacionAction';
 export * from './ModuloAction';
 export * from './OpcionSistemaAction';
 export * from './PermisoAction';
+export * from './ConsultaAuditoriaAction';
