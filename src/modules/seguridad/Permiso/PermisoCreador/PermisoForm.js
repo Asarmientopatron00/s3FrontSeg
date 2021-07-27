@@ -60,7 +60,7 @@ const MyTextField = (props) => {
 // };
 
 const PermisoForm = (props) => {
-  const {handleOnClose, accion, initialValues, opcionesSistema} = props;
+  const {handleOnClose, accion, initialValues, opcionesSistema, titulo} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -150,7 +150,7 @@ const PermisoForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='seguridad.permisos' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

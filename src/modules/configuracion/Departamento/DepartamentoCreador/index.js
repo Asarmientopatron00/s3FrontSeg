@@ -31,7 +31,8 @@ const validationSchema = yup.object({
 });
 
 const DepartamentoCreator = (props) => {
-  const {departamento, handleOnClose, accion, updateColeccion, paises} = props;
+  const {departamento, handleOnClose, accion, updateColeccion, paises, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -132,6 +133,7 @@ const DepartamentoCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 paises={paises}

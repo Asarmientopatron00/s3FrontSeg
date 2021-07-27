@@ -51,7 +51,7 @@ const MyTextField = (props) => {
 };
 
 const ParametroCorreoForm = (props) => {
-  const {handleOnClose, accion, values, initialValues} = props;
+  const {handleOnClose, accion, values, initialValues, titulo} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -128,7 +128,7 @@ const ParametroCorreoForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.parametrosCorreos' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

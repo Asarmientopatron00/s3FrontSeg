@@ -68,6 +68,7 @@ const TerceroServicioForm = (props) => {
     departamentos,
     ciudades,
     onChangeDepartamento,
+    titulo,
   } = props;
 
   // const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
@@ -200,7 +201,7 @@ const TerceroServicioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.terceroServicio' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

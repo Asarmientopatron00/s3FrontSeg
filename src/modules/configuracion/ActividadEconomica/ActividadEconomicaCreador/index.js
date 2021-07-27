@@ -29,7 +29,8 @@ const validationSchema = yup.object({
 });
 
 const ActividadEconomicaCreator = (props) => {
-  const {actividadEconomica, handleOnClose, accion, updateColeccion} = props;
+  const {actividadEconomica, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -127,6 +128,7 @@ const ActividadEconomicaCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

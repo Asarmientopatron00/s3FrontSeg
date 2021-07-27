@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import {grey} from '@material-ui/core/colors';
 import {makeStyles} from '@material-ui/core';
 import {Fonts} from '../../../shared/constants/AppEnums';
-import {initialUrl} from '../../../shared/constants/AppConst';
 import AppAnimate from '../../../@crema/core/AppAnimate';
 
 const useStyles = makeStyles((theme) => {
@@ -26,7 +25,7 @@ const Error404 = () => {
   const history = useHistory();
 
   const onGoBackToHome = () => {
-    history.push(initialUrl);
+    history.push('/');
   };
 
   const classes = useStyles();

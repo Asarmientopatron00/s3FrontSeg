@@ -410,6 +410,7 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
+    titulo,
     onOpenAddAsociadoDatoBasico,
     handleOpenPopoverColumns,
     queryFilter,
@@ -439,7 +440,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='asociados' />
+              {titulo}
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -703,21 +704,24 @@ const AsociadoDatoBasico = (props) => {
 
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
+  const [titulo, setTitulo] = useState('');
 
   useEffect(() => {
-    user.permisos.forEach((modulo) => {
-      modulo.opciones.forEach((opcion) => {
-        if (opcion.url === props.route.path[0]) {
-          const permisoAux = [];
-          opcion.permisos.forEach((permiso) => {
-            if (permiso.permitido) {
-              permisoAux.push(permiso.titulo);
-            }
-          });
-          setPermisos(permisoAux);
-        }
+    user &&
+      user.permisos.forEach((modulo) => {
+        modulo.opciones.forEach((opcion) => {
+          if (opcion.url === props.route.path[0]) {
+            setTitulo(opcion.nombre);
+            const permisoAux = [];
+            opcion.permisos.forEach((permiso) => {
+              if (permiso.permitido) {
+                permisoAux.push(permiso.titulo);
+              }
+            });
+            setPermisos(permisoAux);
+          }
+        });
       });
-    });
   }, [user, props.route]);
 
   useEffect(() => {
@@ -940,6 +944,7 @@ const AsociadoDatoBasico = (props) => {
             nombreFiltro={nombreFiltro}
             numeroDocumentoFiltro={numeroDocumentoFiltro}
             permisos={permisos}
+            titulo={titulo}
           />
         )}
         {showTable && permisos ? (

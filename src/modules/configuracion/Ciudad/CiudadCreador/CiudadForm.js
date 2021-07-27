@@ -25,7 +25,8 @@ const MyTextField = (props) => {
 };
 
 const CiudadForm = (props) => {
-  const {handleOnClose, accion, values, initialValues, departamentos} = props;
+  const {handleOnClose, accion, values, initialValues, departamentos, titulo} =
+    props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -99,7 +100,7 @@ const CiudadForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.ciudades' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

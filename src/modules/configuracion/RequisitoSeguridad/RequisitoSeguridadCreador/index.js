@@ -37,6 +37,7 @@ const RequisitoSeguridadCreator = (props) => {
     updateColeccion,
     asociados,
     roles,
+    titulo,
   } = props;
 
   const dispatch = useDispatch();
@@ -136,6 +137,7 @@ const RequisitoSeguridadCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 asociados={asociados}
                 roles={roles}

@@ -32,7 +32,8 @@ const validationSchema = yup.object({
 });
 
 const ModuloCreador = (props) => {
-  const {modulo, handleOnClose, accion, updateColeccion, aplicaciones} = props;
+  const {modulo, handleOnClose, accion, updateColeccion, aplicaciones, titulo} =
+    props;
 
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
@@ -130,6 +131,7 @@ const ModuloCreador = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 aplicaciones={aplicaciones}

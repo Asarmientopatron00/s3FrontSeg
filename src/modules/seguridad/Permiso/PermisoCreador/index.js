@@ -27,8 +27,14 @@ const validationSchema = yup.object({
 });
 
 const PermisoCreador = (props) => {
-  const {permiso, handleOnClose, accion, updateColeccion, opcionesSistema} =
-    props;
+  const {
+    permiso,
+    handleOnClose,
+    accion,
+    updateColeccion,
+    opcionesSistema,
+    titulo,
+  } = props;
 
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
@@ -120,6 +126,7 @@ const PermisoCreador = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 opcionesSistema={opcionesSistema}

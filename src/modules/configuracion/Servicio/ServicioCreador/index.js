@@ -25,8 +25,14 @@ const validationSchema = yup.object({
 });
 
 const ServicioCreator = (props) => {
-  const {servicio, handleOnClose, accion, updateColeccion, departamentos} =
-    props;
+  const {
+    servicio,
+    handleOnClose,
+    accion,
+    updateColeccion,
+    departamentos,
+    titulo,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -122,6 +128,7 @@ const ServicioCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 departamentos={departamentos}

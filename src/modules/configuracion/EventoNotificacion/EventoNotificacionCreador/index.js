@@ -48,7 +48,8 @@ const validationSchema = yup.object({
 });
 
 const EventoNotificacionCreator = (props) => {
-  const {eventoNotificacion, handleOnClose, accion, updateColeccion} = props;
+  const {eventoNotificacion, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -146,6 +147,7 @@ const EventoNotificacionCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

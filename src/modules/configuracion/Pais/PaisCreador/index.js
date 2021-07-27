@@ -26,7 +26,7 @@ const validationSchema = yup.object({
 });
 
 const PaisCreator = (props) => {
-  const {pais, handleOnClose, accion, updateColeccion} = props;
+  const {pais, handleOnClose, accion, updateColeccion, titulo} = props;
 
   const dispatch = useDispatch();
 
@@ -124,6 +124,7 @@ const PaisCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

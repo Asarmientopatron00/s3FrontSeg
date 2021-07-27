@@ -163,7 +163,8 @@ const validationSchema = yup.object({
 });
 
 const TerceroServicioCreator = (props) => {
-  const {terceroServicio, handleOnClose, accion, updateColeccion} = props;
+  const {terceroServicio, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -316,6 +317,7 @@ const TerceroServicioCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 tiposDocumentos={tiposDocumentos}

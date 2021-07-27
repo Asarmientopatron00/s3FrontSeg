@@ -58,7 +58,7 @@ const MyTextField = (props) => {
 // };
 
 const OpcionSistemaForm = (props) => {
-  const {handleOnClose, accion, values, initialValues, modulos} = props;
+  const {handleOnClose, accion, values, initialValues, modulos, titulo} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -148,7 +148,7 @@ const OpcionSistemaForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='seguridad.opcionesSistema' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

@@ -514,7 +514,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const InformeActualizacion = () => {
-  console.log(process.env);
   // const [order, setOrder] = React.useState('asc');
   // const [orderBy, setOrderBy] = React.useState('');
   // const [orderByToSend, setOrderByToSend] = React.useState(

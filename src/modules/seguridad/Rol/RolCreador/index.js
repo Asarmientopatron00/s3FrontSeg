@@ -22,7 +22,7 @@ const validationSchema = yup.object({
 });
 
 const RolCreador = (props) => {
-  const {rol, handleOnClose, accion, updateColeccion} = props;
+  const {rol, handleOnClose, accion, updateColeccion, titulo} = props;
 
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
@@ -118,6 +118,7 @@ const RolCreador = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

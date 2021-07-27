@@ -26,7 +26,7 @@ const MyTextField = (props) => {
 };
 
 const ListaDocumentoForm = (props) => {
-  const {handleOnClose, accion, values, initialValues} = props;
+  const {handleOnClose, accion, values, initialValues, titulo} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -100,7 +100,7 @@ const ListaDocumentoForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.listasDocumentos' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

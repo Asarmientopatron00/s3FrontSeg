@@ -33,7 +33,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AsociadoDatoBasicoCreator = (props) => {
-  const {asociadoDatoBasico, handleOnClose, accion, updateColeccion} = props;
+  const {asociadoDatoBasico, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -336,6 +337,7 @@ const AsociadoDatoBasicoCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
                 tiposDocumentos={tiposDocumentos}

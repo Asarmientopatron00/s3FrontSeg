@@ -35,7 +35,8 @@ const validationSchema = yup.object({
 });
 
 const ParametroCorreoCreator = (props) => {
-  const {parametroCorreo, handleOnClose, accion, updateColeccion} = props;
+  const {parametroCorreo, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -136,6 +137,7 @@ const ParametroCorreoCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

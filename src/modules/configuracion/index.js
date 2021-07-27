@@ -19,6 +19,7 @@ export const configuracionConfig = [
         component: React.lazy(() => import('./ActividadEconomica')),
       },
       {
+        exact: true,
         path: ['/listas-documentos'],
         component: React.lazy(() => import('./ListaDocumento')),
       },

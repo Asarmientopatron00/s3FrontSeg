@@ -25,8 +25,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const UsuarioCreador = (props) => {
-  const {usuario, handleOnClose, accion, updateColeccion, asociados, roles} =
-    props;
+  const {
+    usuario,
+    handleOnClose,
+    accion,
+    updateColeccion,
+    asociados,
+    roles,
+    titulo,
+  } = props;
 
   let validationSchema = yup.object({
     nombre: yup.string().required('Requerido'),
@@ -178,6 +185,7 @@ const UsuarioCreador = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 asociados={asociados}
                 roles={roles}

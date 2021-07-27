@@ -25,7 +25,7 @@ const validationSchema = yup.object({
 });
 
 const AplicacionCreador = (props) => {
-  const {aplicacion, handleOnClose, accion, updateColeccion} = props;
+  const {aplicacion, handleOnClose, accion, updateColeccion, titulo} = props;
 
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
@@ -122,6 +122,7 @@ const AplicacionCreador = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

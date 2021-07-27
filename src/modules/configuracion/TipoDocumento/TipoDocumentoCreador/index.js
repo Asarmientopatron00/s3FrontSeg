@@ -39,6 +39,7 @@ const TipoDocumentoCreator = (props) => {
     updateColeccion,
     asociados,
     roles,
+    titulo,
   } = props;
 
   const dispatch = useDispatch();
@@ -138,6 +139,7 @@ const TipoDocumentoCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 asociados={asociados}
                 roles={roles}

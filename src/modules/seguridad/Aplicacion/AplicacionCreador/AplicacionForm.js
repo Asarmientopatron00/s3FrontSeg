@@ -57,7 +57,7 @@ const MyTextField = (props) => {
 // };
 
 const UsuarioForm = (props) => {
-  const {handleOnClose, accion, values, initialValues} = props;
+  const {handleOnClose, accion, values, initialValues, titulo} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -147,7 +147,7 @@ const UsuarioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='seguridad.aplicaciones' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>

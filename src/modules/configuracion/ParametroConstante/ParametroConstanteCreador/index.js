@@ -36,7 +36,8 @@ const validationSchema = yup.object({
 });
 
 const ParametroConstanteCreator = (props) => {
-  const {parametroConstante, handleOnClose, accion, updateColeccion} = props;
+  const {parametroConstante, handleOnClose, accion, updateColeccion, titulo} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -138,6 +139,7 @@ const ParametroConstanteCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
               />

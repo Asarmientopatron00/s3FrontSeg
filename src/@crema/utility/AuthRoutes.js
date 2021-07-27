@@ -8,6 +8,7 @@ import {useAuthToken} from './AppHooks';
 import {Loader} from '../index';
 import PropTypes from 'prop-types';
 import {checkPermission} from './Utils';
+
 import {initialUrl} from '../../shared/constants/AppConst';
 import {setInitialPath} from '../../redux/actions';
 
@@ -17,12 +18,17 @@ const AuthRoutes = ({children}) => {
   const history = useHistory();
   const {routes, changeNavStyle, updateThemeStyle, updateThemeMode, setRTL} =
     useContext(AppContext);
-
   const [loading, user] = useAuthToken();
   const initialPath = useSelector(({settings}) => settings.initialPath);
   const currentRoute = matchRoutes(routes, pathname)[0].route;
   let isPermitted = checkPermission(currentRoute.auth, user ? user.role : null);
-
+  const paginaInicial = user
+    ? user.permisos[0]
+      ? user.permisos[0].opciones[0]
+        ? user.permisos[0].opciones[0].url
+        : initialUrl
+      : initialUrl
+    : initialUrl;
   useEffect(() => {
     function setInitPath() {
       if (
@@ -87,10 +93,10 @@ const AuthRoutes = ({children}) => {
           pathname === '/signin' ||
           pathname === '/signup'
         ) {
-          history.push(initialUrl);
+          history.push(paginaInicial);
         } else if (
           initialPath &&
-          initialUrl !== initialPath &&
+          paginaInicial !== initialPath &&
           (initialPath !== '/' ||
             initialPath !== '/signin' ||
             initialPath !== '/signup')
@@ -99,7 +105,15 @@ const AuthRoutes = ({children}) => {
         }
       }
     }
-  }, [user, loading, initialPath, isPermitted, pathname, history]);
+  }, [
+    user,
+    loading,
+    initialPath,
+    isPermitted,
+    pathname,
+    history,
+    paginaInicial,
+  ]);
 
   return loading ? <Loader /> : <>{children}</>;
 };

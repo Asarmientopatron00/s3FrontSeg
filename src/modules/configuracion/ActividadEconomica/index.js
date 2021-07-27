@@ -301,6 +301,7 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
+    titulo,
     onOpenAddActividadEconomica,
     handleOpenPopoverColumns,
     queryFilter,
@@ -329,7 +330,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='configuracion.actividadesEconomicas' />
+              {titulo}
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -554,21 +555,24 @@ const ActividadEconomica = (props) => {
 
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
+  const [titulo, setTitulo] = useState('');
 
   useEffect(() => {
-    user.permisos.forEach((modulo) => {
-      modulo.opciones.forEach((opcion) => {
-        if (opcion.url === props.route.path[0]) {
-          const permisoAux = [];
-          opcion.permisos.forEach((permiso) => {
-            if (permiso.permitido) {
-              permisoAux.push(permiso.titulo);
-            }
-          });
-          setPermisos(permisoAux);
-        }
+    user &&
+      user.permisos.forEach((modulo) => {
+        modulo.opciones.forEach((opcion) => {
+          if (opcion.url === props.route.path[0]) {
+            setTitulo(opcion.nombre);
+            const permisoAux = [];
+            opcion.permisos.forEach((permiso) => {
+              if (permiso.permitido) {
+                permisoAux.push(permiso.titulo);
+              }
+            });
+            setPermisos(permisoAux);
+          }
+        });
       });
-    });
   }, [user, props.route]);
 
   useEffect(() => {
@@ -744,6 +748,7 @@ const ActividadEconomica = (props) => {
             limpiarFiltros={limpiarFiltros}
             nombreFiltro={nombreFiltro}
             permisos={permisos}
+            titulo={titulo}
           />
         )}
         {showTable && permisos ? (
@@ -947,6 +952,7 @@ const ActividadEconomica = (props) => {
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
+          titulo={titulo}
         />
       ) : (
         ''

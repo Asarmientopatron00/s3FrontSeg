@@ -34,6 +34,7 @@ const ListaDocumentoCreator = (props) => {
     updateColeccion,
     asociados,
     roles,
+    titulo,
   } = props;
 
   const dispatch = useDispatch();
@@ -134,6 +135,7 @@ const ListaDocumentoCreator = (props) => {
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
+                titulo={titulo}
                 accion={accion}
                 asociados={asociados}
                 roles={roles}
