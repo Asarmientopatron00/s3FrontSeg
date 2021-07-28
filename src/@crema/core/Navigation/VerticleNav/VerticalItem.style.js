@@ -8,8 +8,8 @@ const useStyles = makeStyles((theme) => {
       paddingBottom: 2,
       width: 'calc(100% - 16px)',
       [theme.breakpoints.up('xl')]: {
-        paddingTop: 8,
-        paddingBottom: 8,
+        paddingTop: 3,
+        paddingBottom: 3,
       },
       [theme.breakpoints.down('xl')]: {
         paddingRight: 0,
