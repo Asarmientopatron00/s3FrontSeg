@@ -73,9 +73,13 @@ const MyRadioField = (props) => {
 //   return (
 //     <Autocomplete
 //       {...props}
-//       renderOption={(option) => (
-//         <React.Fragment>{option.nombre}</React.Fragment>
-//       )}
+//       renderOption={(option) =>{
+//         console.log(option);
+//        return (
+//           <React.Fragment>{option.nombre}</React.Fragment>
+//         )
+//       }
+//       }
 //       onChange={props.onChange}
 //       renderInput={(params) => {
 //         return (
@@ -1014,7 +1018,7 @@ const AsociadoNegocioForm = (props) => {
 
             {/* <MyAutocomplete
               className={classes.myTextField}
-              name='tipo_documento_facturacion_id'
+              name='zzzzz'
               label='Tipo de Documento'
               options={tiposDocumentos}
               autoHighlight
@@ -1025,7 +1029,7 @@ const AsociadoNegocioForm = (props) => {
                     valor = tipoDocumento.id;
                   }
                 });
-                setFieldValue('tipo_documento_facturacion_id', valor);
+                setFieldValue('zzzzz', valor);
               }}
               getOptionLabel={(option) => option.nombre}
               filterSelectedOptions
