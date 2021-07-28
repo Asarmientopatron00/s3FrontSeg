@@ -282,8 +282,8 @@ const EnhancedTableToolbar = (props) => {
                         className={classes.linkDocumento}
                         target='_blank'
                         href={
-                          'http://solicitudesservicio.test/asociados-negocio/consulta-actualizacion' +
-                          // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/consulta-actualizacion'
+                          // 'http://solicitudesservicio.test/asociados-negocio/consulta-actualizacion' +
+                          'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/consulta-actualizacion' +
                           '?nombre=' +
                           values.nombre +
                           '&numero_documento=' +
