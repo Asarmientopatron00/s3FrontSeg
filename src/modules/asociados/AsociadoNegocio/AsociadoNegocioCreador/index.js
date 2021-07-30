@@ -328,10 +328,6 @@ const AsociadoDatoBasicoCreator = (props) => {
     firma_representante_legal: yup.string().required('Requerido'),
     informacion_verificada_asociado: yup.string().required('Requerido'),
     estado: yup.string().required('Requerido'),
-    // zzzzz: yup
-    // .number()
-    // .typeError(mensajeValidacion('numero'))
-    // .required('requerido'),
   });
   // const classes = useStyles(props);
 
@@ -659,7 +655,6 @@ const AsociadoDatoBasicoCreator = (props) => {
               : ''
             : '',
           completo: true,
-          // zzzzz:'102',
         }}
         validationSchema={validationSchema}
         onSubmit={(data, {setSubmitting, resetForm}) => {

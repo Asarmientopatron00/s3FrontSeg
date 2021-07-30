@@ -43,6 +43,11 @@ export const SeguridadConfig = () => {
           path: ['/consulta-auditoria'],
           component: React.lazy(() => import('./ConsultaAuditoria')),
         },
+        {
+          exact: true,
+          path: ['/firma'],
+          component: React.lazy(() => import('./Firma')),
+        },
       ],
     },
   ];

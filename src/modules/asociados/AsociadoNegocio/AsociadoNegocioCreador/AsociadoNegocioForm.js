@@ -10,14 +10,14 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItem from '@material-ui/core/MenuItem';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   FETCH_ERROR,
   FETCH_START,
@@ -66,38 +66,117 @@ const MyRadioField = (props) => {
   );
 };
 
-// const MyAutocomplete = (props) => {
-//   const [field, meta] = useField(props);
-//   const errorText = meta.error && meta.touched ? meta.error : '';
+const MyAutocomplete = (props) => {
+  const [field, meta, form] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  let myvalueAux = '';
+  if (field.value !== '') {
+    props.options.forEach((option) => {
+      if (option.id === field.value) {
+        myvalueAux = option.nombre;
+      }
+    });
+  }
+  let myvalue = '';
+  if (myvalueAux === '') {
+    myvalue = field.value;
+  } else {
+    myvalue = myvalueAux;
+  }
+  // console.log(field.value)
+  return (
+    <Autocomplete
+      selectOnFocus={false}
+      openOnFocus
+      onKeyDown={(e) =>
+        e.key === 'Backspace' && typeof field.value === 'number'
+          ? form.setValue('')
+          : ''
+      }
+      {...props}
+      onChange={(event, newValue, reasons, details, trial) =>
+        newValue ? form.setValue(newValue.id) : form.setValue('')
+      }
+      inputValue={myvalue}
+      renderOption={(option) => {
+        return <React.Fragment>{option.nombre}</React.Fragment>;
+      }}
+      getOptionLabel={(option) => option.nombre}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            {...field}
+            name={props.name}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
+    />
+  );
+};
 
-//   return (
-//     <Autocomplete
-//       {...props}
-//       renderOption={(option) =>{
-//         console.log(option);
-//        return (
-//           <React.Fragment>{option.nombre}</React.Fragment>
-//         )
-//       }
-//       }
-//       onChange={props.onChange}
-//       renderInput={(params) => {
-//         return (
-//           <TextField
-//             {...params}
-//             {...field}
-//             name={props.name}
-//             className={props.className}
-//             label={props.label}
-//             required={props.required}
-//             helperText={errorText}
-//             error={!!errorText}
-//           />
-//         );
-//       }}
-//     />
-//   );
-// };
+const MyAutocompleteActividad = (props) => {
+  const [field, meta, form] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  let myvalueAux = '';
+  if (field.value !== '') {
+    props.options.forEach((option) => {
+      if (option.id === field.value) {
+        myvalueAux = option.codigo_ciiu;
+      }
+    });
+  }
+  let myvalue = '';
+  if (myvalueAux === '') {
+    myvalue = field.value;
+  } else {
+    myvalue = myvalueAux;
+  }
+  // console.log(field.value)
+  return (
+    <Autocomplete
+      selectOnFocus={false}
+      openOnFocus
+      onKeyDown={(e) =>
+        e.key === 'Backspace' && typeof field.value === 'number'
+          ? form.setValue('')
+          : ''
+      }
+      {...props}
+      onChange={(event, newValue, reasons, details, trial) =>
+        newValue ? form.setValue(newValue.id) : form.setValue('')
+      }
+      inputValue={myvalue}
+      renderOption={(option) => {
+        return (
+          <React.Fragment>
+            {option.codigo_ciiu + '-' + option.nombre}
+          </React.Fragment>
+        );
+      }}
+      getOptionLabel={(option) => option.codigo_ciiu + '-' + option.nombre}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            {...field}
+            name={props.name}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
+    />
+  );
+};
 
 const AsociadoNegocioForm = (props) => {
   const {
@@ -113,7 +192,6 @@ const AsociadoNegocioForm = (props) => {
     onChangeDepartamentoOtra,
     actividadesEconomicas,
     usuario,
-    // setFieldValue,
   } = props;
 
   const dispatch = useDispatch();
@@ -295,9 +373,9 @@ const AsociadoNegocioForm = (props) => {
     },
   }));
 
-  const [focusedSelect, setFocusedSelect] = useState(false);
-  const onFocus = () => setFocusedSelect(true);
-  const onBlur = () => setFocusedSelect(false);
+  // const [focusedSelect, setFocusedSelect] = useState(false);
+  // const onFocus = () => setFocusedSelect(true);
+  // const onBlur = () => setFocusedSelect(false);
   const classes = useStyles(props);
   return (
     <Form noValidate autoComplete='off' className={classes.root}>
@@ -338,7 +416,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo de Documento'
               name='tipo_documento_id'
@@ -374,8 +452,16 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
-
+            </MyTextField> */}
+            <MyAutocomplete
+              options={tiposDocumentos}
+              name='tipo_documento_id'
+              inputValue={initialValues.tipo_documento_id}
+              label='Tipo de Documento'
+              autoHighlight
+              className={classes.myTextField}
+              required
+            />
             <Box display='grid' gridTemplateColumns='2fr 1fr' gap='10px'>
               <Box mr={3}>
                 <MyTextField
@@ -489,7 +575,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='Departamento'
               name='departamento_id'
@@ -507,9 +593,26 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
-
-            <MyTextField
+            </MyTextField> */}
+            <MyAutocomplete
+              options={departamentos}
+              name='departamento_id'
+              inputValue={initialValues.departamento_id}
+              label='Departamento'
+              autoHighlight
+              className={classes.myTextField}
+              required
+            />
+            <MyAutocomplete
+              options={ciudades}
+              name='ciudad_id'
+              inputValue={initialValues.ciudad_id}
+              label='Ciudad'
+              autoHighlight
+              className={classes.myTextField}
+              required
+            />
+            {/* <MyTextField
               className={classes.myTextField}
               label='Ciudad'
               name='ciudad_id'
@@ -527,7 +630,7 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}
@@ -611,7 +714,15 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            <MyAutocomplete
+              options={departamentos}
+              name='departamento_otro_id'
+              inputValue={initialValues.departamento_otro_id}
+              label='Departamento'
+              autoHighlight
+              className={classes.myTextField}
+            />
+            {/* <MyTextField
               className={classes.myTextField}
               label='Departamento'
               name='departamento_otro_id'
@@ -628,9 +739,17 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
-            <MyTextField
+            <MyAutocomplete
+              options={ciudadesOtra}
+              name='ciudad_otra_id'
+              inputValue={initialValues.ciudad_otra_id}
+              label='Ciudad'
+              autoHighlight
+              className={classes.myTextField}
+            />
+            {/* <MyTextField
               className={classes.myTextField}
               label='Ciudad'
               name='ciudad_otra_id'
@@ -647,7 +766,7 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}
@@ -717,7 +836,7 @@ const AsociadoNegocioForm = (props) => {
           />
 
           <Box className={classes.actividad_eca}>
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='Código CIIU'
               name='actividad_economica_id'
@@ -742,7 +861,16 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
+            <MyAutocompleteActividad
+              options={actividadesEconomicas}
+              name='actividad_economica_id'
+              inputValue={initialValues.actividad_economica_id}
+              label='Código CIIU'
+              autoHighlight
+              className={classes.myTextField}
+              required
+            />
 
             <MyTextField
               className={classes.myTextField}
@@ -997,12 +1125,14 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo de Documento'
               name='tipo_documento_facturacion_id'
               disabled={disabled}
-              select={true}>
+              select={true}
+              
+              >
               {tiposDocumentos.map((tipoDocumento) => {
                 return (
                   <MenuItem
@@ -1014,26 +1144,16 @@ const AsociadoNegocioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
-            {/* <MyAutocomplete
-              className={classes.myTextField}
-              name='zzzzz'
-              label='Tipo de Documento'
+            <MyAutocomplete
               options={tiposDocumentos}
+              name='tipo_documento_facturacion_id'
+              inputValue={initialValues.tipo_documento_facturacion_id}
+              label='Tipo de Documento'
               autoHighlight
-              onBlur={(event) => {
-                let valor = '';
-                tiposDocumentos.forEach((tipoDocumento) => {
-                  if (tipoDocumento.nombre === event.target.value) {
-                    valor = tipoDocumento.id;
-                  }
-                });
-                setFieldValue('zzzzz', valor);
-              }}
-              getOptionLabel={(option) => option.nombre}
-              filterSelectedOptions
-            /> */}
+              className={classes.myTextField}
+            />
 
             <MyTextField
               className={classes.myTextField}
