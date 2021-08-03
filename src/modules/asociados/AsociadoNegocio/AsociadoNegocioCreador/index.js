@@ -601,7 +601,7 @@ const AsociadoDatoBasicoCreator = (props) => {
               ? selectedRow.correo_recepcion_facturacion_electronica
               : ''
             : '',
-          circular070: clausulas ? clausulas['TEXTO_CIRCULAR_070'] : ' ',
+          circular070: clausulas ? clausulas['TEXTO_CIRCULAR_0170'] : ' ',
           aceptar_condiciones_circular_070: selectedRow
             ? selectedRow.aceptar_condiciones_circular_070
               ? selectedRow.aceptar_condiciones_circular_070

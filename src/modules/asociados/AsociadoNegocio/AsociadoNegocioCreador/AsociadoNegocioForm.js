@@ -416,43 +416,6 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            {/* <MyTextField
-              className={classes.myTextField}
-              label='Tipo de Documento'
-              name='tipo_documento_id'
-              disabled={disabled}
-              select={true}
-              required
-              SelectProps={{
-                style: {
-                  fontSize: '14px',
-                  paddingBottom: '3px',
-                  paddingTop: '2px',
-                },
-              }}
-              inputProps={{
-                style: {
-                  fontSize: '14px',
-                  paddingBottom: '3px',
-                  paddingTop: '2px',
-                },
-              }}>
-              {tiposDocumentos.map((tipoDocumento) => {
-                return (
-                  <MenuItem
-                    value={tipoDocumento.id}
-                    key={tipoDocumento.id}
-                    className={classes.pointer}
-                    style={
-                      tipoDocumento.estado === 0
-                        ? {display: 'none'}
-                        : {paddingTop: '3px', paddingBotttom: '3px'}
-                    }>
-                    {tipoDocumento.nombre}
-                  </MenuItem>
-                );
-              })}
-            </MyTextField> */}
             <MyAutocomplete
               options={tiposDocumentos}
               name='tipo_documento_id'
@@ -461,6 +424,7 @@ const AsociadoNegocioForm = (props) => {
               autoHighlight
               className={classes.myTextField}
               required
+              disabled={disabled}
             />
             <Box display='grid' gridTemplateColumns='2fr 1fr' gap='10px'>
               <Box mr={3}>
@@ -602,6 +566,7 @@ const AsociadoNegocioForm = (props) => {
               autoHighlight
               className={classes.myTextField}
               required
+              disabled={disabled}
             />
             <MyAutocomplete
               options={ciudades}
@@ -611,6 +576,7 @@ const AsociadoNegocioForm = (props) => {
               autoHighlight
               className={classes.myTextField}
               required
+              disabled={disabled}
             />
             {/* <MyTextField
               className={classes.myTextField}
@@ -721,6 +687,7 @@ const AsociadoNegocioForm = (props) => {
               label='Departamento'
               autoHighlight
               className={classes.myTextField}
+              disabled={disabled}
             />
             {/* <MyTextField
               className={classes.myTextField}
@@ -748,6 +715,7 @@ const AsociadoNegocioForm = (props) => {
               label='Ciudad'
               autoHighlight
               className={classes.myTextField}
+              disabled={disabled}
             />
             {/* <MyTextField
               className={classes.myTextField}
@@ -870,6 +838,7 @@ const AsociadoNegocioForm = (props) => {
               autoHighlight
               className={classes.myTextField}
               required
+              disabled={disabled}
             />
 
             <MyTextField
@@ -1039,7 +1008,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box component='h6' fontSize={16} fontWeight='bold' mb={3}>
-            Certificados Sistemas e Gestión:
+            Certificados Sistemas de Gestión:
           </Box>
 
           <Box className={classes.inputs_4}>
@@ -1153,6 +1122,7 @@ const AsociadoNegocioForm = (props) => {
               label='Tipo de Documento'
               autoHighlight
               className={classes.myTextField}
+              disabled={disabled}
             />
 
             <MyTextField
@@ -1237,7 +1207,7 @@ const AsociadoNegocioForm = (props) => {
           <Box mb={5}>
             <MyTextField
               className={classes.widthFull}
-              label='Circular 070'
+              label='Circular 0170'
               name='circular070'
               InputProps={{
                 readOnly: true,
@@ -1333,8 +1303,8 @@ const AsociadoNegocioForm = (props) => {
             />
           </Box>
 
-          {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] ? (
-            <Box className={classes.inputs_2}>
+          <Box className={classes.inputs_2}>
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] ? (
               <MyRadioField
                 label='Información Verificada'
                 className={classes.MyRadioField}
@@ -1366,22 +1336,33 @@ const AsociadoNegocioForm = (props) => {
                   {value: 'N', label: 'No'},
                 ]}
               />
+            ) : (
+              ''
+            )}
+            <MyRadioField
+              label='Enviar solicitud de aprobacion del representante legal'
+              className={classes.MyRadioField}
+              name='firma_representante_legal'
+              disabled={disabled}
+              required
+              options={[
+                {value: 'S', label: 'Si'},
+                {value: 'N', label: 'No'},
+              ]}
+              onClick={(event) => {
+                setTimeout(function () {
+                  dispatch({type: FETCH_START});
+                }, 1000);
 
-              <MyRadioField
-                label='Enviar solicitud de aprobacion del representante legal'
-                className={classes.MyRadioField}
-                name='firma_representante_legal'
-                disabled={disabled}
-                required
-                options={[
-                  {value: 'S', label: 'Si'},
-                  {value: 'N', label: 'No'},
-                ]}
-              />
-            </Box>
-          ) : (
-            ''
-          )}
+                if (event.target.value === 'S') {
+                  const url =
+                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                    values.id;
+                  window.open(url, '_blank');
+                }
+              }}
+            />
+          </Box>
 
           <Box className={classes.inputs_2}>
             <FormControl className={classes.widthFull} component='fieldset'>
