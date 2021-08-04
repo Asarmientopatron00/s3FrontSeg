@@ -10,7 +10,7 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_REQUISITOS_SEGURIDAD} from '../../../../shared/constants/ListasValores';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -112,7 +112,18 @@ const RequisitoSeguridadForm = (props) => {
               required
             />
 
-            <MyTextField
+            <MyAutocomplete
+              options={TIPOS_REQUISITOS_SEGURIDAD}
+              name='tipo'
+              inputValue={initialValues.tipo}
+              label='Tipo'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo'
               name='tipo'
@@ -125,11 +136,11 @@ const RequisitoSeguridadForm = (props) => {
                     value={tipoDocumento.id}
                     key={tipoDocumento.id}
                     className={classes.pointer}>
-                    {tipoDocumento.value}
+                    {tipoDocumento.nombre}
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <FormControl className={classes.widthFull} component='fieldset'>
               <FormLabel>Estado*</FormLabel>

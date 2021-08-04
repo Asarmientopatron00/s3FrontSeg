@@ -9,7 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -110,8 +110,18 @@ const DepartamentoForm = (props) => {
               disabled={disabled}
               required
             />
+            <MyAutocomplete
+              options={paises}
+              name='pais_id'
+              inputValue={initialValues.pais_id}
+              label='País'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
 
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='País'
               name='pais_id'
@@ -133,7 +143,7 @@ const DepartamentoForm = (props) => {
               <MenuItem value='5' id={5} disabled style={{display: 'none'}}>
                 {'Trial'}
               </MenuItem>
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

@@ -113,7 +113,7 @@ const cells = [
     label: 'Tipo',
     value: (value) =>
       TIPOS_REQUISITOS_SEGURIDAD.map((tipoDocumento) =>
-        tipoDocumento.id === value ? tipoDocumento.value : '',
+        tipoDocumento.id === value ? tipoDocumento.nombre : '',
       ),
     width: '300px',
     align: 'left',
@@ -661,6 +661,7 @@ const AsociadoRequisitoSeguridad = () => {
   const usuario = GetUsuario();
 
   useEffect(() => {
+    setCompromisos(Array(rows.length).fill(''));
     rows.forEach((row, index) => {
       let aux = compromisos;
       aux[index] = row.compromiso !== null ? row.compromiso : '';
@@ -701,19 +702,10 @@ const AsociadoRequisitoSeguridad = () => {
               validationSchema={validationSchema}
               onSubmit={(data, {setSubmitting, resetForm}) => {
                 setSubmitting(true);
-                // if (accion === 'crear') {
-
-                // } else if (accion === 'editar') {
-                // if (selectedRow) {
                 dispatch(onUpdate(data, updateColeccion));
-                //   }
-                // }
-                // resetForm();
                 setSubmitting(false);
-                // handleOnClose();
-                // updateColeccion();
               }}>
-              {({values, initialValues, setFieldValue}) => (
+              {({values, initialValues, setFieldValue, errors}) => (
                 <Form>
                   <TableContainer>
                     <Table
@@ -732,65 +724,49 @@ const AsociadoRequisitoSeguridad = () => {
                         columnasMostradas={columnasMostradas}
                       />
                       <TableBody>
-                        {
-                          // stableSort(rows, getComparator(order, orderBy))
-                          // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          rows.map((row, index) => {
-                            const isItemSelected = isSelected(row.name);
-                            return (
-                              <TableRow
-                                hover
-                                // role="checkbox"
-                                aria-checked={isItemSelected}
-                                tabIndex={-1}
-                                key={index}
-                                selected={isItemSelected}
-                                className={classes.row}>
-                                {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              inputProps={{ 'aria-labelledby': labelId }}
-                            />
-                          </TableCell> */}
-                                <MyCell
-                                  align={columnasMostradas[0].align}
-                                  width='300px'
-                                  claseBase={classes.cell}
-                                  value={columnasMostradas[0].value(
-                                    row[columnasMostradas[0].id],
-                                  )}
-                                />
-                                <MyCell
-                                  align={columnasMostradas[1].align}
-                                  width={columnasMostradas[1].width}
-                                  claseBase={classes.cell}
-                                  value={columnasMostradas[1].value(
-                                    row[columnasMostradas[1].id],
-                                  )}
-                                />
-                                <TableCell>
-                                  <Box display='flex' justifyContent='center'>
-                                    <MyRadioField
-                                      className={classes.MyRadioField}
-                                      name={'compromisos[' + index + ']'}
-                                      required
-                                      options={[
-                                        {value: 'S', label: 'Si'},
-                                        {value: 'N', label: 'No'},
-                                        {value: 'A', label: 'N/A'},
-                                      ]}
-                                    />
-                                  </Box>
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })
-                        }
-                        {/* {emptyRows > 0 && (
-                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )} */}
+                        {rows.map((row, index) => {
+                          const isItemSelected = isSelected(row.name);
+                          return (
+                            <TableRow
+                              hover
+                              aria-checked={isItemSelected}
+                              tabIndex={-1}
+                              key={index}
+                              selected={isItemSelected}
+                              className={classes.row}>
+                              <MyCell
+                                align={columnasMostradas[0].align}
+                                width='300px'
+                                claseBase={classes.cell}
+                                value={columnasMostradas[0].value(
+                                  row[columnasMostradas[0].id],
+                                )}
+                              />
+                              <MyCell
+                                align={columnasMostradas[1].align}
+                                width={columnasMostradas[1].width}
+                                claseBase={classes.cell}
+                                value={columnasMostradas[1].value(
+                                  row[columnasMostradas[1].id],
+                                )}
+                              />
+                              <TableCell>
+                                <Box display='flex' justifyContent='center'>
+                                  <MyRadioField
+                                    className={classes.MyRadioField}
+                                    name={'compromisos[' + index + ']'}
+                                    required
+                                    options={[
+                                      {value: 'S', label: 'Si'},
+                                      {value: 'N', label: 'No'},
+                                      {value: 'A', label: 'N/A'},
+                                    ]}
+                                  />
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                       </TableBody>
                     </Table>
                   </TableContainer>

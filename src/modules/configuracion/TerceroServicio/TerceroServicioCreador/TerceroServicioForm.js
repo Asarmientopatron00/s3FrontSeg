@@ -11,7 +11,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_TERCEROS} from './../../../../shared/constants/ListasValores';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
@@ -206,7 +207,17 @@ const TerceroServicioForm = (props) => {
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <Box className={classes.inputs_2}>
-              <MyTextField
+              <MyAutocomplete
+                options={TIPOS_TERCEROS}
+                name='tipo'
+                inputValue={initialValues.tipo}
+                label='Tipo de Tercero'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+              {/* <MyTextField
                 className={classes.myTextField}
                 label='Tipo de Tercero'
                 name='tipo'
@@ -219,11 +230,11 @@ const TerceroServicioForm = (props) => {
                       value={tipoTercero.id}
                       key={tipoTercero.id}
                       className={classes.pointer}>
-                      {tipoTercero.value}
+                      {tipoTercero.nombre}
                     </MenuItem>
                   );
                 })}
-              </MyTextField>
+              </MyTextField> */}
 
               <MyRadioField
                 label='Tipo de Persona'
@@ -236,8 +247,18 @@ const TerceroServicioForm = (props) => {
                   {value: 'J', label: 'Jurídica'},
                 ]}
               />
+              <MyAutocomplete
+                options={tiposDocumentos}
+                name='tipo_documento_id'
+                inputValue={initialValues.tipo_documento_id}
+                label='Tipo de Documento'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
 
-              <MyTextField
+              {/* <MyTextField
                 className={classes.myTextField}
                 label='Tipo de Documento'
                 name='tipo_documento_id'
@@ -257,7 +278,7 @@ const TerceroServicioForm = (props) => {
                     </MenuItem>
                   );
                 })}
-              </MyTextField>
+              </MyTextField> */}
 
               <Box display='grid' gridTemplateColumns='2fr 1fr' gap='10px'>
                 <Box mr={3}>
@@ -322,7 +343,18 @@ const TerceroServicioForm = (props) => {
                 ''
               )}
 
-              <MyTextField
+              <MyAutocomplete
+                options={departamentos}
+                name='departamento_id'
+                inputValue={initialValues.departamento_id}
+                label='Departamento'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+
+              {/* <MyTextField
                 className={classes.myTextField}
                 label='Departamento'
                 name='departamento_id'
@@ -342,9 +374,19 @@ const TerceroServicioForm = (props) => {
                     </MenuItem>
                   );
                 })}
-              </MyTextField>
+              </MyTextField> */}
 
-              <MyTextField
+              <MyAutocomplete
+                options={ciudades}
+                name='ciudad_id'
+                inputValue={initialValues.ciudad_id}
+                label='Ciudad'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+              {/* <MyTextField
                 className={classes.myTextField}
                 label='Ciudad'
                 name='ciudad_id'
@@ -362,7 +404,7 @@ const TerceroServicioForm = (props) => {
                     </MenuItem>
                   );
                 })}
-              </MyTextField>
+              </MyTextField> */}
             </Box>
 
             <MyTextField

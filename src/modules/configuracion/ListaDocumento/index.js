@@ -76,7 +76,7 @@ const cells = [
     label: 'Tipo',
     value: (value) =>
       TIPOS_LISTAS_DOCUMENTOS.map((tipoDocumento) =>
-        tipoDocumento.id === value ? tipoDocumento.value : '',
+        tipoDocumento.id === value ? tipoDocumento.nombre : '',
       ),
     align: 'left',
     mostrarInicio: true,
@@ -392,7 +392,7 @@ const EnhancedTableToolbar = (props) => {
                     key={tipoDocumento.id}
                     id={tipoDocumento.id}
                     className={classes.pointer}>
-                    {tipoDocumento.value}
+                    {tipoDocumento.nombre}
                   </MenuItem>
                 );
               })}

@@ -108,7 +108,7 @@ const cells = [
     label: 'Tipo Asociado',
     value: (value) =>
       TIPOS_TERCEROS.map((tipoTercero) =>
-        tipoTercero.id === value ? tipoTercero.value : '',
+        tipoTercero.id === value ? tipoTercero.nombre : '',
       ),
     align: 'left',
     mostrarInicio: true,
@@ -511,7 +511,7 @@ const EnhancedTableToolbar = (props) => {
                     key={tipoTercero.id}
                     id={tipoTercero.id}
                     className={classes.pointer}>
-                    {tipoTercero.value}
+                    {tipoTercero.nombre}
                   </MenuItem>
                 );
               })}

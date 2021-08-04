@@ -133,7 +133,6 @@ const ListaDocumentoCreator = (props) => {
             {({values, initialValues, setFieldValue}) => (
               <ListaDocumentoForm
                 values={values}
-                setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
                 titulo={titulo}
                 accion={accion}

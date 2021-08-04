@@ -23,7 +23,10 @@ import {
   FETCH_START,
 } from '../../../../shared/constants/ActionTypes';
 import {useDispatch, useSelector} from 'react-redux';
-import {onGetTipoRol} from '../../../../redux/actions/AsociadoAction';
+import {
+  onGetTipoRol,
+  onVerificarInformacion,
+} from '../../../../redux/actions/AsociadoAction';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -1225,7 +1228,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
           <Box mb={8}>
             <MyRadioField
-              label='Acepta las condiciones de la circular'
+              label='Acepta las Condiciones de la Circular'
               className={classes.MyRadioField}
               name='aceptar_condiciones_circular_070'
               disabled={disabled}
@@ -1258,7 +1261,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
           <Box mb={8}>
             <MyRadioField
-              label='Autoriza manejo de datos personales'
+              label='Autoriza Manejo de Datos Personales'
               className={classes.MyRadioField}
               name='autorizacion_datos_personales'
               disabled={disabled}
@@ -1291,7 +1294,7 @@ const AsociadoNegocioForm = (props) => {
           </Box>
           <Box mb={8}>
             <MyRadioField
-              label='Autoriza clausula de confidencialidad'
+              label='Autoriza Clausula de Confidencialidad'
               className={classes.MyRadioField}
               name='autorizacion_clausula_confidencialidad'
               disabled={disabled}
@@ -1328,6 +1331,15 @@ const AsociadoNegocioForm = (props) => {
                         payload:
                           'No cumple condiciones para dar información por verificada',
                       });
+                    } else {
+                      dispatch(
+                        onVerificarInformacion({
+                          id: values.id,
+                          tipo_informacion: 'informacion_verificada_asociado',
+                          valor: 'S',
+                          verificar: true,
+                        }),
+                      );
                     }
                   }
                 }}
@@ -1340,7 +1352,7 @@ const AsociadoNegocioForm = (props) => {
               ''
             )}
             <MyRadioField
-              label='Enviar solicitud de aprobacion del representante legal'
+              label='Descargar Formulario Representante Legal'
               className={classes.MyRadioField}
               name='firma_representante_legal'
               disabled={disabled}
@@ -1356,7 +1368,8 @@ const AsociadoNegocioForm = (props) => {
 
                 if (event.target.value === 'S') {
                   const url =
-                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                    // 'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                    'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
                     values.id;
                   window.open(url, '_blank');
                 }

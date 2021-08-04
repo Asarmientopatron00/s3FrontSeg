@@ -10,7 +10,8 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_LISTAS_DOCUMENTOS} from './../../../../shared/constants/ListasValores';
-import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -111,7 +112,17 @@ const ListaDocumentoForm = (props) => {
               disabled={disabled}
               required
             />
-
+            <MyAutocomplete
+              options={TIPOS_LISTAS_DOCUMENTOS}
+              name='tipo'
+              inputValue={initialValues.tipo}
+              label='Tipo'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            {/* 
             <MyTextField
               className={classes.myTextField}
               label='Tipo'
@@ -129,7 +140,7 @@ const ListaDocumentoForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
             <Box display='flex'>
               <FormControl className={classes.widthFull} component='fieldset'>
                 <FormLabel component='legend'>Obligatorio*</FormLabel>
