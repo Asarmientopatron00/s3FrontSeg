@@ -10,7 +10,7 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
   LONGITUD_MAXIMA_TELEFONOS,
@@ -149,7 +149,18 @@ const AsociadoComercial = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            <MyAutocomplete
+              options={tiposDocumentos}
+              name='tipo_documento_id'
+              inputValue={initialValues.tipo_documento_id}
+              label='Tipo de Documento'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo de Documento'
               name='tipo_documento_id'
@@ -167,7 +178,7 @@ const AsociadoComercial = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

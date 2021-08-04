@@ -8,11 +8,11 @@ import Scrollbar from '../../../../@crema/core/Scrollbar';
 // import PropTypes from 'prop-types';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import {LONGITUD_MAXIMA_TELEFONOS} from './../../../../shared/constants/Constantes';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -175,7 +175,18 @@ const UsuarioForm = (props) => {
               required
             />
 
-            <MyTextField
+            <MyAutocomplete
+              options={asociados}
+              name='asociado_id'
+              inputValue={initialValues.asociado_id}
+              label='Asociado'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Asociado'
               name='asociado_id'
@@ -193,9 +204,20 @@ const UsuarioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
-            <MyTextField
+            <MyAutocomplete
+              options={roles}
+              name='rol_id'
+              inputValue={initialValues.rol_id}
+              label='Rol'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Rol'
               name='rol_id'
@@ -212,7 +234,7 @@ const UsuarioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

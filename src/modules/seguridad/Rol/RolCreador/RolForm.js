@@ -8,11 +8,11 @@ import Scrollbar from '../../../../@crema/core/Scrollbar';
 // import PropTypes from 'prop-types';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_ROLES} from './../../../../shared/constants/ListasValores';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -160,7 +160,18 @@ const UsuarioForm = (props) => {
               disabled={disabled}
             />
 
-            <MyTextField
+            <MyAutocomplete
+              options={TIPOS_ROLES}
+              name='tipo'
+              inputValue={initialValues.tipo}
+              label='Tipo'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo'
               name='tipo'
@@ -177,7 +188,7 @@ const UsuarioForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <FormControl className={classes.widthFull} component='fieldset'>
               <FormLabel>Estado*</FormLabel>

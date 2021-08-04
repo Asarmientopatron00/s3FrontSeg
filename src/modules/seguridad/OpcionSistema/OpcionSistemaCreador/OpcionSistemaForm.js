@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -160,7 +160,18 @@ const OpcionSistemaForm = (props) => {
               required
             />
 
-            <MyTextField
+            <MyAutocomplete
+              options={modulos}
+              name='modulo_id'
+              inputValue={initialValues.modulo_id}
+              label='Módulo'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Módulo'
               name='modulo_id'
@@ -178,7 +189,7 @@ const OpcionSistemaForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

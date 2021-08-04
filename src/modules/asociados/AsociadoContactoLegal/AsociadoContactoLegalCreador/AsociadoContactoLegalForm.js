@@ -10,12 +10,13 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -26,6 +27,64 @@ const MyTextField = (props) => {
       {...field}
       helperText={errorText}
       error={!!errorText}
+    />
+  );
+};
+
+const MyAutocompleteCiudad = (props) => {
+  const [field, meta, form] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  let myvalueAux = '';
+  if (field.value !== '') {
+    props.options.forEach((option) => {
+      if (option.id === field.value) {
+        myvalueAux = option.nombre + '-' + option.departamento;
+      }
+    });
+  }
+  let myvalue = '';
+  if (myvalueAux === '') {
+    myvalue = field.value;
+  } else {
+    myvalue = myvalueAux;
+  }
+  // console.log(field.value)
+  return (
+    <Autocomplete
+      selectOnFocus={false}
+      openOnFocus
+      onKeyDown={(e) =>
+        e.key === 'Backspace' && typeof field.value === 'number'
+          ? form.setValue('')
+          : ''
+      }
+      {...props}
+      onChange={(event, newValue, reasons, details, trial) =>
+        newValue ? form.setValue(newValue.id) : form.setValue('')
+      }
+      inputValue={myvalue}
+      renderOption={(option) => {
+        return (
+          <React.Fragment>
+            {option.nombre + '-' + option.departamento}
+          </React.Fragment>
+        );
+      }}
+      getOptionLabel={(option) => option.nombre + '-' + option.departamento}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            {...field}
+            name={props.name}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
     />
   );
 };
@@ -167,8 +226,18 @@ const AsociadoCotnactoLegal = (props) => {
                 {value: 'R', label: 'Representante Legal'},
               ]}
             />
+            <MyAutocomplete
+              options={tiposDocumentos}
+              name='tipo_documento_id'
+              inputValue={initialValues.tipo_documento_id}
+              label='Tipo de Documento'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
 
-            <MyTextField
+            {/* <MyTextField
               className={classes.myTextField}
               label='Tipo de Documento'
               name='tipo_documento_id'
@@ -186,7 +255,7 @@ const AsociadoCotnactoLegal = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
           </Box>
 
           <Box className={classes.inputs_2}>
@@ -200,7 +269,18 @@ const AsociadoCotnactoLegal = (props) => {
                 maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
               }}
             />
-            <MyTextField
+
+            <MyAutocompleteCiudad
+              options={ciudades}
+              name='ciudad_expedicion_id'
+              inputValue={initialValues.ciudad_expedicion_id}
+              label='Ciudad de Expedición'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            {/* <MyTextField
               className={classes.myTextField}
               label='Ciudad de Expedición'
               name='ciudad_expedicion_id'
@@ -218,7 +298,7 @@ const AsociadoCotnactoLegal = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
           </Box>
 
           <MyTextField
@@ -237,7 +317,16 @@ const AsociadoCotnactoLegal = (props) => {
           />
 
           <Box className={classes.inputs_2}>
-            <MyTextField
+            <MyAutocompleteCiudad
+              options={ciudades}
+              name='ciudad_id'
+              inputValue={initialValues.ciudad_id}
+              label='Ciudad'
+              autoHighlight
+              className={classes.myTextField}
+              disabled={disabled}
+            />
+            {/* <MyTextField
               className={classes.myTextField}
               label='Ciudad'
               name='ciudad_id'
@@ -254,7 +343,7 @@ const AsociadoCotnactoLegal = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

@@ -27,6 +27,7 @@ import {
   onGetTipoRol,
   onVerificarInformacion,
 } from '../../../../redux/actions/AsociadoAction';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -66,60 +67,6 @@ const MyRadioField = (props) => {
       </Field>
       <FormHelperText>{errorText}</FormHelperText>
     </FormControl>
-  );
-};
-
-const MyAutocomplete = (props) => {
-  const [field, meta, form] = useField(props);
-  const errorText = meta.error && meta.touched ? meta.error : '';
-  let myvalueAux = '';
-  if (field.value !== '') {
-    props.options.forEach((option) => {
-      if (option.id === field.value) {
-        myvalueAux = option.nombre;
-      }
-    });
-  }
-  let myvalue = '';
-  if (myvalueAux === '') {
-    myvalue = field.value;
-  } else {
-    myvalue = myvalueAux;
-  }
-  // console.log(field.value)
-  return (
-    <Autocomplete
-      selectOnFocus={false}
-      openOnFocus
-      onKeyDown={(e) =>
-        e.key === 'Backspace' && typeof field.value === 'number'
-          ? form.setValue('')
-          : ''
-      }
-      {...props}
-      onChange={(event, newValue, reasons, details, trial) =>
-        newValue ? form.setValue(newValue.id) : form.setValue('')
-      }
-      inputValue={myvalue}
-      renderOption={(option) => {
-        return <React.Fragment>{option.nombre}</React.Fragment>;
-      }}
-      getOptionLabel={(option) => option.nombre}
-      renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            {...field}
-            name={props.name}
-            className={props.className}
-            label={props.label}
-            required={props.required}
-            helperText={errorText}
-            error={!!errorText}
-          />
-        );
-      }}
-    />
   );
 };
 
@@ -1368,8 +1315,8 @@ const AsociadoNegocioForm = (props) => {
 
                 if (event.target.value === 'S') {
                   const url =
-                    // 'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
-                    'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
+                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                    // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
                     values.id;
                   window.open(url, '_blank');
                 }

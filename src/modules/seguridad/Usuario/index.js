@@ -638,7 +638,6 @@ const Usuarios = (props) => {
   useEffect(() => {
     dispatch(rolColeccionLigera());
   }, [dispatch]);
-
   const updateColeccion = () => {
     setPage(1);
     dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));

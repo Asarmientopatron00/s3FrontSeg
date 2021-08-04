@@ -112,7 +112,7 @@ const cells = [
     typeHead: 'string',
     label: 'Tipo',
     value: (value) =>
-      TIPOS_CONTACTOS.map((tipo) => (tipo.id === value ? tipo.value : '')),
+      TIPOS_CONTACTOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },

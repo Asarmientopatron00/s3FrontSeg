@@ -1,7 +1,7 @@
 export const TIPOS_ROLES = [
-  {id: 'IN', value: 'Interno'},
-  {id: 'AC', value: 'Administrador cliente'},
-  {id: 'AU', value: 'Autorizado cliente'},
+  {id: 'IN', nombre: 'Interno', estado: 1},
+  {id: 'AC', nombre: 'Administrador cliente', estado: 1},
+  {id: 'AU', nombre: 'Autorizado cliente', estado: 1},
 ];
 
 export const TIPOS_LISTAS_DOCUMENTOS = [
@@ -46,8 +46,8 @@ export const ESTADOS_PROCESO_ASOCIADOS = [
 ];
 
 export const TIPOS_CONTACTOS = [
-  {id: 'FR', value: 'Facturación'},
-  {id: 'LG', value: 'Logística'},
-  {id: 'CM', value: 'Comercial'},
-  {id: 'OT', value: 'Otros'},
+  {id: 'FR', nombre: 'Facturación', estado: 1},
+  {id: 'LG', nombre: 'Logística', estado: 1},
+  {id: 'CM', nombre: 'Comercial', estado: 1},
+  {id: 'OT', nombre: 'Otros', estado: 1},
 ];

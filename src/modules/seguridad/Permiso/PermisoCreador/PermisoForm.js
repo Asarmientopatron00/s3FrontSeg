@@ -13,7 +13,7 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import FormLabel from '@material-ui/core/FormLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -162,7 +162,18 @@ const PermisoForm = (props) => {
               required
             />
 
-            <MyTextField
+            <MyAutocomplete
+              options={opcionesSistema}
+              name='option_id'
+              inputValue={initialValues.option_id}
+              label='Opción del Sistema'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            {/* <MyTextField
               className={classes.myTextField}
               label='Opcion del Sistema'
               name='option_id'
@@ -180,7 +191,7 @@ const PermisoForm = (props) => {
                   </MenuItem>
                 );
               })}
-            </MyTextField>
+            </MyTextField> */}
 
             <MyTextField
               className={classes.myTextField}

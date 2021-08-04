@@ -79,7 +79,9 @@ const cells = [
     typeHead: 'string',
     label: 'Tipo',
     value: (value) =>
-      TIPOS_ROLES.map((tipoRol) => (tipoRol.id === value ? tipoRol.value : '')),
+      TIPOS_ROLES.map((tipoRol) =>
+        tipoRol.id === value ? tipoRol.nombre : '',
+      ),
     align: 'left',
     mostrarInicio: true,
   },
