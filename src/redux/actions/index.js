@@ -38,3 +38,5 @@ export * from './OpcionSistemaAction';
 export * from './PermisoAction';
 export * from './ConsultaAuditoriaAction';
 export * from './SolicitudCotizacionAction';
+export * from './RutaAction';
+export * from './TarifaAction';

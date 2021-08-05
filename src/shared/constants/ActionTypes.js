@@ -208,6 +208,18 @@ export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_SERVICIO =
   'get_coleccion_ligera_solicitud_cotizacion_servicio';
 export const ACTUALIZAR_CONSECUTIVO = 'actualziar_consecutivo';
 export const INFORMACION_SOLICITUD_CONTACTO = 'informacion_solicitud_contacto';
+export const GET_COLECCION_RUTA = 'get_coleccion_ruta';
+export const GET_COLECCION_LIGERA_RUTA = 'get_coleccion_ligera_ruta';
+export const SHOW_RUTA = 'show_ruta';
+export const UPDATE_RUTA = 'update_ruta';
+export const CREATE_RUTA = 'create_ruta';
+export const DELETE_RUTA = 'delete_ruta';
+export const GET_COLECCION_TARIFA = 'get_coleccion_tarifa';
+export const GET_COLECCION_LIGERA_TARIFA = 'get_coleccion_ligera_tarifa';
+export const SHOW_TARIFA = 'show_tarifa';
+export const UPDATE_TARIFA = 'update_tarifa';
+export const CREATE_TARIFA = 'create_tarifa';
+export const DELETE_TARIFA = 'delete_tarifa';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

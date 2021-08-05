@@ -59,6 +59,14 @@ export const configuracionConfig = [
         path: ['/parametros-correos'],
         component: React.lazy(() => import('./ParametroCorreo')),
       },
+      {
+        path: ['/rutas'],
+        component: React.lazy(() => import('./Ruta')),
+      },
+      {
+        path: ['/tarifas'],
+        component: React.lazy(() => import('./Tarifa')),
+      },
     ],
   },
 ];
