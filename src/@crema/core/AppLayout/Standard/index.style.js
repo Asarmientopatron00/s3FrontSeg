@@ -4,7 +4,7 @@ import {ThemeStyle} from '../../../../shared/constants/AppEnums';
 const useStyles = makeStyles((theme) => {
   return {
     appMain: {
-      height: '98vh',
+      height: '95vh',
       display: 'flex',
       flexDirection: 'row',
       position: 'relative',

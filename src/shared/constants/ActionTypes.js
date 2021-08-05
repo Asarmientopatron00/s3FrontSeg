@@ -195,6 +195,19 @@ export const CREATE_PERMISO = 'create_permiso';
 export const DELETE_PERMISO = 'delete_permiso';
 export const GET_COLECCION_CONSULTA_AUDITORIA =
   'get_coleccion_consulta_auditoria';
+export const GET_COLECCION_SOLICITUD_COTIZACION = 'get_coleccion_permiso';
+export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION =
+  'get_coleccion_ligera_permiso';
+export const SHOW_SOLICITUD_COTIZACION = 'show_permiso';
+export const UPDATE_SOLICITUD_COTIZACION = 'update_permiso';
+export const CREATE_SOLICITUD_COTIZACION = 'create_permiso';
+export const DELETE_SOLICITUD_COTIZACION = 'delete_permiso';
+export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_CIUDAD =
+  'get_coleccion_ligera_solicitud_cotizacion_ciudad';
+export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_SERVICIO =
+  'get_coleccion_ligera_solicitud_cotizacion_servicio';
+export const ACTUALIZAR_CONSECUTIVO = 'actualziar_consecutivo';
+export const INFORMACION_SOLICITUD_CONTACTO = 'informacion_solicitud_contacto';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

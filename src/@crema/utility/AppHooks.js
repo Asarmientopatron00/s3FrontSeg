@@ -87,6 +87,7 @@ export const useAuthToken = () => {
             displayName: res.data.usuario.nombre,
             identificacion_usuario: res.data.usuario.identificacion_usuario,
             email: res.data.usuario.email,
+            telefono: res.data.usuario.telefono,
             asociado: {
               id: res.data.usuario.asociado.id,
               nombre: res.data.usuario.asociado.nombre,

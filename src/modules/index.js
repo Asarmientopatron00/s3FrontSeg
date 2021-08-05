@@ -17,6 +17,7 @@ import {menuLevelConfig} from './menu';
 import {configuracionConfig} from './configuracion';
 import {SeguridadConfig} from './seguridad';
 import {asociadoConfig} from './asociados';
+import {cotizacionConfig} from './cotizaciones';
 
 const routeConfigs = [
   ...authRouteConfig,
@@ -33,6 +34,7 @@ const routeConfigs = [
   ...configuracionConfig,
   ...SeguridadConfig(),
   ...asociadoConfig,
+  ...cotizacionConfig,
 ];
 
 const routes = [

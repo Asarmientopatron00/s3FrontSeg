@@ -37,3 +37,4 @@ export * from './ModuloAction';
 export * from './OpcionSistemaAction';
 export * from './PermisoAction';
 export * from './ConsultaAuditoriaAction';
+export * from './SolicitudCotizacionAction';
