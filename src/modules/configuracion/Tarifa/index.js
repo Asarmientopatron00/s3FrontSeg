@@ -114,7 +114,7 @@ const cells = [
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: true,
+    mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
@@ -133,7 +133,7 @@ const cells = [
     value: (value) => new Date(value).toLocaleString('es-CL'),
     align: 'left',
     width: '180px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'usuario_creacion_nombre',
