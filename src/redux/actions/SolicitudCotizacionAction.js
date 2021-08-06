@@ -21,15 +21,15 @@ import {appIntl} from '../../@crema/utility/Utils';
 export const onGetColeccion = (
   currentPage,
   rowsPerPage,
-  nombre,
+  numero_solicitud,
   orderByToSend,
-  numeroDocumento,
+  nombre_empresa,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
-  const nombreAux = nombre ? nombre : '';
+  const numero_solicitudAux = numero_solicitud ? numero_solicitud : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
-  const numero_documento = numeroDocumento ? numeroDocumento : '';
+  const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -38,9 +38,9 @@ export const onGetColeccion = (
         params: {
           page: page,
           limite: rowsPerPage,
-          nombre: nombreAux,
+          numero_solicitud: numero_solicitudAux,
           ordenar_por: ordenar_por,
-          numero_documento: numero_documento,
+          nombre_empresa: nombre_empresaAux,
         },
       })
       .then((data) => {
@@ -172,7 +172,12 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params, handleOnClose, updateColeccion) => {
+export const onCreate = (
+  params,
+  handleOnClose,
+  updateColeccion,
+  setConsecutivo,
+) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -186,6 +191,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
             type: CREATE_SOLICITUD_COTIZACION,
             payload: data.data,
           });
+          setConsecutivo(data.data.datos.numero_solicitud);
           updateColeccion();
           handleOnClose();
           dispatch({
@@ -280,6 +286,7 @@ export const onActualizarConsecutivo = () => {
           //   type: SHOW_MESSAGE,
           //   payload: data.data.mensajes[0],
           // });
+          return Promise.resolve();
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -322,20 +329,20 @@ export const onGetInformacionSolicitudContacto = () => {
   };
 };
 
-export const onCreateContacto = (params, handleOnClose) => {
+export const onCreateContacto = (params, handleOnClose, setConsecutivo) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
       .post('crear-cotizacion-contacto', params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: CREATE_SOLICITUD_COTIZACION,
             payload: data.data,
           });
+          setConsecutivo(data.data.datos.numero_solicitud);
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,

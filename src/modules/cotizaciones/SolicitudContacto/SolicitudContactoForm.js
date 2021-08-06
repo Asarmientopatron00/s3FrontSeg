@@ -8,6 +8,10 @@ import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MyAutocomplete from '../../../shared/components/MyAutoComplete';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+} from '../../../shared/constants/Constantes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -80,7 +84,7 @@ const MyAutocompleteCiudad = (props) => {
 };
 
 const SolicitudCotizacionForm = (props) => {
-  const {accion, values, initialValues, ciudades, servicios, titulo} = props;
+  const {accion, initialValues, ciudades, servicios, titulo} = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
@@ -223,6 +227,10 @@ const SolicitudCotizacionForm = (props) => {
               name='telefono_contacto'
               disabled={disabled}
               required
+              inputProps={{
+                maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                minLength: LONGITUD_MINIMA_TELEFONOS,
+              }}
             />
 
             <MyTextField
@@ -240,16 +248,6 @@ const SolicitudCotizacionForm = (props) => {
               disabled={disabled}
               multiline
             />
-
-            <Box component='h6'>
-              Nuestro equipo comercial lo contactará para detallar las
-              condiciones del servicio solicitado.
-            </Box>
-            <Box component='h6'>
-              {'En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
-                values.numero_solicitud +
-                '.'}
-            </Box>
           </Box>
         </Box>
       </Scrollbar>

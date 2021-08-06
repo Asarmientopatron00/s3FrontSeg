@@ -17,14 +17,16 @@ import {appIntl} from '../../@crema/utility/Utils';
 export const onGetColeccion = (
   currentPage,
   rowsPerPage,
-  nombre,
+  ciudad_origen,
   orderByToSend,
-  departamento,
+  ciudad_destino,
+  asociado,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
-  const nombreAux = nombre ? nombre : '';
-  const departamentoAux = departamento ? departamento : '';
+  const ciudad_origenAux = ciudad_origen ? ciudad_origen : '';
+  const ciudad_destinoAux = ciudad_destino ? ciudad_destino : '';
+  const asociadoAux = asociado ? asociado : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
 
   return (dispatch) => {
@@ -34,8 +36,9 @@ export const onGetColeccion = (
         params: {
           page: page,
           limite: rowsPerPage,
-          nombre: nombreAux,
-          departamento: departamentoAux,
+          ciudad_origen: ciudad_origenAux,
+          ciudad_destino: ciudad_destinoAux,
+          asociado: asociadoAux,
           ordenar_por: ordenar_por,
         },
       })

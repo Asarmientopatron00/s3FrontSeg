@@ -11,6 +11,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+} from '../../../../shared/constants/Constantes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -167,16 +171,26 @@ const SolicitudCotizacionForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <MyTextField
-              className={classes.myTextField}
-              label='Fecha Solicitud Cotización'
-              name='fecha_solicitud_cotizacion'
-              disabled={true}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-
+            <Box display='grid' gridTemplateColumns='repeat(2, 1fr)'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Solicitud Cotización'
+                name='fecha_solicitud_cotizacion'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Número Solicitud Cotización'
+                name='numero_solicitud'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
             <MyAutocompleteCiudad
               options={ciudades}
               name='ciudad_origen_id'
@@ -234,6 +248,10 @@ const SolicitudCotizacionForm = (props) => {
               name='telefono_contacto'
               disabled={disabled}
               required
+              inputProps={{
+                maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                minLength: LONGITUD_MINIMA_TELEFONOS,
+              }}
             />
 
             <MyTextField
@@ -278,15 +296,6 @@ const SolicitudCotizacionForm = (props) => {
                 />
               </Field>
             </FormControl>
-            <Box component='h6'>
-              Nuestro equipo comercial lo contactará para detallar las
-              condiciones del servicio solicitado.
-            </Box>
-            <Box component='h6'>
-              {'En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
-                values.numero_solicitud +
-                '.'}
-            </Box>
           </Box>
         </Box>
       </Scrollbar>

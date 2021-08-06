@@ -284,7 +284,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '4fr 4fr 1fr',
     gap: '20px',
   },
   pairFilters: {
@@ -303,7 +303,8 @@ const EnhancedTableToolbar = (props) => {
     onOpenAddRuta,
     handleOpenPopoverColumns,
     queryFilter,
-    nombreFiltro,
+    ciudadOrigenFiltro,
+    ciudadDestinoFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -353,11 +354,18 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
+              label='Ciudad Origen'
+              name='ciudadOrigenFiltro'
+              id='ciudadOrigenFiltro'
               onChange={queryFilter}
-              value={nombreFiltro}
+              value={ciudadOrigenFiltro}
+            />
+            <TextField
+              label='Ciudad Destino'
+              name='ciudadDestinoFiltro'
+              id='ciudadDestinoFiltro'
+              onChange={queryFilter}
+              value={ciudadDestinoFiltro}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -400,7 +408,8 @@ EnhancedTableToolbar.propTypes = {
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
+  ciudadOrigenFiltro: PropTypes.string.isRequired,
+  ciudadDestinoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -517,7 +526,8 @@ const Ruta = (props) => {
     ({rutaReducer}) => rutaReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
+  const [ciudadOrigenFiltro, setciudadOrigenFiltro] = useState('');
+  const [ciudadDestinoFiltro, setciudadDestinoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -571,11 +581,34 @@ const Ruta = (props) => {
   }, [user, props.route]);
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
-  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend]);
+    dispatch(
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        ciudadOrigenFiltro,
+        orderByToSend,
+        ciudadDestinoFiltro,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    ciudadOrigenFiltro,
+    orderByToSend,
+    ciudadDestinoFiltro,
+  ]);
 
   const updateColeccion = () => {
-    dispatch(onGetColeccion(1, rowsPerPage, nombreFiltro, orderByToSend));
+    dispatch(
+      onGetColeccion(
+        1,
+        rowsPerPage,
+        ciudadOrigenFiltro,
+        orderByToSend,
+        ciudadDestinoFiltro,
+      ),
+    );
   };
 
   const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
@@ -586,12 +619,15 @@ const Ruta = (props) => {
 
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend]);
+  }, [ciudadOrigenFiltro, orderByToSend, ciudadDestinoFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
+      case 'ciudadOrigenFiltro':
+        setciudadOrigenFiltro(e.target.value);
+        break;
+      case 'ciudadDestinoFiltro':
+        setciudadDestinoFiltro(e.target.value);
         break;
       default:
         break;
@@ -599,7 +635,8 @@ const Ruta = (props) => {
   };
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
+    setciudadOrigenFiltro('');
+    setciudadDestinoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -751,7 +788,8 @@ const Ruta = (props) => {
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
+            ciudadOrigenFiltro={ciudadOrigenFiltro}
+            ciudadDestinoFiltro={ciudadDestinoFiltro}
             permisos={permisos}
             titulo={titulo}
           />

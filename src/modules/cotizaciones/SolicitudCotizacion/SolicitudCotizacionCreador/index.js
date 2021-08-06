@@ -15,8 +15,13 @@ import Slide from '@material-ui/core/Slide';
 import SolicitudCotizacionForm from './SolicitudCotizacionForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {onActualizarConsecutivo} from '../../../../redux/actions/SolicitudCotizacionAction';
 import {useAuthUser} from '../../../../@crema/utility/AppHooks';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+  VALIDACION_REGEX_TELEFONOS,
+} from '../../../../shared/constants/Constantes';
+import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -24,11 +29,35 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup.string().required('Requerido'),
+  ciudad_destino_id: yup
+    .string()
+    .required('Requerido')
+    .notOneOf(
+      [yup.ref('ciudad_origen_id')],
+      'Ciudad de destino debe ser diferente a ciudad de origen',
+    ),
   servicio_id: yup.string().required('Requerido'),
-  nombre_contacto: yup.string().required('Requerido'),
-  email: yup.string().required('Requerido'),
-  telefono_contacto: yup.string().required('Requerido'),
+  nombre_contacto: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  email: yup
+    .string()
+    .required('Requerido')
+    .email('Debe ser tipo e-mail')
+    .max(128, mensajeValidacion('max', 128)),
+  telefono_contacto: yup
+    .string()
+    .required('Requerido')
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
 });
 
 const SolicitudCotizacionCreator = (props) => {
@@ -46,13 +75,7 @@ const SolicitudCotizacionCreator = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(onActualizarConsecutivo());
-  }, [dispatch]);
-
-  const consecutivo = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.consecutivo,
-  );
+  const [consecutivo, setConsecutivo] = useState('');
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -151,14 +174,12 @@ const SolicitudCotizacionCreator = (props) => {
               asociado_id: selectedRow
                 ? selectedRow.asociado_id
                 : user.asociado.id,
+              numero_solicitud: selectedRow ? selectedRow.numero_solicitud : '',
               observaciones: selectedRow
                 ? selectedRow.observaciones
                   ? selectedRow.observaciones
                   : ''
                 : '',
-              numero_solicitud: selectedRow
-                ? selectedRow.numero_solicitud
-                : consecutivo,
               estado_solicitud_cotizacion: selectedRow
                 ? selectedRow.estado_solicitud_cotizacion
                 : 'SOL',
@@ -171,8 +192,16 @@ const SolicitudCotizacionCreator = (props) => {
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
+              console.log(consecutivo);
               if (accion === 'crear') {
-                dispatch(onCreate(data, handleOnClose, updateColeccion));
+                dispatch(
+                  onCreate(
+                    data,
+                    handleOnClose,
+                    updateColeccion,
+                    setConsecutivo,
+                  ),
+                );
               } else if (accion === 'editar') {
                 if (selectedRow) {
                   dispatch(onUpdate(data, handleOnClose, updateColeccion));

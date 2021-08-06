@@ -12,26 +12,57 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import {
   onCreateContacto,
-  onActualizarConsecutivo,
   onGetInformacionSolicitudContacto,
 } from '../../../redux/actions/SolicitudCotizacionAction';
 import {Box} from '@material-ui/core';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+  VALIDACION_REGEX_TELEFONOS,
+} from '../../../shared/constants/Constantes';
+import mensajeValidacion from '../../../shared/functions/MensajeValidacion';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
 const validationSchema = yup.object({
   ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup.string().required('Requerido'),
+  ciudad_destino_id: yup
+    .string()
+    .required('Requerido')
+    .notOneOf(
+      [yup.ref('ciudad_origen_id')],
+      'Ciudad de destino debe ser diferente a ciudad de origen',
+    ),
   servicio_id: yup.string().required('Requerido'),
-  nombre_contacto: yup.string().required('Requerido'),
-  email: yup.string().required('Requerido'),
-  telefono_contacto: yup.string().required('Requerido'),
+  nombre_contacto: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  email: yup
+    .string()
+    .required('Requerido')
+    .email('Debe ser tipo e-mail')
+    .max(128, mensajeValidacion('max', 128)),
+  telefono_contacto: yup
+    .string()
+    .required('Requerido')
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
   empresa: yup.string().required('Requerido'),
 });
 
 const SolicitudCotizacionCreator = (props) => {
   const [show, setShow] = useState(true);
+  const [consecutivo, setConsecutivo] = useState('');
   const titulo = 'Solicitar Cotización';
 
   const handleOnClose = () => {
@@ -40,13 +71,9 @@ const SolicitudCotizacionCreator = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(onActualizarConsecutivo());
     dispatch(onGetInformacionSolicitudContacto());
   }, [dispatch]);
 
-  const consecutivo = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.consecutivo,
-  );
   const {ciudades, servicios} = useSelector(
     ({solicitudCotizacionReducer}) => solicitudCotizacionReducer,
   );
@@ -69,9 +96,9 @@ const SolicitudCotizacionCreator = (props) => {
 
   const accion = 'crear';
 
-  return show ? (
+  return (
     <Dialog
-      open={show}
+      open={true}
       onClose={handleOnClose}
       aria-labelledby='simple-modal-title'
       TransitionComponent={Transition}
@@ -80,52 +107,53 @@ const SolicitudCotizacionCreator = (props) => {
       disableBackdropClick={true}
       maxWidth={'sm'}>
       <Scrollbar>
-        <Formik
-          initialStatus={true}
-          enableReinitialize={true}
-          validateOnBlur={false}
-          initialValues={{
-            fecha_solicitud_cotizacion: new Date(Date.now()).toLocaleDateString(
-              'es-CL',
-            ),
-            ciudad_origen_id: '',
-            ciudad_destino_id: '',
-            servicio_id: '',
-            nombre_contacto: '',
-            email: '',
-            telefono_contacto: '',
-            empresa: '',
-            observaciones: '',
-            numero_solicitud: consecutivo,
-            estado_solicitud_cotizacion: 'SOL',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(data, {setSubmitting, resetForm}) => {
-            setSubmitting(true);
-            dispatch(onCreateContacto(data, handleOnClose));
-            setSubmitting(false);
-          }}>
-          {({values, initialValues, setFieldValue}) => (
-            <SolicitudContactoForm
-              values={values}
-              setFieldValue={setFieldValue}
-              handleOnClose={handleOnClose}
-              titulo={titulo}
-              accion={accion}
-              initialValues={initialValues}
-              ciudades={ciudades}
-              servicios={servicios}
-            />
-          )}
-        </Formik>
+        {show ? (
+          <Formik
+            initialStatus={true}
+            enableReinitialize={true}
+            validateOnBlur={false}
+            initialValues={{
+              fecha_solicitud_cotizacion: new Date(
+                Date.now(),
+              ).toLocaleDateString('es-CL'),
+              ciudad_origen_id: '',
+              ciudad_destino_id: '',
+              servicio_id: '',
+              nombre_contacto: '',
+              email: '',
+              telefono_contacto: '',
+              empresa: '',
+              observaciones: '',
+              estado_solicitud_cotizacion: 'SOL',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(data, {setSubmitting, resetForm}) => {
+              setSubmitting(true);
+              dispatch(onCreateContacto(data, handleOnClose, setConsecutivo));
+              setSubmitting(false);
+            }}>
+            {({values, initialValues, setFieldValue}) => (
+              <SolicitudContactoForm
+                values={values}
+                setFieldValue={setFieldValue}
+                handleOnClose={handleOnClose}
+                titulo={titulo}
+                accion={accion}
+                initialValues={initialValues}
+                ciudades={ciudades}
+                servicios={servicios}
+              />
+            )}
+          </Formik>
+        ) : (
+          <Box component='h6' margin='auto' padding='20px'>
+            {'Nuestro equipo comercial lo contactará para detallar las condiciones del servicio solicitado. En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
+              consecutivo +
+              '.'}
+          </Box>
+        )}
       </Scrollbar>
     </Dialog>
-  ) : (
-    <Box component='h6' margin='auto' width='50%'>
-      {'Nuestro equipo comercial lo contactará para detallar las condiciones del servicio solicitado. En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
-        consecutivo +
-        '.'}
-    </Box>
   );
 };
 

@@ -310,7 +310,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '4fr 4fr 1fr',
     gap: '20px',
   },
   pairFilters: {
@@ -329,7 +329,9 @@ const EnhancedTableToolbar = (props) => {
     onOpenAddTarifa,
     handleOpenPopoverColumns,
     queryFilter,
-    nombreFiltro,
+    ciudadOrigenFiltro,
+    ciudadDestinoFiltro,
+    asociadoFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -379,12 +381,21 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
+              label='Asociado'
+              name='asociadoFiltro'
+              id='asociadoFiltro'
               onChange={queryFilter}
-              value={nombreFiltro}
+              value={asociadoFiltro}
             />
+
+            <TextField
+              label='Ciudad Origen'
+              name='ciudadOrigenFiltro'
+              id='ciudadOrigenFiltro'
+              onChange={queryFilter}
+              value={ciudadOrigenFiltro}
+            />
+
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -396,6 +407,13 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
+            <TextField
+              label='Ciudad Destino'
+              name='ciudadDestinoFiltro'
+              id='ciudadDestinoFiltro'
+              onChange={queryFilter}
+              value={ciudadDestinoFiltro}
+            />
           </Box>
         </>
       )}
@@ -426,7 +444,9 @@ EnhancedTableToolbar.propTypes = {
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
+  ciudadOrigenFiltro: PropTypes.string.isRequired,
+  ciudadDestinoFiltro: PropTypes.string.isRequired,
+  asociadoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -543,7 +563,9 @@ const Tarifa = (props) => {
     ({tarifaReducer}) => tarifaReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
+  const [ciudadOrigenFiltro, setciudadOrigenFiltro] = useState('');
+  const [ciudadDestinoFiltro, setciudadDestinoFiltro] = useState('');
+  const [asociadoFiltro, setasociadoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -597,11 +619,37 @@ const Tarifa = (props) => {
   }, [user, props.route]);
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
-  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend]);
+    dispatch(
+      onGetColeccion(
+        page,
+        rowsPerPage,
+        ciudadOrigenFiltro,
+        orderByToSend,
+        ciudadDestinoFiltro,
+        asociadoFiltro,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    ciudadOrigenFiltro,
+    orderByToSend,
+    ciudadDestinoFiltro,
+    asociadoFiltro,
+  ]);
 
   const updateColeccion = () => {
-    dispatch(onGetColeccion(1, rowsPerPage, nombreFiltro, orderByToSend));
+    dispatch(
+      onGetColeccion(
+        1,
+        rowsPerPage,
+        ciudadOrigenFiltro,
+        orderByToSend,
+        ciudadDestinoFiltro,
+        asociadoFiltro,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -616,12 +664,18 @@ const Tarifa = (props) => {
 
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend]);
+  }, [ciudadOrigenFiltro, orderByToSend, ciudadDestinoFiltro, asociadoFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
+      case 'ciudadOrigenFiltro':
+        setciudadOrigenFiltro(e.target.value);
+        break;
+      case 'ciudadDestinoFiltro':
+        setciudadDestinoFiltro(e.target.value);
+        break;
+      case 'asociadoFiltro':
+        setasociadoFiltro(e.target.value);
         break;
       default:
         break;
@@ -629,7 +683,9 @@ const Tarifa = (props) => {
   };
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
+    setciudadOrigenFiltro('');
+    setciudadDestinoFiltro('');
+    setasociadoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -781,7 +837,9 @@ const Tarifa = (props) => {
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
+            ciudadOrigenFiltro={ciudadOrigenFiltro}
+            ciudadDestinoFiltro={ciudadDestinoFiltro}
+            asociadoFiltro={asociadoFiltro}
             permisos={permisos}
             titulo={titulo}
           />

@@ -103,6 +103,30 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'ciudad_origen',
+    typeHead: 'string',
+    label: 'Ciudad Origen',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'ciudad_destino',
+    typeHead: 'string',
+    label: 'Ciudad Destino',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'servicio',
+    typeHead: 'string',
+    label: 'Servicio',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
     id: 'estado',
     typeHead: 'boolean',
     label: 'Estado',
@@ -323,8 +347,8 @@ const EnhancedTableToolbar = (props) => {
     onOpenAddSolicitudCotizacion,
     handleOpenPopoverColumns,
     queryFilter,
-    nombreFiltro,
-    departamentoFiltro,
+    numeroFiltro,
+    nombreEmpresaFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -376,19 +400,21 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
+              label='Número Solicitud Cotización'
+              name='numeroFiltro'
+              id='numeroFiltro'
               onChange={queryFilter}
-              value={nombreFiltro}
+              value={numeroFiltro}
+              type='number'
+              inputProps={{min: 0}}
             />
 
             <TextField
-              label='Departamento'
-              name='departamentofiltro'
-              id='departamentoFiltro'
+              label='Nombre Empresa'
+              name='nombreEmpresaFiltro'
+              id='nombreEmpresaFiltro'
               onChange={queryFilter}
-              value={departamentoFiltro}
+              value={nombreEmpresaFiltro}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -431,8 +457,8 @@ EnhancedTableToolbar.propTypes = {
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
-  departamentoFiltro: PropTypes.string.isRequired,
+  numeroFiltro: PropTypes.string.isRequired,
+  nombreEmpresaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -550,8 +576,8 @@ const SolicitudCotizacion = (props) => {
     ({solicitudCotizacionReducer}) => solicitudCotizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [departamentoFiltro, setDepartamentoFiltro] = useState('');
+  const [numeroFiltro, setnumeroFiltro] = useState('');
+  const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -609,18 +635,18 @@ const SolicitudCotizacion = (props) => {
       onGetColeccion(
         page,
         rowsPerPage,
-        nombreFiltro,
+        numeroFiltro,
         orderByToSend,
-        departamentoFiltro,
+        nombreEmpresaFiltro,
       ),
     );
   }, [
     dispatch,
     page,
     rowsPerPage,
-    nombreFiltro,
+    numeroFiltro,
     orderByToSend,
-    departamentoFiltro,
+    nombreEmpresaFiltro,
   ]);
 
   const updateColeccion = () => {
@@ -628,23 +654,23 @@ const SolicitudCotizacion = (props) => {
       onGetColeccion(
         1,
         rowsPerPage,
-        nombreFiltro,
+        numeroFiltro,
         orderByToSend,
-        departamentoFiltro,
+        nombreEmpresaFiltro,
       ),
     );
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, departamentoFiltro]);
+  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
+      case 'numeroFiltro':
+        setnumeroFiltro(e.target.value);
         break;
-      case 'departamentofiltro':
-        setDepartamentoFiltro(e.target.value);
+      case 'nombreEmpresaFiltro':
+        setnombreEmpresaFiltro(e.target.value);
         break;
       default:
         break;
@@ -664,8 +690,8 @@ const SolicitudCotizacion = (props) => {
   }, [dispatch]);
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setDepartamentoFiltro('');
+    setnumeroFiltro('');
+    setnombreEmpresaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -817,8 +843,8 @@ const SolicitudCotizacion = (props) => {
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
-            departamentoFiltro={departamentoFiltro}
+            numeroFiltro={numeroFiltro}
+            nombreEmpresaFiltro={nombreEmpresaFiltro}
             permisos={permisos}
             titulo={titulo}
           />
