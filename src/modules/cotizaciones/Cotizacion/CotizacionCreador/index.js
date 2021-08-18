@@ -23,7 +23,6 @@ const CotizacionCreator = (props) => {
 
   const dispatch = useDispatch();
 
-  const [cantidadDetalles, setCantidadDetalles] = useState(0);
   useEffect(() => {
     dispatch(onGetColeccionLigera(true));
   }, [dispatch]);
@@ -153,7 +152,6 @@ const CotizacionCreator = (props) => {
             accion={accion}
             initialValues={initialValues}
             solicitudes={solicitudes}
-            setCantidadDetalles={setCantidadDetalles}
             setDetalles={setDetalles}
           />
         )}

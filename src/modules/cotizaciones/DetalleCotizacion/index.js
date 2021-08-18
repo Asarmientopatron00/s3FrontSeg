@@ -501,8 +501,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Cotizacion = (props) => {
   const [idAux, setIdAux] = useState(-1000);
-  const {empresa, fecha, id, accionDetalle, setCantidadDetalles, setDetalles} =
-    props;
+  const {empresa, fecha, id, accionDetalle, setDetalles} = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [detalleCotizacionSeleccionado, setDetalleCotizacionSeleccionado] =
@@ -569,9 +568,8 @@ const Cotizacion = (props) => {
   }, [dispatch, page, rowsPerPage, orderByToSend, id, accionDetalle]);
 
   useEffect(() => {
-    setCantidadDetalles(rows.length);
     setDetalles(rows);
-  }, [rows, setCantidadDetalles, setDetalles]);
+  }, [rows, setDetalles]);
 
   useEffect(() => {
     setPage(1);

@@ -91,7 +91,6 @@ const SolicitudCotizacionForm = (props) => {
     solicitudes,
     values,
     setFieldValue,
-    setCantidadDetalles,
     setDetalles,
   } = props;
   const [disabled, setDisabled] = useState(false);
@@ -280,7 +279,6 @@ const SolicitudCotizacionForm = (props) => {
           fecha={values.fecha_cotizacion}
           id={values.id ? values.id : 0}
           accionDetalle={accion}
-          setCantidadDetalles={setCantidadDetalles}
           setDetalles={setDetalles}
         />
 

@@ -91,6 +91,7 @@ const DetalleCotizacionForm = (props) => {
     servicios,
     titulo,
     values,
+    setFieldValue,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -159,17 +160,14 @@ const DetalleCotizacionForm = (props) => {
     if (values.ciudad_origen_id !== '' && values.ciudad_destino_id !== '') {
       dispatch(onBuscar(values.ciudad_origen_id, values.ciudad_destino_id));
     }
-  }, [
-    dispatch,
-    values.ciudad_origen_id,
-    values.ciudad_destino_id,
-    values.servicio_id,
-  ]);
+  }, [dispatch, values.ciudad_origen_id, values.ciudad_destino_id]);
 
   useEffect(() => {
     if (
       values.ciudad_origen_id !== '' &&
+      typeof values.ciudad_origen_id === 'number' &&
       values.ciudad_destino_id !== '' &&
+      typeof values.ciudad_destino_id === 'number' &&
       values.servicio_id !== ''
     ) {
       dispatch(
@@ -188,15 +186,21 @@ const DetalleCotizacionForm = (props) => {
     values.servicio_id,
   ]);
 
-  values.cantidad_rutas = useSelector(
+  const cantidad_rutas = useSelector(
     ({rutaReducer}) => rutaReducer.cantidadRutas,
   );
+
+  useEffect(() => {
+    setFieldValue('cantidad_rutas', cantidad_rutas);
+  }, [cantidad_rutas, setFieldValue]);
 
   const tarifa = useSelector(({tarifaReducer}) => tarifaReducer.valor_tarifa);
 
   useEffect(() => {
-    values.valor_servicio = tarifa;
-  }, [tarifa]);
+    if (accion === 'crear') {
+      setFieldValue('valor_servicio', tarifa);
+    }
+  }, [tarifa, accion, setFieldValue]);
 
   useEffect(() => {
     return () => {
