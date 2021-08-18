@@ -2,6 +2,7 @@ import {
   GET_COLECCION_ASOCIADO_REQUISITO_SEGURIDAD,
   SHOW_ASOCIADO_REQUISITO_SEGURIDAD,
   UPDATE_ASOCIADO_REQUISITO_SEGURIDAD,
+  CLEAN_ROWS,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -41,6 +42,12 @@ const asociadoRequisitoSeguridadReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRow: action.payload.datos,
+      };
+    case CLEAN_ROWS:
+      return {
+        ...state,
+        rows: [],
+        encabezado: {},
       };
 
     default:

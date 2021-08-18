@@ -35,6 +35,8 @@ import ConsultaAuditoriaReducer from './ConsultaAuditoriaReducer';
 import SolicitudCotizacionReducer from './SolicitudCotizacionReducer';
 import RutaReducer from './RutaReducer';
 import TarifaReducer from './TarifaReducer';
+import CotizacionReducer from './CotizacionReducer';
+import DetalleCotizacionReducer from './DetalleCotizacionReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -74,5 +76,7 @@ const reducers = (history) =>
     solicitudCotizacionReducer: SolicitudCotizacionReducer,
     rutaReducer: RutaReducer,
     tarifaReducer: TarifaReducer,
+    cotizacionReducer: CotizacionReducer,
+    detalleCotizacionReducer: DetalleCotizacionReducer,
   });
 export default reducers;

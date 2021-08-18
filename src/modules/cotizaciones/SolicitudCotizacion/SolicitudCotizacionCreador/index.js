@@ -145,7 +145,9 @@ const SolicitudCotizacionCreator = (props) => {
               id: selectedRow ? selectedRow.id : '',
               fecha_solicitud_cotizacion: selectedRow
                 ? selectedRow.fecha_solicitud_cotizacion
-                : new Date(Date.now()).toLocaleDateString('es-CL'),
+                : new Date(Date.now()).toLocaleDateString('es-CL', {
+                    timeZone: 'UTC',
+                  }),
               ciudad_origen_id: selectedRow
                 ? selectedRow.ciudad_origen_id
                   ? selectedRow.ciudad_origen_id

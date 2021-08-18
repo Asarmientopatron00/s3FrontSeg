@@ -1,11 +1,10 @@
 import {
-  GET_COLECCION_TARIFA,
-  GET_COLECCION_LIGERA_TARIFA,
-  SHOW_TARIFA,
-  UPDATE_TARIFA,
-  DELETE_TARIFA,
-  CREATE_TARIFA,
-  BUSCAR_TARIFA,
+  GET_COLECCION_COTIZACION,
+  GET_COLECCION_LIGERA_COTIZACION,
+  SHOW_COTIZACION,
+  UPDATE_COTIZACION,
+  DELETE_COTIZACION,
+  CREATE_COTIZACION,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -18,12 +17,14 @@ const initialState = {
   pagina_actual: 1,
   ultima_pagina: 1,
   total: 1,
-  valor_tarifa: 0,
+  ciudades: [],
+  servicios: [],
+  consecutivo: [],
 };
 
-const TarifaReducer = (state = initialState, action) => {
+const solicitudCotizacionReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_COLECCION_TARIFA:
+    case GET_COLECCION_COTIZACION:
       return {
         ...state,
         rows: action.payload.data.datos,
@@ -35,44 +36,37 @@ const TarifaReducer = (state = initialState, action) => {
         total: action.payload.data.total,
       };
 
-    case GET_COLECCION_LIGERA_TARIFA:
+    case GET_COLECCION_LIGERA_COTIZACION:
       return {
         ...state,
         ligera: action.payload.data,
       };
-
-    case SHOW_TARIFA:
+    case SHOW_COTIZACION:
       return {
         ...state,
         selectedRow: action.payload,
       };
 
-    case UPDATE_TARIFA:
+    case UPDATE_COTIZACION:
       return {
         ...state,
         selectedRow: action.payload.datos,
       };
 
-    case DELETE_TARIFA:
+    case DELETE_COTIZACION:
       return {
         ...state,
         selectedRow: action.payload.datos,
       };
 
-    case CREATE_TARIFA:
+    case CREATE_COTIZACION:
       return {
         ...state,
         selectedRow: action.payload.datos,
-      };
-
-    case BUSCAR_TARIFA:
-      return {
-        ...state,
-        valor_tarifa: action.payload.data,
       };
 
     default:
       return state;
   }
 };
-export default TarifaReducer;
+export default solicitudCotizacionReducer;

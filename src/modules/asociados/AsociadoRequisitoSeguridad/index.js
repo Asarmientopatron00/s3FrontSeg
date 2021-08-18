@@ -38,6 +38,7 @@ import {history} from 'redux/store';
 import * as yup from 'yup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {
+  CLEAN_ROWS,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -561,6 +562,7 @@ const AsociadoRequisitoSeguridad = () => {
   const {rows, encabezado} = useSelector(
     ({asociadoRequisitoSeguridadReducer}) => asociadoRequisitoSeguridadReducer,
   );
+
   // const {pathname} = useLocation();
 
   const [compromisos, setCompromisos] = useState(Array(100).fill(''));
@@ -643,7 +645,7 @@ const AsociadoRequisitoSeguridad = () => {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  const [showTable, setShowTable] = useState(true);
+  const [showTable, setShowTable] = useState(false);
   useEffect(() => {
     if (rows.length === 0) {
       setShowTable(false);
@@ -680,6 +682,15 @@ const AsociadoRequisitoSeguridad = () => {
       .array()
       .of(yup.lazy((value) => yup.string().required('Requerido'))),
   });
+
+  useEffect(() => {
+    return () => {
+      //     rows=[];
+      //     setShowTable(false);
+      dispatch({type: CLEAN_ROWS});
+      console.log('cleabed');
+    };
+  }, [dispatch]);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>

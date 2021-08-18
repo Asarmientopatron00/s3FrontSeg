@@ -669,7 +669,6 @@ const AsociadoDatoBasicoCreator = (props) => {
           }
           // resetForm();
           setSubmitting(false);
-          // handleOnClose();
           // updateColeccion();
         }}>
         {({values, initialValues, setFieldValue}) => (
@@ -677,7 +676,6 @@ const AsociadoDatoBasicoCreator = (props) => {
             usuario={usuario}
             values={values}
             setFieldValue={setFieldValue}
-            handleOnClose={handleOnClose}
             accion={accion}
             initialValues={initialValues}
             tiposDocumentos={tiposDocumentos}

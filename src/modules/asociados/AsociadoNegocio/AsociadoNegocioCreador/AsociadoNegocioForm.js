@@ -130,7 +130,6 @@ const MyAutocompleteActividad = (props) => {
 
 const AsociadoNegocioForm = (props) => {
   const {
-    handleOnClose,
     accion,
     values,
     initialValues,
@@ -145,7 +144,6 @@ const AsociadoNegocioForm = (props) => {
   } = props;
 
   const dispatch = useDispatch();
-
   // const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
 
   let calcularDV = useRef();
@@ -1424,7 +1422,7 @@ const AsociadoNegocioForm = (props) => {
           )}
           <Button
             className={`${classes.btnRoot} ${classes.btnSecundary}`}
-            onClick={handleOnClose}>
+            href='/asociados-negocios'>
             <IntlMessages id='boton.cancel' />
           </Button>
         </Box>

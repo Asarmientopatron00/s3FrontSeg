@@ -115,7 +115,7 @@ const SolicitudCotizacionCreator = (props) => {
             initialValues={{
               fecha_solicitud_cotizacion: new Date(
                 Date.now(),
-              ).toLocaleDateString('es-CL'),
+              ).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
               ciudad_origen_id: '',
               ciudad_destino_id: '',
               servicio_id: '',

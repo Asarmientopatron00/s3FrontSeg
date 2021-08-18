@@ -60,7 +60,8 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = () => {
+export const onGetColeccionLigera = (sol) => {
+  const page = sol ? sol : false;
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -68,6 +69,7 @@ export const onGetColeccionLigera = () => {
       .get('solicitudes-cotizaciones-servicios', {
         params: {
           ligera: true,
+          sol: page,
         },
       })
       .then((data) => {

@@ -2,9 +2,11 @@ import {
   GET_COLECCION_RUTA,
   GET_COLECCION_LIGERA_RUTA,
   SHOW_RUTA,
+  CLEAN_RUTA,
   UPDATE_RUTA,
   DELETE_RUTA,
   CREATE_RUTA,
+  BUSCAR_RUTA,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -17,6 +19,7 @@ const initialState = {
   pagina_actual: 1,
   ultima_pagina: 1,
   total: 1,
+  cantidadRutas: 0,
 };
 
 const RutaReducer = (state = initialState, action) => {
@@ -62,6 +65,15 @@ const RutaReducer = (state = initialState, action) => {
         ...state,
         selectedRow: action.payload.datos,
       };
+
+    case BUSCAR_RUTA:
+      return {
+        ...state,
+        cantidadRutas: action.payload.data,
+      };
+
+    case CLEAN_RUTA:
+      return initialState;
 
     default:
       return state;

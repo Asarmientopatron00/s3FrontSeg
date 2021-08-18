@@ -83,6 +83,7 @@ export const SHOW_REQUISITO_SEGURIDAD = 'show_requisito_seguridad';
 export const UPDATE_REQUISITO_SEGURIDAD = 'update_requisito_seguridad';
 export const CREATE_REQUISITO_SEGURIDAD = 'create_requisito_seguridad';
 export const DELETE_REQUISITO_SEGURIDAD = 'delete_requisito_seguridad';
+export const CLEAN_ROWS = 'clean_rows';
 export const GET_COLECCION_PARAMETRO_CONSTANTE =
   'get_coleccion_parametro_constante';
 export const GET_COLECCION_LIGERA_PARAMETRO_CONSTANTE =
@@ -214,12 +215,30 @@ export const SHOW_RUTA = 'show_ruta';
 export const UPDATE_RUTA = 'update_ruta';
 export const CREATE_RUTA = 'create_ruta';
 export const DELETE_RUTA = 'delete_ruta';
+export const BUSCAR_RUTA = 'buscar_ruta';
+export const CLEAN_RUTA = 'clean_ruta';
 export const GET_COLECCION_TARIFA = 'get_coleccion_tarifa';
 export const GET_COLECCION_LIGERA_TARIFA = 'get_coleccion_ligera_tarifa';
 export const SHOW_TARIFA = 'show_tarifa';
 export const UPDATE_TARIFA = 'update_tarifa';
 export const CREATE_TARIFA = 'create_tarifa';
 export const DELETE_TARIFA = 'delete_tarifa';
+export const BUSCAR_TARIFA = 'buscar_tarifa';
+export const GET_COLECCION_COTIZACION = 'get_coleccion_cotizacion';
+export const GET_COLECCION_LIGERA_COTIZACION =
+  'get_coleccion_ligera_cotizacion';
+export const SHOW_COTIZACION = 'show_cotizacion';
+export const UPDATE_COTIZACION = 'update_cotizacion';
+export const CREATE_COTIZACION = 'create_cotizacion';
+export const DELETE_COTIZACION = 'delete_cotizacion';
+export const GET_COLECCION_DETALLE_COTIZACION =
+  'get_coleccion_detalle_cotizacion';
+export const GET_COLECCION_LIGERA_DETALLE_COTIZACION =
+  'get_coleccion_ligera_detalle_cotizacion';
+export const SHOW_DETALLE_COTIZACION = 'show_detalle_cotizacion';
+export const UPDATE_DETALLE_COTIZACION = 'update_detalle_cotizacion';
+export const CREATE_DETALLE_COTIZACION = 'create_detalle_cotizacion';
+export const DELETE_DETALLE_COTIZACION = 'delete_detalle_cotizacion';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

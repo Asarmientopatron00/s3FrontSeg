@@ -40,3 +40,5 @@ export * from './ConsultaAuditoriaAction';
 export * from './SolicitudCotizacionAction';
 export * from './RutaAction';
 export * from './TarifaAction';
+export * from './CotizacionAction';
+export * from './DetalleCotizacionAction';

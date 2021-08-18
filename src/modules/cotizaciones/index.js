@@ -16,6 +16,21 @@ export const cotizacionConfig = [
         path: '/solicitud-contacto',
         component: React.lazy(() => import('./SolicitudContacto')),
       },
+      {
+        exact: true,
+        path: '/cotizaciones',
+        component: React.lazy(() => import('./Cotizacion')),
+      },
+      {
+        exact: true,
+        path: ['/cotizaciones/:accion/:id'],
+        component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
+      },
+      {
+        exact: true,
+        path: ['/cotizaciones/:accion'],
+        component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
+      },
     ],
   },
 ];

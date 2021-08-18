@@ -5,6 +5,7 @@ import {
   UPDATE_RUTA,
   DELETE_RUTA,
   CREATE_RUTA,
+  BUSCAR_RUTA,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -192,6 +193,34 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
       })
       .catch((error) => {
         dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
+      });
+  };
+};
+
+export const onBuscar = (ciudad_origen_id, ciudad_destino_id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('rutas/buscar-ruta', {
+        params: {
+          ciudad_origen_id,
+          ciudad_destino_id,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: BUSCAR_RUTA, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
       });
   };
 };

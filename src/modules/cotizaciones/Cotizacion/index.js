@@ -24,13 +24,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import SolicitudCotizacionCreador from './SolicitudCotizacionCreador';
 import {
   onGetColeccion,
   onDelete,
-  onGetColeccionLigeraCiudad,
-  onGetColeccionLigeraServicio,
-} from '../../../redux/actions/SolicitudCotizacionAction';
+} from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -71,21 +68,30 @@ import Swal from 'sweetalert2';
 
 const cells = [
   {
-    id: 'numero_solicitud',
+    id: 'numero_cotizacion_servicio',
     typeHead: 'numeric',
-    label: 'Solicitud Cotización',
+    label: 'Número Cotización',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'fecha_solicitud_cotizacion',
+    id: 'fecha_cotizacion',
     typeHead: 'string',
     label: 'Fecha',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
     align: 'left',
     mostrarInicio: true,
+  },
+  {
+    id: 'fecha_vigencia_cotizacion',
+    typeHead: 'string',
+    label: 'Fecha Vigencia',
+    value: (value) =>
+      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    align: 'left',
+    mostrarInicio: false,
   },
   {
     id: 'nombre_empresa',
@@ -96,35 +102,35 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'nombre_contacto',
+    id: 'numero_documento',
+    typeHead: 'numeric',
+    label: 'Documento',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'estado_cotizacion',
     typeHead: 'string',
-    label: 'Persona Contacto',
+    label: 'Estado',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'ciudad_origen',
-    typeHead: 'string',
-    label: 'Ciudad Origen',
+    id: 'plazo_pago_cotizacion',
+    typeHead: 'numeric',
+    label: 'Plazo',
     value: (value) => value,
-    align: 'left',
+    align: 'right',
     mostrarInicio: false,
   },
   {
-    id: 'ciudad_destino',
-    typeHead: 'string',
-    label: 'Ciudad Destino',
+    id: 'numero_solicitud',
+    typeHead: 'numeric',
+    label: 'Solicitud',
     value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'servicio',
-    typeHead: 'string',
-    label: 'Servicio',
-    value: (value) => value,
-    align: 'left',
+    align: 'right',
     mostrarInicio: false,
   },
   {
@@ -345,7 +351,6 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddSolicitudCotizacion,
     handleOpenPopoverColumns,
     queryFilter,
     numeroFiltro,
@@ -387,21 +392,21 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear Solicitud Cotizacion'
-                  onClick={onOpenAddSolicitudCotizacion}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
+                <Box component='a' href='/cotizaciones/crear'>
+                  <Tooltip title='Crear Solicitud Cotizacion'>
+                    <IconButton
+                      className={classes.createButton}
+                      aria-label='filter list'>
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Número Solicitud Cotización'
+              label='Número Cotización'
               name='numeroFiltro'
               id='numeroFiltro'
               onChange={queryFilter}
@@ -454,7 +459,6 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddSolicitudCotizacion: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
@@ -556,8 +560,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SolicitudCotizacion = (props) => {
-  const [showForm, setShowForm] = useState(false);
+const Cotizacion = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -570,11 +573,8 @@ const SolicitudCotizacion = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [accion, setAccion] = useState('ver');
-  const [solicitudCotizacionSeleccionado, setSolicitudCotizacionSeleccionado] =
-    useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer,
+    ({cotizacionReducer}) => cotizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [numeroFiltro, setnumeroFiltro] = useState('');
@@ -617,7 +617,7 @@ const SolicitudCotizacion = (props) => {
     user &&
       user.permisos.forEach((modulo) => {
         modulo.opciones.forEach((opcion) => {
-          if (opcion.url === props.route.path[0]) {
+          if (opcion.url === props.route.path) {
             setTitulo(opcion.nombre);
             const permisoAux = [];
             opcion.permisos.forEach((permiso) => {
@@ -630,7 +630,6 @@ const SolicitudCotizacion = (props) => {
         });
       });
   }, [user, props.route]);
-
   useEffect(() => {
     dispatch(
       onGetColeccion(
@@ -678,17 +677,7 @@ const SolicitudCotizacion = (props) => {
     }
   };
 
-  const ciudades = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.ciudades,
-  );
-  const servicios = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.servicios,
-  );
-
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraCiudad());
-    dispatch(onGetColeccionLigeraServicio());
-  }, [dispatch]);
+  useEffect(() => {}, [dispatch]);
 
   const limpiarFiltros = () => {
     setnumeroFiltro('');
@@ -709,12 +698,6 @@ const SolicitudCotizacion = (props) => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
-  };
-
-  const onOpenEditSolicitudCotizacion = (id) => {
-    setSolicitudCotizacionSeleccionado(id);
-    setAccion('editar');
-    setShowForm(true);
   };
 
   const handleClosePopover = () => {
@@ -753,13 +736,7 @@ const SolicitudCotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewSolicitudCotizacion = (id) => {
-    setSolicitudCotizacionSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const onDeleteSolicitudCotizacion = (id) => {
+  const onDeleteCotizacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
       text: '¿Seguro Que Desea Eliminar La Solicitud Cotizacion?',
@@ -782,23 +759,6 @@ const SolicitudCotizacion = (props) => {
       }
     });
   };
-
-  const onOpenAddSolicitudCotizacion = () => {
-    setSolicitudCotizacionSeleccionado(0);
-    setAccion('crear');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setSolicitudCotizacionSeleccionado(0);
-    setAccion('ver');
-  };
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc';
-  //   setOrder(isAsc ? 'desc' : 'asc');
-  //   setOrderBy(property);
-  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -840,7 +800,6 @@ const SolicitudCotizacion = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddSolicitudCotizacion={onOpenAddSolicitudCotizacion}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
@@ -921,37 +880,38 @@ const SolicitudCotizacion = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_solicitud_cotizacion === 'SOL' && (
+                            {permisos.indexOf('Modificar') >= 0 && (
+                              <Box
+                                component='a'
+                                href={'/cotizaciones/editar/' + row.id}>
                                 <Tooltip
                                   title={<IntlMessages id='boton.editar' />}>
                                   <EditIcon
-                                    onClick={() =>
-                                      onOpenEditSolicitudCotizacion(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}
+                                  />
                                 </Tooltip>
-                              )}
+                              </Box>
+                            )}
                             {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewSolicitudCotizacion(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                              <Box
+                                component='a'
+                                href={'/cotizaciones/ver/' + row.id}>
+                                <Tooltip
+                                  title={<IntlMessages id='boton.ver' />}>
+                                  <VisibilityIcon
+                                    className={`${classes.generalIcons} ${classes.visivilityIcon}`}
+                                  />
+                                </Tooltip>
+                              </Box>
+                            )}
+                            {permisos.indexOf('Eliminar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.eliminar' />}>
+                                <DeleteIcon
+                                  onClick={() => onDeleteCotizacion(row.id)}
+                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_solicitud_cotizacion === 'SOL' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.eliminar' />}>
-                                  <DeleteIcon
-                                    onClick={() =>
-                                      onDeleteSolicitudCotizacion(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                                </Tooltip>
-                              )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1042,25 +1002,6 @@ const SolicitudCotizacion = (props) => {
         )}
       </Paper>
 
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Cambiar Densidad"
-      /> */}
-      {showForm ? (
-        <SolicitudCotizacionCreador
-          showForm={showForm}
-          solicitudCotizacion={solicitudCotizacionSeleccionado}
-          accion={accion}
-          handleOnClose={handleOnClose}
-          updateColeccion={updateColeccion}
-          titulo={titulo}
-          ciudades={ciudades}
-          servicios={servicios}
-        />
-      ) : (
-        ''
-      )}
-
       <Popover
         id='popoverColumns'
         open={openPopOver}
@@ -1101,4 +1042,4 @@ const SolicitudCotizacion = (props) => {
   );
 };
 
-export default SolicitudCotizacion;
+export default Cotizacion;
