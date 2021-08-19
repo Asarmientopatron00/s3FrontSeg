@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => {
       textDecoration: 'none !important',
       borderRadius: '0 15px 15px 0',
       paddingLeft: theme.direction === 'ltr' ? (props) => 40 * props.level : 12,
+      textTransform: 'capitalize',
       paddingRight:
         theme.direction === 'rtl' ? (props) => 40 * props.level : 12,
       '&.nav-item-header': {

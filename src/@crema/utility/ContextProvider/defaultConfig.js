@@ -21,6 +21,7 @@ const defaultConfig = {
       grayBottoms: '#999',
       redBottoms: '#be1e2d',
       colorHover: '#4992de',
+      enviaEmailBottoms: '#043927',
       background: {
         paper: '#fff',
         default: '#f4f7fe',

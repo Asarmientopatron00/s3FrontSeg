@@ -294,6 +294,15 @@ const SolicitudCotizacionForm = (props) => {
             ) : (
               ''
             )}
+            {/* <ListItem
+              button
+              component={NavLink}
+              to={'/cotizaciones'}
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+            >
+              <IntlMessages id='boton.cancel' />
+            </ListItem> */}
+
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
               href='/cotizaciones'>

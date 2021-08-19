@@ -4,6 +4,7 @@ import {
   SHOW_COTIZACION,
   UPDATE_COTIZACION,
   DELETE_COTIZACION,
+  ENVIAR_COTIZACION,
   CREATE_COTIZACION,
   FETCH_ERROR,
   FETCH_START,
@@ -142,7 +143,38 @@ export const onUpdate = (params, handleOnClose, detalles) => {
   };
 };
 
-export const onDelete = (id) => {
+export const onEnviarCorreo = (id, updateColeccion) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('cotizaciones-servicios/send-email/' + id)
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          updateColeccion();
+          dispatch({type: ENVIAR_COTIZACION, payload: data.data});
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+        }
+      })
+      .catch((error) => {
+        if (error.response.data.mensajes) {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        }
+      });
+  };
+};
+
+export const onDelete = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -150,6 +182,7 @@ export const onDelete = (id) => {
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
+          updateColeccion();
           dispatch({type: DELETE_COTIZACION, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});

@@ -1,9 +1,12 @@
 import React, {useContext, useMemo} from 'react';
-import {Icon, ListItem, ListItemText} from '@material-ui/core';
+import {Icon, ListItem, ListItemText, Button} from '@material-ui/core';
+// import {Button} from '@material-ui/core';
 import {withRouter} from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import {Badge, NavLink} from '../../../index';
+// import {Badge, NavLink} from '../../../index';
+import {Badge} from '../../../index';
+
 import Box from '@material-ui/core/Box';
 // import IntlMessages from '../../../utility/IntlMessages';
 import useStyles from './VerticalItem.style';
@@ -25,8 +28,10 @@ const VerticalItem = ({level, item}) => {
   return (
     <ListItem
       button
-      component={NavLink}
-      to={item.url}
+      // component={NavLink}
+      component={Button}
+      // to={item.url}
+      href={item.url}
       activeClassName='active'
       className={clsx(classes.navItem, 'nav-item')}
       exact={item.exact}>

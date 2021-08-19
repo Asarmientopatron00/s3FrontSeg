@@ -231,6 +231,7 @@ export const SHOW_COTIZACION = 'show_cotizacion';
 export const UPDATE_COTIZACION = 'update_cotizacion';
 export const CREATE_COTIZACION = 'create_cotizacion';
 export const DELETE_COTIZACION = 'delete_cotizacion';
+export const ENVIAR_COTIZACION = 'enviar_cotizacion';
 export const GET_COLECCION_DETALLE_COTIZACION =
   'get_coleccion_detalle_cotizacion';
 export const GET_COLECCION_LIGERA_DETALLE_COTIZACION =

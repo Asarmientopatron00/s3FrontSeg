@@ -51,3 +51,10 @@ export const TIPOS_CONTACTOS = [
   {id: 'CM', nombre: 'Comercial', estado: 1},
   {id: 'OT', nombre: 'Otros', estado: 1},
 ];
+
+export const ESTADO_COTIZACIONES = [
+  {id: 'ENV', nombre: 'Enviada', estado: 1},
+  {id: 'GEN', nombre: 'Generada', estado: 1},
+  {id: 'ANU', nombre: 'Anulada', estado: 1},
+  {id: 'APR', nombre: 'Aprovada', estado: 1},
+];

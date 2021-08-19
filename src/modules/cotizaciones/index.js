@@ -23,12 +23,12 @@ export const cotizacionConfig = [
       },
       {
         exact: true,
-        path: ['/cotizaciones/:accion/:id'],
+        path: ['/cotizacion/:accion/:id'],
         component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
       },
       {
         exact: true,
-        path: ['/cotizaciones/:accion'],
+        path: ['/cotizacion/:accion'],
         component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
       },
     ],

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
+
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -23,10 +24,12 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
+import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccion,
   onDelete,
+  onEnviarCorreo,
 } from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -37,6 +40,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -113,7 +117,8 @@ const cells = [
     id: 'estado_cotizacion',
     typeHead: 'string',
     label: 'Estado',
-    value: (value) => value,
+    value: (value) =>
+      ESTADO_COTIZACIONES.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },
@@ -392,7 +397,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Box component='a' href='/cotizaciones/crear'>
+                <Box component='a' href='/cotizacion/crear'>
                   <Tooltip title='Crear Solicitud Cotizacion'>
                     <IconButton
                       className={classes.createButton}
@@ -542,6 +547,9 @@ const useStyles = makeStyles((theme) => ({
   },
   deleteIcon: {
     color: theme.palette.redBottoms,
+  },
+  enviarIcon: {
+    color: theme.palette.enviaEmailBottoms,
   },
   popoverColumns: {
     display: 'grid',
@@ -739,7 +747,7 @@ const Cotizacion = (props) => {
   const onDeleteCotizacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar La Solicitud Cotizacion?',
+      text: '¿Seguro que dese anular la cotización?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -749,15 +757,36 @@ const Cotizacion = (props) => {
       confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(onDelete(id));
+        dispatch(onDelete(id, updateColeccion));
         Swal.fire(
-          'Eliminado',
-          'La Solicitud Cotizacion Fue Eliminada Correctamente',
+          'Anulado',
+          'La cotizacion fue anulada correctamente',
           'success',
         );
-        updateColeccion();
       }
     });
+  };
+
+  const enviarCorreo = (id, estado) => {
+    if (estado === 'ENV') {
+      Swal.fire({
+        title: 'Confirmar',
+        text: '¿Seguro que desea reenviar la cotización?',
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'NO',
+        confirmButtonText: 'SI',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(onEnviarCorreo(id, updateColeccion));
+        }
+      });
+    } else {
+      dispatch(onEnviarCorreo(id, updateColeccion));
+    }
   };
 
   const handleSelectAllClick = (event) => {
@@ -883,7 +912,8 @@ const Cotizacion = (props) => {
                             {permisos.indexOf('Modificar') >= 0 && (
                               <Box
                                 component='a'
-                                href={'/cotizaciones/editar/' + row.id}>
+                                href={'/cotizacion/editar/' + row.id}
+                                className={classes.generalIcons}>
                                 <Tooltip
                                   title={<IntlMessages id='boton.editar' />}>
                                   <EditIcon
@@ -895,7 +925,7 @@ const Cotizacion = (props) => {
                             {permisos.indexOf('Listar') >= 0 && (
                               <Box
                                 component='a'
-                                href={'/cotizaciones/ver/' + row.id}>
+                                href={'/cotizacion/ver/' + row.id}>
                                 <Tooltip
                                   title={<IntlMessages id='boton.ver' />}>
                                   <VisibilityIcon
@@ -904,9 +934,20 @@ const Cotizacion = (props) => {
                                 </Tooltip>
                               </Box>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
+                            {permisos.indexOf('Modificar') >= 0 && (
                               <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
+                                title={
+                                  <IntlMessages id='boton.enviarCorreo' />
+                                }>
+                                <EmailIcon
+                                  onClick={() =>
+                                    enviarCorreo(row.id, row.estado_cotizacion)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Eliminar') >= 0 && (
+                              <Tooltip title={'Anular'}>
                                 <DeleteIcon
                                   onClick={() => onDeleteCotizacion(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
