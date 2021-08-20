@@ -21,12 +21,18 @@ export const onGetColeccion = (
   numero_solicitud,
   orderByToSend,
   nombre_empresa,
+  documento,
+  fecha_cotizacion,
+  all,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const numero_solicitudAux = numero_solicitud ? numero_solicitud : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
   const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
+  const documentoAux = documento ? documento : '';
+  const fecha_cotizacionAux = fecha_cotizacion ? fecha_cotizacion : '';
+  const allAux = all ? all : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -38,6 +44,9 @@ export const onGetColeccion = (
           numero_solicitud: numero_solicitudAux,
           ordenar_por: ordenar_por,
           nombre_empresa: nombre_empresaAux,
+          documento: documentoAux,
+          fecha_cotizacion: fecha_cotizacionAux,
+          all: allAux,
         },
       })
       .then((data) => {
