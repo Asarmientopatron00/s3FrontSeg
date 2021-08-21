@@ -382,6 +382,7 @@ const EnhancedTableToolbar = (props) => {
     nombreEmpresaFiltro,
     limpiarFiltros,
     ids,
+    permisos,
   } = props;
   return (
     <Toolbar
@@ -466,7 +467,7 @@ const EnhancedTableToolbar = (props) => {
               type='date'
               InputLabelProps={{shrink: true}}
             />
-            {ids.length > 0 && (
+            {ids.length > 0 && permisos.indexOf('Exportar') >= 0 && (
               <Box display='grid'>
                 <Box display='flex' mb={2}>
                   <Tooltip
@@ -709,7 +710,6 @@ const ConsultaCotizacion = (props) => {
         nombreEmpresaFiltro,
         documentoFiltro,
         fechaFiltro,
-        true,
       ),
     );
   }, [
@@ -733,7 +733,6 @@ const ConsultaCotizacion = (props) => {
         nombreEmpresaFiltro,
         documentoFiltro,
         fechaFiltro,
-        true,
       ),
     );
   };

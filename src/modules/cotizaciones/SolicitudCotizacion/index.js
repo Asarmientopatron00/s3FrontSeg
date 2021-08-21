@@ -104,6 +104,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'estado_solicitud_cotizacion',
+    typeHead: 'string',
+    label: 'Estado',
+    value: (value) => (value === 'SOL' ? 'Solicitada' : 'Cotizada'),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'ciudad_origen',
     typeHead: 'string',
     label: 'Ciudad Origen',

@@ -4,69 +4,30 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
-import {
-  onShow,
-  onUpdate,
-  onCreate,
-} from '../../../../redux/actions/CotizacionAction';
+import {onShow, onApprove} from '../../../../redux/actions/CotizacionAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import ConsultaCotizacionForm from './ConsultaCotizacionForm';
+import AprobacionCotizacionForm from './AprobacionCotizacionForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {
-  LONGITUD_MAXIMA_TELEFONOS,
-  LONGITUD_MINIMA_TELEFONOS,
-  VALIDACION_REGEX_TELEFONOS,
-} from '../../../../shared/constants/Constantes';
-import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+
 import {onGetColeccion} from '../../../../redux/actions/DetalleCotizacionAction';
+import {onGetColeccionLigera} from '../../../../redux/actions/AsociadoAction';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
 const validationSchema = yup.object({
-  ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup
-    .string()
-    .required('Requerido')
-    .notOneOf(
-      [yup.ref('ciudad_origen_id')],
-      'Ciudad de destino debe ser diferente a ciudad de origen',
-    ),
-  servicio_id: yup.string().required('Requerido'),
-  nombre_contacto: yup
-    .string()
-    .required('Requerido')
-    .max(128, mensajeValidacion('max', 128)),
-  email: yup
-    .string()
-    .required('Requerido')
-    .email('Debe ser tipo e-mail')
-    .max(128, mensajeValidacion('max', 128)),
-  telefono_contacto: yup
-    .string()
-    .required('Requerido')
-    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-    .max(
-      LONGITUD_MAXIMA_TELEFONOS,
-      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-    )
-    .min(
-      LONGITUD_MINIMA_TELEFONOS,
-      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-    ),
+  asociado_id: yup.string().required('Requerido'),
 });
 
-const ConsultaCotizacionCreator = (props) => {
-  const {consultaCotizacion, handleOnClose, accion, updateColeccion, titulo} =
+const AprobacionCotizacionCreator = (props) => {
+  const {aprobacionCotizacion, handleOnClose, accion, updateColeccion, titulo} =
     props;
 
   const dispatch = useDispatch();
-
-  const [consecutivo, setConsecutivo] = useState('');
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -112,18 +73,24 @@ const ConsultaCotizacionCreator = (props) => {
   }, [selectedRow, accion]);
 
   useEffect(() => {
-    if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(consultaCotizacion));
+    if ((accion === 'editar') | (accion === 'ver') | (accion === 'aprobar')) {
+      dispatch(onShow(aprobacionCotizacion));
     }
-  }, [accion, dispatch, consultaCotizacion]);
+  }, [accion, dispatch, aprobacionCotizacion]);
 
   useEffect(() => {
-    dispatch(onGetColeccion(1, 20, 'id:desc', consultaCotizacion));
-  }, [dispatch, consultaCotizacion]);
+    dispatch(onGetColeccion(1, 20, 'id:desc', aprobacionCotizacion));
+  }, [dispatch, aprobacionCotizacion]);
+
+  useEffect(() => {
+    dispatch(onGetColeccionLigera());
+  }, [dispatch]);
 
   const {rows} = useSelector(
     ({detalleCotizacionReducer}) => detalleCotizacionReducer,
   );
+
+  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
 
   return (
     showForm && (
@@ -135,7 +102,7 @@ const ConsultaCotizacionCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'xl'}>
+        maxWidth={'md'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
@@ -158,11 +125,6 @@ const ConsultaCotizacionCreator = (props) => {
                   ? selectedRow.numero_solicitud_cotizacion
                   : ''
                 : '',
-              empresa_cotizacion: selectedRow
-                ? selectedRow.empresa_cotizacion
-                  ? selectedRow.empresa_cotizacion
-                  : ''
-                : '',
               asociado_id: selectedRow
                 ? selectedRow.asociado_id
                   ? selectedRow.asociado_id
@@ -182,76 +144,28 @@ const ConsultaCotizacionCreator = (props) => {
                   ? selectedRow.observaciones
                   : ''
                 : '',
-              usuario_creacion_nombre: selectedRow
-                ? selectedRow.usuario_creacion_nombre
-                  ? selectedRow.usuario_creacion_nombre
-                  : ''
-                : '',
-              usuario_modificacion_nombre: selectedRow
-                ? selectedRow.usuario_modificacion_nombre
-                  ? selectedRow.usuario_modificacion_nombre
-                  : ''
-                : '',
-              fecha_creacion: selectedRow
-                ? selectedRow.fecha_creacion
-                  ? selectedRow.fecha_creacion
-                  : ''
-                : '',
-              fecha_modificacion: selectedRow
-                ? selectedRow.fecha_modificacion
-                  ? selectedRow.fecha_modificacion
-                  : ''
-                : '',
-              fecha_solicitud_cotizacion: selectedRow
-                ? selectedRow.solicitud_cotizacion
-                  ? selectedRow.solicitud_cotizacion.fecha_solicitud_cotizacion
-                  : ''
-                : '',
-              estado_cotizacion: selectedRow
-                ? selectedRow.estado_cotizacion === 'ENV'
-                  ? 'Enviada'
-                  : selectedRow.estado_cotizacion === 'APR'
-                  ? 'Aprovada'
-                  : selectedRow.estado_cotizacion === 'ANU'
-                  ? 'Anulada'
-                  : 'Generada'
-                : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
                   : '0'
                 : '1',
-              nombre_empresa: selectedRow
-                ? selectedRow.nombre_empresa
-                  ? selectedRow.nombre_empresa
-                  : ''
-                : '',
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
-              console.log(consecutivo);
-              if (accion === 'crear') {
+              if (accion === 'aprobar') {
                 dispatch(
-                  onCreate(
-                    data,
+                  onApprove(
+                    {id: data.id, asociado_id: data.asociado_id},
                     handleOnClose,
                     updateColeccion,
-                    setConsecutivo,
                   ),
                 );
-              } else if (accion === 'editar') {
-                if (selectedRow) {
-                  dispatch(onUpdate(data, handleOnClose, updateColeccion));
-                }
               }
-              // resetForm();
               setSubmitting(false);
-              // handleOnClose();
-              // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <ConsultaCotizacionForm
+              <AprobacionCotizacionForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
@@ -259,6 +173,7 @@ const ConsultaCotizacionCreator = (props) => {
                 accion={accion}
                 initialValues={initialValues}
                 rows={rows}
+                asociados={asociados}
               />
             )}
           </Formik>
@@ -268,4 +183,4 @@ const ConsultaCotizacionCreator = (props) => {
   );
 };
 
-export default ConsultaCotizacionCreator;
+export default AprobacionCotizacionCreator;

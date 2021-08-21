@@ -212,27 +212,27 @@ const SolicitudCotizacionForm = (props) => {
             </Box>
 
             <Box px={{md: 5, lg: 8, xl: 10}}>
-              <MyAutocompleteSolicitud
-                options={solicitudes}
-                name='solicitud_cotizacion_id'
-                inputValue={initialValues.solicitud_cotizacion_id}
-                label='Solicitud Cotización'
-                autoHighlight
-                className={classes.myTextField}
-                required
-                disabled={disabled}
-              />
-              <MyTextField
-                className={classes.myTextField}
-                label='Empresa'
-                name='nombre_empresa'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
               <Box className={classes.inputs_2}>
+                <MyAutocompleteSolicitud
+                  options={solicitudes}
+                  name='solicitud_cotizacion_id'
+                  inputValue={initialValues.solicitud_cotizacion_id}
+                  label='Solicitud Cotización'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Empresa'
+                  name='nombre_empresa'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
                 <MyTextField
                   className={classes.myTextField}
                   label='Fecha Cotización'

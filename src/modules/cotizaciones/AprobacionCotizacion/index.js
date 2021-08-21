@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
-import ConsultaCotizacionCreador from './../ConsultaCotizacion/ConsultaCotizacionCreador';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -23,14 +22,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import {
-  onGetColeccion,
-  onDelete,
-  onEnviarCorreo,
-} from '../../../redux/actions/CotizacionAction';
+import ConsultaCotizacionCreador from './../ConsultaCotizacion/ConsultaCotizacionCreador';
+import AprobacionCotizacionCreador from './AprobacionCotizacionCreador';
+import {onGetColeccion} from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -39,9 +34,8 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
 import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
-
+import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -72,36 +66,19 @@ import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
 
 const cells = [
   {
-    id: 'numero_cotizacion_servicio',
+    id: 'numero_solicitud',
     typeHead: 'numeric',
-    label: 'Número Cotización',
+    label: 'Número Solicitud',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'fecha_cotizacion',
+    id: 'fecha_solicitud_cotizacion',
     typeHead: 'string',
-    label: 'Fecha',
+    label: 'Fecha Solicitud',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_vigencia_cotizacion',
-    typeHead: 'string',
-    label: 'Fecha Vigencia',
-    value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'nombre_empresa',
-    typeHead: 'string',
-    label: 'Nombre Empresa',
-    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -114,28 +91,69 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'nombre_empresa',
+    typeHead: 'string',
+    label: 'Nombre',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'numero_cotizacion_servicio',
+    typeHead: 'numeric',
+    label: 'Número Cotización',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_cotizacion',
+    typeHead: 'string',
+    label: 'Fecha Cotización',
+    value: (value) =>
+      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'estado_cotizacion',
     typeHead: 'string',
     label: 'Estado',
     value: (value) =>
       ESTADO_COTIZACIONES.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
-    id: 'plazo_pago_cotizacion',
+    id: 'numero_solicitud_cotizacion',
     typeHead: 'numeric',
-    label: 'Plazo',
+    label: 'Número Solicitud',
     value: (value) => value,
     align: 'right',
     mostrarInicio: false,
   },
   {
-    id: 'numero_solicitud',
+    id: 'plazo_pago_cotizacion',
     typeHead: 'numeric',
-    label: 'Solicitud',
+    label: 'Plazo Pago',
     value: (value) => value,
     align: 'right',
+    mostrarInicio: false,
+  },
+  {
+    id: 'fecha_vigencia_cotizacion',
+    typeHead: 'string',
+    label: 'Fecha Vigencia',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'observaciones',
+    typeHead: 'string',
+    label: 'Observaciones',
+    value: (value) => value,
+    align: 'left',
     mostrarInicio: false,
   },
   {
@@ -297,6 +315,23 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+  exportButton: {
+    backgroundColor: '#4caf50',
+    color: 'white',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  x: {
+    position: 'absolute',
+    color: '#4caf50',
+    fontSize: '14px',
+    top: '19px',
+    fontWeight: 'bold',
+  },
   createButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
@@ -359,9 +394,7 @@ const EnhancedTableToolbar = (props) => {
     handleOpenPopoverColumns,
     queryFilter,
     numeroFiltro,
-    nombreEmpresaFiltro,
     limpiarFiltros,
-    permisos,
   } = props;
   return (
     <Toolbar
@@ -396,17 +429,6 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Box component='a' href='/cotizacion/crear'>
-                  <Tooltip title='Crear Solicitud Cotizacion'>
-                    <IconButton
-                      className={classes.createButton}
-                      aria-label='filter list'>
-                      <AddIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
@@ -419,14 +441,7 @@ const EnhancedTableToolbar = (props) => {
               type='number'
               inputProps={{min: 0}}
             />
-
-            <TextField
-              label='Nombre Empresa'
-              name='nombreEmpresaFiltro'
-              id='nombreEmpresaFiltro'
-              onChange={queryFilter}
-              value={nombreEmpresaFiltro}
-            />
+            <Box></Box>
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -464,11 +479,14 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  onOpenAddAprobacionCotizacion: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
   numeroFiltro: PropTypes.string.isRequired,
   nombreEmpresaFiltro: PropTypes.string.isRequired,
+  documentoFiltro: PropTypes.string.isRequired,
+  fechaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -548,7 +566,7 @@ const useStyles = makeStyles((theme) => ({
   deleteIcon: {
     color: theme.palette.redBottoms,
   },
-  enviarIcon: {
+  aprobarIcon: {
     color: theme.palette.enviaEmailBottoms,
   },
   popoverColumns: {
@@ -568,14 +586,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Cotizacion = (props) => {
+const AprobacionCotizacion = (props) => {
   const [showForm, setShowForm] = useState(false);
-  const [accion, setAccion] = useState('ver');
-  const [cotizacionSeleccionado, setCotizacionSeleccionado] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
-    'fecha_modificacion:desc',
+    'numero_cotizacion_servicio:desc',
   );
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
@@ -584,12 +600,19 @@ const Cotizacion = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
+  const [accion, setAccion] = useState('ver');
+  const [
+    aprobacionCotizacionSeleccionado,
+    setAprobacionCotizacionSeleccionado,
+  ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({cotizacionReducer}) => cotizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [numeroFiltro, setnumeroFiltro] = useState('');
   const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
+  const [documentoFiltro, setDocumentoFiltro] = useState('');
+  const [fechaFiltro, setFechaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -641,6 +664,7 @@ const Cotizacion = (props) => {
         });
       });
   }, [user, props.route]);
+
   useEffect(() => {
     dispatch(
       onGetColeccion(
@@ -649,9 +673,9 @@ const Cotizacion = (props) => {
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
-        '',
-        '',
-        'ENV,GEN',
+        documentoFiltro,
+        fechaFiltro,
+        'ENV',
       ),
     );
   }, [
@@ -661,6 +685,8 @@ const Cotizacion = (props) => {
     numeroFiltro,
     orderByToSend,
     nombreEmpresaFiltro,
+    documentoFiltro,
+    fechaFiltro,
   ]);
 
   const updateColeccion = () => {
@@ -671,15 +697,21 @@ const Cotizacion = (props) => {
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
-        '',
-        '',
-        'ENV,GEN',
+        documentoFiltro,
+        fechaFiltro,
+        'ENV',
       ),
     );
   };
   useEffect(() => {
     setPage(1);
-  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro]);
+  }, [
+    numeroFiltro,
+    orderByToSend,
+    nombreEmpresaFiltro,
+    documentoFiltro,
+    fechaFiltro,
+  ]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
@@ -689,16 +721,22 @@ const Cotizacion = (props) => {
       case 'nombreEmpresaFiltro':
         setnombreEmpresaFiltro(e.target.value);
         break;
+      case 'documentoFiltro':
+        setDocumentoFiltro(e.target.value);
+        break;
+      case 'fechaFiltro':
+        setFechaFiltro(e.target.value);
+        break;
       default:
         break;
     }
   };
 
-  useEffect(() => {}, [dispatch]);
-
   const limpiarFiltros = () => {
     setnumeroFiltro('');
     setnombreEmpresaFiltro('');
+    setDocumentoFiltro('');
+    setFechaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -715,6 +753,12 @@ const Cotizacion = (props) => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
+  };
+
+  const onOpenEditAprobacionCotizacion = (id) => {
+    setAprobacionCotizacionSeleccionado(id);
+    setAccion('editar');
+    setShowForm(true);
   };
 
   const handleClosePopover = () => {
@@ -740,18 +784,6 @@ const Cotizacion = (props) => {
     );
   };
 
-  const onOpenViewAprobacionCotizacion = (id) => {
-    setCotizacionSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setCotizacionSeleccionado(0);
-    setAccion('ver');
-  };
-
   const showAllColumns = () => {
     let aux = columnasMostradas;
     setColumnasMostradas(
@@ -765,50 +797,34 @@ const Cotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteCotizacion = (id) => {
-    Swal.fire({
-      title: 'Confirmar',
-      text: '¿Seguro que dese anular la cotización?',
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'NO',
-      confirmButtonText: 'SI',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(onDelete(id, updateColeccion));
-        Swal.fire(
-          'Anulado',
-          'La cotizacion fue anulada correctamente',
-          'success',
-        );
-      }
-    });
+  const onOpenViewAprobacionCotizacion = (id) => {
+    setAprobacionCotizacionSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
   };
 
-  const enviarCorreo = (id, estado) => {
-    if (estado === 'ENV') {
-      Swal.fire({
-        title: 'Confirmar',
-        text: '¿Seguro que desea reenviar la cotización?',
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'NO',
-        confirmButtonText: 'SI',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(onEnviarCorreo(id, updateColeccion));
-        }
-      });
-    } else {
-      dispatch(onEnviarCorreo(id, updateColeccion));
-    }
+  const onOpenAprobacionCotizacion = (id) => {
+    setAprobacionCotizacionSeleccionado(id);
+    setAccion('aprobar');
+    setShowForm(true);
   };
+
+  const onOpenAddAprobacionCotizacion = () => {
+    setAprobacionCotizacionSeleccionado(0);
+    setAccion('crear');
+    setShowForm(true);
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setAprobacionCotizacionSeleccionado(0);
+    setAccion('ver');
+  };
+  // const handleRequestSort = (event, property) => {
+  //   const isAsc = orderBy === property && order === 'asc';
+  //   setOrder(isAsc ? 'desc' : 'asc');
+  //   setOrderBy(property);
+  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -836,11 +852,14 @@ const Cotizacion = (props) => {
 
   // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   const [showTable, setShowTable] = useState(true);
+  const [ids, setIds] = useState([]);
   useEffect(() => {
     if (rows.length === 0) {
       setShowTable(false);
+      setIds([]);
     } else {
       setShowTable(true);
+      setIds(rows.map((item) => item.id));
     }
   }, [rows]);
 
@@ -850,13 +869,17 @@ const Cotizacion = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
+            onOpenAddAprobacionCotizacion={onOpenAddAprobacionCotizacion}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
             numeroFiltro={numeroFiltro}
             nombreEmpresaFiltro={nombreEmpresaFiltro}
+            documentoFiltro={documentoFiltro}
+            fechaFiltro={fechaFiltro}
             permisos={permisos}
             titulo={titulo}
+            ids={ids}
           />
         )}
         {showTable && permisos ? (
@@ -930,46 +953,34 @@ const Cotizacion = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Box
-                                component='a'
-                                href={'/cotizacion/editar/' + row.id}
-                                className={classes.generalIcons}>
+                            {permisos.indexOf('Modificar') >= 0 &&
+                              row.estado_solicitud_cotizacion === 'SOL' && (
                                 <Tooltip
                                   title={<IntlMessages id='boton.editar' />}>
                                   <EditIcon
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}
-                                  />
+                                    onClick={() =>
+                                      onOpenEditAprobacionCotizacion(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                                 </Tooltip>
-                              </Box>
-                            )}
+                              )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}
                                   onClick={() =>
                                     onOpenViewAprobacionCotizacion(row.id)
                                   }
-                                />
+                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Enviar') >= 0 && (
+                            {permisos.indexOf('Aprobar') >= 0 && (
                               <Tooltip
-                                title={
-                                  <IntlMessages id='boton.enviarCorreo' />
-                                }>
-                                <EmailIcon
+                                title={<IntlMessages id='boton.aprobar' />}>
+                                <LibraryAddCheckIcon
                                   onClick={() =>
-                                    enviarCorreo(row.id, row.estado_cotizacion)
+                                    onOpenAprobacionCotizacion(row.id)
                                   }
-                                  className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip title={'Anular'}>
-                                <DeleteIcon
-                                  onClick={() => onDeleteCotizacion(row.id)}
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                                  className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
                               </Tooltip>
                             )}
                           </TableCell>
@@ -1062,10 +1073,26 @@ const Cotizacion = (props) => {
         )}
       </Paper>
 
-      {showForm ? (
+      {/* <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Cambiar Densidad"
+      /> */}
+      {showForm && accion === 'ver' ? (
         <ConsultaCotizacionCreador
           showForm={showForm}
-          consultaCotizacion={cotizacionSeleccionado}
+          consultaCotizacion={aprobacionCotizacionSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          updateColeccion={updateColeccion}
+          titulo={titulo}
+        />
+      ) : (
+        ''
+      )}
+      {showForm && accion === 'aprobar' ? (
+        <AprobacionCotizacionCreador
+          showForm={showForm}
+          aprobacionCotizacion={aprobacionCotizacionSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -1115,4 +1142,4 @@ const Cotizacion = (props) => {
   );
 };
 
-export default Cotizacion;
+export default AprobacionCotizacion;

@@ -6,6 +6,7 @@ import {
   DELETE_COTIZACION,
   CREATE_COTIZACION,
   ENVIAR_COTIZACION,
+  APPROVE_COTIZACION,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -53,7 +54,10 @@ const solicitudCotizacionReducer = (state = initialState, action) => {
         ...state,
         selectedRow: action.payload.datos,
       };
-
+    case APPROVE_COTIZACION:
+      return {
+        ...state,
+      };
     case DELETE_COTIZACION:
       return {
         ...state,

@@ -28,6 +28,11 @@ export const cotizacionConfig = [
       },
       {
         exact: true,
+        path: '/aprobacion-cotizaciones',
+        component: React.lazy(() => import('./AprobacionCotizacion')),
+      },
+      {
+        exact: true,
         path: ['/cotizacion/:accion/:id'],
         component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
       },

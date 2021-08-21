@@ -6,6 +6,7 @@ import {
   DELETE_COTIZACION,
   ENVIAR_COTIZACION,
   CREATE_COTIZACION,
+  APPROVE_COTIZACION,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -23,7 +24,7 @@ export const onGetColeccion = (
   nombre_empresa,
   documento,
   fecha_cotizacion,
-  all,
+  estados,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
@@ -32,7 +33,7 @@ export const onGetColeccion = (
   const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
   const documentoAux = documento ? documento : '';
   const fecha_cotizacionAux = fecha_cotizacion ? fecha_cotizacion : '';
-  const allAux = all ? all : '';
+  const estadosAux = estados ? estados : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -46,7 +47,7 @@ export const onGetColeccion = (
           nombre_empresa: nombre_empresaAux,
           documento: documentoAux,
           fecha_cotizacion: fecha_cotizacionAux,
-          all: allAux,
+          estados: estadosAux,
         },
       })
       .then((data) => {
@@ -224,6 +225,35 @@ export const onCreate = (params, handleOnClose, detalles) => {
             type: CREATE_COTIZACION,
             payload: data.data,
           });
+          handleOnClose();
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
+      });
+  };
+};
+
+export const onApprove = (params, handleOnClose, updateColeccion) => {
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('cotizaciones-servicios/aprobar/' + params.id, params)
+      .then((data) => {
+        console.log(data);
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: APPROVE_COTIZACION,
+            payload: data.data,
+          });
+          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,

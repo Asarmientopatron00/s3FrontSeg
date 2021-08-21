@@ -68,7 +68,7 @@ const ConsultaCotizacionForm = (props) => {
       width: '100%',
       display: 'grid',
       gridTemplateColumns: 'repeat(2,1fr)',
-      gap: '20px',
+      columnGap: '20px',
     },
     btnRoot: {
       paddingLeft: 15,
@@ -91,12 +91,19 @@ const ConsultaCotizacionForm = (props) => {
     pointer: {
       cursor: 'pointer',
     },
+    tableHead: {
+      fontWeight: 'bold',
+      padding: '2px',
+    },
+    tableCell: {
+      padding: '2px',
+    },
   }));
 
   const classes = useStyles(props);
 
   return (
-    <Form className='' noValidate autoComplete='off'>
+    <Form style={{width: '900px'}} noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
         <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
           <Box
@@ -160,12 +167,18 @@ const ConsultaCotizacionForm = (props) => {
                 disabled={disabled}
                 required
                 type='number'
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Estado Cotización'
                 name='estado_cotizacion'
                 disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Box>
 
@@ -174,6 +187,9 @@ const ConsultaCotizacionForm = (props) => {
               label='Observaciones'
               name='observaciones'
               disabled={disabled}
+              InputLabelProps={{
+                shrink: true,
+              }}
               multiline
             />
             <Box className={classes.inputs_2}>
@@ -237,20 +253,34 @@ const ConsultaCotizacionForm = (props) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Ciudad Origen</TableCell>
-                    <TableCell>Ciudad Destino</TableCell>
-                    <TableCell>Servicio</TableCell>
-                    <TableCell>Valor</TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Ciudad Origen
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Ciudad Destino
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Servicio
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>Valor</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => {
                     return (
                       <TableRow>
-                        <TableCell>{row.ciudad_origen}</TableCell>
-                        <TableCell>{row.ciudad_destino}</TableCell>
-                        <TableCell>{row.servicio}</TableCell>
-                        <TableCell>{row.valor_servicio}</TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.ciudad_origen}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.ciudad_destino}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.servicio}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.valor_servicio}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
