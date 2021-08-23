@@ -42,3 +42,5 @@ export * from './RutaAction';
 export * from './TarifaAction';
 export * from './CotizacionAction';
 export * from './DetalleCotizacionAction';
+export * from './LugarAction';
+export * from './AcuerdoServicioAction';

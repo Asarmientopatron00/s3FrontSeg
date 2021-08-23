@@ -18,6 +18,7 @@ import {configuracionConfig} from './configuracion';
 import {SeguridadConfig} from './seguridad';
 import {asociadoConfig} from './asociados';
 import {cotizacionConfig} from './cotizaciones';
+import {acuerdoServicioConfig} from './acuerdosServicio';
 
 const routeConfigs = [
   ...authRouteConfig,
@@ -35,6 +36,7 @@ const routeConfigs = [
   ...SeguridadConfig(),
   ...asociadoConfig,
   ...cotizacionConfig,
+  ...acuerdoServicioConfig,
 ];
 
 const routes = [

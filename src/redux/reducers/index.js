@@ -37,6 +37,8 @@ import RutaReducer from './RutaReducer';
 import TarifaReducer from './TarifaReducer';
 import CotizacionReducer from './CotizacionReducer';
 import DetalleCotizacionReducer from './DetalleCotizacionReducer';
+import LugarReducer from './LugarReducer';
+import AcuerdoServicioReducer from './AcuerdoServicioReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -78,5 +80,7 @@ const reducers = (history) =>
     tarifaReducer: TarifaReducer,
     cotizacionReducer: CotizacionReducer,
     detalleCotizacionReducer: DetalleCotizacionReducer,
+    lugarReducer: LugarReducer,
+    acuerdoServicioReducer: AcuerdoServicioReducer,
   });
 export default reducers;

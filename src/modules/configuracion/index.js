@@ -67,6 +67,10 @@ export const configuracionConfig = [
         path: ['/tarifas'],
         component: React.lazy(() => import('./Tarifa')),
       },
+      {
+        path: ['/lugares'],
+        component: React.lazy(() => import('./Lugar')),
+      },
     ],
   },
 ];

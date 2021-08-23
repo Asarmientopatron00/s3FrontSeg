@@ -241,6 +241,19 @@ export const SHOW_DETALLE_COTIZACION = 'show_detalle_cotizacion';
 export const UPDATE_DETALLE_COTIZACION = 'update_detalle_cotizacion';
 export const CREATE_DETALLE_COTIZACION = 'create_detalle_cotizacion';
 export const DELETE_DETALLE_COTIZACION = 'delete_detalle_cotizacion';
+export const GET_COLECCION_LUGAR = 'get_coleccion_lugar';
+export const GET_COLECCION_LIGERA_LUGAR = 'get_coleccion_ligera_lugar';
+export const SHOW_LUGAR = 'show_lugar';
+export const UPDATE_LUGAR = 'update_lugar';
+export const CREATE_LUGAR = 'create_lugar';
+export const DELETE_LUGAR = 'delete_lugar';
+export const GET_COLECCION_ACUERDO_SERVICIO = 'get_coleccion_acuerdo_servicio';
+export const GET_COLECCION_LIGERA_ACUERDO_SERVICIO =
+  'get_coleccion_ligera_acuerdo_servicio';
+export const SHOW_ACUERDO_SERVICIO = 'show_acuerdo_servicio';
+export const UPDATE_ACUERDO_SERVICIO = 'update_acuerdo_servicio';
+export const CREATE_ACUERDO_SERVICIO = 'create_acuerdo_servicio';
+export const DELETE_ACUERDO_SERVICIO = 'delete_acuerdo_servicio';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
