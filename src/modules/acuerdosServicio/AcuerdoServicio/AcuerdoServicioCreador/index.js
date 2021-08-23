@@ -222,6 +222,7 @@ const AcuerdoServicioCreator = (props) => {
                 error = true;
               }
               if (error) {
+                setSubmitting(false);
                 return;
               }
               if (accion === 'crear') {

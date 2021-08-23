@@ -45,7 +45,8 @@ import StoreIcon from '@material-ui/icons/Store';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AcuerdoServicioCreador from './AcuerdoServicioCreador';
 import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
-
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
+import DirectionsIcon from '@material-ui/icons/Directions';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
 
@@ -1068,21 +1069,21 @@ const AcuerdoServicio = (props) => {
                           <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.comerciales' />}>
-                              <StoreIcon
+                              <DirectionsIcon
                                 onClick={() =>
                                   onOpenAsociadoComerciales(row.id)
                                 }
-                                className={`${classes.generalIcons} ${classes.comercialIcon}`}></StoreIcon>
+                                className={`${classes.generalIcons} ${classes.comercialIcon}`}></DirectionsIcon>
                             </Tooltip>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.documentos' />}>
-                              <AssignmentIcon
+                              <NotificationsActiveIcon
                                 onClick={() =>
                                   onOpenEditAsociadoDocumento(row.id)
                                 }
-                                className={`${classes.generalIcons} ${classes.documentosIcon}`}></AssignmentIcon>
+                                className={`${classes.generalIcons} ${classes.documentosIcon}`}></NotificationsActiveIcon>
                             </Tooltip>
                           </TableCell>
                         </TableRow>

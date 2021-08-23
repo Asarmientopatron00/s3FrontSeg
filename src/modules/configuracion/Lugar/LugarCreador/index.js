@@ -129,6 +129,16 @@ const LugarCreator = (props) => {
                   ? selectedRow.direccion
                   : ''
                 : '',
+              lugar_aduana_general: selectedRow
+                ? selectedRow.lugar_aduana_general
+                  ? selectedRow.lugar_aduana_general
+                  : ''
+                : '',
+              lugar_asociado_negocios: selectedRow
+                ? selectedRow.lugar_asociado_negocios
+                  ? selectedRow.lugar_asociado_negocios
+                  : ''
+                : '',
               asociado_id: selectedRow
                 ? selectedRow.asociado_id
                   ? selectedRow.asociado_id
@@ -165,10 +175,11 @@ const LugarCreator = (props) => {
               // handleOnClose();
               // updateColeccion();
             }}>
-            {({values, initialValues, setFieldValue}) => (
+            {({values, initialValues, setFieldValue, touched}) => (
               <LugarForm
                 values={values}
                 setFieldValue={setFieldValue}
+                touched={touched}
                 handleOnClose={handleOnClose}
                 titulo={titulo}
                 accion={accion}

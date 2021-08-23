@@ -65,6 +65,7 @@ const LugarForm = (props) => {
     asociados,
     titulo,
     setFieldValue,
+    touched,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -147,10 +148,17 @@ const LugarForm = (props) => {
   useEffect(() => {
     if (values.departamento_id !== '') {
       dispatch(ciudadColeccionLigera(values.departamento_id));
-      setFieldValue('ciudad_id', '');
+      if (touched.departamento_id) {
+        setFieldValue('ciudad_id', '');
+      }
     } else {
     }
-  }, [dispatch, values.departamento_id, setFieldValue]);
+  }, [
+    dispatch,
+    values.departamento_id,
+    setFieldValue,
+    touched.departamento_id,
+  ]);
 
   const [req, setReq] = useState(false);
 
