@@ -44,6 +44,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import StoreIcon from '@material-ui/icons/Store';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import AcuerdoServicioCreador from './AcuerdoServicioCreador';
+import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
 
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
@@ -114,10 +115,13 @@ const cells = [
     id: 'estado_acuerdo',
     typeHead: 'string',
     label: 'Estado Acuerdo',
-    value: (value) => value,
+    value: (value) =>
+      ESTADO_ACUERDO_SERVICIO.map((estado) =>
+        estado.id === value ? estado.nombre : '',
+      ),
     align: 'left',
     width: '140px',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'observaciones',
@@ -983,16 +987,17 @@ const AcuerdoServicio = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() =>
-                                    onOpenEditAcuerdoServicio(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
-                            )}
+                            {permisos.indexOf('Modificar') >= 0 &&
+                              row.estado_acuerdo !== 'ANU' && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    onClick={() =>
+                                      onOpenEditAcuerdoServicio(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                                </Tooltip>
+                              )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
@@ -1002,16 +1007,17 @@ const AcuerdoServicio = (props) => {
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
-                                <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteAcuerdoServicio(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            )}
+                            {permisos.indexOf('Eliminar') >= 0 &&
+                              row.estado_acuerdo !== 'ANU' && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.eliminar' />}>
+                                  <DeleteIcon
+                                    onClick={() =>
+                                      onDeleteAcuerdoServicio(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                                </Tooltip>
+                              )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {

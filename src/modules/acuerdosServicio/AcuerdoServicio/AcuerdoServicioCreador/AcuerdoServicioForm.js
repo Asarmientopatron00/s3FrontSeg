@@ -7,8 +7,9 @@ import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 import FormGroup from '@material-ui/core/FormGroup';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -23,6 +24,59 @@ const MyTextField = (props) => {
   );
 };
 
+const MyAutocompleteAsociado = (props) => {
+  const [field, meta, form] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  let myvalueAux = '';
+  if (field.value !== '') {
+    props.options.forEach((option) => {
+      if (option.id === field.value) {
+        myvalueAux = option.numero_documento;
+      }
+    });
+  }
+  let myvalue = '';
+  if (myvalueAux === '') {
+    myvalue = field.value;
+  } else {
+    myvalue = myvalueAux;
+  }
+  return (
+    <Autocomplete
+      selectOnFocus={false}
+      openOnFocus
+      onKeyDown={(e) =>
+        e.key === 'Backspace' && typeof field.value === 'number'
+          ? form.setValue('')
+          : ''
+      }
+      {...props}
+      onChange={(event, newValue, reasons, details, trial) =>
+        newValue ? form.setValue(newValue.id) : form.setValue('')
+      }
+      inputValue={myvalue}
+      renderOption={(option) => {
+        return <React.Fragment>{option.nombre}</React.Fragment>;
+      }}
+      getOptionLabel={(option) => option.nombre}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            {...field}
+            name={props.name}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
+    />
+  );
+};
+
 const AcuerdoServicioForm = (props) => {
   const {
     handleOnClose,
@@ -31,6 +85,8 @@ const AcuerdoServicioForm = (props) => {
     initialValues,
     asociados,
     setFieldValue,
+    titulo,
+    errors,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -44,6 +100,14 @@ const AcuerdoServicioForm = (props) => {
     }
   }, [initialValues.estado, accion]);
 
+  useEffect(() => {
+    setFieldValue('asociado', '');
+    asociados.forEach((asociado) => {
+      if (asociado.id === values.asociado_id) {
+        setFieldValue('asociado', asociado.nombre);
+      }
+    });
+  }, [values.asociado_id, asociados, setFieldValue]);
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
@@ -102,6 +166,12 @@ const AcuerdoServicioForm = (props) => {
       gridTemplateColumns: 'repeat(3,1fr)',
       gap: '10px',
     },
+    inputs_2: {
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2,1fr)',
+      columnGap: '20px',
+    },
   }));
 
   const handleChange = (event) => {
@@ -111,7 +181,7 @@ const AcuerdoServicioForm = (props) => {
         seth24(true);
         setFieldValue('horario_transito_diurno', 'N');
         setFieldValue('horario_transito_diurno_desde', '');
-        setFieldValue('horario_transito_diurno_hasta', 'N');
+        setFieldValue('horario_transito_diurno_hasta', '');
         setFieldValue('horario_transito_nocturno', 'N');
         setFieldValue('horario_transito_nocturno_desde', '');
         setFieldValue('horario_transito_nocturno_hasta', '');
@@ -125,9 +195,7 @@ const AcuerdoServicioForm = (props) => {
       } else {
         setDiurno(false);
         setFieldValue('horario_transito_diurno_desde', '');
-        setFieldValue('horario_transito_diurno_hasta', 'N');
-        // setFieldValue('horario_transito_nocturno_desde','');
-        // setFieldValue('horario_transito_nocturno_hasta','');
+        setFieldValue('horario_transito_diurno_hasta', '');
       }
     }
     if (event.target.name === 'horario_transito_nocturno') {
@@ -140,6 +208,7 @@ const AcuerdoServicioForm = (props) => {
       }
     }
   };
+
   const classes = useStyles(props);
   return (
     <Form className='' noValidate autoComplete='off'>
@@ -150,83 +219,119 @@ const AcuerdoServicioForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            <IntlMessages id='configuracion.actividadesEconomicas' />
+            {titulo}
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <MyAutocomplete
-              options={asociados}
-              name='asociado_id'
-              inputValue={initialValues.asociado_id}
-              label='Asociado de negocio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-            <MyTextField
-              className={classes.myTextField}
-              label='Fecha'
-              name='fecha_acuerdo_servicio'
-              disabled={true}
-              type='date'
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
+            <Box className={classes.inputs_2}>
+              <MyAutocompleteAsociado
+                options={asociados}
+                name='asociado_id'
+                inputValue={initialValues.asociado_id}
+                label='Asociado de negocio'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label=' '
+                name='asociado'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
-            <Box component='p'>Tipo Servicio*</Box>
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha'
+                name='fecha_acuerdo_servicio'
+                disabled={true}
+                type='date'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+            <Box
+              component='p'
+              color={!!errors.tipo_servicio_dta ? 'red' : 'black'}>
+              Tipo Servicio*
+            </Box>
             <FormGroup row>
               <FormControlLabel
+                color='red'
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='tipo_servicio_dta'
                     checked={values.tipo_servicio_dta === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='DTA'
                 disabled={disabled}
               />
               <FormControlLabel
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='tipo_servicio_otm'
                     checked={values.tipo_servicio_otm === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='OTM'
                 disabled={disabled}
               />
               <FormControlLabel
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='tipo_servicio_nacionalizado'
                     checked={values.tipo_servicio_nacionalizado === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Nacionalizado'
                 disabled={disabled}
               />
               <FormControlLabel
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='tipo_servicio_pernocta'
                     checked={values.tipo_servicio_pernocta === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Pernocta'
                 disabled={disabled}
               />
               <FormControlLabel
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='tipo_servicio_exportacion'
                     checked={values.tipo_servicio_exportacion === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Exportación'
@@ -238,7 +343,12 @@ const AcuerdoServicioForm = (props) => {
                 disabled={disabled}
               />
             </FormGroup>
-            <Box component='h4'>Horario autorizado de transito:</Box>
+            {!!errors.tipo_servicio_dta && (
+              <FormHelperText error>{errors.tipo_servicio_dta}</FormHelperText>
+            )}
+            <Box component='h4' marginTop={2}>
+              Horario autorizado de transito:
+            </Box>
             <FormControlLabel
               control={
                 <Checkbox
@@ -320,86 +430,121 @@ const AcuerdoServicioForm = (props) => {
                 }}
               />
             </Box>
-            <Box component='p'>Dias de la semana</Box>
+            <Box
+              component='p'
+              color={!!errors.tipo_servicio_dta ? 'red' : 'black'}>
+              Dias de la semana*
+            </Box>
             <FormGroup row>
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_lunes'
                     checked={values.dia_transito_lunes === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Lunes'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_martes'
                     checked={values.dia_transito_martes === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Martes'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_miercoles'
                     checked={values.dia_transito_miercoles === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Miércoles'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_jueves'
                     checked={values.dia_transito_jueves === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Jueves'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_viernes'
                     checked={values.dia_transito_viernes === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Viernes'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_sabado'
                     checked={values.dia_transito_sabado === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Sábado'
                 disabled={accion === 'ver'}
               />
               <FormControlLabel
+                style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
                 control={
                   <Checkbox
                     name='dia_transito_domingo'
                     checked={values.dia_transito_domingo === 'S'}
                     onChange={handleChange}
+                    style={{
+                      color: !!errors.dia_transito_lunes ? 'red' : '#74788d',
+                    }}
                   />
                 }
                 label='Domingo'
                 disabled={accion === 'ver'}
               />
             </FormGroup>
+            {!!errors.dia_transito_lunes && (
+              <FormHelperText error>{errors.dia_transito_lunes}</FormHelperText>
+            )}
             <FormControlLabel
               control={
                 <Checkbox

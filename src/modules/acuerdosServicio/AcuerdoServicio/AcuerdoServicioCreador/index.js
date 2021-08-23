@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
-import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
@@ -20,11 +19,6 @@ import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
-});
-
-const validationSchema = yup.object({
-  asociado_id: yup.string().required('Requerido'),
-  tipo_servicio_otro: yup.string().max(60, mensajeValidacion('max', 60)),
 });
 
 const AcuerdoServicioCreator = (props) => {
@@ -180,9 +174,12 @@ const AcuerdoServicioCreator = (props) => {
                   : '0'
                 : '1',
             }}
-            validationSchema={validationSchema}
-            onSubmit={(data, {setSubmitting, resetForm, setFieldError}) => {
+            onSubmit={(
+              data,
+              {setSubmitting, resetForm, setFieldError, errors},
+            ) => {
               setSubmitting(true);
+              let error = false;
               if (
                 data.tipo_servicio_dta === 'N' &&
                 data.tipo_servicio_otm === 'N' &&
@@ -191,10 +188,40 @@ const AcuerdoServicioCreator = (props) => {
                 data.tipo_servicio_exportacion === 'N' &&
                 data.tipo_servicio_otro === ''
               ) {
+                setFieldError('tipo_servicio_otro', ' ');
                 setFieldError(
-                  'tipo_servicio_otro',
+                  'tipo_servicio_dta',
                   'Debe seleccionar almenos un tipo de servicio',
                 );
+                error = true;
+              }
+              if (
+                data.dia_transito_lunes === 'N' &&
+                data.dia_transito_martes === 'N' &&
+                data.dia_transito_miercoles === 'N' &&
+                data.dia_transito_jueves === 'N' &&
+                data.dia_transito_viernes === 'N' &&
+                data.dia_transito_sabado === 'N' &&
+                data.dia_transito_domingo === 'N'
+              ) {
+                setFieldError(
+                  'dia_transito_lunes',
+                  'Debe seleccionar almenos un día',
+                );
+                error = true;
+              }
+              if (data.asociado_id === '') {
+                setFieldError('asociado_id', 'Requerido');
+                error = true;
+              }
+              if (data.tipo_servicio_otro.length > 60) {
+                setFieldError(
+                  'tipo_servicio_otro',
+                  mensajeValidacion('max', 60),
+                );
+                error = true;
+              }
+              if (error) {
                 return;
               }
               if (accion === 'crear') {
@@ -209,7 +236,7 @@ const AcuerdoServicioCreator = (props) => {
               // handleOnClose();
               // updateColeccion();
             }}>
-            {({values, initialValues, setFieldValue}) => (
+            {({values, initialValues, setFieldValue, errors}) => (
               <AcuerdoServicioForm
                 values={values}
                 setFieldValue={setFieldValue}
@@ -218,6 +245,7 @@ const AcuerdoServicioCreator = (props) => {
                 accion={accion}
                 initialValues={initialValues}
                 asociados={asociados}
+                errors={errors}
               />
             )}
           </Formik>
