@@ -24,26 +24,33 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import {onGetColeccion, onDelete} from '../../../redux/actions/AsociadoAction';
+import AsociadoBancariaCreador from './RutaControlarCreador';
+import {
+  onGetColeccion,
+  onDelete,
+} from '../../../redux/actions/AsociadoBancariaAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
-import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {ESTADOS_PROCESO_ASOCIADOS} from './../../../shared/constants/ListasValores';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import SchoolIcon from '@material-ui/icons/School';
-import StoreIcon from '@material-ui/icons/Store';
-import AssignmentIcon from '@material-ui/icons/Assignment';
-import SecurityIcon from '@material-ui/icons/Security';
-// import MenuItem from '@material-ui/core/MenuItem';
+import {useParams} from 'react-router-dom';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import {RadioGroup, Radio} from '@material-ui/core';
 import {history} from 'redux/store';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
+import {
+  FETCH_ERROR,
+  FETCH_START,
+  FETCH_SUCCESS,
+} from '../../../shared/constants/ActionTypes';
+import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
+import GetUsuario from '../../../shared/functions/GetUsuario';
+// import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
 
@@ -75,36 +82,45 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 
 const cells = [
   {
-    id: 'numero_documento',
+    id: 'banco',
+    typeHead: 'string',
+    label: 'Banco',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'numero_cuenta',
     typeHead: 'numeric',
-    label: 'Documento',
+    label: 'Número Cuenta',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'tipo_persona',
+    id: 'tipo_cuenta',
     typeHead: 'string',
-    label: 'Tipo Persona',
-    value: (value) => (value === 'N' ? 'Natural' : 'Jurídica'),
+    label: 'Tipo Cuenta',
+    value: (value) =>
+      value === 'A' ? 'Ahorros' : value === 'C' ? 'Corriente' : '',
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'nombre',
+    id: 'sucursal',
     typeHead: 'string',
-    label: 'Nombre',
+    label: 'Sucursal',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'ciudad',
+    id: 'telefono',
     typeHead: 'string',
-    label: 'Ciudad',
+    label: 'Telefono',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'estado',
@@ -112,77 +128,8 @@ const cells = [
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: true,
+    mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
-  },
-
-  {
-    id: 'nombre_tipo_documento',
-    typeHead: 'string',
-    label: 'Tipo Documento',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'telefono',
-    typeHead: 'numeric',
-    label: 'Telefono Principal',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-
-  {
-    id: 'celular',
-    typeHead: 'numeric',
-    label: 'Celular Principal',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'codigo_ciiu',
-    typeHead: 'numeric',
-    label: 'Código CIIU',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'dia_cierre_facturacion',
-    typeHead: 'numeric',
-    label: 'Día Cierre Facturación',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'correo_envio_facturacion_electronica',
-    typeHead: 'string',
-    label: 'Correo Envío Facturación Electrónica',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'correo_recepcion_facturacion_electronica',
-    typeHead: 'string',
-    label: 'Correo Recepción Facturación Electrónica',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'estado_proceso_asociado',
-    typeHead: 'string',
-    label: 'Estado Proceso',
-    value: (value) =>
-      ESTADOS_PROCESO_ASOCIADOS.map((estado) =>
-        estado.id === value ? estado.value : '',
-      ),
-    align: 'left',
-    mostrarInicio: false,
   },
   {
     id: 'usuario_modificacion_nombre',
@@ -257,10 +204,9 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-
         {columnasMostradas.map((cell) => {
           if (cell.mostrar) {
             return (
@@ -297,24 +243,6 @@ function EnhancedTableHead(props) {
             return <th key={cell.id}></th>;
           }
         })}
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Legal'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Contactos'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Bancarias'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Comercial'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Documentos'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Requisitos de Seguridad'}
-        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -338,7 +266,6 @@ const useToolbarStyles = makeStyles((theme) => ({
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     display: 'grid',
-    gap: '20px',
   },
   highlight:
     theme.palette.type === 'light'
@@ -396,8 +323,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '4fr 4fr 1fr',
-    gap: '20px',
+    gridTemplateColumns: '1fr 1fr',
   },
   pairFilters: {
     display: 'flex',
@@ -411,14 +337,9 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    titulo,
-    onOpenAddAsociadoDatoBasico,
+    onOpenAddAsociadoBancaria,
     handleOpenPopoverColumns,
-    queryFilter,
-    nombreFiltro,
-    numeroDocumentoFiltro,
-    limpiarFiltros,
-    permisos,
+    encabezado,
   } = props;
   return (
     <Toolbar
@@ -441,7 +362,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              {titulo}
+              Acuerdos operativos de servicio - Rutas a controlar
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -453,45 +374,76 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear Asociado'
-                  onClick={onOpenAddAsociadoDatoBasico}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+              <Tooltip
+                title='Crear Asociado'
+                onClick={onOpenAddAsociadoBancaria}>
+                <IconButton
+                  className={classes.createButton}
+                  aria-label='filter list'>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
-              onChange={queryFilter}
-              value={nombreFiltro}
+              label='Tipo Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='tipoDocumento'
+              value={encabezado.tipo_documento ? encabezado.tipo_documento : ''}
+              disabled={true}
             />
             <TextField
               label='Número Documento'
-              name='numeroDocumentoFiltro'
-              id='numeroDocumentoFiltro'
-              onChange={queryFilter}
-              value={numeroDocumentoFiltro}
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='numeroDocumento'
+              value={
+                encabezado.numero_documento ? encabezado.numero_documento : ''
+              }
+              disabled={true}
             />
-            <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
+            <TextField
+              label='Nombre'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='nombre'
+              value={encabezado.nombre ? encabezado.nombre : ''}
+              disabled={true}
+            />
+            <TextField
+              label='Ciudad'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='ciudad'
+              value={encabezado.ciudad ? encabezado.ciudad : ''}
+              disabled={true}
+            />
           </Box>
         </>
       )}
@@ -518,15 +470,15 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAsociadoDatoBasico: PropTypes.func.isRequired,
+  onOpenAddAsociadoBancaria: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
-  queryFilter: PropTypes.func.isRequired,
-  limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
-  numeroDocumentoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   marcoTabla: {
     backgroundColor: 'white',
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
@@ -534,6 +486,21 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginTop: '5px',
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  btnSecundary: {
+    backgroundColor: theme.palette.grayBottoms,
   },
   root: {
     width: '100%%',
@@ -548,25 +515,13 @@ const useStyles = makeStyles((theme) => ({
   headCell: {
     padding: '0px 0px 0px 15px',
   },
-  headCellWoMargin: {
-    padding: '0px',
-    width: 'fit-content',
-    fontSize: '12px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-  },
   row: {
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
     padding: 'none',
   },
   cell: (props) => ({
-    fontSize: '13px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
   }),
   cellWidth: (props) => ({
@@ -577,7 +532,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   }),
   acciones: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     minWidth: '100px',
   }),
   paper: {
@@ -601,10 +556,6 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   generalIcons: {
-    height: '20px',
-    [theme.breakpoints.up('xl')]: {
-      height: '25px',
-    },
     '&:hover': {
       color: theme.palette.colorHover,
       cursor: 'pointer',
@@ -613,32 +564,11 @@ const useStyles = makeStyles((theme) => ({
   editIcon: {
     color: theme.palette.primary.main,
   },
-  legalIcon: {
-    color: 'black',
-  },
-  contactIcon: {
-    color: 'lightgreen',
-  },
-  bancariaIcon: {
-    color: 'gray',
-  },
-  comercialIcon: {
-    color: 'darkgreen',
-  },
-  documentosIcon: {
-    color: theme.palette.primary.main,
-  },
-  seguridadIcon: {
-    color: 'red',
-  },
   visivilityIcon: {
     color: theme.palette.grayBottoms,
   },
   deleteIcon: {
     color: theme.palette.redBottoms,
-  },
-  descargarIcon: {
-    color: theme.palette.enviaEmailBottoms,
   },
   popoverColumns: {
     display: 'grid',
@@ -657,7 +587,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AsociadoDatoBasico = (props) => {
+const AsociadoBancaria = () => {
+  const {asociado_id} = useParams();
+
+  const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -670,12 +603,13 @@ const AsociadoDatoBasico = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({asociadoReducer}) => asociadoReducer,
+  const [accion, setAccion] = useState('ver');
+  const [asociadoBancariaSeleccionado, setAsociadoBancariaSeleccionado] =
+    useState(0);
+  const {rows, desde, hasta, ultima_pagina, total, encabezado} = useSelector(
+    ({asociadoBancariaReducer}) => asociadoBancariaReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [numeroDocumentoFiltro, setNumeroDocumentoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -706,80 +640,17 @@ const AsociadoDatoBasico = (props) => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
-  const {user} = useSelector(({auth}) => auth);
-  const [permisos, setPermisos] = useState('');
-  const [titulo, setTitulo] = useState('');
-
   useEffect(() => {
-    user &&
-      user.permisos.forEach((modulo) => {
-        modulo.opciones.forEach((opcion) => {
-          if (opcion.url === props.route.path[0]) {
-            setTitulo(opcion.nombre);
-            const permisoAux = [];
-            opcion.permisos.forEach((permiso) => {
-              if (permiso.permitido) {
-                permisoAux.push(permiso.titulo);
-              }
-            });
-            setPermisos(permisoAux);
-          }
-        });
-      });
-  }, [user, props.route]);
-
-  useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    nombreFiltro,
-    orderByToSend,
-    numeroDocumentoFiltro,
-  ]);
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
+  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, asociado_id]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-      ),
-    );
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, numeroDocumentoFiltro]);
-
-  const queryFilter = (e) => {
-    switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
-        break;
-      case 'numeroDocumentoFiltro':
-        setNumeroDocumentoFiltro(e.target.value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setNumeroDocumentoFiltro('');
-  };
+  }, [orderByToSend]);
 
   const changeOrderBy = (id) => {
     if (orderBy === id) {
@@ -797,32 +668,10 @@ const AsociadoDatoBasico = (props) => {
     }
   };
 
-  const onOpenEditAsociadoDatoBasico = (id) => {
-    history.push(history.location.pathname + '/editar/' + id);
-  };
-
-  const onOpenAsociadoContactoLegal = (id) => {
-    history.push(history.location.pathname + '-legales/' + id);
-  };
-
-  const onOpenAsociadoContacto = (id) => {
-    history.push(history.location.pathname + '-contactos/' + id);
-  };
-
-  const onOpenAsociadoBancarias = (id) => {
-    history.push(history.location.pathname + '-bancarias/' + id);
-  };
-
-  const onOpenAsociadoComerciales = (id) => {
-    history.push(history.location.pathname + '-comerciales/' + id);
-  };
-
-  const onOpenEditAsociadoDocumento = (id) => {
-    history.push(history.location.pathname + '-documentos/' + id);
-  };
-
-  const onOpenEditAsociadoRequisitoSeguridad = (id) => {
-    history.push(history.location.pathname + '-requisitos-seguridad/' + id);
+  const onOpenEditAsociadoBancaria = (id) => {
+    setAsociadoBancariaSeleccionado(id);
+    setAccion('editar');
+    setShowForm(true);
   };
 
   const handleClosePopover = () => {
@@ -861,11 +710,13 @@ const AsociadoDatoBasico = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAsociadoDatoBasico = (id) => {
-    history.push(history.location.pathname + '/ver/' + id);
+  const onOpenViewAsociadoBancaria = (id) => {
+    setAsociadoBancariaSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
   };
 
-  const onDeleteAsociadoDatoBasico = (id) => {
+  const onDeleteAsociadoBancaria = (id) => {
     Swal.fire({
       title: 'Confirmar',
       text: '¿Seguro Que Desea Eliminar El Asociado?',
@@ -891,10 +742,21 @@ const AsociadoDatoBasico = (props) => {
     });
   };
 
-  const onOpenAddAsociadoDatoBasico = () => {
-    history.push(history.location.pathname + '/crear');
+  const onOpenAddAsociadoBancaria = () => {
+    setAsociadoBancariaSeleccionado(0);
+    setAccion('crear');
+    setShowForm(true);
   };
 
+  const handleOnClose = () => {
+    history.goBack();
+  };
+
+  const handleOnCloseForm = () => {
+    setShowForm(false);
+    setAsociadoBancariaSeleccionado(0);
+    setAccion('ver');
+  };
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';
   //   setOrder(isAsc ? 'desc' : 'asc');
@@ -935,23 +797,24 @@ const AsociadoDatoBasico = (props) => {
     }
   }, [rows]);
 
+  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+
+  useEffect(() => {
+    dispatch(onGetTipoRol());
+  }, [dispatch]);
+
+  const usuario = GetUsuario();
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {permisos && (
-          <EnhancedTableToolbar
-            numSelected={selected.length}
-            onOpenAddAsociadoDatoBasico={onOpenAddAsociadoDatoBasico}
-            handleOpenPopoverColumns={handleOpenPopoverColumns}
-            queryFilter={queryFilter}
-            limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
-            numeroDocumentoFiltro={numeroDocumentoFiltro}
-            permisos={permisos}
-            titulo={titulo}
-          />
-        )}
-        {showTable && permisos ? (
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onOpenAddAsociadoBancaria={onOpenAddAsociadoBancaria}
+          handleOpenPopoverColumns={handleOpenPopoverColumns}
+          encabezado={encabezado}
+        />
+        {showTable ? (
           <Box className={classes.marcoTabla}>
             <Box className={classes.paginacion}>
               <Box>
@@ -1022,59 +885,26 @@ const AsociadoDatoBasico = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() =>
-                                    onOpenEditAsociadoDatoBasico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewAsociadoDatoBasico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
-                                <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteAsociadoDatoBasico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            )}
-                            {row.informacion_verificada_asociado &&
-                              row.informacion_verificada_legal &&
-                              row.informacion_verificada_contactos &&
-                              row.informacion_verificada_bancarias &&
-                              row.informacion_verificada_comerciales &&
-                              row.informacion_verificada_documentos &&
-                              row.informacion_verificada_seguridad && (
-                                <Box
-                                  component='a'
-                                  href={
-                                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
-                                    row.id
-                                  }
-                                  // href={'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' + row.id}
-                                  className={classes.generalIcons}>
-                                  <Tooltip
-                                    title={
-                                      'Descargar Formulario Representante Legal'
-                                    }>
-                                    <GetAppIcon
-                                      className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>
-                                  </Tooltip>
-                                </Box>
-                              )}
+                            <Tooltip title={<IntlMessages id='boton.editar' />}>
+                              <EditIcon
+                                onClick={() =>
+                                  onOpenEditAsociadoBancaria(row.id)
+                                }
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                            </Tooltip>
+                            <Tooltip title={<IntlMessages id='boton.ver' />}>
+                              <VisibilityIcon
+                                onClick={() =>
+                                  onOpenViewAsociadoBancaria(row.id)
+                                }
+                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                            </Tooltip>
+                            <Tooltip
+                              title={<IntlMessages id='boton.eliminar' />}>
+                              <DeleteIcon
+                                onClick={() => onDeleteAsociadoBancaria(row.id)}
+                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1097,63 +927,6 @@ const AsociadoDatoBasico = (props) => {
                               return <th key={row.id + columna.id}></th>;
                             }
                           })}
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip title={<IntlMessages id='boton.legal' />}>
-                              <SchoolIcon
-                                onClick={() =>
-                                  onOpenAsociadoContactoLegal(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.legalIcon}`}></SchoolIcon>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.contactos' />}>
-                              <SupervisorAccountIcon
-                                onClick={() => onOpenAsociadoContacto(row.id)}
-                                className={`${classes.generalIcons} ${classes.contactIcon}`}></SupervisorAccountIcon>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.bancarias' />}>
-                              <AccountBalanceIcon
-                                onClick={() => onOpenAsociadoBancarias(row.id)}
-                                className={`${classes.generalIcons} ${classes.bancariaIcon}`}></AccountBalanceIcon>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.comerciales' />}>
-                              <StoreIcon
-                                onClick={() =>
-                                  onOpenAsociadoComerciales(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.comercialIcon}`}></StoreIcon>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.documentos' />}>
-                              <AssignmentIcon
-                                onClick={() =>
-                                  onOpenEditAsociadoDocumento(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.documentosIcon}`}></AssignmentIcon>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={
-                                <IntlMessages id='boton.requisitosDeSeguridad' />
-                              }>
-                              <SecurityIcon
-                                onClick={() =>
-                                  onOpenEditAsociadoRequisitoSeguridad(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.seguridadIcon}`}></SecurityIcon>
-                            </Tooltip>
-                          </TableCell>
                         </TableRow>
                       );
                     })
@@ -1203,24 +976,110 @@ const AsociadoDatoBasico = (props) => {
               </Box>
             </Box>
           </Box>
-        ) : permisos ? (
-          <Box
-            component='h2'
-            padding={4}
-            fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='sinResultados' />
-          </Box>
         ) : (
           <Box
             component='h2'
             padding={4}
             fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='noAutorizado' />
+            className={classes.marcoTabla}
+            display='flex'
+            justifyContent='space-between'>
+            <IntlMessages id='sinResultados' />
           </Box>
         )}
+
+        <Box
+          py={6}
+          px={4}
+          display='grid'
+          gridTemplateColumns='1fr 1fr'
+          className={classes.marcoTabla}>
+          <Box>
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
+              <FormControl>
+                <Box display='flex' alignItems='center' style={{gap: '20px'}}>
+                  <FormLabel>Información Verificada</FormLabel>
+                  <RadioGroup
+                    row
+                    defaultValue={
+                      encabezado.informacion_verificada_bancarias === 'S'
+                        ? 'S'
+                        : encabezado.informacion_verificada_bancarias === 'N'
+                        ? 'N'
+                        : ''
+                    }
+                    onClick={(event) => {
+                      setTimeout(function () {
+                        dispatch({type: FETCH_START});
+                      }, 1000);
+                      setTimeout(function () {
+                        dispatch({type: FETCH_SUCCESS});
+                      }, 1000);
+
+                      if (event.target.value === 'S') {
+                        if (rows.length === 0) {
+                          event.target.value = 'N';
+                          dispatch({
+                            type: FETCH_ERROR,
+                            payload:
+                              'No cumple condiciones para dar información por verificada',
+                          });
+                        } else {
+                          dispatch(
+                            onVerificarInformacion({
+                              id: asociado_id,
+                              tipo_informacion:
+                                'informacion_verificada_bancarias',
+                              valor: 'S',
+                              verificar: true,
+                            }),
+                          );
+                        }
+                      }
+                    }}>
+                    <FormControlLabel
+                      value='S'
+                      control={<Radio color='primary' />}
+                      label='Si'
+                      labelPlacement='end'
+                    />
+                    <FormControlLabel
+                      value='N'
+                      control={<Radio color='primary' />}
+                      label='No'
+                      labelPlacement='end'
+                    />
+                  </RadioGroup>
+                </Box>
+              </FormControl>
+            )}
+          </Box>
+          <Box className={classes.bottomsGroup}>
+            <Button
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+              onClick={handleOnClose}>
+              <IntlMessages id='boton.cancel' />
+            </Button>
+          </Box>
+        </Box>
       </Paper>
+
+      {/* <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Cambiar Densidad"
+      /> */}
+      {showForm ? (
+        <AsociadoBancariaCreador
+          showForm={showForm}
+          asociadoBancaria={asociadoBancariaSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnCloseForm}
+          updateColeccion={updateColeccion}
+          asociado_id={asociado_id}
+        />
+      ) : (
+        ''
+      )}
 
       <Popover
         id='popoverColumns'
@@ -1262,4 +1121,4 @@ const AsociadoDatoBasico = (props) => {
   );
 };
 
-export default AsociadoDatoBasico;
+export default AsociadoBancaria;

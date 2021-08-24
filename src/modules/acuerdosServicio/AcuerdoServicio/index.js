@@ -38,15 +38,13 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import SchoolIcon from '@material-ui/icons/School';
-import StoreIcon from '@material-ui/icons/Store';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import AcuerdoServicioCreador from './AcuerdoServicioCreador';
 import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
 
@@ -761,10 +759,6 @@ const AcuerdoServicio = (props) => {
     }
   };
 
-  const onOpenAsociadoContactoLegal = (id) => {
-    history.push(history.location.pathname + '-legales/' + id);
-  };
-
   const onOpenAsociadoContacto = (id) => {
     history.push(history.location.pathname + '-contactos/' + id);
   };
@@ -1042,20 +1036,24 @@ const AcuerdoServicio = (props) => {
                             }
                           })}
                           <TableCell align='center' className={classes.cell}>
-                            <Tooltip title={<IntlMessages id='boton.legal' />}>
-                              <SchoolIcon
-                                onClick={() =>
-                                  onOpenAsociadoContactoLegal(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.legalIcon}`}></SchoolIcon>
-                            </Tooltip>
+                            <Box
+                              component='a'
+                              href={
+                                '/acuerdos-servicio/rutas-controlar/' + row.id
+                              }
+                              className={classes.generalIcons}>
+                              <Tooltip title={'Rutas a Controlar'}>
+                                <SchoolIcon
+                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></SchoolIcon>
+                              </Tooltip>
+                            </Box>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>
                             <Tooltip
                               title={<IntlMessages id='boton.contactos' />}>
-                              <SupervisorAccountIcon
+                              <LocalShippingIcon
                                 onClick={() => onOpenAsociadoContacto(row.id)}
-                                className={`${classes.generalIcons} ${classes.contactIcon}`}></SupervisorAccountIcon>
+                                className={`${classes.generalIcons} ${classes.contactIcon}`}></LocalShippingIcon>
                             </Tooltip>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>

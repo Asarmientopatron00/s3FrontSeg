@@ -1296,30 +1296,6 @@ const AsociadoNegocioForm = (props) => {
             ) : (
               ''
             )}
-            <MyRadioField
-              label='Descargar Formulario Representante Legal'
-              className={classes.MyRadioField}
-              name='firma_representante_legal'
-              disabled={disabled}
-              required
-              options={[
-                {value: 'S', label: 'Si'},
-                {value: 'N', label: 'No'},
-              ]}
-              onClick={(event) => {
-                setTimeout(function () {
-                  dispatch({type: FETCH_START});
-                }, 1000);
-
-                if (event.target.value === 'S') {
-                  const url =
-                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
-                    // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
-                    values.id;
-                  window.open(url, '_blank');
-                }
-              }}
-            />
           </Box>
 
           <Box className={classes.inputs_2}>

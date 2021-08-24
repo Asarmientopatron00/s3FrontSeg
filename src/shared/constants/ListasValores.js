@@ -56,11 +56,11 @@ export const ESTADO_COTIZACIONES = [
   {id: 'ENV', nombre: 'Enviada', estado: 1},
   {id: 'GEN', nombre: 'Generada', estado: 1},
   {id: 'ANU', nombre: 'Anulada', estado: 1},
-  {id: 'APR', nombre: 'Aprovada', estado: 1},
+  {id: 'APR', nombre: 'Aprobada', estado: 1},
 ];
 
 export const ESTADO_ACUERDO_SERVICIO = [
   {id: 'PVB', nombre: 'Pendiente Vo Bo', estado: 1},
   {id: 'ANU', nombre: 'Anulada', estado: 1},
-  {id: 'APR', nombre: 'Aprovada', estado: 1},
+  {id: 'APR', nombre: 'Aprobada', estado: 1},
 ];

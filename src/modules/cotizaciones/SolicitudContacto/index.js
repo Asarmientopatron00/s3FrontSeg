@@ -36,6 +36,7 @@ const validationSchema = yup.object({
       'Ciudad de destino debe ser diferente a ciudad de origen',
     ),
   servicio_id: yup.string().required('Requerido'),
+  numero_servicios_mes: yup.number().required('Requerido'),
   nombre_contacto: yup
     .string()
     .required('Requerido')
@@ -79,6 +80,13 @@ const SolicitudCotizacionCreator = (props) => {
   );
 
   const useStyles = makeStyles((theme) => ({
+    image: {
+      display: 'inline-block',
+      cursor: 'pointer',
+      width: 100,
+      margin: 20,
+      marginBottom: 0,
+    },
     dialogBox: {
       position: 'relative',
       '& .MuiDialog-paperWidthSm': {
@@ -118,6 +126,7 @@ const SolicitudCotizacionCreator = (props) => {
               ).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
               ciudad_origen_id: '',
               ciudad_destino_id: '',
+              numero_servicios_mes: '',
               servicio_id: '',
               nombre_contacto: '',
               email: '',
@@ -146,10 +155,23 @@ const SolicitudCotizacionCreator = (props) => {
             )}
           </Formik>
         ) : (
-          <Box component='h6' margin='auto' padding='20px'>
-            {'Nuestro equipo comercial lo contactará para detallar las condiciones del servicio solicitado. En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
-              consecutivo +
-              '.'}
+          <Box>
+            <Box>
+              <img
+                className={classes.image}
+                src='/assets/images/LogoSecSel.png'
+                alt='Logo Sec Sel'
+              />
+            </Box>
+            <Box
+              component='h2'
+              margin='auto'
+              padding='20px'
+              textAlign='justify'>
+              {'Nuestro equipo comercial lo contactará para detallar las condiciones del servicio solicitado. En caso de requerir información adicional, puede comunicarse con nosotros y hacer referencia al número de solicitud de cotización ' +
+                consecutivo +
+                '.'}
+            </Box>
           </Box>
         )}
       </Scrollbar>

@@ -8,75 +8,48 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/SolicitudCotizacionAction';
+} from '../../../../redux/actions/AsociadoBancariaAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import SolicitudCotizacionForm from './SolicitudCotizacionForm';
+import AsociadoBancariaForm from './RutaControlarForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {useAuthUser} from '../../../../@crema/utility/AppHooks';
+import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
+import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
 import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
   VALIDACION_REGEX_TELEFONOS,
+  VALIDACION_REGEX_NUMEROS,
 } from '../../../../shared/constants/Constantes';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+import {TIPOS_CONTACTOS} from '../../../../shared/constants/ListasValores';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
-const validationSchema = yup.object({
-  ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup
-    .string()
-    .required('Requerido')
-    .notOneOf(
-      [yup.ref('ciudad_origen_id')],
-      'Ciudad de destino debe ser diferente a ciudad de origen',
-    ),
-  numero_servicios_mes: yup.number().required('Requerido'),
-  servicio_id: yup.string().required('Requerido'),
-  nombre_contacto: yup
-    .string()
-    .required('Requerido')
-    .max(128, mensajeValidacion('max', 128)),
-  email: yup
-    .string()
-    .required('Requerido')
-    .email('Debe ser tipo e-mail')
-    .max(128, mensajeValidacion('max', 128)),
-  telefono_contacto: yup
-    .string()
-    .required('Requerido')
-    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-    .max(
-      LONGITUD_MAXIMA_TELEFONOS,
-      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-    )
-    .min(
-      LONGITUD_MINIMA_TELEFONOS,
-      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-    ),
-});
-
-const SolicitudCotizacionCreator = (props) => {
+const AsociadoCotnactoLegalCreator = (props) => {
   const {
-    solicitudCotizacion,
+    asociadoBancaria,
     handleOnClose,
     accion,
     updateColeccion,
-    ciudades,
-    servicios,
-    titulo,
+    asociado_id,
   } = props;
-
-  const user = useAuthUser();
 
   const dispatch = useDispatch();
 
-  const [consecutivo, setConsecutivo] = useState('');
+  const tiposDocumentos = useSelector(
+    ({tipoDocumentoReducer}) => tipoDocumentoReducer.ligera,
+  );
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+
+  useEffect(() => {
+    dispatch(tipoDocumentoColeccionLigera());
+    dispatch(ciudadColeccionLigera());
+  }, [dispatch]);
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -92,12 +65,36 @@ const SolicitudCotizacionCreator = (props) => {
     },
   }));
 
+  let validationSchema = yup.object({
+    banco: yup
+      .string()
+      .required('Requerido')
+      .max(128, mensajeValidacion('max', 128)),
+    numero_cuenta: yup
+      .string()
+      .matches(VALIDACION_REGEX_NUMEROS, mensajeValidacion('numero'))
+      .required('Requerido'),
+    tipo_cuenta: yup.string().required('Requerido'),
+    sucursal: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
+    telefono: yup
+      .string()
+      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+      .max(
+        LONGITUD_MAXIMA_TELEFONOS,
+        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+      )
+      .min(
+        LONGITUD_MINIMA_TELEFONOS,
+        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+      ),
+  });
+
   const classes = useStyles(props);
 
   const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
   selectedRow = useSelector(
-    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.selectedRow,
+    ({asociadoBancariaReducer}) => asociadoBancariaReducer.selectedRow,
   );
 
   const initializeSelectedRow = () => {
@@ -123,9 +120,10 @@ const SolicitudCotizacionCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(solicitudCotizacion));
+      dispatch(onShow(asociadoBancaria));
     }
-  }, [accion, dispatch, solicitudCotizacion]);
+  }, [accion, dispatch, asociadoBancaria]);
+
   return (
     showForm && (
       <Dialog
@@ -136,61 +134,41 @@ const SolicitudCotizacionCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'sm'}>
+        maxWidth={'md'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
             enableReinitialize={true}
             validateOnBlur={false}
             initialValues={{
+              asociado_id: asociado_id,
               id: selectedRow ? selectedRow.id : '',
-              fecha_solicitud_cotizacion: selectedRow
-                ? selectedRow.fecha_solicitud_cotizacion
-                : new Date(Date.now()).toLocaleDateString('es-CL', {
-                    timeZone: 'UTC',
-                  }),
-              ciudad_origen_id: selectedRow
-                ? selectedRow.ciudad_origen_id
-                  ? selectedRow.ciudad_origen_id
+              tipo: selectedRow ? selectedRow.tipo : '',
+              banco: selectedRow
+                ? selectedRow.banco
+                  ? selectedRow.banco
                   : ''
                 : '',
-              ciudad_destino_id: selectedRow
-                ? selectedRow.ciudad_destino_id
-                  ? selectedRow.ciudad_destino_id
+              numero_cuenta: selectedRow
+                ? selectedRow.numero_cuenta
+                  ? selectedRow.numero_cuenta
                   : ''
                 : '',
-              servicio_id: selectedRow
-                ? selectedRow.servicio_id
-                  ? selectedRow.servicio_id
+              tipo_cuenta: selectedRow
+                ? selectedRow.tipo_cuenta
+                  ? selectedRow.tipo_cuenta
+                  : 'C'
+                : '',
+              sucursal: selectedRow
+                ? selectedRow.sucursal
+                  ? selectedRow.sucursal
                   : ''
                 : '',
-              numero_servicios_mes: selectedRow
-                ? selectedRow.numero_servicios_mes
-                  ? selectedRow.numero_servicios_mes
+              telefono: selectedRow
+                ? selectedRow.telefono
+                  ? selectedRow.telefono
                   : ''
                 : '',
-              nombre_contacto: selectedRow
-                ? selectedRow.nombre_contacto
-                : user.displayName,
-              email: selectedRow ? selectedRow.email : user.email,
-              telefono_contacto: selectedRow
-                ? selectedRow.telefono_contacto
-                : user.telefono,
-              nombre_empresa: selectedRow
-                ? selectedRow.nombre_empresa
-                : user.asociado.nombre,
-              asociado_id: selectedRow
-                ? selectedRow.asociado_id
-                : user.asociado.id,
-              numero_solicitud: selectedRow ? selectedRow.numero_solicitud : '',
-              observaciones: selectedRow
-                ? selectedRow.observaciones
-                  ? selectedRow.observaciones
-                  : ''
-                : '',
-              estado_solicitud_cotizacion: selectedRow
-                ? selectedRow.estado_solicitud_cotizacion
-                : 'SOL',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
@@ -200,16 +178,8 @@ const SolicitudCotizacionCreator = (props) => {
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
-              console.log(consecutivo);
               if (accion === 'crear') {
-                dispatch(
-                  onCreate(
-                    data,
-                    handleOnClose,
-                    updateColeccion,
-                    setConsecutivo,
-                  ),
-                );
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
               } else if (accion === 'editar') {
                 if (selectedRow) {
                   dispatch(onUpdate(data, handleOnClose, updateColeccion));
@@ -221,15 +191,15 @@ const SolicitudCotizacionCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <SolicitudCotizacionForm
+              <AsociadoBancariaForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
-                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
+                tiposDocumentos={tiposDocumentos}
                 ciudades={ciudades}
-                servicios={servicios}
+                tiposContactos={TIPOS_CONTACTOS}
               />
             )}
           </Formik>
@@ -239,4 +209,4 @@ const SolicitudCotizacionCreator = (props) => {
   );
 };
 
-export default SolicitudCotizacionCreator;
+export default AsociadoCotnactoLegalCreator;

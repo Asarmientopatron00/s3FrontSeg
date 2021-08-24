@@ -8,9 +8,9 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+// import MenuItem from '@material-ui/core/MenuItem';
 import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
@@ -29,79 +29,43 @@ const MyTextField = (props) => {
   );
 };
 
-const MyAutocompleteCiudad = (props) => {
-  const [field, meta, form] = useField(props);
+const MyRadioField = (props) => {
+  const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
-  let myvalueAux = '';
-  if (field.value !== '') {
-    props.options.forEach((option) => {
-      if (option.id === field.value) {
-        myvalueAux = option.nombre + '-' + option.departamento;
-      }
-    });
-  }
-  let myvalue = '';
-  if (myvalueAux === '') {
-    myvalue = field.value;
-  } else {
-    myvalue = myvalueAux;
-  }
   return (
-    <Autocomplete
-      selectOnFocus={false}
-      openOnFocus
-      onKeyDown={(e) =>
-        e.key === 'Backspace' && typeof field.value === 'number'
-          ? form.setValue('')
-          : ''
-      }
-      {...props}
-      onChange={(event, newValue, reasons, details, trial) =>
-        newValue ? form.setValue(newValue.id) : form.setValue('')
-      }
-      inputValue={myvalue}
-      renderOption={(option) => {
-        return (
-          <React.Fragment>
-            {option.nombre + '-' + option.departamento}
-          </React.Fragment>
-        );
-      }}
-      getOptionLabel={(option) => option.nombre + '-' + option.departamento}
-      renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            {...field}
-            name={props.name}
-            className={props.className}
-            label={props.label}
-            required={props.required}
-            helperText={errorText}
-            error={!!errorText}
-          />
-        );
-      }}
-    />
+    <FormControl error={!!errorText} component='fieldset'>
+      <FormLabel {...props} {...field}>
+        {props.label}
+      </FormLabel>
+      <Field {...props} {...field} type='radio' as={RadioGroup} row>
+        {props.options.map((option, index) => {
+          return (
+            <FormControlLabel
+              key={index}
+              value={option.value}
+              control={<Radio color='primary' />}
+              label={option.label}
+              labelPlacement='end'
+              disabled={props.disabled}
+            />
+          );
+        })}
+      </Field>
+      <FormHelperText>{errorText}</FormHelperText>
+    </FormControl>
   );
 };
 
-const SolicitudCotizacionForm = (props) => {
-  const {
-    handleOnClose,
-    accion,
-    values,
-    initialValues,
-    ciudades,
-    servicios,
-    titulo,
-  } = props;
+const AsociadoBancaria = (props) => {
+  const {handleOnClose, accion, values, initialValues} = props;
+
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
     }
   }, [initialValues.estado, accion]);
+
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
@@ -121,6 +85,13 @@ const SolicitudCotizacionForm = (props) => {
         marginBottom: 5,
       },
       height: '70px',
+    },
+    MyRadioField: {
+      width: '100%',
+      marginBottom: 0,
+      [theme.breakpoints.up('xl')]: {
+        marginBottom: 0,
+      },
     },
     MySelectField: {
       width: 'auto',
@@ -154,6 +125,12 @@ const SolicitudCotizacionForm = (props) => {
     pointer: {
       cursor: 'pointer',
     },
+    inputs_2: {
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2,1fr)',
+      columnGap: '20px',
+    },
   }));
 
   const classes = useStyles(props);
@@ -167,115 +144,55 @@ const SolicitudCotizacionForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            {titulo}
+            <IntlMessages id='asociados' /> <span> - </span>
+            <IntlMessages id='asociados.bancarias' />
           </Box>
 
-          <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box display='grid' gridTemplateColumns='repeat(2, 1fr)'>
-              <MyTextField
-                className={classes.myTextField}
-                label='Fecha Solicitud Cotización'
-                name='fecha_solicitud_cotizacion'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextField}
-                label='Número Solicitud Cotización'
-                name='numero_solicitud'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_origen_id'
-              inputValue={initialValues.ciudad_origen_id}
-              label='Ciudad Origen'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_destino_id'
-              inputValue={initialValues.ciudad_destino_id}
-              label='Ciudad Destino'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocomplete
-              options={servicios}
-              name='servicio_id'
-              inputValue={initialValues.servicio_id}
-              label='Servicio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
+          <Box className={classes.inputs_2} minHeight='80px'>
             <MyTextField
               className={classes.myTextField}
-              label='Número Servicios por Mes'
-              name='numero_servicios_mes'
-              disabled={disabled}
-              required
-            />
-
-            <Box component='h3'>Datos Persona Contacto:</Box>
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Nombre Contacto'
-              name='nombre_contacto'
+              label='Banco'
+              name='banco'
               disabled={disabled}
               required
             />
 
             <MyTextField
               className={classes.myTextField}
-              label='Correo Electrónico'
-              name='email'
+              label='Número de Cuenta'
+              name='numero_cuenta'
               disabled={disabled}
               required
             />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Teléfono Contacto'
-              name='telefono_contacto'
+            <MyRadioField
+              label='Tipo de Cuenta'
+              className={classes.MyRadioField}
+              name='tipo_cuenta'
               disabled={disabled}
               required
+              options={[
+                {value: 'C', label: 'Corriente'},
+                {value: 'A', label: 'Ahorros'},
+              ]}
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Sucursal'
+              name='sucursal'
+              disabled={disabled}
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Telefono'
+              name='telefono'
+              disabled={disabled}
               inputProps={{
                 maxLength: LONGITUD_MAXIMA_TELEFONOS,
                 minLength: LONGITUD_MINIMA_TELEFONOS,
               }}
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Empresa'
-              name='nombre_empresa'
-              disabled={true}
-              required
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Observaciones'
-              name='observaciones'
-              disabled={disabled}
-              multiline
             />
 
             <FormControl className={classes.widthFull} component='fieldset'>
@@ -328,4 +245,4 @@ const SolicitudCotizacionForm = (props) => {
   );
 };
 
-export default SolicitudCotizacionForm;
+export default AsociadoBancaria;

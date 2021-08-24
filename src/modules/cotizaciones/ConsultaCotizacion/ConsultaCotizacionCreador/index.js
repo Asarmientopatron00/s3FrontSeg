@@ -211,7 +211,7 @@ const ConsultaCotizacionCreator = (props) => {
                 ? selectedRow.estado_cotizacion === 'ENV'
                   ? 'Enviada'
                   : selectedRow.estado_cotizacion === 'APR'
-                  ? 'Aprovada'
+                  ? 'Aprobada'
                   : selectedRow.estado_cotizacion === 'ANU'
                   ? 'Anulada'
                   : 'Generada'

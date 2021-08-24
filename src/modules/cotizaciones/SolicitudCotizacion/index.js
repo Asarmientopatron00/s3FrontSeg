@@ -88,6 +88,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'numero_servicios_mes',
+    typeHead: 'string',
+    label: 'Número de Servicios por Mes',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'nombre_empresa',
     typeHead: 'string',
     label: 'Nombre Empresa',

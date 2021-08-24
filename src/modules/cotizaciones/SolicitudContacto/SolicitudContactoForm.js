@@ -203,6 +203,14 @@ const SolicitudCotizacionForm = (props) => {
               disabled={disabled}
             />
 
+            <MyTextField
+              className={classes.myTextField}
+              label='Número Servicios por Mes'
+              name='numero_servicios_mes'
+              disabled={disabled}
+              required
+            />
+
             <Box component='h3'>Datos Persona Contacto:</Box>
 
             <MyTextField
