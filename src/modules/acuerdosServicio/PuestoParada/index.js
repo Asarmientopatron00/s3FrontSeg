@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import AsociadoBancariaCreador from './RutaControlarCreador';
+import PuestoParadaCreador from './PuestoParadaCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/AsociadoBancariaAction';
+} from '../../../redux/actions/PuestoParadaAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,18 +38,9 @@ import TuneIcon from '@material-ui/icons/Tune';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
 import {useParams} from 'react-router-dom';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import {RadioGroup, Radio} from '@material-ui/core';
-import {history} from 'redux/store';
-import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
-import {
-  FETCH_ERROR,
-  FETCH_START,
-  FETCH_SUCCESS,
-} from '../../../shared/constants/ActionTypes';
-import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
-import GetUsuario from '../../../shared/functions/GetUsuario';
+import {onGetColeccionLigera as onGetColeccionLigeraDepartamento} from '../../../redux/actions/DepartamentoAction';
+
+// import GetUsuario from '../../../shared/functions/GetUsuario';
 // import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
@@ -82,45 +73,44 @@ import GetUsuario from '../../../shared/functions/GetUsuario';
 
 const cells = [
   {
-    id: 'banco',
+    id: 'nombre',
     typeHead: 'string',
-    label: 'Banco',
+    label: 'Nombre Puesto',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'numero_cuenta',
-    typeHead: 'numeric',
-    label: 'Número Cuenta',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_cuenta',
+    id: 'tipo_parada',
     typeHead: 'string',
-    label: 'Tipo Cuenta',
-    value: (value) =>
-      value === 'A' ? 'Ahorros' : value === 'C' ? 'Corriente' : '',
+    label: 'Tipo Parada',
+    value: (value) => (value === 'A' ? 'Autorizada' : 'Prohibida'),
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'sucursal',
+    id: 'departamento',
     typeHead: 'string',
-    label: 'Sucursal',
+    label: 'Departamento',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'telefono',
+    id: 'ciudad',
     typeHead: 'string',
-    label: 'Telefono',
+    label: 'Ciudad',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
+  },
+  {
+    id: 'indicaciones',
+    typeHead: 'string',
+    label: 'Indicaciones',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
   },
   {
     id: 'estado',
@@ -337,7 +327,7 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    onOpenAddAsociadoBancaria,
+    onOpenAddPuestoParada,
     handleOpenPopoverColumns,
     encabezado,
   } = props;
@@ -362,7 +352,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              Acuerdos operativos de servicio - Rutas a controlar
+              Acuerdos operativos de servicio - Puestos parada
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -375,8 +365,8 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title='Crear Asociado'
-                onClick={onOpenAddAsociadoBancaria}>
+                title='Crear Notificación Contacto'
+                onClick={onOpenAddPuestoParada}>
                 <IconButton
                   className={classes.createButton}
                   aria-label='filter list'>
@@ -470,7 +460,7 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAsociadoBancaria: PropTypes.func.isRequired,
+  onOpenAddPuestoParada: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
 };
 
@@ -587,8 +577,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AsociadoBancaria = () => {
-  const {asociado_id} = useParams();
+const PuestoParada = () => {
+  const {acuerdo_id} = useParams();
 
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
@@ -604,10 +594,9 @@ const AsociadoBancaria = () => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [asociadoBancariaSeleccionado, setAsociadoBancariaSeleccionado] =
-    useState(0);
+  const [puestoParadaSeleccionado, setPuestoParadaSeleccionado] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total, encabezado} = useSelector(
-    ({asociadoBancariaReducer}) => asociadoBancariaReducer,
+    ({puestoParadaReducer}) => puestoParadaReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   // const {pathname} = useLocation();
@@ -641,12 +630,12 @@ const AsociadoBancaria = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
-  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, asociado_id]);
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
+  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, acuerdo_id]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, asociado_id));
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
   };
   useEffect(() => {
     setPage(1);
@@ -668,8 +657,8 @@ const AsociadoBancaria = () => {
     }
   };
 
-  const onOpenEditAsociadoBancaria = (id) => {
-    setAsociadoBancariaSeleccionado(id);
+  const onOpenEditPuestoParada = (id) => {
+    setPuestoParadaSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -710,16 +699,16 @@ const AsociadoBancaria = () => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAsociadoBancaria = (id) => {
-    setAsociadoBancariaSeleccionado(id);
+  const onOpenViewPuestoParada = (id) => {
+    setPuestoParadaSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteAsociadoBancaria = (id) => {
+  const onDeletePuestoParada = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar El Asociado?',
+      text: '¿Seguro qué desea eliminar el contacto notificación?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -732,7 +721,7 @@ const AsociadoBancaria = () => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Asociado Fue Eliminado Correctamente',
+          'El contacto notificación ha sido eliminado',
           'success',
         );
         setTimeout(() => {
@@ -742,19 +731,15 @@ const AsociadoBancaria = () => {
     });
   };
 
-  const onOpenAddAsociadoBancaria = () => {
-    setAsociadoBancariaSeleccionado(0);
+  const onOpenAddPuestoParada = () => {
+    setPuestoParadaSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
-  const handleOnClose = () => {
-    history.goBack();
-  };
-
   const handleOnCloseForm = () => {
     setShowForm(false);
-    setAsociadoBancariaSeleccionado(0);
+    setPuestoParadaSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -797,20 +782,23 @@ const AsociadoBancaria = () => {
     }
   }, [rows]);
 
-  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
+  const departamentos = useSelector(
+    ({departamentoReducer}) => departamentoReducer.ligera,
+  );
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
 
   useEffect(() => {
-    dispatch(onGetTipoRol());
+    dispatch(onGetColeccionLigeraDepartamento());
   }, [dispatch]);
 
-  const usuario = GetUsuario();
+  // const usuario = GetUsuario();
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar
           numSelected={selected.length}
-          onOpenAddAsociadoBancaria={onOpenAddAsociadoBancaria}
+          onOpenAddPuestoParada={onOpenAddPuestoParada}
           handleOpenPopoverColumns={handleOpenPopoverColumns}
           encabezado={encabezado}
         />
@@ -887,22 +875,18 @@ const AsociadoBancaria = () => {
                             className={classes.acciones}>
                             <Tooltip title={<IntlMessages id='boton.editar' />}>
                               <EditIcon
-                                onClick={() =>
-                                  onOpenEditAsociadoBancaria(row.id)
-                                }
+                                onClick={() => onOpenEditPuestoParada(row.id)}
                                 className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                             </Tooltip>
                             <Tooltip title={<IntlMessages id='boton.ver' />}>
                               <VisibilityIcon
-                                onClick={() =>
-                                  onOpenViewAsociadoBancaria(row.id)
-                                }
+                                onClick={() => onOpenViewPuestoParada(row.id)}
                                 className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                             </Tooltip>
                             <Tooltip
                               title={<IntlMessages id='boton.eliminar' />}>
                               <DeleteIcon
-                                onClick={() => onDeleteAsociadoBancaria(row.id)}
+                                onClick={() => onDeletePuestoParada(row.id)}
                                 className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                             </Tooltip>
                           </TableCell>
@@ -994,70 +978,11 @@ const AsociadoBancaria = () => {
           display='grid'
           gridTemplateColumns='1fr 1fr'
           className={classes.marcoTabla}>
-          <Box>
-            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
-              <FormControl>
-                <Box display='flex' alignItems='center' style={{gap: '20px'}}>
-                  <FormLabel>Información Verificada</FormLabel>
-                  <RadioGroup
-                    row
-                    defaultValue={
-                      encabezado.informacion_verificada_bancarias === 'S'
-                        ? 'S'
-                        : encabezado.informacion_verificada_bancarias === 'N'
-                        ? 'N'
-                        : ''
-                    }
-                    onClick={(event) => {
-                      setTimeout(function () {
-                        dispatch({type: FETCH_START});
-                      }, 1000);
-                      setTimeout(function () {
-                        dispatch({type: FETCH_SUCCESS});
-                      }, 1000);
-
-                      if (event.target.value === 'S') {
-                        if (rows.length === 0) {
-                          event.target.value = 'N';
-                          dispatch({
-                            type: FETCH_ERROR,
-                            payload:
-                              'No cumple condiciones para dar información por verificada',
-                          });
-                        } else {
-                          dispatch(
-                            onVerificarInformacion({
-                              id: asociado_id,
-                              tipo_informacion:
-                                'informacion_verificada_bancarias',
-                              valor: 'S',
-                              verificar: true,
-                            }),
-                          );
-                        }
-                      }
-                    }}>
-                    <FormControlLabel
-                      value='S'
-                      control={<Radio color='primary' />}
-                      label='Si'
-                      labelPlacement='end'
-                    />
-                    <FormControlLabel
-                      value='N'
-                      control={<Radio color='primary' />}
-                      label='No'
-                      labelPlacement='end'
-                    />
-                  </RadioGroup>
-                </Box>
-              </FormControl>
-            )}
-          </Box>
+          <Box></Box>
           <Box className={classes.bottomsGroup}>
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              onClick={handleOnClose}>
+              href='/acuerdos-servicio'>
               <IntlMessages id='boton.cancel' />
             </Button>
           </Box>
@@ -1069,13 +994,16 @@ const AsociadoBancaria = () => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <AsociadoBancariaCreador
+        <PuestoParadaCreador
           showForm={showForm}
-          asociadoBancaria={asociadoBancariaSeleccionado}
+          puestoParada={puestoParadaSeleccionado}
           accion={accion}
           handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
-          asociado_id={asociado_id}
+          departamentos={departamentos}
+          ciudades={ciudades}
+          encabezado={encabezado}
+          acuerdo_id={acuerdo_id}
         />
       ) : (
         ''
@@ -1121,4 +1049,4 @@ const AsociadoBancaria = () => {
   );
 };
 
-export default AsociadoBancaria;
+export default PuestoParada;

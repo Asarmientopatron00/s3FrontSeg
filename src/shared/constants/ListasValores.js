@@ -64,3 +64,9 @@ export const ESTADO_ACUERDO_SERVICIO = [
   {id: 'ANU', nombre: 'Anulada', estado: 1},
   {id: 'APR', nombre: 'Aprobada', estado: 1},
 ];
+
+export const TIPOS_RUTAS = [
+  {id: 'I', nombre: 'Ingreso', estado: 1},
+  {id: 'S', nombre: 'Salida', estado: 1},
+  {id: 'A', nombre: 'Ambos', estado: 1},
+];

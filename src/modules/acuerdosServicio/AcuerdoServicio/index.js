@@ -38,13 +38,13 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import SchoolIcon from '@material-ui/icons/School';
 import AcuerdoServicioCreador from './AcuerdoServicioCreador';
+import HotelIcon from '@material-ui/icons/Hotel';
 import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import SwapCallsIcon from '@material-ui/icons/SwapCalls';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
 
@@ -261,7 +261,7 @@ function EnhancedTableHead(props) {
           {'Puestos de Control'}
         </TableCell>
         <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Puestos Autorizados'}
+          {'Puestos Paradas'}
         </TableCell>
         <TableCell align='center' className={classes.headCellWoMargin}>
           {'Rutas Autorizadas'}
@@ -763,18 +763,6 @@ const AcuerdoServicio = (props) => {
     history.push(history.location.pathname + '-contactos/' + id);
   };
 
-  const onOpenAsociadoBancarias = (id) => {
-    history.push(history.location.pathname + '-bancarias/' + id);
-  };
-
-  const onOpenAsociadoComerciales = (id) => {
-    history.push(history.location.pathname + '-comerciales/' + id);
-  };
-
-  const onOpenEditAsociadoDocumento = (id) => {
-    history.push(history.location.pathname + '-documentos/' + id);
-  };
-
   const onOpenEditAcuerdoServicio = (id) => {
     setAcuerdoServicioSeleccionado(id);
     setAccion('editar');
@@ -1038,13 +1026,11 @@ const AcuerdoServicio = (props) => {
                           <TableCell align='center' className={classes.cell}>
                             <Box
                               component='a'
-                              href={
-                                '/acuerdos-servicio/rutas-controlar/' + row.id
-                              }
+                              href={'/rutas-controlar/' + row.id}
                               className={classes.generalIcons}>
                               <Tooltip title={'Rutas a Controlar'}>
-                                <SchoolIcon
-                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></SchoolIcon>
+                                <SwapCallsIcon
+                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></SwapCallsIcon>
                               </Tooltip>
                             </Box>
                           </TableCell>
@@ -1057,32 +1043,34 @@ const AcuerdoServicio = (props) => {
                             </Tooltip>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.bancarias' />}>
-                              <AccountBalanceIcon
-                                onClick={() => onOpenAsociadoBancarias(row.id)}
-                                className={`${classes.generalIcons} ${classes.bancariaIcon}`}></AccountBalanceIcon>
-                            </Tooltip>
+                            <Box
+                              component='a'
+                              href={'/puestos-parada/' + row.id}>
+                              <Tooltip title={'Puestos Paradas'}>
+                                <HotelIcon
+                                  className={`${classes.generalIcons} ${classes.bancariaIcon}`}></HotelIcon>
+                              </Tooltip>
+                            </Box>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.comerciales' />}>
-                              <DirectionsIcon
-                                onClick={() =>
-                                  onOpenAsociadoComerciales(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.comercialIcon}`}></DirectionsIcon>
-                            </Tooltip>
+                            <Box
+                              component='a'
+                              href={'/rutas-autorizacion/' + row.id}>
+                              <Tooltip title={'Rutas Autorizadas'}>
+                                <DirectionsIcon
+                                  className={`${classes.generalIcons} ${classes.comercialIcon}`}></DirectionsIcon>
+                              </Tooltip>
+                            </Box>
                           </TableCell>
                           <TableCell align='center' className={classes.cell}>
-                            <Tooltip
-                              title={<IntlMessages id='boton.documentos' />}>
-                              <NotificationsActiveIcon
-                                onClick={() =>
-                                  onOpenEditAsociadoDocumento(row.id)
-                                }
-                                className={`${classes.generalIcons} ${classes.documentosIcon}`}></NotificationsActiveIcon>
-                            </Tooltip>
+                            <Box
+                              component='a'
+                              href={'/acuerdos-contactos/' + row.id}>
+                              <Tooltip title={'Notificación Contactos'}>
+                                <NotificationsActiveIcon
+                                  className={`${classes.generalIcons} ${classes.documentosIcon}`}></NotificationsActiveIcon>
+                              </Tooltip>
+                            </Box>
                           </TableCell>
                         </TableRow>
                       );

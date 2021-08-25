@@ -22,20 +22,28 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ConsultaCotizacionCreador from './../ConsultaCotizacion/ConsultaCotizacionCreador';
-import AprobacionCotizacionCreador from './AprobacionCotizacionCreador';
-import {onGetColeccion} from '../../../redux/actions/CotizacionAction';
+import RutaAutorizacionCreador from './RutaAutorizacionCreador';
+import {
+  onGetColeccion,
+  onDelete,
+} from '../../../redux/actions/RutaAutorizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
-import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
-import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
+import Swal from 'sweetalert2';
+import {useParams} from 'react-router-dom';
+import {onGetColeccionLigera as onGetColeccionLigeraDepartamento} from '../../../redux/actions/DepartamentoAction';
+import {TIPOS_RUTAS} from './../../../shared/constants/ListasValores';
+
+// import GetUsuario from '../../../shared/functions/GetUsuario';
+// import MenuItem from '@material-ui/core/MenuItem';
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -66,87 +74,37 @@ import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 
 const cells = [
   {
-    id: 'numero_solicitud',
-    typeHead: 'numeric',
-    label: 'Número Solicitud',
+    id: 'nombre_ruta',
+    typeHead: 'string',
+    label: 'Nombre Ruta',
     value: (value) => value,
-    align: 'right',
+    align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'fecha_solicitud_cotizacion',
+    id: 'tipo_ruta',
     typeHead: 'string',
-    label: 'Fecha Solicitud',
+    label: 'Tipo Ruta',
     value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+      TIPOS_RUTAS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'numero_documento',
-    typeHead: 'numeric',
-    label: 'Documento',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'nombre_empresa',
+    id: 'departamento',
     typeHead: 'string',
-    label: 'Nombre',
+    label: 'Departamento',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'numero_cotizacion_servicio',
-    typeHead: 'numeric',
-    label: 'Número Cotización',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_cotizacion',
+    id: 'ciudad',
     typeHead: 'string',
-    label: 'Fecha Cotización',
-    value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    label: 'Ciudad',
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
-  },
-  {
-    id: 'estado_cotizacion',
-    typeHead: 'string',
-    label: 'Estado',
-    value: (value) =>
-      ESTADO_COTIZACIONES.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'plazo_pago_cotizacion',
-    typeHead: 'numeric',
-    label: 'Plazo Pago',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_vigencia_cotizacion',
-    typeHead: 'string',
-    label: 'Fecha Vigencia',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'observaciones',
-    typeHead: 'string',
-    label: 'Observaciones',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
   },
   {
     id: 'estado',
@@ -292,7 +250,6 @@ const useToolbarStyles = makeStyles((theme) => ({
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     display: 'grid',
-    gap: '20px',
   },
   highlight:
     theme.palette.type === 'light'
@@ -306,23 +263,6 @@ const useToolbarStyles = makeStyles((theme) => ({
         },
   title: {
     flex: '1 1 100%',
-  },
-  exportButton: {
-    backgroundColor: '#4caf50',
-    color: 'white',
-    boxShadow:
-      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
-    '&:hover': {
-      backgroundColor: theme.palette.colorHover,
-      cursor: 'pointer',
-    },
-  },
-  x: {
-    position: 'absolute',
-    color: '#4caf50',
-    fontSize: '14px',
-    top: '19px',
-    fontWeight: 'bold',
   },
   createButton: {
     backgroundColor: theme.palette.primary.main,
@@ -367,8 +307,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '4fr 4fr 1fr',
-    gap: '20px',
+    gridTemplateColumns: '1fr 1fr',
   },
   pairFilters: {
     display: 'flex',
@@ -382,11 +321,9 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    titulo,
+    onOpenAddRutaAutorizacion,
     handleOpenPopoverColumns,
-    queryFilter,
-    numeroFiltro,
-    limpiarFiltros,
+    encabezado,
   } = props;
   return (
     <Toolbar
@@ -409,7 +346,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              {titulo}
+              Acuerdos operativos de servicio - Rutas Autorizadas
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -421,30 +358,76 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
+              <Tooltip
+                title='Crear Notificación Contacto'
+                onClick={onOpenAddRutaAutorizacion}>
+                <IconButton
+                  className={classes.createButton}
+                  aria-label='filter list'>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Número Cotización'
-              name='numeroFiltro'
-              id='numeroFiltro'
-              onChange={queryFilter}
-              value={numeroFiltro}
-              type='number'
-              inputProps={{min: 0}}
+              label='Tipo Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='tipoDocumento'
+              value={encabezado.tipo_documento ? encabezado.tipo_documento : ''}
+              disabled={true}
             />
-            <Box></Box>
-            <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
+            <TextField
+              label='Número Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='numeroDocumento'
+              value={
+                encabezado.numero_documento ? encabezado.numero_documento : ''
+              }
+              disabled={true}
+            />
+            <TextField
+              label='Nombre'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='nombre'
+              value={encabezado.nombre ? encabezado.nombre : ''}
+              disabled={true}
+            />
+            <TextField
+              label='Ciudad'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='ciudad'
+              value={encabezado.ciudad ? encabezado.ciudad : ''}
+              disabled={true}
+            />
           </Box>
         </>
       )}
@@ -459,7 +442,7 @@ const EnhancedTableToolbar = (props) => {
         ) : (
           ''
         )
-        //  <Tooltip title="Filtros Avanzados">
+        // <Tooltip title="Filtros Avanzados">
         //         <IconButton aria-label="filter list">
         //           <FilterListIcon />
         //         </IconButton>
@@ -471,17 +454,15 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAprobacionCotizacion: PropTypes.func.isRequired,
+  onOpenAddRutaAutorizacion: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
-  queryFilter: PropTypes.func.isRequired,
-  limpiarFiltros: PropTypes.func.isRequired,
-  numeroFiltro: PropTypes.string.isRequired,
-  nombreEmpresaFiltro: PropTypes.string.isRequired,
-  documentoFiltro: PropTypes.string.isRequired,
-  fechaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   marcoTabla: {
     backgroundColor: 'white',
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
@@ -489,6 +470,21 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginTop: '5px',
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  btnSecundary: {
+    backgroundColor: theme.palette.grayBottoms,
   },
   root: {
     width: '100%%',
@@ -558,9 +554,6 @@ const useStyles = makeStyles((theme) => ({
   deleteIcon: {
     color: theme.palette.redBottoms,
   },
-  aprobarIcon: {
-    color: theme.palette.enviaEmailBottoms,
-  },
   popoverColumns: {
     display: 'grid',
     padding: '10px',
@@ -578,12 +571,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AprobacionCotizacion = (props) => {
+const RutaAutorizacion = () => {
+  const {acuerdo_id} = useParams();
+
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
-    'numero_cotizacion_servicio:desc',
+    'fecha_modificacion:desc',
   );
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
@@ -593,18 +588,12 @@ const AprobacionCotizacion = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [
-    aprobacionCotizacionSeleccionado,
-    setAprobacionCotizacionSeleccionado,
-  ] = useState(0);
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({cotizacionReducer}) => cotizacionReducer,
+  const [rutaAutorizacionSeleccionado, setRutaAutorizacionSeleccionado] =
+    useState(0);
+  const {rows, desde, hasta, ultima_pagina, total, encabezado} = useSelector(
+    ({rutaAutorizacionReducer}) => rutaAutorizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [numeroFiltro, setnumeroFiltro] = useState('');
-  const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
-  const [documentoFiltro, setDocumentoFiltro] = useState('');
-  const [fechaFiltro, setFechaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -635,101 +624,17 @@ const AprobacionCotizacion = (props) => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
-  const {user} = useSelector(({auth}) => auth);
-  const [permisos, setPermisos] = useState('');
-  const [titulo, setTitulo] = useState('');
-
   useEffect(() => {
-    user &&
-      user.permisos.forEach((modulo) => {
-        modulo.opciones.forEach((opcion) => {
-          if (opcion.url === props.route.path) {
-            setTitulo(opcion.nombre);
-            const permisoAux = [];
-            opcion.permisos.forEach((permiso) => {
-              if (permiso.permitido) {
-                permisoAux.push(permiso.titulo);
-              }
-            });
-            setPermisos(permisoAux);
-          }
-        });
-      });
-  }, [user, props.route]);
-
-  useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        numeroFiltro,
-        orderByToSend,
-        nombreEmpresaFiltro,
-        documentoFiltro,
-        fechaFiltro,
-        'ENV',
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    numeroFiltro,
-    orderByToSend,
-    nombreEmpresaFiltro,
-    documentoFiltro,
-    fechaFiltro,
-  ]);
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
+  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, acuerdo_id]);
 
   const updateColeccion = () => {
-    dispatch(
-      onGetColeccion(
-        1,
-        rowsPerPage,
-        numeroFiltro,
-        orderByToSend,
-        nombreEmpresaFiltro,
-        documentoFiltro,
-        fechaFiltro,
-        'ENV',
-      ),
-    );
+    setPage(1);
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
   };
   useEffect(() => {
     setPage(1);
-  }, [
-    numeroFiltro,
-    orderByToSend,
-    nombreEmpresaFiltro,
-    documentoFiltro,
-    fechaFiltro,
-  ]);
-
-  const queryFilter = (e) => {
-    switch (e.target.name) {
-      case 'numeroFiltro':
-        setnumeroFiltro(e.target.value);
-        break;
-      case 'nombreEmpresaFiltro':
-        setnombreEmpresaFiltro(e.target.value);
-        break;
-      case 'documentoFiltro':
-        setDocumentoFiltro(e.target.value);
-        break;
-      case 'fechaFiltro':
-        setFechaFiltro(e.target.value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const limpiarFiltros = () => {
-    setnumeroFiltro('');
-    setnombreEmpresaFiltro('');
-    setDocumentoFiltro('');
-    setFechaFiltro('');
-  };
+  }, [orderByToSend]);
 
   const changeOrderBy = (id) => {
     if (orderBy === id) {
@@ -747,8 +652,8 @@ const AprobacionCotizacion = (props) => {
     }
   };
 
-  const onOpenEditAprobacionCotizacion = (id) => {
-    setAprobacionCotizacionSeleccionado(id);
+  const onOpenEditRutaAutorizacion = (id) => {
+    setRutaAutorizacionSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -789,27 +694,47 @@ const AprobacionCotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAprobacionCotizacion = (id) => {
-    setAprobacionCotizacionSeleccionado(id);
+  const onOpenViewRutaAutorizacion = (id) => {
+    setRutaAutorizacionSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onOpenAprobacionCotizacion = (id) => {
-    setAprobacionCotizacionSeleccionado(id);
-    setAccion('aprobar');
-    setShowForm(true);
+  const onDeleteRutaAutorizacion = (id) => {
+    Swal.fire({
+      title: 'Confirmar',
+      text: '¿Seguro qué desea eliminar el contacto notificación?',
+      allowEscapeKey: false,
+      allowEnterKey: false,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'NO',
+      confirmButtonText: 'SI',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(onDelete(id));
+        Swal.fire(
+          'Eliminado',
+          'El contacto notificación ha sido eliminado',
+          'success',
+        );
+        setTimeout(() => {
+          updateColeccion();
+        }, 1000);
+      }
+    });
   };
 
-  const onOpenAddAprobacionCotizacion = () => {
-    setAprobacionCotizacionSeleccionado(0);
+  const onOpenAddRutaAutorizacion = () => {
+    setRutaAutorizacionSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
-  const handleOnClose = () => {
+  const handleOnCloseForm = () => {
     setShowForm(false);
-    setAprobacionCotizacionSeleccionado(0);
+    setRutaAutorizacionSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -844,37 +769,35 @@ const AprobacionCotizacion = (props) => {
 
   // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   const [showTable, setShowTable] = useState(true);
-  const [ids, setIds] = useState([]);
   useEffect(() => {
     if (rows.length === 0) {
       setShowTable(false);
-      setIds([]);
     } else {
       setShowTable(true);
-      setIds(rows.map((item) => item.id));
     }
   }, [rows]);
+
+  const departamentos = useSelector(
+    ({departamentoReducer}) => departamentoReducer.ligera,
+  );
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+
+  useEffect(() => {
+    dispatch(onGetColeccionLigeraDepartamento());
+  }, [dispatch]);
+
+  // const usuario = GetUsuario();
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {permisos && (
-          <EnhancedTableToolbar
-            numSelected={selected.length}
-            onOpenAddAprobacionCotizacion={onOpenAddAprobacionCotizacion}
-            handleOpenPopoverColumns={handleOpenPopoverColumns}
-            queryFilter={queryFilter}
-            limpiarFiltros={limpiarFiltros}
-            numeroFiltro={numeroFiltro}
-            nombreEmpresaFiltro={nombreEmpresaFiltro}
-            documentoFiltro={documentoFiltro}
-            fechaFiltro={fechaFiltro}
-            permisos={permisos}
-            titulo={titulo}
-            ids={ids}
-          />
-        )}
-        {showTable && permisos ? (
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onOpenAddRutaAutorizacion={onOpenAddRutaAutorizacion}
+          handleOpenPopoverColumns={handleOpenPopoverColumns}
+          encabezado={encabezado}
+        />
+        {showTable ? (
           <Box className={classes.marcoTabla}>
             <Box className={classes.paginacion}>
               <Box>
@@ -945,36 +868,26 @@ const AprobacionCotizacion = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_solicitud_cotizacion === 'SOL' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    onClick={() =>
-                                      onOpenEditAprobacionCotizacion(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                                </Tooltip>
-                              )}
-                            {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewAprobacionCotizacion(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Aprobar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.aprobar' />}>
-                                <LibraryAddCheckIcon
-                                  onClick={() =>
-                                    onOpenAprobacionCotizacion(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
-                              </Tooltip>
-                            )}
+                            <Tooltip title={<IntlMessages id='boton.editar' />}>
+                              <EditIcon
+                                onClick={() =>
+                                  onOpenEditRutaAutorizacion(row.id)
+                                }
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                            </Tooltip>
+                            <Tooltip title={<IntlMessages id='boton.ver' />}>
+                              <VisibilityIcon
+                                onClick={() =>
+                                  onOpenViewRutaAutorizacion(row.id)
+                                }
+                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                            </Tooltip>
+                            <Tooltip
+                              title={<IntlMessages id='boton.eliminar' />}>
+                              <DeleteIcon
+                                onClick={() => onDeleteRutaAutorizacion(row.id)}
+                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1046,49 +959,51 @@ const AprobacionCotizacion = (props) => {
               </Box>
             </Box>
           </Box>
-        ) : permisos ? (
-          <Box
-            component='h2'
-            padding={4}
-            fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='sinResultados' />
-          </Box>
         ) : (
           <Box
             component='h2'
             padding={4}
             fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='noAutorizado' />
+            className={classes.marcoTabla}
+            display='flex'
+            justifyContent='space-between'>
+            <IntlMessages id='sinResultados' />
           </Box>
         )}
+
+        <Box
+          py={6}
+          px={4}
+          display='grid'
+          gridTemplateColumns='1fr 1fr'
+          className={classes.marcoTabla}>
+          <Box></Box>
+          <Box className={classes.bottomsGroup}>
+            <Button
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+              href='/acuerdos-servicio'>
+              <IntlMessages id='boton.cancel' />
+            </Button>
+          </Box>
+        </Box>
       </Paper>
 
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
-      {showForm && accion === 'ver' ? (
-        <ConsultaCotizacionCreador
+      {showForm ? (
+        <RutaAutorizacionCreador
           showForm={showForm}
-          consultaCotizacion={aprobacionCotizacionSeleccionado}
+          rutaAutorizacion={rutaAutorizacionSeleccionado}
           accion={accion}
-          handleOnClose={handleOnClose}
+          handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
-          titulo={titulo}
-        />
-      ) : (
-        ''
-      )}
-      {showForm && accion === 'aprobar' ? (
-        <AprobacionCotizacionCreador
-          showForm={showForm}
-          aprobacionCotizacion={aprobacionCotizacionSeleccionado}
-          accion={accion}
-          handleOnClose={handleOnClose}
-          updateColeccion={updateColeccion}
-          titulo={titulo}
+          departamentos={departamentos}
+          ciudades={ciudades}
+          encabezado={encabezado}
+          acuerdo_id={acuerdo_id}
+          TIPOS_RUTAS={TIPOS_RUTAS}
         />
       ) : (
         ''
@@ -1134,4 +1049,4 @@ const AprobacionCotizacion = (props) => {
   );
 };
 
-export default AprobacionCotizacion;
+export default RutaAutorizacion;

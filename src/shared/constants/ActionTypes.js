@@ -254,6 +254,29 @@ export const SHOW_ACUERDO_SERVICIO = 'show_acuerdo_servicio';
 export const UPDATE_ACUERDO_SERVICIO = 'update_acuerdo_servicio';
 export const CREATE_ACUERDO_SERVICIO = 'create_acuerdo_servicio';
 export const DELETE_ACUERDO_SERVICIO = 'delete_acuerdo_servicio';
+export const GET_COLECCION_NOTIFICACION_CONTACTO =
+  'get_coleccion_notificacion_contacto';
+export const GET_COLECCION_LIGERA_NOTIFICACION_CONTACTO =
+  'get_coleccion_ligera_notificacion_contacto';
+export const SHOW_NOTIFICACION_CONTACTO = 'show_notificacion_contacto';
+export const UPDATE_NOTIFICACION_CONTACTO = 'update_notificacion_contacto';
+export const CREATE_NOTIFICACION_CONTACTO = 'create_notificacion_contacto';
+export const DELETE_NOTIFICACION_CONTACTO = 'delete_notificacion_contacto';
+export const GET_COLECCION_RUTA_AUTORIZACION =
+  'get_coleccion_ruta_autorizacion';
+export const GET_COLECCION_LIGERA_RUTA_AUTORIZACION =
+  'get_coleccion_ligera_ruta_autorizacion';
+export const SHOW_RUTA_AUTORIZACION = 'show_ruta_autorizacion';
+export const UPDATE_RUTA_AUTORIZACION = 'update_ruta_autorizacion';
+export const CREATE_RUTA_AUTORIZACION = 'create_ruta_autorizacion';
+export const DELETE_RUTA_AUTORIZACION = 'delete_ruta_autorizacion';
+export const GET_COLECCION_PUESTO_PARADA = 'get_coleccion_puesto_parada';
+export const GET_COLECCION_LIGERA_PUESTO_PARADA =
+  'get_coleccion_ligera_puesto_parada';
+export const SHOW_PUESTO_PARADA = 'show_puesto_parada';
+export const UPDATE_PUESTO_PARADA = 'update_puesto_parada';
+export const CREATE_PUESTO_PARADA = 'create_puesto_parada';
+export const DELETE_PUESTO_PARADA = 'delete_puesto_parada';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

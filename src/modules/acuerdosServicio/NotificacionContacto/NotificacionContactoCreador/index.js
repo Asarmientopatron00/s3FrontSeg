@@ -8,23 +8,19 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/AsociadoBancariaAction';
+} from '../../../../redux/actions/NotificacionContactoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import AsociadoBancariaForm from './RutaControlarForm';
+import NotificacionContactoForm from './NotificacionContactoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
-import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
 import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
   VALIDACION_REGEX_TELEFONOS,
-  VALIDACION_REGEX_NUMEROS,
 } from '../../../../shared/constants/Constantes';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
-import {TIPOS_CONTACTOS} from '../../../../shared/constants/ListasValores';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -32,24 +28,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const AsociadoCotnactoLegalCreator = (props) => {
   const {
-    asociadoBancaria,
+    notificacionContacto,
     handleOnClose,
     accion,
     updateColeccion,
-    asociado_id,
+    eventosNotificaciones,
+    encabezado,
+    acuerdo_id,
   } = props;
 
   const dispatch = useDispatch();
-
-  const tiposDocumentos = useSelector(
-    ({tipoDocumentoReducer}) => tipoDocumentoReducer.ligera,
-  );
-  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
-
-  useEffect(() => {
-    dispatch(tipoDocumentoColeccionLigera());
-    dispatch(ciudadColeccionLigera());
-  }, [dispatch]);
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -66,16 +54,23 @@ const AsociadoCotnactoLegalCreator = (props) => {
   }));
 
   let validationSchema = yup.object({
-    banco: yup
+    evento_notificacion_id: yup.string().required('Requerido'),
+    nombre: yup
       .string()
       .required('Requerido')
       .max(128, mensajeValidacion('max', 128)),
-    numero_cuenta: yup
+    celular: yup
       .string()
-      .matches(VALIDACION_REGEX_NUMEROS, mensajeValidacion('numero'))
-      .required('Requerido'),
-    tipo_cuenta: yup.string().required('Requerido'),
-    sucursal: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
+      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+      .required('Requerido')
+      .max(
+        LONGITUD_MAXIMA_TELEFONOS,
+        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+      )
+      .min(
+        LONGITUD_MINIMA_TELEFONOS,
+        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+      ),
     telefono: yup
       .string()
       .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
@@ -87,6 +82,11 @@ const AsociadoCotnactoLegalCreator = (props) => {
         LONGITUD_MINIMA_TELEFONOS,
         mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
       ),
+    email: yup
+      .string()
+      .required('Requerido')
+      .email('Ingrese un email válido')
+      .max(128, mensajeValidacion('max', 128)),
   });
 
   const classes = useStyles(props);
@@ -94,7 +94,7 @@ const AsociadoCotnactoLegalCreator = (props) => {
   const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
   selectedRow = useSelector(
-    ({asociadoBancariaReducer}) => asociadoBancariaReducer.selectedRow,
+    ({notificacionContactoReducer}) => notificacionContactoReducer.selectedRow,
   );
 
   const initializeSelectedRow = () => {
@@ -120,9 +120,9 @@ const AsociadoCotnactoLegalCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(asociadoBancaria));
+      dispatch(onShow(notificacionContacto));
     }
-  }, [accion, dispatch, asociadoBancaria]);
+  }, [accion, dispatch, notificacionContacto]);
 
   return (
     showForm && (
@@ -141,32 +141,32 @@ const AsociadoCotnactoLegalCreator = (props) => {
             enableReinitialize={true}
             validateOnBlur={false}
             initialValues={{
-              asociado_id: asociado_id,
               id: selectedRow ? selectedRow.id : '',
-              tipo: selectedRow ? selectedRow.tipo : '',
-              banco: selectedRow
-                ? selectedRow.banco
-                  ? selectedRow.banco
+              asociado_id: selectedRow
+                ? selectedRow.asociado_id
+                : encabezado.id,
+              acuerdo_id: selectedRow ? selectedRow.acuerdo_id : acuerdo_id,
+              evento_notificacion_id: selectedRow
+                ? selectedRow.evento_notificacion_id
+                : '',
+              nombre: selectedRow
+                ? selectedRow.nombre
+                  ? selectedRow.nombre
                   : ''
                 : '',
-              numero_cuenta: selectedRow
-                ? selectedRow.numero_cuenta
-                  ? selectedRow.numero_cuenta
-                  : ''
-                : '',
-              tipo_cuenta: selectedRow
-                ? selectedRow.tipo_cuenta
-                  ? selectedRow.tipo_cuenta
-                  : 'C'
-                : '',
-              sucursal: selectedRow
-                ? selectedRow.sucursal
-                  ? selectedRow.sucursal
+              celular: selectedRow
+                ? selectedRow.celular
+                  ? selectedRow.celular
                   : ''
                 : '',
               telefono: selectedRow
                 ? selectedRow.telefono
                   ? selectedRow.telefono
+                  : 'C'
+                : '',
+              email: selectedRow
+                ? selectedRow.email
+                  ? selectedRow.email
                   : ''
                 : '',
               estado: selectedRow
@@ -191,15 +191,14 @@ const AsociadoCotnactoLegalCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <AsociadoBancariaForm
+              <NotificacionContactoForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
                 accion={accion}
                 initialValues={initialValues}
-                tiposDocumentos={tiposDocumentos}
-                ciudades={ciudades}
-                tiposContactos={TIPOS_CONTACTOS}
+                eventosNotificaciones={eventosNotificaciones}
+                encabezado={encabezado}
               />
             )}
           </Formik>

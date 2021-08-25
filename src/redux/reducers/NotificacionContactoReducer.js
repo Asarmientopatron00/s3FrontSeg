@@ -1,0 +1,64 @@
+import {
+  GET_COLECCION_NOTIFICACION_CONTACTO,
+  SHOW_NOTIFICACION_CONTACTO,
+  UPDATE_NOTIFICACION_CONTACTO,
+  DELETE_NOTIFICACION_CONTACTO,
+  CREATE_NOTIFICACION_CONTACTO,
+} from '../../shared/constants/ActionTypes';
+
+const initialState = {
+  rows: [],
+  selectedRow: null,
+  desde: 1,
+  hasta: 1,
+  por_pagina: 1,
+  pagina_actual: 1,
+  ultima_pagina: 1,
+  total: 1,
+  encabezado: {},
+};
+
+const asociadoContactoLegalReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case GET_COLECCION_NOTIFICACION_CONTACTO:
+      return {
+        ...state,
+        rows: action.payload.data.datos,
+        desde: action.payload.data.desde,
+        hasta: action.payload.data.hasta,
+        por_pagina: action.payload.data.por_pagina,
+        pagina_actual: action.payload.data.pagina_actual,
+        ultima_pagina: action.payload.data.ultima_pagina,
+        total: action.payload.data.total,
+        encabezado: action.payload.data.encabezado,
+      };
+
+    case SHOW_NOTIFICACION_CONTACTO:
+      return {
+        ...state,
+        selectedRow: action.payload,
+      };
+
+    case UPDATE_NOTIFICACION_CONTACTO:
+      return {
+        ...state,
+        selectedRow: action.payload.datos,
+      };
+
+    case DELETE_NOTIFICACION_CONTACTO:
+      return {
+        ...state,
+        selectedRow: action.payload.datos,
+      };
+
+    case CREATE_NOTIFICACION_CONTACTO:
+      return {
+        ...state,
+        selectedRow: action.payload.datos,
+      };
+
+    default:
+      return state;
+  }
+};
+export default asociadoContactoLegalReducer;

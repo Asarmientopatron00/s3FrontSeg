@@ -5,14 +5,14 @@ import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
-import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
 import {useDispatch} from 'react-redux';
+import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -54,17 +54,15 @@ const MyRadioField = (props) => {
   );
 };
 
-const LugarForm = (props) => {
+const PuestoParada = (props) => {
   const {
     handleOnClose,
     accion,
-    values,
     initialValues,
+    encabezado,
     departamentos,
     ciudades,
-    asociados,
-    titulo,
-    setFieldValue,
+    values,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -94,6 +92,13 @@ const LugarForm = (props) => {
       },
       height: '70px',
     },
+    MyRadioField: {
+      width: '100%',
+      marginBottom: 0,
+      [theme.breakpoints.up('xl')]: {
+        marginBottom: 0,
+      },
+    },
     MySelectField: {
       width: 'auto',
       marginBottom: 16,
@@ -114,13 +119,6 @@ const LugarForm = (props) => {
         cursor: 'pointer',
       },
     },
-    MyRadioField: {
-      width: '100%',
-      marginBottom: 0,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 0,
-      },
-    },
     btnPrymary: {
       backgroundColor: theme.palette.primary.main,
     },
@@ -139,9 +137,13 @@ const LugarForm = (props) => {
       gridTemplateColumns: 'repeat(2,1fr)',
       columnGap: '20px',
     },
+    contenedorFiltros: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      columnGap: 10,
+    },
   }));
 
-  const classes = useStyles(props);
   const dispatch = useDispatch();
 
   let onChangeDepartamento1 = useRef();
@@ -158,7 +160,7 @@ const LugarForm = (props) => {
     }
   }, [values.departamento_id]);
 
-  const [req, setReq] = useState(false);
+  const classes = useStyles(props);
 
   return (
     <Form className='' noValidate autoComplete='off'>
@@ -169,131 +171,119 @@ const LugarForm = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            {titulo}
+            {'Acuerdos operativos de servicio - Puestos parada'}
           </Box>
 
-          <Box px={{md: 5, lg: 8, xl: 10}}>
-            <MyTextField
-              className={classes.myTextField}
+          <Box className={classes.contenedorFiltros}>
+            <TextField
+              label='Tipo Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='tipoDocumento'
+              value={encabezado.tipo_documento ? encabezado.tipo_documento : ''}
+              disabled={true}
+            />
+            <TextField
+              label='Número Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='numeroDocumento'
+              value={
+                encabezado.numero_documento ? encabezado.numero_documento : ''
+              }
+              disabled={true}
+            />
+            <TextField
               label='Nombre'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
               name='nombre'
-              disabled={disabled}
-              required
+              value={encabezado.nombre ? encabezado.nombre : ''}
+              disabled={true}
             />
-            <MyAutocomplete
-              options={departamentos}
-              name='departamento_id'
-              inputValue={initialValues.departamento_id}
-              label='Departamento'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-            <MyAutocomplete
-              options={ciudades}
-              name='ciudad_id'
-              inputValue={initialValues.ciudad_id}
+            <TextField
               label='Ciudad'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='ciudad'
+              value={encabezado.ciudad ? encabezado.ciudad : ''}
+              disabled={true}
             />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Dirección'
-              name='direccion'
-              disabled={disabled}
-              required
-            />
-
-            <Box className={classes.inputs_2}>
-              <MyRadioField
-                label='Lugar Propio Asociado Negocio'
-                className={classes.MyRadioField}
-                name='lugar_asociado_negocios'
-                disabled={disabled}
-                required
-                onClick={(event) => {
-                  setReq(event.target.value === 'S');
-                  if (event.target.value === 'N') {
-                    setFieldValue('asociado_id', '');
-                  }
-                }}
-                options={[
-                  {value: 'S', label: 'Si'},
-                  {value: 'N', label: 'No'},
-                ]}
-              />
-
-              <MyRadioField
-                label='Lugar Aduana Uso General'
-                className={classes.MyRadioField}
-                name='lugar_aduana_general'
-                disabled={disabled}
-                required
-                options={[
-                  {value: 'S', label: 'Si'},
-                  {value: 'N', label: 'No'},
-                ]}
-              />
-            </Box>
-
-            <MyAutocomplete
-              options={asociados}
-              name='asociado_id'
-              inputValue={initialValues.asociado_id}
-              label='Asociado Negocio'
-              autoHighlight
-              className={classes.myTextField}
-              required={req}
-              disabled={!req}
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Código Geocerca'
-              name='geocerca_id'
-              disabled={disabled}
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Observaciones'
-              name='observaciones'
-              multiline
-              disabled={disabled}
-            />
-
-            <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel>Estado*</FormLabel>
-              <Field
-                name='estado'
-                type='radio'
-                as={RadioGroup}
-                className={classes.myTextField}
-                disabled={accion === 'ver'}
-                row
-                value={values.estado}>
-                <FormControlLabel
-                  value='1'
-                  control={<Radio color='primary' />}
-                  label='Activo'
-                  labelPlacement='end'
-                  disabled={accion === 'ver'}
-                />
-                <FormControlLabel
-                  value='0'
-                  control={<Radio color='primary' />}
-                  label='Inactivo'
-                  labelPlacement='end'
-                  disabled={accion === 'ver'}
-                />
-              </Field>
-            </FormControl>
           </Box>
+
+          <MyRadioField
+            label='Tipo Parada'
+            className={classes.MyRadioField}
+            name='tipo_parada'
+            disabled={disabled}
+            required
+            options={[
+              {value: 'A', label: 'Aprobada'},
+              {value: 'P', label: 'Prohibida'},
+            ]}
+          />
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Ruta'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
+
+          <MyAutocomplete
+            options={departamentos}
+            name='departamento_id'
+            inputValue={initialValues.departamento_id}
+            label='Departamento'
+            autoHighlight
+            className={classes.myTextField}
+            required
+            disabled={disabled}
+          />
+
+          <MyAutocomplete
+            options={ciudades}
+            name='ciudad_id'
+            inputValue={initialValues.ciudad_id}
+            label='Ciudad'
+            autoHighlight
+            className={classes.myTextField}
+            required
+            disabled={disabled}
+          />
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Indicaciones'
+            name='indicaciones'
+            disabled={disabled}
+            multiline
+          />
         </Box>
       </Scrollbar>
       <Box className={classes.bottomsGroup}>
@@ -317,4 +307,4 @@ const LugarForm = (props) => {
   );
 };
 
-export default LugarForm;
+export default PuestoParada;

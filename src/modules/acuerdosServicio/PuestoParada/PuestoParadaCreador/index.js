@@ -8,42 +8,29 @@ import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/LugarAction';
-
+} from '../../../../redux/actions/PuestoParadaAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import LugarForm from './LugarForm';
+import PuestoParadaForm from './PuestoParadaForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
+import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
-const validationSchema = yup.object({
-  nombre: yup.string().required('Requerido'),
-  departamento_id: yup.string().required('Requerido'),
-  ciudad_id: yup.string().required('Requerido'),
-  direccion: yup.string().required('Requerido'),
-  lugar_asociado_negocios: yup.string().required('Requerido'),
-  lugar_aduana_general: yup.string().required('Requerido'),
-  asociado_id: yup.string().when('lugar_asociado_negocios', {
-    is: 'S',
-    then: yup.string().required('Requerido'),
-  }),
-});
-
-const LugarCreator = (props) => {
+const PuestoParadaCreator = (props) => {
   const {
-    lugar,
+    puestoParada,
     handleOnClose,
     accion,
     updateColeccion,
-    departamentos,
     ciudades,
-    asociados,
-    titulo,
+    departamentos,
+    encabezado,
+    acuerdo_id,
   } = props;
 
   const dispatch = useDispatch();
@@ -62,11 +49,23 @@ const LugarCreator = (props) => {
     },
   }));
 
+  let validationSchema = yup.object({
+    tipo_parada: yup.string().required('Requerido'),
+    nombre: yup
+      .string()
+      .required('Requerido')
+      .max(128, mensajeValidacion('max', 128)),
+    departamento_id: yup.string().required('Requerido'),
+    ciudad_id: yup.string().required('Requerido'),
+  });
+
   const classes = useStyles(props);
 
   const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
-  selectedRow = useSelector(({lugarReducer}) => lugarReducer.selectedRow);
+  selectedRow = useSelector(
+    ({puestoParadaReducer}) => puestoParadaReducer.selectedRow,
+  );
 
   const initializeSelectedRow = () => {
     selectedRow = null;
@@ -91,9 +90,9 @@ const LugarCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(lugar));
+      dispatch(onShow(puestoParada));
     }
-  }, [accion, dispatch, lugar]);
+  }, [accion, dispatch, puestoParada]);
 
   return (
     showForm && (
@@ -105,7 +104,7 @@ const LugarCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'sm'}>
+        maxWidth={'md'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
@@ -113,45 +112,28 @@ const LugarCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
-              nombre: selectedRow ? selectedRow.nombre : '',
-              departamento_id: selectedRow
-                ? selectedRow.departamento_id
-                  ? selectedRow.departamento_id
-                  : ''
-                : '',
-              ciudad_id: selectedRow
-                ? selectedRow.ciudad_id
-                  ? selectedRow.ciudad_id
-                  : ''
-                : '',
-              direccion: selectedRow
-                ? selectedRow.direccion
-                  ? selectedRow.direccion
-                  : ''
-                : '',
-              lugar_aduana_general: selectedRow
-                ? selectedRow.lugar_aduana_general
-                  ? selectedRow.lugar_aduana_general
-                  : ''
-                : '',
-              lugar_asociado_negocios: selectedRow
-                ? selectedRow.lugar_asociado_negocios
-                  ? selectedRow.lugar_asociado_negocios
-                  : ''
-                : '',
               asociado_id: selectedRow
                 ? selectedRow.asociado_id
-                  ? selectedRow.asociado_id
+                : encabezado.id,
+              acuerdo_id: selectedRow ? selectedRow.acuerdo_id : acuerdo_id,
+              evento_notificacion_id: selectedRow
+                ? selectedRow.evento_notificacion_id
+                : '',
+              departamento_id: selectedRow ? selectedRow.departamento_id : '',
+              ciudad_id: selectedRow ? selectedRow.ciudad_id : '',
+              tipo_parada: selectedRow
+                ? selectedRow.tipo_parada
+                  ? selectedRow.tipo_parada
                   : ''
                 : '',
-              geocerca_id: selectedRow
-                ? selectedRow.geocerca_id
-                  ? selectedRow.geocerca_id
+              nombre: selectedRow
+                ? selectedRow.nombre
+                  ? selectedRow.nombre
                   : ''
                 : '',
-              observaciones: selectedRow
-                ? selectedRow.observaciones
-                  ? selectedRow.observaciones
+              indicaciones: selectedRow
+                ? selectedRow.indicaciones
+                  ? selectedRow.indicaciones
                   : ''
                 : '',
               estado: selectedRow
@@ -176,16 +158,15 @@ const LugarCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <LugarForm
+              <PuestoParadaForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
-                titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
-                departamentos={departamentos}
                 ciudades={ciudades}
-                asociados={asociados}
+                departamentos={departamentos}
+                encabezado={encabezado}
               />
             )}
           </Formik>
@@ -195,4 +176,4 @@ const LugarCreator = (props) => {
   );
 };
 
-export default LugarCreator;
+export default PuestoParadaCreator;
