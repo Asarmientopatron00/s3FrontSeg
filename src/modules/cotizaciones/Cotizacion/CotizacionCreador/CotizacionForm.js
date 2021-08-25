@@ -155,10 +155,10 @@ const SolicitudCotizacionForm = (props) => {
       width: '100%',
       display: 'grid',
       gridTemplateColumns: 'repeat(2,1fr)',
-      gap: '20px',
+      columnGap: '20px',
     },
     marco: {
-      padding: '20px',
+      padding: '0px',
       backgroundColor: 'white',
       boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
       borderRadius: '4px',
@@ -202,7 +202,8 @@ const SolicitudCotizacionForm = (props) => {
     <>
       <Form className={classes.root} noValidate autoComplete='off'>
         <Box className={classes.marco}>
-          <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
+          {/* <Box py={5} px={{xs: 5, lg: 8, xl: 10}}> */}
+          <Box py={5} px={5}>
             <Box
               component='h6'
               mb={{xs: 4, xl: 6}}
