@@ -277,6 +277,20 @@ export const SHOW_PUESTO_PARADA = 'show_puesto_parada';
 export const UPDATE_PUESTO_PARADA = 'update_puesto_parada';
 export const CREATE_PUESTO_PARADA = 'create_puesto_parada';
 export const DELETE_PUESTO_PARADA = 'delete_puesto_parada';
+export const GET_COLECCION_RUTA_CONTROL = 'get_coleccion_ruta_control';
+export const GET_COLECCION_LIGERA_RUTA_CONTROL =
+  'get_coleccion_ligera_ruta_control';
+export const SHOW_RUTA_CONTROL = 'show_ruta_control';
+export const UPDATE_RUTA_CONTROL = 'update_ruta_control';
+export const CREATE_RUTA_CONTROL = 'create_ruta_control';
+export const DELETE_RUTA_CONTROL = 'delete_ruta_control';
+export const GET_COLECCION_PUESTO_CONTROL = 'get_coleccion_puesto_control';
+export const GET_COLECCION_LIGERA_PUESTO_CONTROL =
+  'get_coleccion_ligera_puesto_control';
+export const SHOW_PUESTO_CONTROL = 'show_puesto_control';
+export const UPDATE_PUESTO_CONTROL = 'update_puesto_control';
+export const CREATE_PUESTO_CONTROL = 'create_puesto_control';
+export const DELETE_PUESTO_CONTROL = 'delete_puesto_control';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

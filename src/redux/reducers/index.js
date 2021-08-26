@@ -42,6 +42,8 @@ import AcuerdoServicioReducer from './AcuerdoServicioReducer';
 import NotificacionContactoReducer from './NotificacionContactoReducer';
 import RutaAutorizacionReducer from './RutaAutorizacionReducer';
 import PuestoParadaReducer from './PuestoParadaReducer';
+import RutaControlReducer from './RutaControlReducer';
+import PuestoControlReducer from './PuestoControlReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -88,5 +90,7 @@ const reducers = (history) =>
     notificacionContactoReducer: NotificacionContactoReducer,
     rutaAutorizacionReducer: RutaAutorizacionReducer,
     puestoParadaReducer: PuestoParadaReducer,
+    rutaControlReducer: RutaControlReducer,
+    puestoControlReducer: PuestoControlReducer,
   });
 export default reducers;

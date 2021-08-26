@@ -24,6 +24,16 @@ export const acuerdoServicioConfig = [
         path: ['/puestos-parada/:acuerdo_id'],
         component: React.lazy(() => import('./PuestoParada')),
       },
+      {
+        exact: true,
+        path: ['/rutas-control/:acuerdo_id'],
+        component: React.lazy(() => import('./RutaControl')),
+      },
+      {
+        exact: true,
+        path: ['/puestos-control/:acuerdo_id'],
+        component: React.lazy(() => import('./PuestoControl')),
+      },
     ],
   },
 ];

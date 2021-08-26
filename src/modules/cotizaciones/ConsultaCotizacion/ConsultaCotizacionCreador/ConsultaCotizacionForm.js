@@ -94,9 +94,11 @@ const ConsultaCotizacionForm = (props) => {
     tableHead: {
       fontWeight: 'bold',
       padding: '2px',
+      color: '#909098',
     },
     tableCell: {
       padding: '2px',
+      color: '#909098',
     },
   }));
 

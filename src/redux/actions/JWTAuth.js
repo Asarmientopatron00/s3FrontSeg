@@ -44,7 +44,7 @@ export const onJwtSignIn = ({username, password}) => {
       // dispatch(fetchError(err.response.data.error));
       dispatch({
         type: FETCH_ERROR,
-        payload: err.response.data.messages[0],
+        payload: 'Error de conexión con el servidor',
       });
     }
   };

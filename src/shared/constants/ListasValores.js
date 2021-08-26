@@ -70,3 +70,14 @@ export const TIPOS_RUTAS = [
   {id: 'S', nombre: 'Salida', estado: 1},
   {id: 'A', nombre: 'Ambos', estado: 1},
 ];
+
+export const TIPOS_PROCESOS = [
+  {id: 'I', nombre: 'Instalación', estado: 1},
+  {id: 'D', nombre: 'Desinstalación', estado: 1},
+];
+
+export const TIPOS_PUESTOS_CONTROL = [
+  {id: 'V', nombre: 'Virtual', estado: 1},
+  {id: 'F', nombre: 'Físico', estado: 1},
+  {id: 'A', nombre: 'Ambos Virtual y fisico', estado: 1},
+];

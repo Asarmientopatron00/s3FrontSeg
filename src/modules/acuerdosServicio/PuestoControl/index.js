@@ -24,27 +24,24 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
+import PuestoControlCreador from './PuestoControlCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/AcuerdoServicioAction';
-import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
+} from '../../../redux/actions/PuestoControlAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
-import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import AcuerdoServicioCreador from './AcuerdoServicioCreador';
-import HotelIcon from '@material-ui/icons/Hotel';
-import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
-import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
-import DirectionsIcon from '@material-ui/icons/Directions';
-import LocalShippingIcon from '@material-ui/icons/LocalShipping';
-import SwapCallsIcon from '@material-ui/icons/SwapCalls';
+import {useParams} from 'react-router-dom';
+import {onGetColeccionLigera as onGetColeccionLigeraDepartamento} from '../../../redux/actions/DepartamentoAction';
+import {TIPOS_PUESTOS_CONTROL} from '../../../shared/constants/ListasValores';
+
+// import GetUsuario from '../../../shared/functions/GetUsuario';
 // import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
@@ -77,58 +74,39 @@ import SwapCallsIcon from '@material-ui/icons/SwapCalls';
 
 const cells = [
   {
-    id: 'numero_acuerdo_servicio',
-    typeHead: 'numeric',
-    label: 'Número Acuerdo',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_acuerdo_servicio',
+    id: 'nombre',
     typeHead: 'string',
-    label: 'Fecha Acuerdo',
-    value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'numero_documento',
-    typeHead: 'numeric',
-    label: 'Documento',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'asociado',
-    typeHead: 'string',
-    label: 'Nombre',
+    label: 'Puesto Control',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'estado_acuerdo',
+    id: 'tipo_puesto_control',
     typeHead: 'string',
-    label: 'Estado Acuerdo',
+    label: 'Tipo Puesto',
     value: (value) =>
-      ESTADO_ACUERDO_SERVICIO.map((estado) =>
-        estado.id === value ? estado.nombre : '',
+      TIPOS_PUESTOS_CONTROL.map((TIPO) =>
+        TIPO.id === value ? TIPO.nombre : '',
       ),
     align: 'left',
-    width: '140px',
     mostrarInicio: true,
   },
   {
-    id: 'observaciones',
+    id: 'departamento',
     typeHead: 'string',
-    label: 'Observaciones',
+    label: 'Departamento',
     value: (value) => value,
     align: 'left',
-    width: '140px',
-    mostrarInicio: false,
+    mostrarInicio: true,
+  },
+  {
+    id: 'ciudad',
+    typeHead: 'string',
+    label: 'Ciudad',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
   },
   {
     id: 'estado',
@@ -139,7 +117,6 @@ const cells = [
     mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
-
   {
     id: 'usuario_modificacion_nombre',
     typeHead: 'string',
@@ -213,10 +190,9 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-
         {columnasMostradas.map((cell) => {
           if (cell.mostrar) {
             return (
@@ -253,21 +229,6 @@ function EnhancedTableHead(props) {
             return <th key={cell.id}></th>;
           }
         })}
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Rutas a Controlar'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Puestos de Control'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Puestos Paradas'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Rutas Autorizadas'}
-        </TableCell>
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Contactos Notificación'}
-        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -291,7 +252,6 @@ const useToolbarStyles = makeStyles((theme) => ({
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
     borderRadius: '4px',
     display: 'grid',
-    gap: '20px',
   },
   highlight:
     theme.palette.type === 'light'
@@ -349,8 +309,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '4fr 4fr 1fr',
-    gap: '20px',
+    gridTemplateColumns: '1fr 1fr',
   },
   pairFilters: {
     display: 'flex',
@@ -364,14 +323,9 @@ const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
     numSelected,
-    titulo,
-    onOpenAddAcuerdoServicio,
+    onOpenAddPuestoControl,
     handleOpenPopoverColumns,
-    queryFilter,
-    nombreFiltro,
-    numeroDocumentoFiltro,
-    limpiarFiltros,
-    permisos,
+    encabezado,
   } = props;
   return (
     <Toolbar
@@ -394,7 +348,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              {titulo}
+              Acuerdos operativos de servicio - Puestos de control de ruta
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -406,45 +360,76 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear Asociado'
-                  onClick={onOpenAddAcuerdoServicio}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
+              <Tooltip
+                title='Crear Notificación Contacto'
+                onClick={onOpenAddPuestoControl}>
+                <IconButton
+                  className={classes.createButton}
+                  aria-label='filter list'>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
-              onChange={queryFilter}
-              value={nombreFiltro}
+              label='Tipo Documento'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='tipoDocumento'
+              value={encabezado.tipo_documento ? encabezado.tipo_documento : ''}
+              disabled={true}
             />
             <TextField
               label='Número Documento'
-              name='numeroDocumentoFiltro'
-              id='numeroDocumentoFiltro'
-              onChange={queryFilter}
-              value={numeroDocumentoFiltro}
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='numeroDocumento'
+              value={
+                encabezado.numero_documento ? encabezado.numero_documento : ''
+              }
+              disabled={true}
             />
-            <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
+            <TextField
+              label='Nombre'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='nombre'
+              value={encabezado.nombre ? encabezado.nombre : ''}
+              disabled={true}
+            />
+            <TextField
+              label='Ciudad'
+              InputLabelProps={{
+                shrink: true,
+                style: {
+                  fontWeight: 'bold',
+                  color: 'black',
+                },
+              }}
+              InputProps={{readOnly: true, style: {fontSize: '13px'}}}
+              name='ciudad'
+              value={encabezado.ciudad ? encabezado.ciudad : ''}
+              disabled={true}
+            />
           </Box>
         </>
       )}
@@ -471,15 +456,15 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAcuerdoServicio: PropTypes.func.isRequired,
+  onOpenAddPuestoControl: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
-  queryFilter: PropTypes.func.isRequired,
-  limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
-  numeroDocumentoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
   marcoTabla: {
     backgroundColor: 'white',
     boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
@@ -487,6 +472,21 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginTop: '5px',
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  btnSecundary: {
+    backgroundColor: theme.palette.grayBottoms,
   },
   root: {
     width: '100%%',
@@ -501,25 +501,13 @@ const useStyles = makeStyles((theme) => ({
   headCell: {
     padding: '0px 0px 0px 15px',
   },
-  headCellWoMargin: {
-    padding: '0px',
-    width: 'fit-content',
-    fontSize: '12px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-  },
   row: {
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
     padding: 'none',
   },
   cell: (props) => ({
-    fontSize: '13px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
   }),
   cellWidth: (props) => ({
@@ -530,7 +518,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   }),
   acciones: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     minWidth: '100px',
   }),
   paper: {
@@ -554,10 +542,6 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   generalIcons: {
-    height: '20px',
-    [theme.breakpoints.up('xl')]: {
-      height: '25px',
-    },
     '&:hover': {
       color: theme.palette.colorHover,
       cursor: 'pointer',
@@ -565,24 +549,6 @@ const useStyles = makeStyles((theme) => ({
   },
   editIcon: {
     color: theme.palette.primary.main,
-  },
-  legalIcon: {
-    color: 'black',
-  },
-  contactIcon: {
-    color: 'lightgreen',
-  },
-  bancariaIcon: {
-    color: 'gray',
-  },
-  comercialIcon: {
-    color: 'darkgreen',
-  },
-  documentosIcon: {
-    color: theme.palette.primary.main,
-  },
-  seguridadIcon: {
-    color: 'red',
   },
   visivilityIcon: {
     color: theme.palette.grayBottoms,
@@ -607,7 +573,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AcuerdoServicio = (props) => {
+const PuestoControl = () => {
+  const {acuerdo_id} = useParams();
+
+  const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -620,16 +589,12 @@ const AcuerdoServicio = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
-  const [acuerdoServicioSeleccionado, setAcuerdoServicioSeleccionado] =
-    useState(0);
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({acuerdoServicioReducer}) => acuerdoServicioReducer,
+  const [puestoControlSeleccionado, setPuestoControlSeleccionado] = useState(0);
+  const {rows, desde, hasta, ultima_pagina, total, encabezado} = useSelector(
+    ({puestoControlReducer}) => puestoControlReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [numeroDocumentoFiltro, setNumeroDocumentoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -660,87 +625,17 @@ const AcuerdoServicio = (props) => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
-  const {user} = useSelector(({auth}) => auth);
-  const [permisos, setPermisos] = useState('');
-  const [titulo, setTitulo] = useState('');
-
   useEffect(() => {
-    user &&
-      user.permisos.forEach((modulo) => {
-        modulo.opciones.forEach((opcion) => {
-          if (opcion.url === props.route.path[0]) {
-            setTitulo(opcion.nombre);
-            const permisoAux = [];
-            opcion.permisos.forEach((permiso) => {
-              if (permiso.permitido) {
-                permisoAux.push(permiso.titulo);
-              }
-            });
-            setPermisos(permisoAux);
-          }
-        });
-      });
-  }, [user, props.route]);
-
-  useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    nombreFiltro,
-    orderByToSend,
-    numeroDocumentoFiltro,
-  ]);
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
+  }, [dispatch, page, rowsPerPage, orderByToSend, showForm, acuerdo_id]);
 
   const updateColeccion = () => {
     setPage(1);
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-      ),
-    );
+    dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, acuerdo_id));
   };
-
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, numeroDocumentoFiltro]);
-
-  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
-
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraAsociado());
-  }, [dispatch]);
-
-  const queryFilter = (e) => {
-    switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
-        break;
-      case 'numeroDocumentoFiltro':
-        setNumeroDocumentoFiltro(e.target.value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setNumeroDocumentoFiltro('');
-  };
+  }, [orderByToSend]);
 
   const changeOrderBy = (id) => {
     if (orderBy === id) {
@@ -758,28 +653,10 @@ const AcuerdoServicio = (props) => {
     }
   };
 
-  const onOpenEditAcuerdoServicio = (id) => {
-    setAcuerdoServicioSeleccionado(id);
+  const onOpenEditPuestoControl = (id) => {
+    setPuestoControlSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
-  };
-
-  const onOpenAddAcuerdoServicio = () => {
-    setAcuerdoServicioSeleccionado(0);
-    setAccion('crear');
-    setShowForm(true);
-  };
-
-  const onOpenViewAcuerdoServicio = (id) => {
-    setAcuerdoServicioSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setAcuerdoServicioSeleccionado(0);
-    setAccion('ver');
   };
 
   const handleClosePopover = () => {
@@ -818,10 +695,16 @@ const AcuerdoServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteAcuerdoServicio = (id) => {
+  const onOpenViewPuestoControl = (id) => {
+    setPuestoControlSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
+  };
+
+  const onDeletePuestoControl = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea anular el acuerdo de servicio?',
+      text: '¿Seguro qué desea eliminar el contacto notificación?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -833,8 +716,8 @@ const AcuerdoServicio = (props) => {
       if (result.isConfirmed) {
         dispatch(onDelete(id));
         Swal.fire(
-          'Anulado',
-          'El acuerdo de servicio anulado correctamente',
+          'Eliminado',
+          'El contacto notificación ha sido eliminado',
           'success',
         );
         setTimeout(() => {
@@ -843,6 +726,23 @@ const AcuerdoServicio = (props) => {
       }
     });
   };
+
+  const onOpenAddPuestoControl = () => {
+    setPuestoControlSeleccionado(0);
+    setAccion('crear');
+    setShowForm(true);
+  };
+
+  const handleOnCloseForm = () => {
+    setShowForm(false);
+    setPuestoControlSeleccionado(0);
+    setAccion('ver');
+  };
+  // const handleRequestSort = (event, property) => {
+  //   const isAsc = orderBy === property && order === 'asc';
+  //   setOrder(isAsc ? 'desc' : 'asc');
+  //   setOrderBy(property);
+  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -878,23 +778,28 @@ const AcuerdoServicio = (props) => {
     }
   }, [rows]);
 
+  const departamentos = useSelector(
+    ({departamentoReducer}) => departamentoReducer.ligera,
+  );
+
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+
+  useEffect(() => {
+    dispatch(onGetColeccionLigeraDepartamento());
+  }, [dispatch]);
+
+  // const usuario = GetUsuario();
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {permisos && (
-          <EnhancedTableToolbar
-            numSelected={selected.length}
-            onOpenAddAcuerdoServicio={onOpenAddAcuerdoServicio}
-            handleOpenPopoverColumns={handleOpenPopoverColumns}
-            queryFilter={queryFilter}
-            limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
-            numeroDocumentoFiltro={numeroDocumentoFiltro}
-            permisos={permisos}
-            titulo={titulo}
-          />
-        )}
-        {showTable && permisos ? (
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onOpenAddPuestoControl={onOpenAddPuestoControl}
+          handleOpenPopoverColumns={handleOpenPopoverColumns}
+          encabezado={encabezado}
+        />
+        {showTable ? (
           <Box className={classes.marcoTabla}>
             <Box className={classes.paginacion}>
               <Box>
@@ -965,37 +870,22 @@ const AcuerdoServicio = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    onClick={() =>
-                                      onOpenEditAcuerdoServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                                </Tooltip>
-                              )}
-                            {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewAcuerdoServicio(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.eliminar' />}>
-                                  <DeleteIcon
-                                    onClick={() =>
-                                      onDeleteAcuerdoServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                                </Tooltip>
-                              )}
+                            <Tooltip title={<IntlMessages id='boton.editar' />}>
+                              <EditIcon
+                                onClick={() => onOpenEditPuestoControl(row.id)}
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                            </Tooltip>
+                            <Tooltip title={<IntlMessages id='boton.ver' />}>
+                              <VisibilityIcon
+                                onClick={() => onOpenViewPuestoControl(row.id)}
+                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                            </Tooltip>
+                            <Tooltip
+                              title={<IntlMessages id='boton.eliminar' />}>
+                              <DeleteIcon
+                                onClick={() => onDeletePuestoControl(row.id)}
+                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1018,59 +908,6 @@ const AcuerdoServicio = (props) => {
                               return <th key={row.id + columna.id}></th>;
                             }
                           })}
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/rutas-control/' + row.id}
-                              className={classes.generalIcons}>
-                              <Tooltip title={'Rutas a Controlar'}>
-                                <SwapCallsIcon
-                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></SwapCallsIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/puestos-control/' + row.id}
-                              className={classes.generalIcons}>
-                              <Tooltip
-                                title={<IntlMessages id='boton.contactos' />}>
-                                <LocalShippingIcon
-                                  className={`${classes.generalIcons} ${classes.contactIcon}`}></LocalShippingIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/puestos-parada/' + row.id}>
-                              <Tooltip title={'Puestos Paradas'}>
-                                <HotelIcon
-                                  className={`${classes.generalIcons} ${classes.bancariaIcon}`}></HotelIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/rutas-autorizacion/' + row.id}>
-                              <Tooltip title={'Rutas Autorizadas'}>
-                                <DirectionsIcon
-                                  className={`${classes.generalIcons} ${classes.comercialIcon}`}></DirectionsIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/acuerdos-contactos/' + row.id}>
-                              <Tooltip title={'Notificación Contactos'}>
-                                <NotificationsActiveIcon
-                                  className={`${classes.generalIcons} ${classes.documentosIcon}`}></NotificationsActiveIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
                         </TableRow>
                       );
                     })
@@ -1120,34 +957,51 @@ const AcuerdoServicio = (props) => {
               </Box>
             </Box>
           </Box>
-        ) : permisos ? (
-          <Box
-            component='h2'
-            padding={4}
-            fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='sinResultados' />
-          </Box>
         ) : (
           <Box
             component='h2'
             padding={4}
             fontSize={19}
-            className={classes.marcoTabla}>
-            <IntlMessages id='noAutorizado' />
+            className={classes.marcoTabla}
+            display='flex'
+            justifyContent='space-between'>
+            <IntlMessages id='sinResultados' />
           </Box>
         )}
+
+        <Box
+          py={6}
+          px={4}
+          display='grid'
+          gridTemplateColumns='1fr 1fr'
+          className={classes.marcoTabla}>
+          <Box></Box>
+          <Box className={classes.bottomsGroup}>
+            <Button
+              className={`${classes.btnRoot} ${classes.btnSecundary}`}
+              href='/acuerdos-servicio'>
+              <IntlMessages id='boton.cancel' />
+            </Button>
+          </Box>
+        </Box>
       </Paper>
 
+      {/* <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Cambiar Densidad"
+      /> */}
       {showForm ? (
-        <AcuerdoServicioCreador
+        <PuestoControlCreador
           showForm={showForm}
-          acuerdoServicio={acuerdoServicioSeleccionado}
+          puestoControl={puestoControlSeleccionado}
           accion={accion}
-          handleOnClose={handleOnClose}
+          handleOnClose={handleOnCloseForm}
           updateColeccion={updateColeccion}
-          titulo={titulo}
-          asociados={asociados}
+          departamentos={departamentos}
+          ciudades={ciudades}
+          encabezado={encabezado}
+          acuerdo_id={acuerdo_id}
+          TIPOS_PUESTOS_CONTROL={TIPOS_PUESTOS_CONTROL}
         />
       ) : (
         ''
@@ -1193,4 +1047,4 @@ const AcuerdoServicio = (props) => {
   );
 };
 
-export default AcuerdoServicio;
+export default PuestoControl;

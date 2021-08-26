@@ -46,4 +46,6 @@ export * from './LugarAction';
 export * from './AcuerdoServicioAction';
 export * from './NotificacionContactoAction';
 export * from './RutaAutorizacionAction';
+export * from './RutaControlAction';
 export * from './PuestoParadaAction';
+export * from './PuestoControlAction';
