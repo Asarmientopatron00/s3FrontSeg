@@ -34,6 +34,11 @@ export const acuerdoServicioConfig = [
         path: ['/puestos-control/:acuerdo_id'],
         component: React.lazy(() => import('./PuestoControl')),
       },
+      {
+        exact: true,
+        path: ['/aprobacion-acuerdos'],
+        component: React.lazy(() => import('./AprobacionAcuerdoServicio')),
+      },
     ],
   },
 ];

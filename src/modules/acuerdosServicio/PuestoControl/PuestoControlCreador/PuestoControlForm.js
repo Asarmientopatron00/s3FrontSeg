@@ -110,7 +110,7 @@ const PuestoControl = (props) => {
     contenedorFiltros: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
-      columnGap: 10,
+      gap: 20,
     },
   }));
 

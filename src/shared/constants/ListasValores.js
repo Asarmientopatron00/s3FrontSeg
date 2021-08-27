@@ -60,7 +60,7 @@ export const ESTADO_COTIZACIONES = [
 ];
 
 export const ESTADO_ACUERDO_SERVICIO = [
-  {id: 'PVB', nombre: 'Pendiente Vo Bo', estado: 1},
+  {id: 'PDT', nombre: 'Pendiente', estado: 1},
   {id: 'ANU', nombre: 'Anulada', estado: 1},
   {id: 'APR', nombre: 'Aprobada', estado: 1},
 ];
