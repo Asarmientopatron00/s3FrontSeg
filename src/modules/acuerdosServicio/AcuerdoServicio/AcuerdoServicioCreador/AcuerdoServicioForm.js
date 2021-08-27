@@ -224,6 +224,25 @@ const AcuerdoServicioForm = (props) => {
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <Box className={classes.inputs_2}>
+              <MyTextField
+                className={classes.myTextField}
+                label='Número Acuerdo'
+                name='numero_acuerdo_servicio'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha'
+                name='fecha_acuerdo_servicio'
+                disabled={true}
+                type='date'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <MyAutocompleteAsociado
                 options={asociados}
                 name='asociado_id'
@@ -239,17 +258,6 @@ const AcuerdoServicioForm = (props) => {
                 label=' '
                 name='asociado'
                 disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Fecha'
-                name='fecha_acuerdo_servicio'
-                disabled={true}
-                type='date'
                 InputLabelProps={{
                   shrink: true,
                 }}

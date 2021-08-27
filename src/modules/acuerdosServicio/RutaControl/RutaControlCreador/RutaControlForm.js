@@ -222,14 +222,6 @@ const RutaControl = (props) => {
             disabled={disabled}
           />
 
-          <MyTextField
-            className={classes.myTextField}
-            label='Nombre Lugar'
-            name='nombre'
-            disabled={disabled}
-            required
-          />
-
           <Box className={classes.inputs_2}>
             <MyAutocomplete
               options={departamentos}
@@ -256,7 +248,15 @@ const RutaControl = (props) => {
 
           <MyTextField
             className={classes.myTextField}
-            label='Dirección'
+            label='Nombre Lugar'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Dirección Lugar'
             name='direccion'
             disabled={disabled}
             required

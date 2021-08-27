@@ -205,25 +205,6 @@ const PuestoControl = (props) => {
             />
           </Box>
 
-          <MyAutocomplete
-            options={TIPOS_PUESTOS_CONTROL}
-            name='tipo_puesto_control'
-            inputValue={initialValues.tipo_puesto_control}
-            label='Tipo Puesto Control'
-            autoHighlight
-            className={classes.myTextField}
-            required
-            disabled={disabled}
-          />
-
-          <MyTextField
-            className={classes.myTextField}
-            label='Nombre Puesto Control'
-            name='nombre'
-            disabled={disabled}
-            required
-          />
-
           <Box className={classes.inputs_2}>
             <MyAutocomplete
               options={departamentos}
@@ -247,6 +228,25 @@ const PuestoControl = (props) => {
               disabled={disabled}
             />
           </Box>
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Puesto Control'
+            name='nombre'
+            disabled={disabled}
+            required
+          />
+
+          <MyAutocomplete
+            options={TIPOS_PUESTOS_CONTROL}
+            name='tipo_puesto_control'
+            inputValue={initialValues.tipo_puesto_control}
+            label='Tipo Puesto Control'
+            autoHighlight
+            className={classes.myTextField}
+            required
+            disabled={disabled}
+          />
         </Box>
       </Scrollbar>
       <Box className={classes.bottomsGroup}>

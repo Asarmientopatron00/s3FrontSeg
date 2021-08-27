@@ -247,14 +247,6 @@ const PuestoParada = (props) => {
             ]}
           />
 
-          <MyTextField
-            className={classes.myTextField}
-            label='Nombre Ruta'
-            name='nombre'
-            disabled={disabled}
-            required
-          />
-
           <MyAutocomplete
             options={departamentos}
             name='departamento_id'
@@ -275,6 +267,14 @@ const PuestoParada = (props) => {
             className={classes.myTextField}
             required
             disabled={disabled}
+          />
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Puesto'
+            name='nombre'
+            disabled={disabled}
+            required
           />
 
           <MyTextField

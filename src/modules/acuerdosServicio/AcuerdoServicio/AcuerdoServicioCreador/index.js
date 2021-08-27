@@ -99,6 +99,9 @@ const AcuerdoServicioCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
+              numero_acuerdo_servicio: selectedRow
+                ? selectedRow.numero_acuerdo_servicio
+                : '',
               asociado_id: selectedRow ? selectedRow.asociado_id : '',
               fecha_acuerdo_servicio: selectedRow
                 ? selectedRow.fecha_acuerdo_servicio

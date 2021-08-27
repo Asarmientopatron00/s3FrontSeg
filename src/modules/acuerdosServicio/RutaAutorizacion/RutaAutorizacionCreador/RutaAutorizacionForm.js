@@ -205,14 +205,6 @@ const NotificacionContacto = (props) => {
             />
           </Box>
 
-          <MyTextField
-            className={classes.myTextField}
-            label='Nombre Ruta'
-            name='nombre_ruta'
-            disabled={disabled}
-            required
-          />
-
           <MyAutocomplete
             options={TIPOS_RUTAS}
             name='tipo_ruta'
@@ -244,6 +236,14 @@ const NotificacionContacto = (props) => {
             className={classes.myTextField}
             required
             disabled={disabled}
+          />
+
+          <MyTextField
+            className={classes.myTextField}
+            label='Nombre Ruta'
+            name='nombre_ruta'
+            disabled={disabled}
+            required
           />
         </Box>
       </Scrollbar>
