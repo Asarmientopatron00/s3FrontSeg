@@ -7,6 +7,7 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import DetalleCotizacion from '../../DetalleCotizacion';
+import {useHistory} from 'react-router-dom';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -196,6 +197,7 @@ const SolicitudCotizacionForm = (props) => {
     solicitudes,
     values.nombre_empresa,
   ]);
+  const history = useHistory();
 
   const classes = useStyles(props);
   return (
@@ -305,7 +307,10 @@ const SolicitudCotizacionForm = (props) => {
 
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              href='/cotizaciones'>
+              // href='/cotizaciones'
+              onClick={() => {
+                history.goBack();
+              }}>
               <IntlMessages id='boton.cancel' />
             </Button>
           </Box>

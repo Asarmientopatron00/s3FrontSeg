@@ -239,8 +239,8 @@ const SigninJwtAuth = (props) => {
           validateOnChange={true}
           validateOnBlur={false}
           initialValues={{
-            email: '1036641426',
-            password: '1234',
+            email: '',
+            password: '',
           }}
           validationSchema={validationSchema}
           onSubmit={(data, {setSubmitting}) => {

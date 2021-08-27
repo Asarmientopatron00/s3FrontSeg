@@ -28,6 +28,7 @@ import {
   onVerificarInformacion,
 } from '../../../../redux/actions/AsociadoAction';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import {useHistory} from 'react-router-dom';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -228,6 +229,7 @@ const AsociadoNegocioForm = (props) => {
   useEffect(() => {
     dispatch(onGetTipoRol());
   }, [dispatch]);
+  const history = useHistory();
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -1313,8 +1315,8 @@ const AsociadoNegocioForm = (props) => {
 
                 if (event.target.value === 'S') {
                   const url =
-                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
-                    // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
+                    // 'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                    'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' +
                     values.id;
                   window.open(url, '_blank');
                 }
@@ -1422,7 +1424,10 @@ const AsociadoNegocioForm = (props) => {
           )}
           <Button
             className={`${classes.btnRoot} ${classes.btnSecundary}`}
-            href='/asociados-negocios'>
+            // href='/asociados-negocios'
+            onClick={() => {
+              history.push('/asociados-negocios');
+            }}>
             <IntlMessages id='boton.cancel' />
           </Button>
         </Box>
