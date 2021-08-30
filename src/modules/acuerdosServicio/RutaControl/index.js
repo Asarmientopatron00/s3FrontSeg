@@ -400,7 +400,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title='Crear Notificación Contacto'
+                title='Crear Ruta Control'
                 onClick={onOpenAddRutaControl}>
                 <IconButton
                   className={classes.createButton}
@@ -753,15 +753,12 @@ const RutaControl = () => {
       confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(onDelete(id));
+        dispatch(onDelete(id, updateColeccion));
         Swal.fire(
           'Eliminado',
           'El contacto notificación ha sido eliminado',
           'success',
         );
-        setTimeout(() => {
-          updateColeccion();
-        }, 1000);
       }
     });
   };

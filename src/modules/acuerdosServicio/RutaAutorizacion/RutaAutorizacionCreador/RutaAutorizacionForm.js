@@ -111,6 +111,7 @@ const NotificacionContacto = (props) => {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
       gap: 20,
+      marginBottom: 20,
     },
   }));
 

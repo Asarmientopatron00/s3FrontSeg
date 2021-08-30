@@ -116,7 +116,8 @@ const RutaControl = (props) => {
     contenedorFiltros: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
-      gap: 20,
+      gap: 15,
+      marginBottom: 20,
     },
   }));
 

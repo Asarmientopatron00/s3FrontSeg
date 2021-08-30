@@ -505,7 +505,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headCellWoMargin: {
     padding: '0px',
-    width: 'fit-content',
+    width: 'max-content',
     fontSize: '12px',
     [theme.breakpoints.up('xl')]: {
       fontSize: '14px',
@@ -533,7 +533,7 @@ const useStyles = makeStyles((theme) => ({
   }),
   acciones: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 10px',
-    minWidth: '100px',
+    minWidth: '120px',
   }),
   paper: {
     width: '100%',

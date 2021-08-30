@@ -106,7 +106,7 @@ export const onUpdate = (params, handleOnClose) => {
   };
 };
 
-export const onDelete = (id) => {
+export const onDelete = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -114,6 +114,7 @@ export const onDelete = (id) => {
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
+          updateColeccion();
           dispatch({type: DELETE_PUESTO_CONTROL, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});

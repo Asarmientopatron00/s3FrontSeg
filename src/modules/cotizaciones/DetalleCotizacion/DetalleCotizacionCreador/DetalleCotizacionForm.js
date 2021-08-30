@@ -157,7 +157,12 @@ const DetalleCotizacionForm = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (values.ciudad_origen_id !== '' && values.ciudad_destino_id !== '') {
+    if (
+      values.ciudad_origen_id !== '' &&
+      typeof values.ciudad_origen_id === 'number' &&
+      values.ciudad_destino_id !== '' &&
+      typeof values.ciudad_destino_id === 'number'
+    ) {
       dispatch(onBuscar(values.ciudad_origen_id, values.ciudad_destino_id));
     }
   }, [dispatch, values.ciudad_origen_id, values.ciudad_destino_id]);

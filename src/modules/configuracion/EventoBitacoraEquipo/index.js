@@ -80,7 +80,7 @@ const cells = [
   {
     id: 'estado_equipo',
     typeHead: 'string',
-    label: 'Tipo Estado',
+    label: 'Estado Equipo',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,

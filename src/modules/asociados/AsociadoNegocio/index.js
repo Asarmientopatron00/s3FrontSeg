@@ -550,7 +550,7 @@ const useStyles = makeStyles((theme) => ({
   },
   headCellWoMargin: {
     padding: '0px',
-    width: 'fit-content',
+    width: 'max-content',
     fontSize: '12px',
     [theme.breakpoints.up('xl')]: {
       fontSize: '14px',
