@@ -61,8 +61,8 @@ export const ESTADO_COTIZACIONES = [
 
 export const ESTADO_ACUERDO_SERVICIO = [
   {id: 'PDT', nombre: 'Pendiente', estado: 1},
-  {id: 'ANU', nombre: 'Anulada', estado: 1},
-  {id: 'APR', nombre: 'Aprobada', estado: 1},
+  {id: 'ANU', nombre: 'Anulado', estado: 1},
+  {id: 'APR', nombre: 'Aprobado', estado: 1},
 ];
 
 export const TIPOS_RUTAS = [
@@ -80,4 +80,10 @@ export const TIPOS_PUESTOS_CONTROL = [
   {id: 'V', nombre: 'Virtual', estado: 1},
   {id: 'F', nombre: 'Físico', estado: 1},
   {id: 'A', nombre: 'Ambos Virtual y fisico', estado: 1},
+];
+
+export const TIPOS_ESTADOS_EQUIPOS = [
+  {id: 'T', nombre: 'Trabajo', estado: 1},
+  {id: 'M', nombre: 'Mantenimiento', estado: 1},
+  {id: 'O', nombre: 'Otros', estado: 1},
 ];

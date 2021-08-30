@@ -45,7 +45,9 @@ import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import DirectionsIcon from '@material-ui/icons/Directions';
 import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import SwapCallsIcon from '@material-ui/icons/SwapCalls';
+import AcuerdoServicioConsulta from './AcuerdoServicioConsulta';
 // import MenuItem from '@material-ui/core/MenuItem';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 // import {MessageView} from '../../../@crema';
 
@@ -79,7 +81,7 @@ const cells = [
   {
     id: 'numero_acuerdo_servicio',
     typeHead: 'numeric',
-    label: 'Número Acuerdo',
+    label: 'N° Acuerdo',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -996,6 +998,22 @@ const AcuerdoServicio = (props) => {
                                     className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                                 </Tooltip>
                               )}
+                            <Box
+                              component='a'
+                              href={
+                                'http://solicitudesservicio.test/acuerdos-servicio/descargar-formulario/' +
+                                row.id
+                              }
+                              // href={'http://186.97.135.74:3380/solicitudesservicio-backend/public/acuerdos-servicio/descargar-formulario/' + row.id}
+                              className={classes.generalIcons}>
+                              <Tooltip
+                                title={
+                                  'Descargar Formulario Representante Legal'
+                                }>
+                                <GetAppIcon
+                                  className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>
+                              </Tooltip>
+                            </Box>
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1139,8 +1157,22 @@ const AcuerdoServicio = (props) => {
         )}
       </Paper>
 
-      {showForm ? (
+      {showForm && accion !== 'ver' ? (
         <AcuerdoServicioCreador
+          showForm={showForm}
+          acuerdoServicio={acuerdoServicioSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          updateColeccion={updateColeccion}
+          titulo={titulo}
+          asociados={asociados}
+        />
+      ) : (
+        ''
+      )}
+
+      {showForm && accion === 'ver' ? (
+        <AcuerdoServicioConsulta
           showForm={showForm}
           acuerdoServicio={acuerdoServicioSeleccionado}
           accion={accion}

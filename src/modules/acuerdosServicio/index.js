@@ -36,7 +36,7 @@ export const acuerdoServicioConfig = [
       },
       {
         exact: true,
-        path: ['/aprobacion-acuerdos'],
+        path: ['/aprobacion-acuerdo'],
         component: React.lazy(() => import('./AprobacionAcuerdoServicio')),
       },
     ],

@@ -49,3 +49,5 @@ export * from './RutaAutorizacionAction';
 export * from './RutaControlAction';
 export * from './PuestoParadaAction';
 export * from './PuestoControlAction';
+export * from './EstadoEquipoAction';
+export * from './EventoBitacoraEquipoAction';

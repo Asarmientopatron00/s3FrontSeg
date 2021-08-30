@@ -44,6 +44,8 @@ import RutaAutorizacionReducer from './RutaAutorizacionReducer';
 import PuestoParadaReducer from './PuestoParadaReducer';
 import RutaControlReducer from './RutaControlReducer';
 import PuestoControlReducer from './PuestoControlReducer';
+import EstadoEquipoReducer from './EstadoEquipoReducer';
+import EventoBitacoraEquipoReducer from './EventoBitacoraEquipoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -92,5 +94,7 @@ const reducers = (history) =>
     puestoParadaReducer: PuestoParadaReducer,
     rutaControlReducer: RutaControlReducer,
     puestoControlReducer: PuestoControlReducer,
+    estadoEquipoReducer: EstadoEquipoReducer,
+    eventoBitacoraEquipoReducer: EventoBitacoraEquipoReducer,
   });
 export default reducers;

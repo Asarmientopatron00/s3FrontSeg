@@ -1,9 +1,10 @@
 import {
-  GET_COLECCION_RUTA_CONTROL,
-  SHOW_RUTA_CONTROL,
-  UPDATE_RUTA_CONTROL,
-  DELETE_RUTA_CONTROL,
-  CREATE_RUTA_CONTROL,
+  GET_COLECCION_EVENTO_BITACORA_EQUIPO,
+  GET_COLECCION_LIGERA_EVENTO_BITACORA_EQUIPO,
+  SHOW_EVENTO_BITACORA_EQUIPO,
+  UPDATE_EVENTO_BITACORA_EQUIPO,
+  DELETE_EVENTO_BITACORA_EQUIPO,
+  CREATE_EVENTO_BITACORA_EQUIPO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -16,28 +17,59 @@ import {appIntl} from '../../@crema/utility/Utils';
 export const onGetColeccion = (
   currentPage,
   rowsPerPage,
+  nombre,
   orderByToSend,
-  acuerdo_id,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
+  const nombreAux = nombre ? nombre : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('acuerdos-servicio-rutas-control', {
+      .get('eventos-bitacora-equipos', {
         params: {
           page: page,
           limite: rowsPerPage,
-          acuerdo_id: acuerdo_id,
+          nombre: nombreAux,
           ordenar_por: ordenar_por,
         },
       })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_RUTA_CONTROL, payload: data});
+          dispatch({type: GET_COLECCION_EVENTO_BITACORA_EQUIPO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionLigera = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('eventos-bitacora-equipos', {
+        params: {
+          ligera: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_EVENTO_BITACORA_EQUIPO,
+            payload: data,
+          });
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -57,11 +89,11 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('acuerdos-servicio-rutas-control/' + id)
+        .get('eventos-bitacora-equipos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW_RUTA_CONTROL, payload: data.data});
+            dispatch({type: SHOW_EVENTO_BITACORA_EQUIPO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -76,18 +108,19 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose) => {
+export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('acuerdos-servicio-rutas-control/' + params.id, params)
+      .put('eventos-bitacora-equipos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE_RUTA_CONTROL,
+            type: UPDATE_EVENTO_BITACORA_EQUIPO,
             payload: data.data,
           });
+          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
@@ -110,11 +143,11 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('acuerdos-servicio-rutas-control/' + id)
+      .delete('eventos-bitacora-equipos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE_RUTA_CONTROL, payload: data.data});
+          dispatch({type: DELETE_EVENTO_BITACORA_EQUIPO, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
@@ -137,13 +170,12 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('acuerdos-servicio-rutas-control', params)
+      .post('eventos-bitacora-equipos', params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE_RUTA_CONTROL,
+            type: CREATE_EVENTO_BITACORA_EQUIPO,
             payload: data.data,
           });
           updateColeccion();

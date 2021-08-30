@@ -254,6 +254,7 @@ export const SHOW_ACUERDO_SERVICIO = 'show_acuerdo_servicio';
 export const UPDATE_ACUERDO_SERVICIO = 'update_acuerdo_servicio';
 export const CREATE_ACUERDO_SERVICIO = 'create_acuerdo_servicio';
 export const DELETE_ACUERDO_SERVICIO = 'delete_acuerdo_servicio';
+export const APPROVE_ACUERDO_SERVICIO = 'approve_acuerdo_servicio';
 export const GET_COLECCION_NOTIFICACION_CONTACTO =
   'get_coleccion_notificacion_contacto';
 export const GET_COLECCION_LIGERA_NOTIFICACION_CONTACTO =
@@ -291,6 +292,21 @@ export const SHOW_PUESTO_CONTROL = 'show_puesto_control';
 export const UPDATE_PUESTO_CONTROL = 'update_puesto_control';
 export const CREATE_PUESTO_CONTROL = 'create_puesto_control';
 export const DELETE_PUESTO_CONTROL = 'delete_puesto_control';
+export const GET_COLECCION_ESTADO_EQUIPO = 'get_coleccion_estado_equipo';
+export const GET_COLECCION_LIGERA_ESTADO_EQUIPO =
+  'get_coleccion_ligera_estado_equipo';
+export const SHOW_ESTADO_EQUIPO = 'show_estado_equipo';
+export const UPDATE_ESTADO_EQUIPO = 'update_estado_equipo';
+export const CREATE_ESTADO_EQUIPO = 'create_estado_equipo';
+export const DELETE_ESTADO_EQUIPO = 'delete_estado_equipo';
+export const GET_COLECCION_EVENTO_BITACORA_EQUIPO =
+  'get_coleccion_evento_bitacora_equipo';
+export const GET_COLECCION_LIGERA_EVENTO_BITACORA_EQUIPO =
+  'get_coleccion_ligera_evento_bitacora_equipo';
+export const SHOW_EVENTO_BITACORA_EQUIPO = 'show_evento_bitacora_equipo';
+export const UPDATE_EVENTO_BITACORA_EQUIPO = 'update_evento_bitacora_equipo';
+export const CREATE_EVENTO_BITACORA_EQUIPO = 'create_evento_bitacora_equipo';
+export const DELETE_EVENTO_BITACORA_EQUIPO = 'delete_evento_bitacora_equipo';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

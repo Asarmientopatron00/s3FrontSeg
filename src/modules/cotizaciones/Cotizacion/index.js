@@ -398,7 +398,7 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
                 <Box component='a' href='/cotizacion/crear'>
-                  <Tooltip title='Crear Solicitud Cotizacion'>
+                  <Tooltip title='Crear Cotización'>
                     <IconButton
                       className={classes.createButton}
                       aria-label='filter list'>

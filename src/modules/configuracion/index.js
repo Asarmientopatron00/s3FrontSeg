@@ -71,6 +71,14 @@ export const configuracionConfig = [
         path: ['/lugares'],
         component: React.lazy(() => import('./Lugar')),
       },
+      {
+        path: ['/estados-equipos'],
+        component: React.lazy(() => import('./EstadoEquipo')),
+      },
+      {
+        path: ['/eventos-bitacora-equipos'],
+        component: React.lazy(() => import('./EventoBitacoraEquipo')),
+      },
     ],
   },
 ];

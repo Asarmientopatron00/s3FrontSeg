@@ -387,7 +387,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              Acuerdos operativos de servicio - Rutas Autorizadas
+              Acuerdos operativos de servicio - Rutas a controlar
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip

@@ -578,7 +578,7 @@ const useStyles = makeStyles((theme) => ({
   }),
   acciones: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 10px',
-    minWidth: '100px',
+    minWidth: '120px',
   }),
   paper: {
     width: '100%',
@@ -1068,7 +1068,7 @@ const AsociadoDatoBasico = (props) => {
                                   className={classes.generalIcons}>
                                   <Tooltip
                                     title={
-                                      'Descargar Formulario Representante Legal'
+                                      'Descargar Formulario Acuerdo Servicio'
                                     }>
                                     <GetAppIcon
                                       className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>

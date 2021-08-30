@@ -89,16 +89,9 @@ const AcuerdoServicioForm = (props) => {
     errors,
   } = props;
 
-  const [disabled, setDisabled] = useState(false);
   const [h24, seth24] = useState(false);
   const [diurno, setDiurno] = useState(false);
   const [nocturno, setNocturno] = useState(false);
-
-  useEffect(() => {
-    if (accion === 'ver' || initialValues.estado === '0') {
-      setDisabled(true);
-    }
-  }, [initialValues.estado, accion]);
 
   useEffect(() => {
     setFieldValue('asociado', '');
@@ -224,6 +217,26 @@ const AcuerdoServicioForm = (props) => {
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <Box className={classes.inputs_2}>
+              <MyTextField
+                className={classes.myTextField}
+                label='Número Acuerdo'
+                name='numero_acuerdo_servicio'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha'
+                name='fecha_acuerdo_servicio'
+                disabled={true}
+                type='date'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
               <MyAutocompleteAsociado
                 options={asociados}
                 name='asociado_id'
@@ -232,24 +245,13 @@ const AcuerdoServicioForm = (props) => {
                 autoHighlight
                 className={classes.myTextField}
                 required
-                disabled={disabled}
+                disabled={true}
               />
               <MyTextField
                 className={classes.myTextField}
                 label=' '
                 name='asociado'
                 disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Fecha'
-                name='fecha_acuerdo_servicio'
-                disabled={true}
-                type='date'
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -275,7 +277,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='DTA'
-                disabled={disabled}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
@@ -290,7 +292,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='OTM'
-                disabled={disabled}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
@@ -305,7 +307,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Nacionalizado'
-                disabled={disabled}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
@@ -320,7 +322,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Pernocta'
-                disabled={disabled}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
@@ -335,12 +337,12 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Exportación'
-                disabled={disabled}
+                disabled={true}
               />
               <MyTextField
                 label='Otro'
                 name='tipo_servicio_otro'
-                disabled={disabled}
+                disabled={true}
               />
             </FormGroup>
             {!!errors.tipo_servicio_dta && (
@@ -358,7 +360,7 @@ const AcuerdoServicioForm = (props) => {
                 />
               }
               label='Veinticuatro horas'
-              disabled={disabled}
+              disabled={true}
             />
             <Box className={classes.inputs_3}>
               <FormControlLabel
@@ -370,13 +372,13 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Diurno'
-                disabled={disabled || h24}
+                disabled={true || h24}
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Desde'
                 name='horario_transito_diurno_desde'
-                disabled={disabled || h24 || !diurno}
+                disabled={true || h24 || !diurno}
                 required
                 type='time'
                 InputLabelProps={{
@@ -387,7 +389,7 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 label='Hasta'
                 name='horario_transito_diurno_hasta'
-                disabled={disabled || h24 || !diurno}
+                disabled={true || h24 || !diurno}
                 required
                 type='time'
                 InputLabelProps={{
@@ -405,13 +407,13 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Nocturno'
-                disabled={disabled || h24}
+                disabled={true || h24}
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Desde'
                 name='horario_transito_nocturno_desde'
-                disabled={disabled || h24 || !nocturno}
+                disabled={true || h24 || !nocturno}
                 required
                 type='time'
                 InputLabelProps={{
@@ -422,7 +424,7 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 label='Hasta'
                 name='horario_transito_nocturno_hasta'
-                disabled={disabled || h24 || !nocturno}
+                disabled={true || h24 || !nocturno}
                 required
                 type='time'
                 InputLabelProps={{
@@ -449,7 +451,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Lunes'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -464,7 +466,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Martes'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -479,7 +481,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Miércoles'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -494,7 +496,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Jueves'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -509,7 +511,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Viernes'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -524,7 +526,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Sábado'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
               <FormControlLabel
                 style={{color: !!errors.dia_transito_lunes ? 'red' : 'black'}}
@@ -539,7 +541,7 @@ const AcuerdoServicioForm = (props) => {
                   />
                 }
                 label='Domingo'
-                disabled={accion === 'ver'}
+                disabled={true}
               />
             </FormGroup>
             {!!errors.dia_transito_lunes && (
@@ -554,14 +556,14 @@ const AcuerdoServicioForm = (props) => {
                 />
               }
               label='Facturación por servicio'
-              disabled={accion === 'ver'}
+              disabled={true}
             />
 
             <MyTextField
               className={classes.myTextField}
               label='Observaciones'
               name='observaciones'
-              disabled={disabled}
+              disabled={true}
               multiline
             />
           </Box>
@@ -573,7 +575,7 @@ const AcuerdoServicioForm = (props) => {
             className={`${classes.btnRoot} ${classes.btnPrymary}`}
             variant='contained'
             type='submit'>
-            <IntlMessages id='boton.submit' />
+            <IntlMessages id='boton.aprobar' />
           </Button>
         ) : (
           ''

@@ -24,11 +24,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
+import EventoBitacoraEquipoCreador from './EventoBitacoraEquipoCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/AcuerdoServicioAction';
-import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
+} from '../../../redux/actions/EventoBitacoraEquipoAction';
+import {onGetColeccionLigera} from '../../../redux/actions/EstadoEquipoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,11 +39,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import AprobacionAcuerdoServicioCreador from './AprobacionAcuerdoServicioCreador';
-import {ESTADO_ACUERDO_SERVICIO} from './../../../shared/constants/ListasValores';
-// import MenuItem from '@material-ui/core/MenuItem';
-import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
-import AcuerdoServicioConsulta from './../AcuerdoServicio/AcuerdoServicioConsulta';
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -73,32 +70,7 @@ import AcuerdoServicioConsulta from './../AcuerdoServicio/AcuerdoServicioConsult
 
 const cells = [
   {
-    id: 'numero_acuerdo_servicio',
-    typeHead: 'numeric',
-    label: 'Número Acuerdo',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_acuerdo_servicio',
-    typeHead: 'string',
-    label: 'Fecha Creación',
-    value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'numero_documento',
-    typeHead: 'numeric',
-    label: 'Documento',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'asociado',
+    id: 'nombre',
     typeHead: 'string',
     label: 'Nombre',
     value: (value) => value,
@@ -106,26 +78,12 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'estado_acuerdo',
+    id: 'estado_equipo',
     typeHead: 'string',
-    label: 'Estado Acuerdo',
-    value: (value) =>
-      ESTADO_ACUERDO_SERVICIO.map((estado) =>
-        estado.id === value ? estado.nombre : '',
-      ),
-    align: 'left',
-    width: '140px',
-    mostrarInicio: false,
-  },
-
-  {
-    id: 'observaciones',
-    typeHead: 'string',
-    label: 'Observaciones',
+    label: 'Tipo Estado',
     value: (value) => value,
     align: 'left',
-    width: '140px',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'estado',
@@ -136,11 +94,10 @@ const cells = [
     mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
-
   {
     id: 'usuario_modificacion_nombre',
     typeHead: 'string',
-    label: 'Usuario Última Modificación',
+    label: 'Modificado Por',
     value: (value) => value,
     align: 'left',
     width: '140px',
@@ -210,10 +167,9 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-
         {columnasMostradas.map((cell) => {
           if (cell.mostrar) {
             return (
@@ -347,11 +303,10 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddAprobacionAcuerdoServicio,
+    onOpenAddEventoBitacoraEquipo,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
-    numeroDocumentoFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -390,8 +345,8 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
                 <Tooltip
-                  title='Crear Asociado'
-                  onClick={onOpenAddAprobacionAcuerdoServicio}>
+                  title='Crear EventoBitacoraEquipo'
+                  onClick={onOpenAddEventoBitacoraEquipo}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -409,13 +364,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={nombreFiltro}
             />
-            <TextField
-              label='Número Documento'
-              name='numeroDocumentoFiltro'
-              id='numeroDocumentoFiltro'
-              onChange={queryFilter}
-              value={numeroDocumentoFiltro}
-            />
+
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -442,10 +391,10 @@ const EnhancedTableToolbar = (props) => {
           ''
         )
         // <Tooltip title="Filtros Avanzados">
-        //         <IconButton aria-label="filter list">
-        //           <FilterListIcon />
-        //         </IconButton>
-        //       </Tooltip>
+        //       <IconButton aria-label="filter list">
+        //         <FilterListIcon />
+        //       </IconButton>
+        //     </Tooltip>
       }
     </Toolbar>
   );
@@ -453,12 +402,11 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAprobacionAcuerdoServicio: PropTypes.func.isRequired,
+  onOpenAddEventoBitacoraEquipo: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
   nombreFiltro: PropTypes.string.isRequired,
-  numeroDocumentoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -483,25 +431,13 @@ const useStyles = makeStyles((theme) => ({
   headCell: {
     padding: '0px 0px 0px 15px',
   },
-  headCellWoMargin: {
-    padding: '0px',
-    width: 'fit-content',
-    fontSize: '12px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-  },
   row: {
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
     padding: 'none',
   },
   cell: (props) => ({
-    fontSize: '13px',
-    [theme.breakpoints.up('xl')]: {
-      fontSize: '14px',
-    },
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
   }),
   cellWidth: (props) => ({
@@ -512,7 +448,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   }),
   acciones: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 10px',
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
     minWidth: '100px',
   }),
   paper: {
@@ -536,10 +472,6 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   generalIcons: {
-    height: '20px',
-    [theme.breakpoints.up('xl')]: {
-      height: '25px',
-    },
     '&:hover': {
       color: theme.palette.colorHover,
       cursor: 'pointer',
@@ -547,24 +479,6 @@ const useStyles = makeStyles((theme) => ({
   },
   editIcon: {
     color: theme.palette.primary.main,
-  },
-  legalIcon: {
-    color: 'black',
-  },
-  contactIcon: {
-    color: 'lightgreen',
-  },
-  bancariaIcon: {
-    color: 'gray',
-  },
-  comercialIcon: {
-    color: 'darkgreen',
-  },
-  documentosIcon: {
-    color: theme.palette.primary.main,
-  },
-  seguridadIcon: {
-    color: 'red',
   },
   visivilityIcon: {
     color: theme.palette.grayBottoms,
@@ -589,7 +503,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AprobacionAcuerdoServicio = (props) => {
+const EventoBitacoraEquipo = (props) => {
+  const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -602,18 +517,19 @@ const AprobacionAcuerdoServicio = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [
-    aprobacionAcuerdoServicioSeleccionado,
-    setAprobacionAcuerdoServicioSeleccionado,
+    eventoBitacoraEquipoSeleccionado,
+    setEventoBitacoraEquipoSeleccionado,
   ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({acuerdoServicioReducer}) => acuerdoServicioReducer,
+    ({eventoBitacoraEquipoReducer}) => eventoBitacoraEquipoReducer,
+  );
+  const estadosEquipos = useSelector(
+    ({estadoEquipoReducer}) => estadoEquipoReducer.ligera,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [numeroDocumentoFiltro, setNumeroDocumentoFiltro] = useState('');
+  const [nombreFiltro, setnombreFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -667,56 +583,25 @@ const AprobacionAcuerdoServicio = (props) => {
   }, [user, props.route]);
 
   useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-        'PDT',
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    nombreFiltro,
-    orderByToSend,
-    numeroDocumentoFiltro,
-  ]);
+    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend]);
 
   const updateColeccion = () => {
-    setPage(1);
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        numeroDocumentoFiltro,
-        'PDT',
-      ),
-    );
+    dispatch(onGetColeccion(1, rowsPerPage, nombreFiltro, orderByToSend));
   };
 
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, numeroDocumentoFiltro]);
-
-  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
+  }, [orderByToSend, nombreFiltro]);
 
   useEffect(() => {
-    dispatch(onGetColeccionLigeraAsociado());
+    dispatch(onGetColeccionLigera());
   }, [dispatch]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
-        break;
-      case 'numeroDocumentoFiltro':
-        setNumeroDocumentoFiltro(e.target.value);
+        setnombreFiltro(e.target.value);
         break;
       default:
         break;
@@ -724,8 +609,7 @@ const AprobacionAcuerdoServicio = (props) => {
   };
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setNumeroDocumentoFiltro('');
+    setnombreFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -744,34 +628,10 @@ const AprobacionAcuerdoServicio = (props) => {
     }
   };
 
-  const onOpenEditAprobacionAcuerdoServicio = (id) => {
-    setAprobacionAcuerdoServicioSeleccionado(id);
+  const onOpenEditEventoBitacoraEquipo = (id) => {
+    setEventoBitacoraEquipoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
-  };
-
-  const onOpenAprobacionAcuerdoServicio = (id) => {
-    setAprobacionAcuerdoServicioSeleccionado(id);
-    setAccion('aprobar');
-    setShowForm(true);
-  };
-
-  const onOpenAddAprobacionAcuerdoServicio = () => {
-    setAprobacionAcuerdoServicioSeleccionado(0);
-    setAccion('crear');
-    setShowForm(true);
-  };
-
-  const onOpenViewAprobacionAcuerdoServicio = (id) => {
-    setAprobacionAcuerdoServicioSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setAprobacionAcuerdoServicioSeleccionado(0);
-    setAccion('ver');
   };
 
   const handleClosePopover = () => {
@@ -810,10 +670,16 @@ const AprobacionAcuerdoServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteAprobacionAcuerdoServicio = (id) => {
+  const onOpenViewEventoBitacoraEquipo = (id) => {
+    setEventoBitacoraEquipoSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
+  };
+
+  const onDeleteEventoBitacoraEquipo = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea anular el acuerdo de servicio?',
+      text: '¿Seguro Que Desea Eliminar La EventoBitacoraEquipo?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -825,8 +691,8 @@ const AprobacionAcuerdoServicio = (props) => {
       if (result.isConfirmed) {
         dispatch(onDelete(id));
         Swal.fire(
-          'Anulado',
-          'El acuerdo de servicio anulado correctamente',
+          'Eliminado',
+          'La EventoBitacoraEquipo Fue Eliminada Correctamente',
           'success',
         );
         setTimeout(() => {
@@ -835,6 +701,23 @@ const AprobacionAcuerdoServicio = (props) => {
       }
     });
   };
+
+  const onOpenAddEventoBitacoraEquipo = () => {
+    setEventoBitacoraEquipoSeleccionado(0);
+    setAccion('crear');
+    setShowForm(true);
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setEventoBitacoraEquipoSeleccionado(0);
+    setAccion('ver');
+  };
+  // const handleRequestSort = (event, property) => {
+  //   const isAsc = orderBy === property && order === 'asc';
+  //   setOrder(isAsc ? 'desc' : 'asc');
+  //   setOrderBy(property);
+  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -876,14 +759,11 @@ const AprobacionAcuerdoServicio = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddAprobacionAcuerdoServicio={
-              onOpenAddAprobacionAcuerdoServicio
-            }
+            onOpenAddEventoBitacoraEquipo={onOpenAddEventoBitacoraEquipo}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
             nombreFiltro={nombreFiltro}
-            numeroDocumentoFiltro={numeroDocumentoFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -959,47 +839,33 @@ const AprobacionAcuerdoServicio = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    onClick={() =>
-                                      onOpenEditAprobacionAcuerdoServicio(
-                                        row.id,
-                                      )
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                                </Tooltip>
-                              )}
+                            {permisos.indexOf('Modificar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.editar' />}>
+                                <EditIcon
+                                  onClick={() =>
+                                    onOpenEditEventoBitacoraEquipo(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                              </Tooltip>
+                            )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   onClick={() =>
-                                    onOpenViewAprobacionAcuerdoServicio(row.id)
+                                    onOpenViewEventoBitacoraEquipo(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.eliminar' />}>
-                                  <DeleteIcon
-                                    onClick={() =>
-                                      onDeleteAprobacionAcuerdoServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                                </Tooltip>
-                              )}
-                            {permisos.indexOf('Aprobar') >= 0 && (
+                            {permisos.indexOf('Eliminar') >= 0 && (
                               <Tooltip
-                                title={<IntlMessages id='boton.aprobar' />}>
-                                <LibraryAddCheckIcon
+                                title={<IntlMessages id='boton.eliminar' />}>
+                                <DeleteIcon
                                   onClick={() =>
-                                    onOpenAprobacionAcuerdoServicio(row.id)
+                                    onDeleteEventoBitacoraEquipo(row.id)
                                   }
-                                  className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
+                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
                           </TableCell>
@@ -1092,29 +958,19 @@ const AprobacionAcuerdoServicio = (props) => {
         )}
       </Paper>
 
-      {showForm && accion === 'aprobar' ? (
-        <AprobacionAcuerdoServicioCreador
+      {/* <FormControlLabel
+        control={<Switch checked={dense} onChange={handleChangeDense} />}
+        label="Cambiar Densidad"
+      /> */}
+      {showForm ? (
+        <EventoBitacoraEquipoCreador
           showForm={showForm}
-          aprobacionAcuerdoServicio={aprobacionAcuerdoServicioSeleccionado}
+          eventoBitacoraEquipo={eventoBitacoraEquipoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          asociados={asociados}
-        />
-      ) : (
-        ''
-      )}
-
-      {showForm && accion === 'ver' ? (
-        <AcuerdoServicioConsulta
-          showForm={showForm}
-          acuerdoServicio={aprobacionAcuerdoServicioSeleccionado}
-          accion={accion}
-          handleOnClose={handleOnClose}
-          updateColeccion={updateColeccion}
-          titulo={titulo}
-          asociados={asociados}
+          estadosEquipos={estadosEquipos}
         />
       ) : (
         ''
@@ -1160,4 +1016,4 @@ const AprobacionAcuerdoServicio = (props) => {
   );
 };
 
-export default AprobacionAcuerdoServicio;
+export default EventoBitacoraEquipo;

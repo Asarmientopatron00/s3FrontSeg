@@ -5,25 +5,23 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
   onShow,
-  onUpdate,
-  onCreate,
+  onApprove,
 } from '../../../../redux/actions/AcuerdoServicioAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import AcuerdoServicioForm from './AcuerdoServicioForm';
+import AprobacionAcuerdoServicioForm from './AprobacionAcuerdoServicioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import format from 'date-fns/format';
-import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
-const AcuerdoServicioCreator = (props) => {
+const AprobacionAcuerdoServicioCreator = (props) => {
   const {
-    acuerdoServicio,
+    aprobacionAcuerdoServicio,
     handleOnClose,
     accion,
     updateColeccion,
@@ -76,10 +74,10 @@ const AcuerdoServicioCreator = (props) => {
   }, [selectedRow, accion]);
 
   useEffect(() => {
-    if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(acuerdoServicio));
+    if ((accion === 'editar') | (accion === 'ver') | (accion === 'aprobar')) {
+      dispatch(onShow(aprobacionAcuerdoServicio));
     }
-  }, [accion, dispatch, acuerdoServicio]);
+  }, [accion, dispatch, aprobacionAcuerdoServicio]);
 
   return (
     showForm && (
@@ -99,10 +97,10 @@ const AcuerdoServicioCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
+              asociado_id: selectedRow ? selectedRow.asociado_id : '',
               numero_acuerdo_servicio: selectedRow
                 ? selectedRow.numero_acuerdo_servicio
                 : '',
-              asociado_id: selectedRow ? selectedRow.asociado_id : '',
               fecha_acuerdo_servicio: selectedRow
                 ? selectedRow.fecha_acuerdo_servicio
                 : format(new Date(Date.now()), 'yyyy-MM-dd'),
@@ -181,65 +179,11 @@ const AcuerdoServicioCreator = (props) => {
               data,
               {setSubmitting, resetForm, setFieldError, errors},
             ) => {
-              console.log(data);
               setSubmitting(true);
-              let error = false;
-              if (
-                data.tipo_servicio_dta === 'N' &&
-                data.tipo_servicio_otm === 'N' &&
-                data.tipo_servicio_nacionalizado === 'N' &&
-                data.tipo_servicio_pernocta === 'N' &&
-                data.tipo_servicio_exportacion === 'N' &&
-                data.tipo_servicio_otro === ''
-              ) {
-                setFieldError('tipo_servicio_otro', ' ');
-                setFieldError(
-                  'tipo_servicio_dta',
-                  'Debe seleccionar almenos un tipo de servicio',
+              if (accion === 'aprobar') {
+                dispatch(
+                  onApprove({id: data.id}, handleOnClose, updateColeccion),
                 );
-                error = true;
-              }
-              if (
-                data.dia_transito_lunes === 'N' &&
-                data.dia_transito_martes === 'N' &&
-                data.dia_transito_miercoles === 'N' &&
-                data.dia_transito_jueves === 'N' &&
-                data.dia_transito_viernes === 'N' &&
-                data.dia_transito_sabado === 'N' &&
-                data.dia_transito_domingo === 'N'
-              ) {
-                setFieldError(
-                  'dia_transito_lunes',
-                  'Debe seleccionar almenos un día',
-                );
-                error = true;
-              }
-              if (data.asociado_id === '') {
-                setFieldError('asociado_id', 'Requerido');
-                error = true;
-              }
-              if (
-                data.tipo_servicio_otro !== null &&
-                data.tipo_servicio_otro !== undefined
-              ) {
-                if (data.tipo_servicio_otro.length > 60) {
-                  setFieldError(
-                    'tipo_servicio_otro',
-                    mensajeValidacion('max', 60),
-                  );
-                  error = true;
-                }
-              }
-              if (error) {
-                setSubmitting(false);
-                return;
-              }
-              if (accion === 'crear') {
-                dispatch(onCreate(data, handleOnClose, updateColeccion));
-              } else if (accion === 'editar') {
-                if (selectedRow) {
-                  dispatch(onUpdate(data, handleOnClose, updateColeccion));
-                }
               }
               // resetForm();
               setSubmitting(false);
@@ -247,7 +191,7 @@ const AcuerdoServicioCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue, errors}) => (
-              <AcuerdoServicioForm
+              <AprobacionAcuerdoServicioForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
@@ -265,4 +209,4 @@ const AcuerdoServicioCreator = (props) => {
   );
 };
 
-export default AcuerdoServicioCreator;
+export default AprobacionAcuerdoServicioCreator;

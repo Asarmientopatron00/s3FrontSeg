@@ -11,7 +11,7 @@ import {
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import AcuerdoServicioForm from './AcuerdoServicioForm';
+import AcuerdoServicioForm from './AcuerdoServicioConsultaForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import format from 'date-fns/format';
@@ -77,7 +77,7 @@ const AcuerdoServicioCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(acuerdoServicio));
+      dispatch(onShow(acuerdoServicio, 'consulta'));
     }
   }, [accion, dispatch, acuerdoServicio]);
 
@@ -99,6 +99,9 @@ const AcuerdoServicioCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
+              numero_acuerdo_servicio: selectedRow
+                ? selectedRow.numero_acuerdo_servicio
+                : '',
               asociado_id: selectedRow ? selectedRow.asociado_id : '',
               fecha_acuerdo_servicio: selectedRow
                 ? selectedRow.fecha_acuerdo_servicio
@@ -247,6 +250,7 @@ const AcuerdoServicioCreator = (props) => {
                 initialValues={initialValues}
                 asociados={asociados}
                 errors={errors}
+                detalles={selectedRow.detalles}
               />
             )}
           </Formik>
