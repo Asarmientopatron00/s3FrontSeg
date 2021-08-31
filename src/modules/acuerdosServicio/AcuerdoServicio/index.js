@@ -410,7 +410,7 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
                 <Tooltip
-                  title='Crear Asociado'
+                  title='Crear Acuerdo Servicio'
                   onClick={onOpenAddAcuerdoServicio}>
                   <IconButton
                     className={classes.createButton}

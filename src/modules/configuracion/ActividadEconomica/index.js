@@ -132,18 +132,49 @@ const cells = [
 ];
 
 const MyCell = (props) => {
-  const {align, width, claseBase, value, cellColor} = props;
+  const {align, width, claseBase, value, cellColor, popover} = props;
   const classes = useStyles({width: width, cellColor: cellColor});
-
+  const [targetTexto, setTargetTexto] = useState(null);
+  const [openPopoverTexto, setOpenPopoverTexto] = useState(false);
   let allClassName = claseBase;
 
   if (width !== undefined) {
     allClassName = `${allClassName} ${classes.cellWidth}`;
   }
 
+  const handleClosePopoverTexto = () => {
+    setOpenPopoverTexto(false);
+    setTargetTexto(null);
+  };
+
+  const openTextoCompleto = (e) => {
+    setOpenPopoverTexto(true);
+    setTargetTexto(e.currentTarget);
+  };
+
   return (
     <TableCell align={align} className={allClassName}>
-      <span className={cellColor ? classes.cellColor : ''}>{value}</span>
+      {value.length > 30 && popover ? (
+        <>
+          <Box onMouseOver={openTextoCompleto}>
+            <span className={cellColor ? classes.cellColor : ''}>
+              {value.length > 30 ? value.substring(0, 30) + '...' : value}
+            </span>
+          </Box>
+          <Popover
+            id='popoverTexto'
+            open={openPopoverTexto}
+            anchorEl={targetTexto}
+            onClose={handleClosePopoverTexto}
+            onMouseOut={handleClosePopoverTexto}>
+            <Box component='p' maxWidth={800} padding={5}>
+              {value}
+            </Box>
+          </Popover>
+        </>
+      ) : (
+        <span className={cellColor ? classes.cellColor : ''}>{value}</span>
+      )}
     </TableCell>
   );
 };
@@ -867,6 +898,7 @@ const ActividadEconomica = (props) => {
                                       ? columna.cellColor(row[columna.id])
                                       : ''
                                   }
+                                  popover={columna.id === 'nombre'}
                                 />
                               );
                             } else {

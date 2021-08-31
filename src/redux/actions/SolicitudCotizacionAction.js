@@ -7,7 +7,6 @@ import {
   CREATE_SOLICITUD_COTIZACION,
   GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_CIUDAD,
   GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_SERVICIO,
-  ACTUALIZAR_CONSECUTIVO,
   INFORMACION_SOLICITUD_CONTACTO,
   FETCH_ERROR,
   FETCH_START,
@@ -268,36 +267,6 @@ export const onGetColeccionLigeraServicio = () => {
       })
       .catch((error) => {
         dispatch({type: FETCH_ERROR, payload: error.message});
-      });
-  };
-};
-
-export const onActualizarConsecutivo = () => {
-  return (dispatch) => {
-    dispatch({type: FETCH_START});
-    jwtAxios
-      .put('solicitudes-cotizaciones-servicios/actualizar-consecutivo')
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          dispatch({
-            type: ACTUALIZAR_CONSECUTIVO,
-            payload: data.data,
-          });
-          // dispatch({
-          //   type: SHOW_MESSAGE,
-          //   payload: data.data.mensajes[0],
-          // });
-          return Promise.resolve();
-        } else {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: data.data.mensajes[0],
-          });
-        }
-      })
-      .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
