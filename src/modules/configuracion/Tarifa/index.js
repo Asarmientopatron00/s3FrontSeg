@@ -94,13 +94,21 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'asociado',
+    typeHead: 'string',
+    label: 'Asociado',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'tipo_servicio',
     typeHead: 'string',
     label: 'Tipo Servicio',
     value: (value) =>
       TIPOS_SERVICIOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'tipo_servicio_otro',
@@ -111,12 +119,12 @@ const cells = [
     mostrarInicio: false,
   },
   {
-    id: 'asociado',
+    id: 'numero_dias_viaje',
     typeHead: 'string',
-    label: 'Asociado',
+    label: 'Número Dias de Viaje',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'valor_tarifa',

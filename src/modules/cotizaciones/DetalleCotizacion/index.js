@@ -35,6 +35,8 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import Swal from 'sweetalert2';
 import {DELETE_DETALLE_COTIZACION} from '../../../shared/constants/ActionTypes';
+import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -97,12 +99,45 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'tipo_servicio',
+    typeHead: 'string',
+    label: 'Tipo Servicio',
+    value: (value) =>
+      TIPOS_SERVICIOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'tipo_servicio_otro',
+    typeHead: 'string',
+    label: 'Tipo Servicio Otro',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'numero_dias_viaje',
+    typeHead: 'string',
+    label: 'Número Dias de Viaje',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
     id: 'valor_servicio',
     typeHead: 'numeric',
     label: 'Valor',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
+  },
+  {
+    id: 'valor_servicio_dia_adicional',
+    typeHead: 'string',
+    label: 'Valor Servicio Día Adicional',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
   },
   {
     id: 'consecutivo_detalle',
@@ -501,7 +536,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Cotizacion = (props) => {
   const [idAux, setIdAux] = useState(-1000);
-  const {empresa, fecha, id, accionDetalle, setDetalles} = props;
+  const {empresa, fecha, id, accionDetalle, setDetalles, asociado_id} = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [detalleCotizacionSeleccionado, setDetalleCotizacionSeleccionado] =
@@ -887,6 +922,7 @@ const Cotizacion = (props) => {
           handleOnClose={handleOnClose}
           titulo='Detalle Cotización'
           empresa={empresa}
+          asociado_id={asociado_id}
           fecha={fecha}
           ciudades={ciudades}
           servicios={servicios}
@@ -894,6 +930,7 @@ const Cotizacion = (props) => {
           id={id}
           idAux={idAux}
           setIdAux={setIdAux}
+          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
         />
       ) : (
         ''

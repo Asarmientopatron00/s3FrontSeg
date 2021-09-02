@@ -84,7 +84,16 @@ const MyAutocompleteCiudad = (props) => {
 };
 
 const SolicitudCotizacionForm = (props) => {
-  const {accion, initialValues, ciudades, servicios, titulo} = props;
+  const {
+    accion,
+    initialValues,
+    ciudades,
+    servicios,
+    titulo,
+    TIPOS_SERVICIOS,
+    values,
+    setFieldValue,
+  } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
@@ -147,6 +156,12 @@ const SolicitudCotizacionForm = (props) => {
 
   const classes = useStyles(props);
 
+  useEffect(() => {
+    if (values.tipo_servicio !== 'OTR') {
+      setFieldValue('tipo_servicio_otro', '');
+    }
+  }, [values.tipo_servicio, setFieldValue]);
+
   return (
     <Form className='' noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -201,6 +216,25 @@ const SolicitudCotizacionForm = (props) => {
               className={classes.myTextField}
               required
               disabled={disabled}
+            />
+
+            <MyAutocomplete
+              options={TIPOS_SERVICIOS}
+              name='tipo_servicio'
+              inputValue={initialValues.tipo_servicio}
+              label='Tipo Servicio'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Tipo Servicio Otro'
+              name='tipo_servicio_otro'
+              disabled={disabled || values.tipo_servicio !== 'OTR'}
+              required={values.tipo_servicio === 'OTR'}
             />
 
             <MyTextField

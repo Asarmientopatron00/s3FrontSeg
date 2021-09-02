@@ -37,6 +37,14 @@ const validationSchema = yup.object({
       'Ciudad de destino debe ser diferente a ciudad de origen',
     ),
   numero_servicios_mes: yup.number().required('Requerido'),
+  tipo_servicio: yup.string().required('Requerido'),
+  tipo_servicio_otro: yup
+    .string()
+    .nullable()
+    .when('tipo_servicio', {
+      is: 'OTR',
+      then: yup.string().required('Requerido'),
+    }),
   servicio_id: yup.string().required('Requerido'),
   nombre_contacto: yup
     .string()
@@ -70,6 +78,7 @@ const SolicitudCotizacionCreator = (props) => {
     ciudades,
     servicios,
     titulo,
+    TIPOS_SERVICIOS,
   } = props;
 
   const user = useAuthUser();
@@ -164,6 +173,10 @@ const SolicitudCotizacionCreator = (props) => {
                   ? selectedRow.servicio_id
                   : ''
                 : '',
+              tipo_servicio: selectedRow ? selectedRow.tipo_servicio : '',
+              tipo_servicio_otro: selectedRow
+                ? selectedRow.tipo_servicio_otro
+                : '',
               numero_servicios_mes: selectedRow
                 ? selectedRow.numero_servicios_mes
                   ? selectedRow.numero_servicios_mes
@@ -230,6 +243,7 @@ const SolicitudCotizacionCreator = (props) => {
                 initialValues={initialValues}
                 ciudades={ciudades}
                 servicios={servicios}
+                TIPOS_SERVICIOS={TIPOS_SERVICIOS}
               />
             )}
           </Formik>

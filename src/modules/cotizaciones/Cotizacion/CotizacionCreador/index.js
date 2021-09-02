@@ -61,6 +61,7 @@ const CotizacionCreator = (props) => {
     fecha_cotizacion: yup.date().required('Requerido'),
     fecha_vigencia_cotizacion: yup.date().required('Requerido'),
     plazo_pago_cotizacion: yup.number().required('Requerido'),
+    numero_viajes_mes: yup.number().required('Requerido'),
   });
 
   const [detalles, setDetalles] = useState();
@@ -106,6 +107,11 @@ const CotizacionCreator = (props) => {
           plazo_pago_cotizacion: selectedRow
             ? selectedRow.plazo_pago_cotizacion
               ? selectedRow.plazo_pago_cotizacion
+              : ''
+            : '',
+          numero_viajes_mes: selectedRow
+            ? selectedRow.numero_viajes_mes
+              ? selectedRow.numero_viajes_mes
               : ''
             : '',
           observaciones: selectedRow

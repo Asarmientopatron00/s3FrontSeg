@@ -21,6 +21,7 @@ import {
   VALIDACION_REGEX_TELEFONOS,
 } from '../../../shared/constants/Constantes';
 import mensajeValidacion from '../../../shared/functions/MensajeValidacion';
+import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -36,6 +37,14 @@ const validationSchema = yup.object({
       'Ciudad de destino debe ser diferente a ciudad de origen',
     ),
   servicio_id: yup.string().required('Requerido'),
+  tipo_servicio: yup.string().required('Requerido'),
+  tipo_servicio_otro: yup
+    .string()
+    .nullable()
+    .when('tipo_servicio', {
+      is: 'OTR',
+      then: yup.string().required('Requerido'),
+    }),
   numero_servicios_mes: yup.number().required('Requerido'),
   nombre_contacto: yup
     .string()
@@ -128,6 +137,8 @@ const SolicitudCotizacionCreator = (props) => {
               ciudad_destino_id: '',
               numero_servicios_mes: '',
               servicio_id: '',
+              tipo_servicio: '',
+              tipo_servicio_otro: '',
               nombre_contacto: '',
               email: '',
               telefono_contacto: '',
@@ -151,6 +162,7 @@ const SolicitudCotizacionCreator = (props) => {
                 initialValues={initialValues}
                 ciudades={ciudades}
                 servicios={servicios}
+                TIPOS_SERVICIOS={TIPOS_SERVICIOS}
               />
             )}
           </Formik>

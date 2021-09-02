@@ -91,7 +91,7 @@ export const TIPOS_ESTADOS_EQUIPOS = [
 export const TIPOS_SERVICIOS = [
   {id: 'DTA', nombre: 'DTA', estado: 1},
   {id: 'OTM', nombre: 'OTM', estado: 1},
-  {id: 'NAC', nombre: 'Nacionlizado', estado: 1},
+  {id: 'NAC', nombre: 'Nacionalizado', estado: 1},
   {id: 'PER', nombre: 'Pernocta', estado: 1},
   {id: 'EXP', nombre: 'Exportación', estado: 1},
   {id: 'OTR', nombre: 'Otro', estado: 1},

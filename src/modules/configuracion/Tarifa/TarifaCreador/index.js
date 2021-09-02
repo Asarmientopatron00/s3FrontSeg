@@ -49,7 +49,7 @@ const validationSchema = yup.object({
   valor_tarifa_dia_adicional: yup
     .number()
     .typeError(mensajeValidacion('numero'))
-    .required('Requerido'),
+    .nullable(),
 });
 
 const TarifaCreator = (props) => {

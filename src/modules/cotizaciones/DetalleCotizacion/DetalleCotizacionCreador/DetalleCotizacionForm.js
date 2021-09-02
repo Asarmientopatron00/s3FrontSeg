@@ -92,6 +92,8 @@ const DetalleCotizacionForm = (props) => {
     titulo,
     values,
     setFieldValue,
+    TIPOS_SERVICIOS,
+    asociado_id,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -173,14 +175,17 @@ const DetalleCotizacionForm = (props) => {
       typeof values.ciudad_origen_id === 'number' &&
       values.ciudad_destino_id !== '' &&
       typeof values.ciudad_destino_id === 'number' &&
-      values.servicio_id !== ''
+      values.servicio_id !== '' &&
+      values.tipo_servicio !== '' &&
+      asociado_id !== ''
     ) {
       dispatch(
         buscarTarifa(
           values.ciudad_origen_id,
           values.ciudad_destino_id,
-          19,
+          asociado_id,
           values.servicio_id,
+          values.tipo_servicio,
         ),
       );
     }
@@ -189,6 +194,8 @@ const DetalleCotizacionForm = (props) => {
     values.ciudad_origen_id,
     values.ciudad_destino_id,
     values.servicio_id,
+    asociado_id,
+    values.tipo_servicio,
   ]);
 
   const cantidad_rutas = useSelector(
@@ -212,6 +219,12 @@ const DetalleCotizacionForm = (props) => {
       dispatch({type: CLEAN_RUTA});
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (values.tipo_servicio !== 'OTR') {
+      setFieldValue('tipo_servicio_otro', '');
+    }
+  }, [values.tipo_servicio, setFieldValue]);
 
   return (
     <Form className='' noValidate autoComplete='off'>
@@ -282,12 +295,46 @@ const DetalleCotizacionForm = (props) => {
               required
               disabled={disabled}
             />
+
+            <MyAutocomplete
+              options={TIPOS_SERVICIOS}
+              name='tipo_servicio'
+              inputValue={initialValues.tipo_servicio}
+              label='Tipo Servicio'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Tipo Servicio Otro'
+              name='tipo_servicio_otro'
+              disabled={disabled || values.tipo_servicio !== 'OTR'}
+              required={values.tipo_servicio === 'OTR'}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Número Dias Viaje'
+              name='numero_dias_viaje'
+              disabled={disabled}
+              type='number'
+              required
+            />
+
             <MyTextField
               className={classes.myTextField}
               label='Valor Servicio'
               name='valor_servicio'
               disabled={disabled}
               required
+            />
+
+            <MyTextField
+              className={classes.myTextField}
+              label='Valor Servicio Dia Adicional'
+              name='valor_servicio_dia_adicional'
+              disabled={disabled}
             />
           </Box>
         </Box>

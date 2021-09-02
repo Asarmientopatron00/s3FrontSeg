@@ -94,6 +94,7 @@ const TarifaForm = (props) => {
     servicios,
     asociados,
     TIPOS_SERVICIOS,
+    setFieldValue,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -159,6 +160,11 @@ const TarifaForm = (props) => {
 
   const classes = useStyles(props);
 
+  useEffect(() => {
+    if (values.tipo_servicio !== 'OTR') {
+      setFieldValue('tipo_servicio_otro', '');
+    }
+  }, [values.tipo_servicio, setFieldValue]);
   return (
     <Form className='' noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -226,7 +232,7 @@ const TarifaForm = (props) => {
               className={classes.myTextField}
               label='Tipo Servicio Otro'
               name='tipo_servicio_otro'
-              disabled={disabled | (values.tipo_servicio !== 'OTR')}
+              disabled={disabled || values.tipo_servicio !== 'OTR'}
               required={values.tipo_servicio === 'OTR'}
             />
             <MyTextField
@@ -249,7 +255,6 @@ const TarifaForm = (props) => {
               label='Valor Tarifa Dia Adicional'
               name='valor_tarifa_dia_adicional'
               disabled={disabled}
-              required
             />
 
             <FormControl className={classes.widthFull} component='fieldset'>

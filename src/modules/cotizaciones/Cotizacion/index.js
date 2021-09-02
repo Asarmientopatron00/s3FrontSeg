@@ -131,6 +131,14 @@ const cells = [
     mostrarInicio: false,
   },
   {
+    id: 'numero_viajes_mes',
+    typeHead: 'numeric',
+    label: 'Número Servicios Mes',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: false,
+  },
+  {
     id: 'numero_solicitud',
     typeHead: 'numeric',
     label: 'Solicitud',

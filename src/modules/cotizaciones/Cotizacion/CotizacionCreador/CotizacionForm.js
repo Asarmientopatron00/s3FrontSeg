@@ -263,6 +263,14 @@ const SolicitudCotizacionForm = (props) => {
                   required
                   type='number'
                 />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Numero de Servicios Mes'
+                  name='numero_viajes_mes'
+                  disabled={disabled}
+                  required
+                  type='number'
+                />
               </Box>
               <MyTextField
                 className={classes.myTextField}
@@ -277,6 +285,7 @@ const SolicitudCotizacionForm = (props) => {
 
         <DetalleCotizacion
           empresa={values.nombre_empresa}
+          asociado_id={values.asociado_id}
           fecha={values.fecha_cotizacion}
           id={values.id ? values.id : 0}
           accionDetalle={accion}

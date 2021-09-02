@@ -177,6 +177,11 @@ const ConsultaCotizacionCreator = (props) => {
                   ? selectedRow.plazo_pago_cotizacion
                   : ''
                 : '',
+              numero_viajes_mes: selectedRow
+                ? selectedRow.numero_viajes_mes
+                  ? selectedRow.numero_viajes_mes
+                  : ''
+                : '',
               observaciones: selectedRow
                 ? selectedRow.observaciones
                   ? selectedRow.observaciones

@@ -229,6 +229,7 @@ export const onBuscar = (
   ciudad_destino_id,
   asociado_id,
   servicio_id,
+  tipo_servicio,
 ) => {
   const {messages} = appIntl();
   return (dispatch) => {
@@ -240,6 +241,7 @@ export const onBuscar = (
           ciudad_destino_id,
           asociado_id,
           servicio_id,
+          tipo_servicio,
         },
       })
       .then((data) => {

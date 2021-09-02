@@ -117,7 +117,7 @@ const ConsultaCotizacionForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box display='grid' gridTemplateColumns='repeat(2, 1fr)'>
+            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Número Cotización'
@@ -126,6 +126,16 @@ const ConsultaCotizacionForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Estado Cotización'
+                name='estado_cotizacion'
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                marginLeft='10px'
               />
             </Box>
 
@@ -175,9 +185,11 @@ const ConsultaCotizacionForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Estado Cotización'
-                name='estado_cotizacion'
+                label='Número Servicios Mes'
+                name='numero_viajes_mes'
                 disabled={disabled}
+                required
+                type='number'
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -264,7 +276,18 @@ const ConsultaCotizacionForm = (props) => {
                     <TableCell className={classes.tableHead}>
                       Servicio
                     </TableCell>
-                    <TableCell className={classes.tableHead}>Valor</TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Tipo Servicio
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Número Dias Viaje
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Valor Servicio
+                    </TableCell>
+                    <TableCell className={classes.tableHead}>
+                      Valor Servicio Dia Adicional
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -281,7 +304,18 @@ const ConsultaCotizacionForm = (props) => {
                           {row.servicio}
                         </TableCell>
                         <TableCell className={classes.tableCell}>
+                          {row.servicio !== 'OTR'
+                            ? row.tipo_servicio
+                            : row.tipo_servicio_otro}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.numero_dias_viaje}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
                           {row.valor_servicio}
+                        </TableCell>
+                        <TableCell className={classes.tableCell}>
+                          {row.valor_servicio_dia_adicional}
                         </TableCell>
                       </TableRow>
                     );

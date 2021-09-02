@@ -128,32 +128,34 @@ const ParametroConstanteForm = (props) => {
               multiline={true}
             />
 
-            <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel>Estado*</FormLabel>
-              <Field
-                name='estado'
-                type='radio'
-                as={RadioGroup}
-                className={classes.myTextField}
-                disabled={accion === 'ver'}
-                row
-                value={values.estado}>
-                <FormControlLabel
-                  value='1'
-                  control={<Radio color='primary' />}
-                  label='Activo'
-                  labelPlacement='end'
+            <Box marginTop='15px'>
+              <FormControl className={classes.widthFull} component='fieldset'>
+                <FormLabel>Estado*</FormLabel>
+                <Field
+                  name='estado'
+                  type='radio'
+                  as={RadioGroup}
+                  className={classes.myTextField}
                   disabled={accion === 'ver'}
-                />
-                <FormControlLabel
-                  value='0'
-                  control={<Radio color='primary' />}
-                  label='Inactivo'
-                  labelPlacement='end'
-                  disabled={accion === 'ver'}
-                />
-              </Field>
-            </FormControl>
+                  row
+                  value={values.estado}>
+                  <FormControlLabel
+                    value='1'
+                    control={<Radio color='primary' />}
+                    label='Activo'
+                    labelPlacement='end'
+                    disabled={accion === 'ver'}
+                  />
+                  <FormControlLabel
+                    value='0'
+                    control={<Radio color='primary' />}
+                    label='Inactivo'
+                    labelPlacement='end'
+                    disabled={accion === 'ver'}
+                  />
+                </Field>
+              </FormControl>
+            </Box>
           </Box>
         </Box>
       </Scrollbar>

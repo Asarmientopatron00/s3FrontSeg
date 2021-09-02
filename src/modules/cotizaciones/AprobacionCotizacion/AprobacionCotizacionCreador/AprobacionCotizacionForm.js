@@ -162,6 +162,17 @@ const AprobacionCotizacionForm = (props) => {
                   shrink: true,
                 }}
               />
+              <MyTextField
+                className={classes.myTextField}
+                label='Número Servicios Mes'
+                name='numero_viajes_mes'
+                disabled={true}
+                required
+                type='number'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </Box>
 
             <MyTextField

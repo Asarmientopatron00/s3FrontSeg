@@ -124,6 +124,14 @@ const cells = [
     mostrarInicio: false,
   },
   {
+    id: 'numero_viajes_mes',
+    typeHead: 'numeric',
+    label: 'Número Servicios Mes',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: false,
+  },
+  {
     id: 'fecha_vigencia_cotizacion',
     typeHead: 'string',
     label: 'Fecha Vigencia',

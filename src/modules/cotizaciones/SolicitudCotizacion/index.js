@@ -40,6 +40,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -86,6 +87,31 @@ const cells = [
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
     align: 'left',
     mostrarInicio: true,
+  },
+  {
+    id: 'servicio',
+    typeHead: 'string',
+    label: 'Servicio',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'tipo_servicio',
+    typeHead: 'string',
+    label: 'Tipo Servicio',
+    value: (value) =>
+      TIPOS_SERVICIOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'tipo_servicio_otro',
+    typeHead: 'string',
+    label: 'Tipo Servicio Otro',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
   },
   {
     id: 'numero_servicios_mes',
@@ -794,7 +820,9 @@ const SolicitudCotizacion = (props) => {
           'La Solicitud Cotizacion Fue Eliminada Correctamente',
           'success',
         );
-        updateColeccion();
+        setTimeout(() => {
+          updateColeccion();
+        }, 500);
       }
     });
   };
@@ -1072,6 +1100,7 @@ const SolicitudCotizacion = (props) => {
           titulo={titulo}
           ciudades={ciudades}
           servicios={servicios}
+          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
         />
       ) : (
         ''
