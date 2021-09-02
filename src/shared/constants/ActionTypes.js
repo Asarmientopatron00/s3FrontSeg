@@ -224,6 +224,7 @@ export const UPDATE_TARIFA = 'update_tarifa';
 export const CREATE_TARIFA = 'create_tarifa';
 export const DELETE_TARIFA = 'delete_tarifa';
 export const BUSCAR_TARIFA = 'buscar_tarifa';
+export const DIAS_VIAJES = 'dias_viajes';
 export const GET_COLECCION_COTIZACION = 'get_coleccion_cotizacion';
 export const GET_COLECCION_LIGERA_COTIZACION =
   'get_coleccion_ligera_cotizacion';

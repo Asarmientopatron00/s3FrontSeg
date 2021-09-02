@@ -8,6 +8,7 @@ import {
   onShow,
   onUpdate,
   onCreate,
+  onGetDiasViajes,
 } from '../../../../redux/actions/TarifaAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
@@ -15,6 +16,7 @@ import Slide from '@material-ui/core/Slide';
 import TarifaForm from './TarifaForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
+import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
@@ -30,8 +32,24 @@ const validationSchema = yup.object({
       'Ciudad de destino debe ser diferente a ciudad de origen',
     ),
   servicio_id: yup.string().required('Requerido'),
+  tipo_servicio: yup.string().required('Requerido'),
+  tipo_servicio_otro: yup
+    .string()
+    .nullable()
+    .when('tipo_servicio', {
+      is: 'OTR',
+      then: yup.string().required('Requerido'),
+    }),
+  numero_dias_viaje: yup.number().required('Requerido'),
   asociado_id: yup.string().required('Requerido'),
-  valor_tarifa: yup.string().required('Requerido'),
+  valor_tarifa: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  valor_tarifa_dia_adicional: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
 });
 
 const TarifaCreator = (props) => {
@@ -44,6 +62,7 @@ const TarifaCreator = (props) => {
     servicios,
     asociados,
     titulo,
+    TIPOS_SERVICIOS,
   } = props;
 
   const dispatch = useDispatch();
@@ -66,7 +85,9 @@ const TarifaCreator = (props) => {
 
   const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
+  let dias_viajes = useRef();
   selectedRow = useSelector(({tarifaReducer}) => tarifaReducer.selectedRow);
+  dias_viajes = useSelector(({tarifaReducer}) => tarifaReducer.dias_viajes);
 
   const initializeSelectedRow = () => {
     selectedRow = null;
@@ -92,6 +113,8 @@ const TarifaCreator = (props) => {
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
       dispatch(onShow(tarifa));
+    } else {
+      dispatch(onGetDiasViajes());
     }
   }, [accion, dispatch, tarifa]);
 
@@ -118,8 +141,18 @@ const TarifaCreator = (props) => {
                 ? selectedRow.ciudad_destino_id
                 : '',
               servicio_id: selectedRow ? selectedRow.servicio_id : '',
+              tipo_servicio: selectedRow ? selectedRow.tipo_servicio : '',
+              tipo_servicio_otro: selectedRow
+                ? selectedRow.tipo_servicio_otro
+                : '',
+              numero_dias_viaje: selectedRow
+                ? selectedRow.numero_dias_viaje
+                : dias_viajes,
               asociado_id: selectedRow ? selectedRow.asociado_id : '',
               valor_tarifa: selectedRow ? selectedRow.valor_tarifa : '',
+              valor_tarifa_dia_adicional: selectedRow
+                ? selectedRow.valor_tarifa_dia_adicional
+                : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
@@ -152,6 +185,7 @@ const TarifaCreator = (props) => {
                 ciudades={ciudades}
                 servicios={servicios}
                 asociados={asociados}
+                TIPOS_SERVICIOS={TIPOS_SERVICIOS}
               />
             )}
           </Formik>

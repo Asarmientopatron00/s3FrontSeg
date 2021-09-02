@@ -93,6 +93,7 @@ const TarifaForm = (props) => {
     ciudades,
     servicios,
     asociados,
+    TIPOS_SERVICIOS,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
@@ -192,6 +193,16 @@ const TarifaForm = (props) => {
               disabled={disabled}
             />
             <MyAutocomplete
+              options={asociados}
+              name='asociado_id'
+              inputValue={initialValues.asociado_id}
+              label='Asociado'
+              autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            <MyAutocomplete
               options={servicios}
               name='servicio_id'
               inputValue={initialValues.servicio_id}
@@ -202,20 +213,41 @@ const TarifaForm = (props) => {
               disabled={disabled}
             />
             <MyAutocomplete
-              options={asociados}
-              name='asociado_id'
-              inputValue={initialValues.asociado_id}
-              label='Asociado'
+              options={TIPOS_SERVICIOS}
+              name='tipo_servicio'
+              inputValue={initialValues.tipo_servicio}
+              label='Tipo Servicio'
               autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
             />
-
+            <MyTextField
+              className={classes.myTextField}
+              label='Tipo Servicio Otro'
+              name='tipo_servicio_otro'
+              disabled={disabled | (values.tipo_servicio !== 'OTR')}
+              required={values.tipo_servicio === 'OTR'}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Número Dias Viaje'
+              name='numero_dias_viaje'
+              disabled={disabled}
+              type='number'
+              required
+            />
             <MyTextField
               className={classes.myTextField}
               label='Valor Tarifa'
               name='valor_tarifa'
+              disabled={disabled}
+              required
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Valor Tarifa Dia Adicional'
+              name='valor_tarifa_dia_adicional'
               disabled={disabled}
               required
             />

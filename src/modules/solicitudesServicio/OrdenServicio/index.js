@@ -23,12 +23,13 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
+import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import TarifaCreador from './TarifaCreador';
-import {onGetColeccion, onDelete} from '../../../redux/actions/TarifaAction';
-import {onGetColeccionLigera as onGetColeccionLigeraCiudad} from '../../../redux/actions/CiudadAction';
-import {onGetColeccionLigera as onGetColeccionLigeraServicio} from '../../../redux/actions/ServicioAction';
-import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
+import {
+  onGetColeccion,
+  onDelete,
+  onEnviarCorreo,
+} from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,7 +39,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
+import {ESTADO_COTIZACIONES} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -70,68 +71,70 @@ import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
 
 const cells = [
   {
-    id: 'ciudad_origen',
-    typeHead: 'string',
-    label: 'Ciudad Origen',
+    id: 'numero_cotizacion_servicio',
+    typeHead: 'numeric',
+    label: 'Número Cotización',
     value: (value) => value,
-    align: 'left',
+    align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'ciudad_destino',
+    id: 'fecha_cotizacion',
     typeHead: 'string',
-    label: 'Ciudad Destino',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'servicio',
-    typeHead: 'string',
-    label: 'Servicio',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_servicio',
-    typeHead: 'string',
-    label: 'Tipo Servicio',
+    label: 'Fecha',
     value: (value) =>
-      TIPOS_SERVICIOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
+      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_vigencia_cotizacion',
+    typeHead: 'string',
+    label: 'Fecha Vigencia',
+    value: (value) =>
+      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
     align: 'left',
     mostrarInicio: false,
   },
   {
-    id: 'tipo_servicio_otro',
+    id: 'nombre_empresa',
     typeHead: 'string',
-    label: 'Tipo Servicio Otro',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'asociado',
-    typeHead: 'string',
-    label: 'Asociado',
+    label: 'Nombre Empresa',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'valor_tarifa',
-    typeHead: 'string',
-    label: 'Valor Tarifa',
+    id: 'numero_documento',
+    typeHead: 'numeric',
+    label: 'Documento',
     value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'estado_cotizacion',
+    typeHead: 'string',
+    label: 'Estado',
+    value: (value) =>
+      ESTADO_COTIZACIONES.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'valor_tarifa_dia_adicional',
-    typeHead: 'string',
-    label: 'Valor Tarifa Día Adicional',
+    id: 'plazo_pago_cotizacion',
+    typeHead: 'numeric',
+    label: 'Plazo',
     value: (value) => value,
-    align: 'left',
+    align: 'right',
+    mostrarInicio: false,
+  },
+  {
+    id: 'numero_solicitud',
+    typeHead: 'numeric',
+    label: 'Solicitud',
+    value: (value) => value,
+    align: 'right',
     mostrarInicio: false,
   },
   {
@@ -150,7 +153,7 @@ const cells = [
     value: (value) => value,
     align: 'left',
     width: '140px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'fecha_modificacion',
@@ -352,12 +355,10 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddTarifa,
     handleOpenPopoverColumns,
     queryFilter,
-    ciudadOrigenFiltro,
-    ciudadDestinoFiltro,
-    asociadoFiltro,
+    numeroFiltro,
+    nombreEmpresaFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -395,33 +396,36 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip title='Crear Tarifa' onClick={onOpenAddTarifa}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
+                <Box component='a' href='/cotizacion/crear'>
+                  <Tooltip title='Crear Cotización'>
+                    <IconButton
+                      className={classes.createButton}
+                      aria-label='filter list'>
+                      <AddIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Asociado'
-              name='asociadoFiltro'
-              id='asociadoFiltro'
+              label='Número Cotización'
+              name='numeroFiltro'
+              id='numeroFiltro'
               onChange={queryFilter}
-              value={asociadoFiltro}
+              value={numeroFiltro}
+              type='number'
+              inputProps={{min: 0}}
             />
 
             <TextField
-              label='Ciudad Origen'
-              name='ciudadOrigenFiltro'
-              id='ciudadOrigenFiltro'
+              label='Nombre Empresa'
+              name='nombreEmpresaFiltro'
+              id='nombreEmpresaFiltro'
               onChange={queryFilter}
-              value={ciudadOrigenFiltro}
+              value={nombreEmpresaFiltro}
             />
-
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -433,13 +437,6 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
-            <TextField
-              label='Ciudad Destino'
-              name='ciudadDestinoFiltro'
-              id='ciudadDestinoFiltro'
-              onChange={queryFilter}
-              value={ciudadDestinoFiltro}
-            />
           </Box>
         </>
       )}
@@ -454,11 +451,11 @@ const EnhancedTableToolbar = (props) => {
         ) : (
           ''
         )
-        // <Tooltip title="Filtros Avanzados">
-        //       <IconButton aria-label="filter list">
-        //         <FilterListIcon />
-        //       </IconButton>
-        //     </Tooltip>
+        //  <Tooltip title="Filtros Avanzados">
+        //         <IconButton aria-label="filter list">
+        //           <FilterListIcon />
+        //         </IconButton>
+        //       </Tooltip>
       }
     </Toolbar>
   );
@@ -466,13 +463,11 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddTarifa: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  ciudadOrigenFiltro: PropTypes.string.isRequired,
-  ciudadDestinoFiltro: PropTypes.string.isRequired,
-  asociadoFiltro: PropTypes.string.isRequired,
+  numeroFiltro: PropTypes.string.isRequired,
+  nombreEmpresaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -552,6 +547,9 @@ const useStyles = makeStyles((theme) => ({
   deleteIcon: {
     color: theme.palette.redBottoms,
   },
+  enviarIcon: {
+    color: theme.palette.enviaEmailBottoms,
+  },
   popoverColumns: {
     display: 'grid',
     padding: '10px',
@@ -569,8 +567,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Tarifa = (props) => {
+const Cotizacion = (props) => {
   const [showForm, setShowForm] = useState(false);
+  const [accion, setAccion] = useState('ver');
+  const [cotizacionSeleccionado, setCotizacionSeleccionado] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -583,15 +583,12 @@ const Tarifa = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [accion, setAccion] = useState('ver');
-  const [tarifaSeleccionado, setTarifaSeleccionado] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({tarifaReducer}) => tarifaReducer,
+    ({cotizacionReducer}) => cotizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [ciudadOrigenFiltro, setciudadOrigenFiltro] = useState('');
-  const [ciudadDestinoFiltro, setciudadDestinoFiltro] = useState('');
-  const [asociadoFiltro, setasociadoFiltro] = useState('');
+  const [numeroFiltro, setnumeroFiltro] = useState('');
+  const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -643,26 +640,26 @@ const Tarifa = (props) => {
         });
       });
   }, [user, props.route]);
-
   useEffect(() => {
     dispatch(
       onGetColeccion(
         page,
         rowsPerPage,
-        ciudadOrigenFiltro,
+        numeroFiltro,
         orderByToSend,
-        ciudadDestinoFiltro,
-        asociadoFiltro,
+        nombreEmpresaFiltro,
+        '',
+        '',
+        'ENV,GEN',
       ),
     );
   }, [
     dispatch,
     page,
     rowsPerPage,
-    ciudadOrigenFiltro,
+    numeroFiltro,
     orderByToSend,
-    ciudadDestinoFiltro,
-    asociadoFiltro,
+    nombreEmpresaFiltro,
   ]);
 
   const updateColeccion = () => {
@@ -670,48 +667,37 @@ const Tarifa = (props) => {
       onGetColeccion(
         1,
         rowsPerPage,
-        ciudadOrigenFiltro,
+        numeroFiltro,
         orderByToSend,
-        ciudadDestinoFiltro,
-        asociadoFiltro,
+        nombreEmpresaFiltro,
+        '',
+        '',
+        'ENV,GEN',
       ),
     );
   };
-
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraCiudad());
-    dispatch(onGetColeccionLigeraServicio());
-    dispatch(onGetColeccionLigeraAsociado());
-  }, [dispatch]);
-
-  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
-  const servicios = useSelector(({servicioReducer}) => servicioReducer.ligera);
-  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
-
   useEffect(() => {
     setPage(1);
-  }, [ciudadOrigenFiltro, orderByToSend, ciudadDestinoFiltro, asociadoFiltro]);
+  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'ciudadOrigenFiltro':
-        setciudadOrigenFiltro(e.target.value);
+      case 'numeroFiltro':
+        setnumeroFiltro(e.target.value);
         break;
-      case 'ciudadDestinoFiltro':
-        setciudadDestinoFiltro(e.target.value);
-        break;
-      case 'asociadoFiltro':
-        setasociadoFiltro(e.target.value);
+      case 'nombreEmpresaFiltro':
+        setnombreEmpresaFiltro(e.target.value);
         break;
       default:
         break;
     }
   };
 
+  useEffect(() => {}, [dispatch]);
+
   const limpiarFiltros = () => {
-    setciudadOrigenFiltro('');
-    setciudadDestinoFiltro('');
-    setasociadoFiltro('');
+    setnumeroFiltro('');
+    setnombreEmpresaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -728,12 +714,6 @@ const Tarifa = (props) => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
-  };
-
-  const onOpenEditTarifa = (id) => {
-    setTarifaSeleccionado(id);
-    setAccion('editar');
-    setShowForm(true);
   };
 
   const handleClosePopover = () => {
@@ -759,6 +739,18 @@ const Tarifa = (props) => {
     );
   };
 
+  const onOpenViewAprobacionCotizacion = (id) => {
+    setCotizacionSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setCotizacionSeleccionado(0);
+    setAccion('ver');
+  };
+
   const showAllColumns = () => {
     let aux = columnasMostradas;
     setColumnasMostradas(
@@ -772,16 +764,10 @@ const Tarifa = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewTarifa = (id) => {
-    setTarifaSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const onDeleteTarifa = (id) => {
+  const onDeleteCotizacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar La Tarifa?',
+      text: '¿Seguro que dese anular la cotización?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -791,35 +777,37 @@ const Tarifa = (props) => {
       confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(onDelete(id));
+        dispatch(onDelete(id, updateColeccion));
         Swal.fire(
-          'Eliminado',
-          'La Tarifa Fue Eliminada Correctamente',
+          'Anulado',
+          'La cotizacion fue anulada correctamente',
           'success',
         );
-        setTimeout(() => {
-          updateColeccion();
-        }, 500);
       }
     });
   };
 
-  const onOpenAddTarifa = () => {
-    setTarifaSeleccionado(0);
-    setAccion('crear');
-    setShowForm(true);
+  const enviarCorreo = (id, estado) => {
+    if (estado === 'ENV') {
+      Swal.fire({
+        title: 'Confirmar',
+        text: '¿Seguro que desea reenviar la cotización?',
+        allowEscapeKey: false,
+        allowEnterKey: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'NO',
+        confirmButtonText: 'SI',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(onEnviarCorreo(id, updateColeccion));
+        }
+      });
+    } else {
+      dispatch(onEnviarCorreo(id, updateColeccion));
+    }
   };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setTarifaSeleccionado(0);
-    setAccion('ver');
-  };
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc';
-  //   setOrder(isAsc ? 'desc' : 'asc');
-  //   setOrderBy(property);
-  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -861,13 +849,11 @@ const Tarifa = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddTarifa={onOpenAddTarifa}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            ciudadOrigenFiltro={ciudadOrigenFiltro}
-            ciudadDestinoFiltro={ciudadDestinoFiltro}
-            asociadoFiltro={asociadoFiltro}
+            numeroFiltro={numeroFiltro}
+            nombreEmpresaFiltro={nombreEmpresaFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -944,25 +930,44 @@ const Tarifa = (props) => {
                             align='center'
                             className={classes.acciones}>
                             {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() => onOpenEditTarifa(row.id)}
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
+                              <Box
+                                component='a'
+                                href={'/cotizacion/editar/' + row.id}
+                                className={classes.generalIcons}>
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}
+                                  />
+                                </Tooltip>
+                              </Box>
                             )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
-                                  onClick={() => onOpenViewTarifa(row.id)}
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}
+                                  onClick={() =>
+                                    onOpenViewAprobacionCotizacion(row.id)
+                                  }
+                                />
+                              </Tooltip>
+                            )}
+                            {permisos.indexOf('Enviar') >= 0 && (
+                              <Tooltip
+                                title={
+                                  <IntlMessages id='boton.enviarCorreo' />
+                                }>
+                                <EmailIcon
+                                  onClick={() =>
+                                    enviarCorreo(row.id, row.estado_cotizacion)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
                               </Tooltip>
                             )}
                             {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
+                              <Tooltip title={'Anular'}>
                                 <DeleteIcon
-                                  onClick={() => onDeleteTarifa(row.id)}
+                                  onClick={() => onDeleteCotizacion(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
@@ -1056,26 +1061,18 @@ const Tarifa = (props) => {
         )}
       </Paper>
 
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Cambiar Densidad"
-      /> */}
-      {showForm ? (
-        <TarifaCreador
+      {/* {showForm ? (
+        <ConsultaCotizacionCreador
           showForm={showForm}
-          tarifa={tarifaSeleccionado}
+          consultaCotizacion={cotizacionSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
-          ciudades={ciudades}
-          servicios={servicios}
-          asociados={asociados}
           titulo={titulo}
-          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
         />
       ) : (
         ''
-      )}
+      )} */}
 
       <Popover
         id='popoverColumns'
@@ -1117,4 +1114,4 @@ const Tarifa = (props) => {
   );
 };
 
-export default Tarifa;
+export default Cotizacion;

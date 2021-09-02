@@ -6,6 +6,7 @@ import {
   DELETE_TARIFA,
   CREATE_TARIFA,
   BUSCAR_TARIFA,
+  DIAS_VIAJES,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   ultima_pagina: 1,
   total: 1,
   valor_tarifa: 0,
+  dias_viajes: 0,
 };
 
 const TarifaReducer = (state = initialState, action) => {
@@ -63,6 +65,11 @@ const TarifaReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRow: action.payload.datos,
+      };
+    case DIAS_VIAJES:
+      return {
+        ...state,
+        dias_viajes: action.payload.data,
       };
 
     case BUSCAR_TARIFA:

@@ -1,12 +1,12 @@
 import {
-  GET_COLECCION_TARIFA,
-  GET_COLECCION_LIGERA_TARIFA,
-  SHOW_TARIFA,
-  UPDATE_TARIFA,
-  DELETE_TARIFA,
-  CREATE_TARIFA,
-  BUSCAR_TARIFA,
-  DIAS_VIAJES,
+  GET_COLECCION_ORDEN_SERVICIO,
+  GET_COLECCION_LIGERA_ORDEN_SERVICIO,
+  SHOW_ORDEN_SERVICIO,
+  UPDATE_ORDEN_SERVICIO,
+  DELETE_ORDEN_SERVICIO,
+  ENVIAR_ORDEN_SERVICIO,
+  CREATE_ORDEN_SERVICIO,
+  APPROVE_ORDEN_SERVICIO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -19,35 +19,41 @@ import {appIntl} from '../../@crema/utility/Utils';
 export const onGetColeccion = (
   currentPage,
   rowsPerPage,
-  ciudad_origen,
+  numero_solicitud,
   orderByToSend,
-  ciudad_destino,
-  asociado,
+  nombre_empresa,
+  documento,
+  fecha_cotizacion,
+  estados,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
-  const ciudad_origenAux = ciudad_origen ? ciudad_origen : '';
-  const ciudad_destinoAux = ciudad_destino ? ciudad_destino : '';
-  const asociadoAux = asociado ? asociado : '';
+  const numero_solicitudAux = numero_solicitud ? numero_solicitud : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
+  const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
+  const documentoAux = documento ? documento : '';
+  const fecha_cotizacionAux = fecha_cotizacion ? fecha_cotizacion : '';
+  const estadosAux = estados ? estados : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('tarifas', {
+      .get('cotizaciones-servicios', {
         params: {
           page: page,
           limite: rowsPerPage,
-          ciudad_origen: ciudad_origenAux,
-          ciudad_destino: ciudad_destinoAux,
-          asociado: asociadoAux,
+          numero_solicitud: numero_solicitudAux,
           ordenar_por: ordenar_por,
+          nombre_empresa: nombre_empresaAux,
+          documento: documentoAux,
+          fecha_cotizacion: fecha_cotizacionAux,
+          estados: estadosAux,
         },
       })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_TARIFA, payload: data});
+          dispatch({type: GET_COLECCION_ORDEN_SERVICIO, payload: data});
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -61,44 +67,23 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = (depto) => {
+export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('tarifas', {
+      .get('cotizaciones-servicios', {
         params: {
           ligera: true,
-          departamento_id: depto,
         },
       })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_LIGERA_TARIFA, payload: data});
-        } else {
           dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            type: GET_COLECCION_LIGERA_ORDEN_SERVICIO,
+            payload: data,
           });
-        }
-      })
-      .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
-      });
-  };
-};
-
-export const onGetDiasViajes = () => {
-  const {messages} = appIntl();
-  return (dispatch) => {
-    dispatch({type: FETCH_START});
-    jwtAxios
-      .get('tarifas/dias-viajes')
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DIAS_VIAJES, payload: data});
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -118,11 +103,11 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('tarifas/' + id)
+        .get('cotizaciones-servicios/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW_TARIFA, payload: data.data});
+            dispatch({type: SHOW_ORDEN_SERVICIO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -137,19 +122,19 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose, updateColeccion) => {
+export const onUpdate = (params, handleOnClose, detalles) => {
+  params['detalles'] = detalles;
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('tarifas/' + params.id, params)
+      .put('cotizaciones-servicios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE_TARIFA,
+            type: UPDATE_ORDEN_SERVICIO,
             payload: data.data,
           });
-          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
@@ -168,15 +153,20 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   };
 };
 
-export const onDelete = (id) => {
+export const onEnviarCorreo = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('tarifas/' + id)
+      .get('cotizaciones-servicios/send-email/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE_TARIFA, payload: data.data});
+          updateColeccion();
+          dispatch({type: ENVIAR_ORDEN_SERVICIO, payload: data.data});
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
@@ -194,21 +184,47 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (params, handleOnClose, updateColeccion) => {
-  // const {messages} = appIntl();
+export const onDelete = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('tarifas', params)
+      .delete('cotizaciones-servicios/' + id)
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          updateColeccion();
+          dispatch({type: DELETE_ORDEN_SERVICIO, payload: data.data});
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+        }
+      })
+      .catch((error) => {
+        if (error.response.data.mensajes) {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        }
+      });
+  };
+};
+
+export const onCreate = (params, handleOnClose, detalles) => {
+  params['detalles'] = detalles;
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('cotizaciones-servicios', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE_TARIFA,
+            type: CREATE_ORDEN_SERVICIO,
             payload: data.data,
           });
-          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
@@ -224,37 +240,31 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   };
 };
 
-export const onBuscar = (
-  ciudad_origen_id,
-  ciudad_destino_id,
-  asociado_id,
-  servicio_id,
-) => {
-  const {messages} = appIntl();
+export const onApprove = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('tarifas/buscar-tarifa', {
-        params: {
-          ciudad_origen_id,
-          ciudad_destino_id,
-          asociado_id,
-          servicio_id,
-        },
-      })
+      .post('cotizaciones-servicios/aprobar/' + params.id, params)
       .then((data) => {
+        console.log(data);
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: BUSCAR_TARIFA, payload: data});
-        } else {
           dispatch({
-            type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            type: APPROVE_ORDEN_SERVICIO,
+            payload: data.data,
           });
+          updateColeccion();
+          handleOnClose();
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
