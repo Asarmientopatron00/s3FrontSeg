@@ -4,9 +4,9 @@ import {
   SHOW_ORDEN_SERVICIO,
   UPDATE_ORDEN_SERVICIO,
   DELETE_ORDEN_SERVICIO,
-  ENVIAR_ORDEN_SERVICIO,
   CREATE_ORDEN_SERVICIO,
   APPROVE_ORDEN_SERVICIO,
+  GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -22,8 +22,7 @@ export const onGetColeccion = (
   numero_solicitud,
   orderByToSend,
   nombre_empresa,
-  documento,
-  fecha_cotizacion,
+  fecha_orden_servicio,
   estados,
 ) => {
   const {messages} = appIntl();
@@ -31,23 +30,23 @@ export const onGetColeccion = (
   const numero_solicitudAux = numero_solicitud ? numero_solicitud : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
   const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
-  const documentoAux = documento ? documento : '';
-  const fecha_cotizacionAux = fecha_cotizacion ? fecha_cotizacion : '';
   const estadosAux = estados ? estados : '';
+  const fecha_orden_servicioAux = fecha_orden_servicio
+    ? fecha_orden_servicio
+    : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('cotizaciones-servicios', {
+      .get('ordenes-servicios', {
         params: {
           page: page,
           limite: rowsPerPage,
-          numero_solicitud: numero_solicitudAux,
+          numero_orden_servicio: numero_solicitudAux,
           ordenar_por: ordenar_por,
-          nombre_empresa: nombre_empresaAux,
-          documento: documentoAux,
-          fecha_cotizacion: fecha_cotizacionAux,
+          nombre: nombre_empresaAux,
           estados: estadosAux,
+          fecha_orden_servicio: fecha_orden_servicioAux,
         },
       })
       .then((data) => {
@@ -72,7 +71,7 @@ export const onGetColeccionLigera = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('cotizaciones-servicios', {
+      .get('ordenes-servicios', {
         params: {
           ligera: true,
         },
@@ -103,7 +102,7 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('cotizaciones-servicios/' + id)
+        .get('ordenes-servicios/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -127,7 +126,7 @@ export const onUpdate = (params, handleOnClose, detalles) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('cotizaciones-servicios/' + params.id, params)
+      .put('ordenes-servicios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -153,42 +152,42 @@ export const onUpdate = (params, handleOnClose, detalles) => {
   };
 };
 
-export const onEnviarCorreo = (id, updateColeccion) => {
-  return (dispatch) => {
-    dispatch({type: FETCH_START});
-    jwtAxios
-      .get('cotizaciones-servicios/send-email/' + id)
-      .then((data) => {
-        if (data.status === 200) {
-          dispatch({type: FETCH_SUCCESS});
-          updateColeccion();
-          dispatch({type: ENVIAR_ORDEN_SERVICIO, payload: data.data});
-          dispatch({
-            type: SHOW_MESSAGE,
-            payload: data.data.mensajes[0],
-          });
-        } else {
-          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
-        }
-      })
-      .catch((error) => {
-        if (error.response.data.mensajes) {
-          dispatch({
-            type: FETCH_ERROR,
-            payload: error.response.data.mensajes[0],
-          });
-        } else {
-          dispatch({type: FETCH_ERROR, payload: error.message});
-        }
-      });
-  };
-};
+// export const onEnviarCorreo = (id, updateColeccion) => {
+//   return (dispatch) => {
+//     dispatch({type: FETCH_START});
+//     jwtAxios
+//       .get('ordenes-servicios/send-email/' + id)
+//       .then((data) => {
+//         if (data.status === 200) {
+//           dispatch({type: FETCH_SUCCESS});
+//           updateColeccion();
+//           dispatch({type: ENVIAR_ORDEN_SERVICIO, payload: data.data});
+//           dispatch({
+//             type: SHOW_MESSAGE,
+//             payload: data.data.mensajes[0],
+//           });
+//         } else {
+//           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+//         }
+//       })
+//       .catch((error) => {
+//         if (error.response.data.mensajes) {
+//           dispatch({
+//             type: FETCH_ERROR,
+//             payload: error.response.data.mensajes[0],
+//           });
+//         } else {
+//           dispatch({type: FETCH_ERROR, payload: error.message});
+//         }
+//       });
+//   };
+// };
 
 export const onDelete = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('cotizaciones-servicios/' + id)
+      .delete('ordenes-servicios/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
@@ -216,7 +215,7 @@ export const onCreate = (params, handleOnClose, detalles) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('cotizaciones-servicios', params)
+      .post('ordenes-servicios', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
@@ -244,7 +243,7 @@ export const onApprove = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('cotizaciones-servicios/aprobar/' + params.id, params)
+      .post('ordenes-servicios/aprobar/' + params.id, params)
       .then((data) => {
         console.log(data);
         if (data.status === 200) {
@@ -265,6 +264,36 @@ export const onApprove = (params, handleOnClose, updateColeccion) => {
       })
       .catch((error) => {
         dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
+      });
+  };
+};
+
+export const onGetColeccionLigeraAsociado = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('asociados-negocio', {
+        params: {
+          ligera: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
       });
   };
 };

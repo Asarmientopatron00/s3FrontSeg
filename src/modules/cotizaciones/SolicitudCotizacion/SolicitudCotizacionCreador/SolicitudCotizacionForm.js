@@ -118,11 +118,11 @@ const SolicitudCotizacionForm = (props) => {
     },
     myTextField: {
       width: '100%',
-      marginBottom: 5,
+      marginBottom: 0,
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 5,
+        marginBottom: 0,
       },
-      height: '70px',
+      height: '65px',
     },
     MySelectField: {
       width: 'auto',
@@ -156,6 +156,12 @@ const SolicitudCotizacionForm = (props) => {
     pointer: {
       cursor: 'pointer',
     },
+    inputs_2: {
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2,1fr)',
+      columnGap: '20px',
+    },
   }));
 
   const classes = useStyles(props);
@@ -179,7 +185,7 @@ const SolicitudCotizacionForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box display='grid' gridTemplateColumns='repeat(2, 1fr)'>
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
                 label='Fecha Solicitud Cotización'
@@ -198,50 +204,49 @@ const SolicitudCotizacionForm = (props) => {
                   shrink: true,
                 }}
               />
+              <MyAutocompleteCiudad
+                options={ciudades}
+                name='ciudad_origen_id'
+                inputValue={initialValues.ciudad_origen_id}
+                label='Ciudad Origen'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+                autocomplete='off'
+              />
+
+              <MyAutocompleteCiudad
+                options={ciudades}
+                name='ciudad_destino_id'
+                inputValue={initialValues.ciudad_destino_id}
+                label='Ciudad Destino'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+              <MyAutocomplete
+                options={servicios}
+                name='servicio_id'
+                inputValue={initialValues.servicio_id}
+                label='Servicio'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+              <MyAutocomplete
+                options={TIPOS_SERVICIOS}
+                name='tipo_servicio'
+                inputValue={initialValues.tipo_servicio}
+                label='Tipo Servicio'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
             </Box>
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_origen_id'
-              inputValue={initialValues.ciudad_origen_id}
-              label='Ciudad Origen'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-              autocomplete='off'
-            />
-
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_destino_id'
-              inputValue={initialValues.ciudad_destino_id}
-              label='Ciudad Destino'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocomplete
-              options={servicios}
-              name='servicio_id'
-              inputValue={initialValues.servicio_id}
-              label='Servicio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-            <MyAutocomplete
-              options={TIPOS_SERVICIOS}
-              name='tipo_servicio'
-              inputValue={initialValues.tipo_servicio}
-              label='Tipo Servicio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
 
             <MyTextField
               className={classes.myTextField}
@@ -251,50 +256,54 @@ const SolicitudCotizacionForm = (props) => {
               required={values.tipo_servicio === 'OTR'}
             />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Número Servicios por Mes'
-              name='numero_servicios_mes'
-              disabled={disabled}
-              required
-            />
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Número Servicios por Mes'
+                name='numero_servicios_mes'
+                disabled={disabled}
+                required
+              />
+            </Box>
 
             <Box component='h3'>Datos Persona Contacto:</Box>
-            <MyTextField
-              className={classes.myTextField}
-              label='Nombre Contacto'
-              name='nombre_contacto'
-              disabled={disabled}
-              required
-            />
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Nombre Contacto'
+                name='nombre_contacto'
+                disabled={disabled}
+                required
+              />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Correo Electrónico'
-              name='email'
-              disabled={disabled}
-              required
-            />
+              <MyTextField
+                className={classes.myTextField}
+                label='Correo Electrónico'
+                name='email'
+                disabled={disabled}
+                required
+              />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Teléfono Contacto'
-              name='telefono_contacto'
-              disabled={disabled}
-              required
-              inputProps={{
-                maxLength: LONGITUD_MAXIMA_TELEFONOS,
-                minLength: LONGITUD_MINIMA_TELEFONOS,
-              }}
-            />
+              <MyTextField
+                className={classes.myTextField}
+                label='Teléfono Contacto'
+                name='telefono_contacto'
+                disabled={disabled}
+                required
+                inputProps={{
+                  maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                  minLength: LONGITUD_MINIMA_TELEFONOS,
+                }}
+              />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Empresa'
-              name='nombre_empresa'
-              disabled={true}
-              required
-            />
+              <MyTextField
+                className={classes.myTextField}
+                label='Empresa'
+                name='nombre_empresa'
+                disabled={true}
+                required
+              />
+            </Box>
 
             <MyTextField
               className={classes.myTextField}

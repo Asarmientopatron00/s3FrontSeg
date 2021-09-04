@@ -6,7 +6,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import DetalleCotizacion from '../../DetalleCotizacion';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -21,14 +20,14 @@ const MyTextField = (props) => {
   );
 };
 
-const MyAutocompleteSolicitud = (props) => {
+const MyAutocompleteAsociado = (props) => {
   const [field, meta, form] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   let myvalueAux = '';
   if (field.value !== '') {
     props.options.forEach((option) => {
       if (option.id === field.value) {
-        myvalueAux = option.numero_solicitud + '-' + option.nombre_empresa;
+        myvalueAux = option.numero_documento;
       }
     });
   }
@@ -53,19 +52,17 @@ const MyAutocompleteSolicitud = (props) => {
       }
       inputValue={myvalue}
       renderOption={(option) => {
-        if (option.estado && option.estado_solicitud_cotizacion === 'SOL') {
+        if (option.estado) {
           return (
             <React.Fragment>
-              {option.numero_solicitud + '-' + option.nombre_empresa}
+              {option.numero_documento + '-' + option.nombre}
             </React.Fragment>
           );
         } else {
           return '';
         }
       }}
-      getOptionLabel={(option) =>
-        option.numero_solicitud + '-' + option.nombre_empresa
-      }
+      getOptionLabel={(option) => option.numero_documento + '-' + option.nombre}
       renderInput={(params) => {
         return (
           <TextField
@@ -84,15 +81,8 @@ const MyAutocompleteSolicitud = (props) => {
   );
 };
 
-const SolicitudCotizacionForm = (props) => {
-  const {
-    accion,
-    initialValues,
-    solicitudes,
-    values,
-    setFieldValue,
-    setDetalles,
-  } = props;
+const OrdenServicioForm = (props) => {
+  const {accion, initialValues, values, setFieldValue, asociados} = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
@@ -170,32 +160,14 @@ const SolicitudCotizacionForm = (props) => {
   }));
 
   useEffect(() => {
-    let empresa = '';
-    let numero_solicitud_cotizacion = '';
-    let asociado_id = '';
-    solicitudes.forEach((solicitud) => {
-      if (solicitud.id === values.solicitud_cotizacion_id) {
-        empresa = solicitud.nombre_empresa;
-        numero_solicitud_cotizacion = solicitud.numero_solicitud;
-        asociado_id = solicitud.asociado_id;
+    asociados.map((asociado) => {
+      if (asociado.id === values.asociado_id) {
+        setFieldValue('asociado', asociado.nombre);
+        setFieldValue('telefono_asociado', asociado.telefono);
+        setFieldValue('email_asociado', asociado.email);
       }
     });
-
-    if (asociado_id === null) {
-      setFieldValue('empresa_cotizacion', empresa);
-      setFieldValue('asociado_id', '');
-    } else {
-      setFieldValue('asociado_id', asociado_id);
-      setFieldValue('empresa_cotizacion', '');
-    }
-    setFieldValue('nombre_empresa', empresa);
-    setFieldValue('numero_solicitud_cotizacion', numero_solicitud_cotizacion);
-  }, [
-    values.solicitud_cotizacion_id,
-    setFieldValue,
-    solicitudes,
-    values.nombre_empresa,
-  ]);
+  }, [values.asociado_id, asociados]);
 
   const classes = useStyles(props);
   return (
@@ -209,16 +181,45 @@ const SolicitudCotizacionForm = (props) => {
               mb={{xs: 4, xl: 6}}
               fontSize={20}
               fontWeight={Fonts.MEDIUM}>
-              Cotización
+              Orden Servicio
             </Box>
 
             <Box px={{md: 5, lg: 8, xl: 10}}>
+              <Box component='h6' mb={2}>
+                Datos Iniciales
+              </Box>
               <Box className={classes.inputs_2}>
-                <MyAutocompleteSolicitud
-                  options={solicitudes}
-                  name='solicitud_cotizacion_id'
-                  inputValue={initialValues.solicitud_cotizacion_id}
-                  label='Solicitud Cotización'
+                <MyTextField
+                  className={classes.myTextField}
+                  label='N° Orden de Servicio'
+                  name='numero_orden_servicio'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Fecha Orden'
+                  name='fecha_orden_servicio'
+                  disabled={true}
+                  type='date'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+
+              <Box component='h6' mb={2}>
+                Asociado de Negocios
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyAutocompleteAsociado
+                  options={asociados}
+                  name='asociado_id'
+                  inputValue={initialValues.asociado_id}
+                  label='Asociados de negocios'
                   autoHighlight
                   className={classes.myTextField}
                   required
@@ -226,42 +227,39 @@ const SolicitudCotizacionForm = (props) => {
                 />
                 <MyTextField
                   className={classes.myTextField}
-                  label='Empresa'
-                  name='nombre_empresa'
+                  label=' '
+                  name='asociado'
                   disabled={true}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
-
                 <MyTextField
                   className={classes.myTextField}
-                  label='Fecha Cotización'
-                  name='fecha_cotizacion'
+                  label='Contacto'
+                  name='contacto_asociado'
                   disabled={true}
-                  type='date'
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
                 <MyTextField
                   className={classes.myTextField}
-                  label='Fecha Vigencia Cotización'
-                  name='fecha_vigencia_cotizacion'
-                  disabled={disabled}
-                  type='date'
-                  required
+                  label='Telefono'
+                  name='telefono_asociado'
+                  disabled={true}
                   InputLabelProps={{
                     shrink: true,
                   }}
                 />
                 <MyTextField
                   className={classes.myTextField}
-                  label='Plazo pago(días)'
-                  name='plazo_pago_cotizacion'
-                  disabled={disabled}
-                  required
-                  type='number'
+                  label='Correo'
+                  name='email_asociado'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Box>
               <MyTextField
@@ -274,14 +272,6 @@ const SolicitudCotizacionForm = (props) => {
             </Box>
           </Box>
         </Box>
-
-        <DetalleCotizacion
-          empresa={values.nombre_empresa}
-          fecha={values.fecha_cotizacion}
-          id={values.id ? values.id : 0}
-          accionDetalle={accion}
-          setDetalles={setDetalles}
-        />
 
         <Box className={classes.marco}>
           <Box className={classes.bottomsGroup}>
@@ -298,7 +288,7 @@ const SolicitudCotizacionForm = (props) => {
             {/* <ListItem
               button
               component={NavLink}
-              to={'/cotizaciones'}
+              to={'/ordenes-servicio'}
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
             >
               <IntlMessages id='boton.cancel' />
@@ -306,7 +296,7 @@ const SolicitudCotizacionForm = (props) => {
 
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              href='/cotizaciones'>
+              href='/ordenes-servicio'>
               <IntlMessages id='boton.cancel' />
             </Button>
           </Box>
@@ -316,4 +306,4 @@ const SolicitudCotizacionForm = (props) => {
   );
 };
 
-export default SolicitudCotizacionForm;
+export default OrdenServicioForm;

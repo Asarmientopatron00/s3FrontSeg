@@ -308,6 +308,16 @@ export const SHOW_EVENTO_BITACORA_EQUIPO = 'show_evento_bitacora_equipo';
 export const UPDATE_EVENTO_BITACORA_EQUIPO = 'update_evento_bitacora_equipo';
 export const CREATE_EVENTO_BITACORA_EQUIPO = 'create_evento_bitacora_equipo';
 export const DELETE_EVENTO_BITACORA_EQUIPO = 'delete_evento_bitacora_equipo';
+export const GET_COLECCION_ORDEN_SERVICIO = 'get_coleccion_orden_servicio';
+export const GET_COLECCION_LIGERA_ORDEN_SERVICIO =
+  'get_coleccion_ligera_orden_servicio';
+export const SHOW_ORDEN_SERVICIO = 'show_orden_servicio';
+export const UPDATE_ORDEN_SERVICIO = 'update_orden_servicio';
+export const DELETE_ORDEN_SERVICIO = 'delete_orden_servicio';
+export const CREATE_ORDEN_SERVICIO = 'enviar_orden_servicio';
+export const APPROVE_ORDEN_SERVICIO = 'approve_orden_servicio';
+export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
+  'get_coleccion_ligera_asociado_orden';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

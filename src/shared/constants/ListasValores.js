@@ -96,3 +96,15 @@ export const TIPOS_SERVICIOS = [
   {id: 'EXP', nombre: 'Exportación', estado: 1},
   {id: 'OTR', nombre: 'Otro', estado: 1},
 ];
+
+export const ESTADOS_ORDEN_SERVICIO = [
+  {id: 'REG', nombre: 'Registrada', estado: 1},
+  {id: 'REC', nombre: 'Recibida', estado: 1},
+  {id: 'PRG', nombre: 'Programada', estado: 1},
+  {id: 'ACP', nombre: 'Aceptada', estado: 1},
+  {id: 'RUT', nombre: 'En ruta', estado: 1},
+  {id: 'TER', nombre: 'Terminada', estado: 1},
+  {id: 'PDF', nombre: 'Pendiente de facturar', estado: 1},
+  {id: 'FAC', nombre: 'Interfaz facturaciÓn recibida', estado: 1},
+  {id: 'ANU', nombre: 'Anulada', estado: 1},
+];

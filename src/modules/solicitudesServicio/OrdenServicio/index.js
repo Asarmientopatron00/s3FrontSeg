@@ -23,13 +23,13 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-import EmailIcon from '@material-ui/icons/Email';
+// import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccion,
   onDelete,
-  onEnviarCorreo,
-} from '../../../redux/actions/CotizacionAction';
+  onGetColeccionLigeraAsociado,
+} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -39,7 +39,10 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {ESTADO_COTIZACIONES} from '../../../shared/constants/ListasValores';
+import {
+  ESTADOS_ORDEN_SERVICIO,
+  TIPOS_SERVICIOS,
+} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -71,36 +74,19 @@ import {ESTADO_COTIZACIONES} from '../../../shared/constants/ListasValores';
 
 const cells = [
   {
-    id: 'numero_cotizacion_servicio',
+    id: 'numero_orden_servicio',
     typeHead: 'numeric',
-    label: 'Número Cotización',
+    label: 'Orden de Servicio',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'fecha_cotizacion',
+    id: 'fecha_orden_servicio',
     typeHead: 'string',
     label: 'Fecha',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_vigencia_cotizacion',
-    typeHead: 'string',
-    label: 'Fecha Vigencia',
-    value: (value) =>
-      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'nombre_empresa',
-    typeHead: 'string',
-    label: 'Nombre Empresa',
-    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -113,28 +99,63 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'estado_cotizacion',
+    id: 'asociado',
     typeHead: 'string',
-    label: 'Estado',
-    value: (value) =>
-      ESTADO_COTIZACIONES.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
+    label: 'Nombre Asociado',
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'plazo_pago_cotizacion',
-    typeHead: 'numeric',
-    label: 'Plazo',
-    value: (value) => value,
-    align: 'right',
+    id: 'estado_orden_servicio',
+    typeHead: 'string',
+    label: 'Estado',
+    value: (value) =>
+      ESTADOS_ORDEN_SERVICIO.map((tipo) =>
+        tipo.id === value ? tipo.nombre : '',
+      ),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'estado_orden_servicio',
+    typeHead: 'string',
+    label: 'Tipo Servicio',
+    value: (value) =>
+      TIPOS_SERVICIOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
+    align: 'left',
     mostrarInicio: false,
   },
   {
-    id: 'numero_solicitud',
-    typeHead: 'numeric',
-    label: 'Solicitud',
+    id: 'tipo_servicio_otro',
+    typeHead: 'string',
+    label: 'Tipo Servicio Otro',
     value: (value) => value,
-    align: 'right',
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'referencia_factura',
+    typeHead: 'string',
+    label: 'Referencia Factura',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'cliente_factura',
+    typeHead: 'numeric',
+    label: 'Cliente',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'agente_aduana',
+    typeHead: 'numeric',
+    label: 'Agente Aduana',
+    value: (value) => value,
+    align: 'left',
     mostrarInicio: false,
   },
   {
@@ -358,6 +379,7 @@ const EnhancedTableToolbar = (props) => {
     handleOpenPopoverColumns,
     queryFilter,
     numeroFiltro,
+    fechaFiltro,
     nombreEmpresaFiltro,
     limpiarFiltros,
     permisos,
@@ -396,8 +418,8 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Box component='a' href='/cotizacion/crear'>
-                  <Tooltip title='Crear Cotización'>
+                <Box component='a' href='/orden-servicio/crear'>
+                  <Tooltip title='Crear Orden de Servicio'>
                     <IconButton
                       className={classes.createButton}
                       aria-label='filter list'>
@@ -410,7 +432,7 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Número Cotización'
+              label='Número Orden Servicio'
               name='numeroFiltro'
               id='numeroFiltro'
               onChange={queryFilter}
@@ -420,11 +442,11 @@ const EnhancedTableToolbar = (props) => {
             />
 
             <TextField
-              label='Nombre Empresa'
-              name='nombreEmpresaFiltro'
-              id='nombreEmpresaFiltro'
+              label='Fecha'
+              name='fechaFiltro'
+              id='fechaFiltro'
               onChange={queryFilter}
-              value={nombreEmpresaFiltro}
+              value={fechaFiltro}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -437,6 +459,13 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
+            <TextField
+              label='Nombre Asociado'
+              name='nombreEmpresaFiltro'
+              id='nombreEmpresaFiltro'
+              onChange={queryFilter}
+              value={nombreEmpresaFiltro}
+            />
           </Box>
         </>
       )}
@@ -468,6 +497,7 @@ EnhancedTableToolbar.propTypes = {
   limpiarFiltros: PropTypes.func.isRequired,
   numeroFiltro: PropTypes.string.isRequired,
   nombreEmpresaFiltro: PropTypes.string.isRequired,
+  fechaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -567,10 +597,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Cotizacion = (props) => {
+const OrdenServicio = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
-  const [cotizacionSeleccionado, setCotizacionSeleccionado] = useState(0);
+  const [ordenServicioSeleccionado, setOrdenServicioSeleccionado] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -584,11 +614,13 @@ const Cotizacion = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({cotizacionReducer}) => cotizacionReducer,
+    ({ordenServicioReducer}) => ordenServicioReducer,
   );
+
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [numeroFiltro, setnumeroFiltro] = useState('');
   const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
+  const [fechaFiltro, setFechaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -648,9 +680,8 @@ const Cotizacion = (props) => {
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
+        fechaFiltro,
         '',
-        '',
-        'ENV,GEN',
       ),
     );
   }, [
@@ -660,6 +691,7 @@ const Cotizacion = (props) => {
     numeroFiltro,
     orderByToSend,
     nombreEmpresaFiltro,
+    fechaFiltro,
   ]);
 
   const updateColeccion = () => {
@@ -670,15 +702,14 @@ const Cotizacion = (props) => {
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
+        fechaFiltro,
         '',
-        '',
-        'ENV,GEN',
       ),
     );
   };
   useEffect(() => {
     setPage(1);
-  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro]);
+  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro, fechaFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
@@ -687,6 +718,9 @@ const Cotizacion = (props) => {
         break;
       case 'nombreEmpresaFiltro':
         setnombreEmpresaFiltro(e.target.value);
+        break;
+      case 'fechaFiltro':
+        setFechaFiltro(e.target.value);
         break;
       default:
         break;
@@ -698,6 +732,7 @@ const Cotizacion = (props) => {
   const limpiarFiltros = () => {
     setnumeroFiltro('');
     setnombreEmpresaFiltro('');
+    setFechaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -739,15 +774,15 @@ const Cotizacion = (props) => {
     );
   };
 
-  const onOpenViewAprobacionCotizacion = (id) => {
-    setCotizacionSeleccionado(id);
+  const onOpenViewAprobacionOrdenServicio = (id) => {
+    setOrdenServicioSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setCotizacionSeleccionado(0);
+    setOrdenServicioSeleccionado(0);
     setAccion('ver');
   };
 
@@ -764,10 +799,10 @@ const Cotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteCotizacion = (id) => {
+  const onDeleteOrdenServicio = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro que dese anular la cotización?',
+      text: '¿Seguro que dese anular la orden de servicio?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -780,34 +815,34 @@ const Cotizacion = (props) => {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
           'Anulado',
-          'La cotizacion fue anulada correctamente',
+          'La orden de servicio fue anulada correctamente',
           'success',
         );
       }
     });
   };
 
-  const enviarCorreo = (id, estado) => {
-    if (estado === 'ENV') {
-      Swal.fire({
-        title: 'Confirmar',
-        text: '¿Seguro que desea reenviar la cotización?',
-        allowEscapeKey: false,
-        allowEnterKey: false,
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'NO',
-        confirmButtonText: 'SI',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(onEnviarCorreo(id, updateColeccion));
-        }
-      });
-    } else {
-      dispatch(onEnviarCorreo(id, updateColeccion));
-    }
-  };
+  // const enviarCorreo = (id, estado) => {
+  //   if (estado === 'ENV') {
+  //     Swal.fire({
+  //       title: 'Confirmar',
+  //       text: '¿Seguro que desea reenviar la orden de servicio?',
+  //       allowEscapeKey: false,
+  //       allowEnterKey: false,
+  //       showCancelButton: true,
+  //       confirmButtonColor: '#3085d6',
+  //       cancelButtonColor: '#d33',
+  //       cancelButtonText: 'NO',
+  //       confirmButtonText: 'SI',
+  //     }).then((result) => {
+  //       if (result.isConfirmed) {
+  //         dispatch(onEnviarCorreo(id, updateColeccion));
+  //       }
+  //     });
+  //   } else {
+  //     dispatch(onEnviarCorreo(id, updateColeccion));
+  //   }
+  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -929,30 +964,31 @@ const Cotizacion = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Box
-                                component='a'
-                                href={'/cotizacion/editar/' + row.id}
-                                className={classes.generalIcons}>
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}
-                                  />
-                                </Tooltip>
-                              </Box>
-                            )}
+                            {permisos.indexOf('Modificar') >= 0 &&
+                              row.estado_orden_servicio !== 'ANU' && (
+                                <Box
+                                  component='a'
+                                  href={'/orden-servicio/editar/' + row.id}
+                                  className={classes.generalIcons}>
+                                  <Tooltip
+                                    title={<IntlMessages id='boton.editar' />}>
+                                    <EditIcon
+                                      className={`${classes.generalIcons} ${classes.editIcon}`}
+                                    />
+                                  </Tooltip>
+                                </Box>
+                              )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}
                                   onClick={() =>
-                                    onOpenViewAprobacionCotizacion(row.id)
+                                    onOpenViewAprobacionOrdenServicio(row.id)
                                   }
                                 />
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Enviar') >= 0 && (
+                            {/* {permisos.indexOf('Enviar') >= 0 && (
                               <Tooltip
                                 title={
                                   <IntlMessages id='boton.enviarCorreo' />
@@ -963,14 +999,17 @@ const Cotizacion = (props) => {
                                   }
                                   className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
                               </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip title={'Anular'}>
-                                <DeleteIcon
-                                  onClick={() => onDeleteCotizacion(row.id)}
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            )}
+                            )} */}
+                            {permisos.indexOf('Eliminar') >= 0 &&
+                              row.estado_orden_servicio !== 'ANU' && (
+                                <Tooltip title={'Anular'}>
+                                  <DeleteIcon
+                                    onClick={() =>
+                                      onDeleteOrdenServicio(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                                </Tooltip>
+                              )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1062,9 +1101,9 @@ const Cotizacion = (props) => {
       </Paper>
 
       {/* {showForm ? (
-        <ConsultaCotizacionCreador
+        <ConsultaOrdenServicioCreador
           showForm={showForm}
-          consultaCotizacion={cotizacionSeleccionado}
+          consultaOrdenServicio={ordenServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -1114,4 +1153,4 @@ const Cotizacion = (props) => {
   );
 };
 
-export default Cotizacion;
+export default OrdenServicio;

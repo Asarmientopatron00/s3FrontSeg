@@ -46,6 +46,7 @@ import RutaControlReducer from './RutaControlReducer';
 import PuestoControlReducer from './PuestoControlReducer';
 import EstadoEquipoReducer from './EstadoEquipoReducer';
 import EventoBitacoraEquipoReducer from './EventoBitacoraEquipoReducer';
+import OrdenServicioReducer from './OrdenServicioReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -96,5 +97,6 @@ const reducers = (history) =>
     puestoControlReducer: PuestoControlReducer,
     estadoEquipoReducer: EstadoEquipoReducer,
     eventoBitacoraEquipoReducer: EventoBitacoraEquipoReducer,
+    ordenServicioReducer: OrdenServicioReducer,
   });
 export default reducers;

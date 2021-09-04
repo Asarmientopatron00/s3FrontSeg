@@ -217,18 +217,16 @@ const AsociadoContacto = (props) => {
             </MyTextField> */}
           </Box>
 
-          <Box className={classes.inputs_2}>
-            <MyTextField
-              className={classes.myTextField}
-              label='Número Documento'
-              name='numero_documento'
-              disabled={disabled}
-              required
-              inputProps={{
-                maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
-              }}
-            />
-          </Box>
+          <MyTextField
+            className={classes.myTextField}
+            label='Número Documento'
+            name='numero_documento'
+            disabled={disabled}
+            required
+            inputProps={{
+              maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+            }}
+          />
           <MyTextField
             className={classes.myTextField}
             label='Nombre Completo'

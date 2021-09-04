@@ -115,11 +115,11 @@ const DetalleCotizacionForm = (props) => {
     },
     myTextField: {
       width: '100%',
-      marginBottom: 5,
+      marginBottom: 0,
       [theme.breakpoints.up('xl')]: {
-        marginBottom: 5,
+        marginBottom: 0,
       },
-      height: '70px',
+      height: '65px',
     },
     MySelectField: {
       width: 'auto',
@@ -152,6 +152,12 @@ const DetalleCotizacionForm = (props) => {
     },
     pointer: {
       cursor: 'pointer',
+    },
+    inputs_2: {
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2,1fr)',
+      columnGap: '20px',
     },
   }));
 
@@ -239,10 +245,7 @@ const DetalleCotizacionForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box
-              display='grid'
-              gridTemplateColumns='repeat(2, 1fr)'
-              gridColumnGap='20px'>
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
                 label='Asociado Negocio'
@@ -261,51 +264,52 @@ const DetalleCotizacionForm = (props) => {
                   shrink: true,
                 }}
               />
+
+              <MyAutocompleteCiudad
+                options={ciudades}
+                name='ciudad_origen_id'
+                inputValue={initialValues.ciudad_origen_id}
+                label='Ciudad Origen'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+
+              <MyAutocompleteCiudad
+                options={ciudades}
+                name='ciudad_destino_id'
+                inputValue={initialValues.ciudad_destino_id}
+                label='Ciudad Destino'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+
+              <MyAutocomplete
+                options={servicios}
+                name='servicio_id'
+                inputValue={initialValues.servicio_id}
+                label='Servicio'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
+
+              <MyAutocomplete
+                options={TIPOS_SERVICIOS}
+                name='tipo_servicio'
+                inputValue={initialValues.tipo_servicio}
+                label='Tipo Servicio'
+                autoHighlight
+                className={classes.myTextField}
+                required
+                disabled={disabled}
+              />
             </Box>
 
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_origen_id'
-              inputValue={initialValues.ciudad_origen_id}
-              label='Ciudad Origen'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocompleteCiudad
-              options={ciudades}
-              name='ciudad_destino_id'
-              inputValue={initialValues.ciudad_destino_id}
-              label='Ciudad Destino'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocomplete
-              options={servicios}
-              name='servicio_id'
-              inputValue={initialValues.servicio_id}
-              label='Servicio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
-
-            <MyAutocomplete
-              options={TIPOS_SERVICIOS}
-              name='tipo_servicio'
-              inputValue={initialValues.tipo_servicio}
-              label='Tipo Servicio'
-              autoHighlight
-              className={classes.myTextField}
-              required
-              disabled={disabled}
-            />
             <MyTextField
               className={classes.myTextField}
               label='Tipo Servicio Otro'
@@ -313,6 +317,7 @@ const DetalleCotizacionForm = (props) => {
               disabled={disabled || values.tipo_servicio !== 'OTR'}
               required={values.tipo_servicio === 'OTR'}
             />
+
             <MyTextField
               className={classes.myTextField}
               label='Número Dias Viaje'
@@ -322,20 +327,22 @@ const DetalleCotizacionForm = (props) => {
               required
             />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Valor Servicio'
-              name='valor_servicio'
-              disabled={disabled}
-              required
-            />
+            <Box className={classes.inputs_2} minHeight='80px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Valor Servicio'
+                name='valor_servicio'
+                disabled={disabled}
+                required
+              />
 
-            <MyTextField
-              className={classes.myTextField}
-              label='Valor Servicio Dia Adicional'
-              name='valor_servicio_dia_adicional'
-              disabled={disabled}
-            />
+              <MyTextField
+                className={classes.myTextField}
+                label='Valor Servicio Dia Adicional'
+                name='valor_servicio_dia_adicional'
+                disabled={disabled}
+              />
+            </Box>
           </Box>
         </Box>
       </Scrollbar>

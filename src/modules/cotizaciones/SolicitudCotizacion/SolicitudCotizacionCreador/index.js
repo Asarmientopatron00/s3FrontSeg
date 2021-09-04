@@ -145,7 +145,7 @@ const SolicitudCotizacionCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'sm'}>
+        maxWidth={'md'}>
         <Scrollbar>
           <Formik
             initialStatus={true}

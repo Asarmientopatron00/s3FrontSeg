@@ -117,7 +117,7 @@ const DetalleCotizacionCreator = (props) => {
       dispatch(onGetDiasViajes());
       setSelectedRow();
     }
-  }, [accion, detalleCotizacion, rows]);
+  }, [dispatch, accion, detalleCotizacion, rows]);
   return (
     showForm && (
       <Dialog
@@ -128,7 +128,7 @@ const DetalleCotizacionCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'sm'}>
+        maxWidth={'lg'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
