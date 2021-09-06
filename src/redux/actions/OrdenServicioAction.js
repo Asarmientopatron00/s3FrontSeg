@@ -7,6 +7,8 @@ import {
   CREATE_ORDEN_SERVICIO,
   APPROVE_ORDEN_SERVICIO,
   GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
+  GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
+  GET_ORDEN_SERVICIO_RUTAS,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -121,8 +123,7 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose, detalles) => {
-  params['detalles'] = detalles;
+export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -210,8 +211,7 @@ export const onDelete = (id, updateColeccion) => {
   };
 };
 
-export const onCreate = (params, handleOnClose, detalles) => {
-  params['detalles'] = detalles;
+export const onCreate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -285,6 +285,63 @@ export const onGetColeccionLigeraAsociado = () => {
             type: GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
             payload: data,
           });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionLigeraTerceroServicio = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('terceros-servicio', {
+        params: {
+          ligera: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetRutas = (asociado_id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('ordenes-servicios/rutas', {
+        params: {
+          asociado_id: asociado_id,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_ORDEN_SERVICIO_RUTAS, payload: data});
         } else {
           dispatch({
             type: FETCH_ERROR,

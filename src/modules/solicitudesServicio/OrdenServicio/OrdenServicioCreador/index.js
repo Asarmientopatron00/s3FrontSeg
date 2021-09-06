@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,13 +8,23 @@ import {
   onUpdate,
   onCreate,
   onGetColeccionLigeraAsociado,
+  onGetColeccionLigeraTerceroServicio,
+  onGetRutas,
 } from '../../../../redux/actions/OrdenServicioAction';
-import {onGetColeccionLigera} from '../../../../redux/actions/SolicitudCotizacionAction';
 import OrdenServicioForm from './OrdenServicioForm';
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 import {useParams} from 'react-router-dom';
 import {history} from 'redux/store';
 import format from 'date-fns/format';
+import {TIPOS_SERVICIOS} from '../../../../shared/constants/ListasValores';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+  VALIDACION_REGEX_TELEFONOS,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+  VALIDACION_REGEX_DOCUMENTOS,
+} from '../../../../shared/constants/Constantes';
+import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const OrdenServicioCreator = (props) => {
   const {accion, id} = useParams();
@@ -24,11 +34,8 @@ const OrdenServicioCreator = (props) => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(onGetColeccionLigera(true));
-  }, [dispatch]);
-
   let selectedRow = useRef();
+
   selectedRow = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer.selectedRow,
   );
@@ -36,6 +43,13 @@ const OrdenServicioCreator = (props) => {
   const asociados = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer.asociados,
   );
+
+  const tercerosServicios = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer.tercerosServicios,
+  );
+
+  let rutas = [];
+  rutas = useSelector(({ordenServicioReducer}) => ordenServicioReducer.rutas);
 
   const initializeSelectedRow = () => {
     selectedRow = null;
@@ -58,17 +72,62 @@ const OrdenServicioCreator = (props) => {
     }
   }, [accion, dispatch, id]);
   const validationSchema = yup.object({
-    solicitud_cotizacion_id: yup.string().required('Requerido'),
-    fecha_cotizacion: yup.date().required('Requerido'),
-    fecha_vigencia_cotizacion: yup.date().required('Requerido'),
-    plazo_pago_cotizacion: yup.number().required('Requerido'),
+    fecha_orden_servicio: yup.date().required('Requerido'),
+    asociado_id: yup.string().required('Requerido'),
+    tipo_servicio: yup.string().required('Requerido'),
+    tipo_servicio_otro: yup
+      .string()
+      .nullable()
+      .when('tipo_servicio', {
+        is: 'OTR',
+        then: yup.string().required('Requerido'),
+      }),
+    fecha_programada_instalacion: yup.date().required('Requerido'),
+    hora_programada_instalacion: yup.string().required('Requerido'),
+    departamento_id_instalacion: yup.string().required('Requerido'),
+    ciudad_id_instalacion: yup.string().required('Requerido'),
+    lugar_id_instalacion: yup.string().required('Requerido'),
+    fecha_programada_desinstalacion: yup.date().required('Requerido'),
+    hora_programada_desinstalacion: yup.string().required('Requerido'),
+    departamento_id_desinstalacion: yup.string().required('Requerido'),
+    ciudad_id_desinstalacion: yup.string().required('Requerido'),
+    lugar_id_desinstalacion: yup.string().required('Requerido'),
+    transportador_id: yup.string().required('Requerido'),
+    placa_trailer: yup.string().required('Requerido'),
+    numero_contenedor: yup.string().required('Requerido'),
+    nombre_conductor: yup.string().required('Requerido'),
+    cedula_conductor: yup
+      .string()
+      .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
+      .required('Requerido')
+      .max(
+        LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+        mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
+      )
+      .min(7, mensajeValidacion('min', 7)),
+    celular_conductor: yup
+      .string()
+      .required('Requerido')
+      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+      .max(
+        LONGITUD_MAXIMA_TELEFONOS,
+        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+      )
+      .min(
+        LONGITUD_MINIMA_TELEFONOS,
+        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+      ),
   });
 
   useEffect(() => {
     dispatch(onGetColeccionLigeraAsociado());
+    dispatch(onGetColeccionLigeraTerceroServicio());
   }, [dispatch]);
 
-  const [detalles, setDetalles] = useState();
+  const updateRutas = (asociado_id) => {
+    dispatch(onGetRutas(asociado_id));
+  };
+
   return (
     <Scrollbar>
       <Formik
@@ -230,36 +289,32 @@ const OrdenServicioCreator = (props) => {
             ? selectedRow.estado_orden_servicio
             : 'REG',
           estado: selectedRow ? (selectedRow.estado === 1 ? '1' : '0') : '1',
+          cliente_factura_documento: '',
         }}
         validationSchema={validationSchema}
         onSubmit={(data, {setSubmitting, resetForm, setFieldError}) => {
           setSubmitting(true);
-          if (data.fecha_cotizacion >= data.fecha_vigencia_cotizacion) {
-            setFieldError(
-              'fecha_vigencia_cotizacion',
-              'La fecha de vigencia debe ser mayor a la fecha de cotización',
-            );
-          }
-          if (detalles.length === 0) {
-            return;
-          }
-
           if (accion === 'crear') {
-            dispatch(onCreate(data, handleOnClose, detalles));
+            dispatch(onCreate(data, handleOnClose));
           } else if (accion === 'editar') {
             if (selectedRow) {
-              dispatch(onUpdate(data, handleOnClose, detalles));
+              dispatch(onUpdate(data, handleOnClose));
             }
           }
           setSubmitting(false);
         }}>
-        {({values, initialValues, setFieldValue, setFieldError}) => (
+        {({values, initialValues, setFieldValue, setFieldError, touched}) => (
           <OrdenServicioForm
             values={values}
             setFieldValue={setFieldValue}
             accion={accion}
+            touched={touched}
             initialValues={initialValues}
             asociados={asociados}
+            TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+            tercerosServicios={tercerosServicios}
+            rutas={rutas}
+            updateRutas={updateRutas}
           />
         )}
       </Formik>

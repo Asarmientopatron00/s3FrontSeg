@@ -318,6 +318,9 @@ export const CREATE_ORDEN_SERVICIO = 'enviar_orden_servicio';
 export const APPROVE_ORDEN_SERVICIO = 'approve_orden_servicio';
 export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
   'get_coleccion_ligera_asociado_orden';
+export const GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN =
+  'get_coleccion_ligera_tercero_servicio_orden';
+export const GET_ORDEN_SERVICIO_RUTAS = 'get_orden_servicio_rutas';
 
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

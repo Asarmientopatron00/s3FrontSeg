@@ -6,6 +6,14 @@ import {makeStyles} from '@material-ui/core/styles';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+} from '../../../../shared/constants/Constantes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -81,9 +89,83 @@ const MyAutocompleteAsociado = (props) => {
   );
 };
 
+const MyAutocompleteTerceroServicio = (props) => {
+  const [field, meta, form] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  let myvalueAux = '';
+  if (field.value !== '') {
+    props.options.forEach((option) => {
+      if (option.id === field.value) {
+        myvalueAux = option.numero_documento;
+      }
+    });
+  }
+  let myvalue = '';
+  if (myvalueAux === '') {
+    myvalue = field.value;
+  } else {
+    myvalue = myvalueAux;
+  }
+  return (
+    <Autocomplete
+      selectOnFocus={false}
+      openOnFocus
+      onKeyDown={(e) =>
+        e.key === 'Backspace' && typeof field.value === 'number'
+          ? form.setValue('')
+          : ''
+      }
+      {...props}
+      onChange={(event, newValue, reasons, details, trial) =>
+        newValue ? form.setValue(newValue.id) : form.setValue('')
+      }
+      inputValue={myvalue}
+      renderOption={(option) => {
+        if (option.estado) {
+          return (
+            <React.Fragment>
+              {option.numero_documento + '-' + option.nombre}
+            </React.Fragment>
+          );
+        } else {
+          return '';
+        }
+      }}
+      getOptionLabel={(option) => option.numero_documento + '-' + option.nombre}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            {...field}
+            name={props.name}
+            className={props.className}
+            label={props.label}
+            required={props.required}
+            helperText={errorText}
+            error={!!errorText}
+          />
+        );
+      }}
+    />
+  );
+};
+
 const OrdenServicioForm = (props) => {
-  const {accion, initialValues, values, setFieldValue, asociados} = props;
+  const {
+    accion,
+    initialValues,
+    values,
+    setFieldValue,
+    asociados,
+    TIPOS_SERVICIOS,
+    tercerosServicios,
+    updateRutas,
+    rutas,
+  } = props;
   const [disabled, setDisabled] = useState(false);
+  const [validFacturarA, setValidFacturarA] = useState(false);
+  const [showValid, setShowValid] = useState(false);
+
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
@@ -149,6 +231,7 @@ const OrdenServicioForm = (props) => {
     },
     marco: {
       padding: '0px',
+      paddingBottom: 10,
       backgroundColor: 'white',
       boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
       borderRadius: '4px',
@@ -160,16 +243,301 @@ const OrdenServicioForm = (props) => {
   }));
 
   useEffect(() => {
-    asociados.map((asociado) => {
+    asociados.forEach((asociado) => {
       if (asociado.id === values.asociado_id) {
-        setFieldValue('asociado', asociado.nombre);
-        setFieldValue('telefono_asociado', asociado.telefono);
-        setFieldValue('email_asociado', asociado.email);
+        if (
+          asociado.nombre !== '' &&
+          asociado.nombre !== undefined &&
+          asociado.nombre !== null
+        ) {
+          setFieldValue('asociado', asociado.nombre);
+        }
+        if (
+          asociado.telefono !== '' &&
+          asociado.telefono !== undefined &&
+          asociado.telefono !== null
+        ) {
+          setFieldValue('telefono_asociado', asociado.telefono);
+        }
+        if (
+          asociado.email !== '' &&
+          asociado.email !== undefined &&
+          asociado.email !== null
+        ) {
+          setFieldValue('email_asociado', asociado.email);
+        }
+        if (
+          asociado.contacto !== '' &&
+          asociado.contacto !== undefined &&
+          asociado.contacto !== null
+        ) {
+          setFieldValue('contacto_asociado', asociado.contacto);
+        }
       }
     });
-  }, [values.asociado_id, asociados]);
+  }, [values.asociado_id, asociados, setFieldValue]);
+
+  useEffect(() => {
+    tercerosServicios.forEach((tercerosServicio) => {
+      if (tercerosServicio.id === values.agente_aduana_id) {
+        if (
+          tercerosServicio.nombre !== '' &&
+          tercerosServicio.nombre !== undefined &&
+          tercerosServicio.nombre !== null
+        ) {
+          setFieldValue('agente_aduana', tercerosServicio.nombre);
+        }
+        if (
+          tercerosServicio.telefono !== '' &&
+          tercerosServicio.telefono !== undefined &&
+          tercerosServicio.telefono !== null
+        ) {
+          setFieldValue('telefono_agente_aduana', tercerosServicio.telefono);
+        }
+        if (
+          tercerosServicio.celular !== '' &&
+          tercerosServicio.celular !== undefined &&
+          tercerosServicio.celular !== null
+        ) {
+          setFieldValue('celular_agente_aduana', tercerosServicio.celular);
+        }
+        if (
+          tercerosServicio.email !== '' &&
+          tercerosServicio.email !== undefined &&
+          tercerosServicio.email !== null
+        ) {
+          setFieldValue('email_agente_aduana', tercerosServicio.email);
+        }
+        if (
+          tercerosServicio.contacto !== '' &&
+          tercerosServicio.contacto !== undefined &&
+          tercerosServicio.contacto !== null
+        ) {
+          setFieldValue('contacto_agente_aduana', tercerosServicio.contacto);
+        }
+      }
+    });
+  }, [values.agente_aduana_id, tercerosServicios, setFieldValue]);
+
+  useEffect(() => {
+    tercerosServicios.forEach((tercerosServicio) => {
+      if (tercerosServicio.id === values.transportador_id) {
+        if (
+          tercerosServicio.nombre !== '' &&
+          tercerosServicio.nombre !== undefined &&
+          tercerosServicio.nombre !== null
+        ) {
+          setFieldValue('transportador', tercerosServicio.nombre);
+        }
+        if (
+          tercerosServicio.telefono !== '' &&
+          tercerosServicio.telefono !== undefined &&
+          tercerosServicio.telefono !== null
+        ) {
+          setFieldValue('telefono_transportador', tercerosServicio.telefono);
+        }
+        if (
+          tercerosServicio.celular !== '' &&
+          tercerosServicio.celular !== undefined &&
+          tercerosServicio.celular !== null
+        ) {
+          setFieldValue('celular_transportador', tercerosServicio.celular);
+        }
+        if (
+          tercerosServicio.email !== '' &&
+          tercerosServicio.email !== undefined &&
+          tercerosServicio.email !== null
+        ) {
+          setFieldValue('email_transportador', tercerosServicio.email);
+        }
+        if (
+          tercerosServicio.contacto !== '' &&
+          tercerosServicio.contacto !== undefined &&
+          tercerosServicio.contacto !== null
+        ) {
+          setFieldValue('contacto_transportador', tercerosServicio.contacto);
+        }
+      }
+    });
+  }, [values.transportador_id, tercerosServicios, setFieldValue]);
+
+  useEffect(() => {
+    if (values.cliente_factura_documento !== '') {
+      let id_asociado = '';
+      asociados.forEach((asociado) => {
+        if (asociado.numero_documento === values.cliente_factura_documento) {
+          id_asociado = asociado.id;
+        }
+      });
+      setFieldValue('cliente_factura', id_asociado);
+    }
+  }, [values.cliente_factura_documento, setFieldValue, asociados]);
+
+  useEffect(() => {
+    if (
+      values.cliente_factura !== '' &&
+      values.cliente_factura_documento === ''
+    ) {
+      let numero_documento_asociado = '';
+      asociados.forEach((asociado) => {
+        if (asociado.id === values.cliente_factura) {
+          numero_documento_asociado = asociado.numero_documento;
+        }
+      });
+      setFieldValue('cliente_factura_documento', numero_documento_asociado);
+    }
+  }, [values.cliente_factura, asociados, setFieldValue]);
+
+  useEffect(() => {
+    if (values.cliente_factura_documento === '') {
+      setShowValid(false);
+      setValidFacturarA(false);
+    } else {
+      setShowValid(true);
+      if (values.cliente_factura === '') {
+        setValidFacturarA(false);
+      } else {
+        setValidFacturarA(true);
+      }
+    }
+  }, [values.cliente_factura_documento, values.cliente_factura]);
+
+  useEffect(() => {
+    if (values.tipo_servicio !== 'OTR') {
+      setFieldValue('tipo_servicio_otro', '');
+    }
+  }, [values.tipo_servicio, setFieldValue]);
+
+  const [departamentosRutaInst, setDepartamentosRutaInst] = useState([]);
+  const [departamentosRutaDesinst, setDepartamentosRutaDesinst] = useState([]);
+  const [ciudadesRutaInst, setCiudadesRutaInst] = useState([]);
+  const [ciudadesRutaDesinst, setCiudadesRutaDesinst] = useState([]);
+  const [lugaresRutaInst, setLugaresRutaInst] = useState([]);
+  const [lugaresRutaDesinst, setLugaresRutaDesinst] = useState([]);
+
+  useEffect(() => {
+    if (values.asociado_id !== '') {
+      updateRutas(values.asociado_id);
+    }
+  }, [values.asociado_id]);
+
+  useEffect(() => {
+    if (rutas.departamentos !== undefined) {
+      let departamentosInstalacion = [];
+      let departamentosDesinstalacion = [];
+      rutas.departamentos.forEach((departamento) => {
+        if (departamento.tipo_proceso === 'I') {
+          departamentosInstalacion.push(departamento);
+        }
+        if (departamento.tipo_proceso === 'D') {
+          departamentosDesinstalacion.push(departamento);
+        }
+      });
+      setDepartamentosRutaInst(departamentosInstalacion);
+      setDepartamentosRutaDesinst(departamentosDesinstalacion);
+    }
+  }, [rutas]);
+
+  useEffect(() => {
+    if (values.departamento_id_instalacion !== '') {
+      if (rutas.ciudades !== undefined) {
+        let ciudadesInstalacion = [];
+        rutas.ciudades.forEach((ciudad) => {
+          if (
+            ciudad.tipo_proceso === 'I' &&
+            ciudad.departamento_id === values.departamento_id_instalacion
+          ) {
+            ciudadesInstalacion.push(ciudad);
+          }
+        });
+        setCiudadesRutaInst(ciudadesInstalacion);
+      }
+    }
+    values.ciudad_id_instalacion = '';
+    values.lugar_id_instalacion = '';
+    values.direccion_instalacion = '';
+  }, [values.departamento_id_instalacion, rutas.ciudades]);
+
+  useEffect(() => {
+    if (values.departamento_id_desinstalacion !== '') {
+      if (rutas.ciudades !== undefined) {
+        let ciudadesDesinstalacion = [];
+        rutas.ciudades.forEach((ciudad) => {
+          if (
+            ciudad.tipo_proceso === 'D' &&
+            ciudad.departamento_id === values.departamento_id_desinstalacion
+          ) {
+            ciudadesDesinstalacion.push(ciudad);
+          }
+        });
+        setCiudadesRutaDesinst(ciudadesDesinstalacion);
+      }
+    }
+    values.ciudad_id_desinstalacion = '';
+    values.lugar_id_desinstalacion = '';
+    values.direccion_desinstalacion = '';
+  }, [values.departamento_id_desinstalacion, rutas.ciudades]);
+
+  useEffect(() => {
+    if (values.ciudad_id_instalacion !== '') {
+      if (rutas.lugares !== undefined) {
+        let lugaresInstalacion = [];
+        rutas.lugares.forEach((lugar) => {
+          if (
+            lugar.tipo_proceso === 'I' &&
+            lugar.ciudad_id === values.ciudad_id_instalacion
+          ) {
+            lugaresInstalacion.push(lugar);
+          }
+        });
+        setLugaresRutaInst(lugaresInstalacion);
+      }
+    }
+  }, [values.ciudad_id_instalacion, rutas.lugares]);
+
+  useEffect(() => {
+    if (values.ciudad_id_desinstalacion !== '') {
+      if (rutas.lugares !== undefined) {
+        let lugaresDesinstalacion = [];
+        rutas.lugares.forEach((lugar) => {
+          if (
+            lugar.tipo_proceso === 'D' &&
+            lugar.ciudad_id === values.ciudad_id_desinstalacion
+          ) {
+            lugaresDesinstalacion.push(lugar);
+          }
+        });
+        setLugaresRutaDesinst(lugaresDesinstalacion);
+      }
+    }
+  }, [values.ciudad_id_desinstalacion, rutas.lugares]);
+
+  useEffect(() => {
+    if (values.lugar_id_instalacion !== '') {
+      lugaresRutaInst.forEach((lugar) => {
+        if (lugar.id === values.lugar_id_instalacion) {
+          setFieldValue('direccion_instalacion', lugar.direccion);
+        }
+      });
+    } else {
+      setFieldValue('direccion_instalacion', '');
+    }
+  }, [values.lugar_id_instalacion, setFieldValue, lugaresRutaInst]);
+
+  useEffect(() => {
+    if (values.lugar_id_desinstalacion !== '') {
+      lugaresRutaDesinst.forEach((lugar) => {
+        if (lugar.id === values.lugar_id_desinstalacion) {
+          setFieldValue('direccion_desinstalacion', lugar.direccion);
+        }
+      });
+    } else {
+      setFieldValue('direccion_desinstalacion', '');
+    }
+  }, [values.lugar_id_desinstalacion, setFieldValue, lugaresRutaDesinst]);
 
   const classes = useStyles(props);
+
   return (
     <>
       <Form className={classes.root} noValidate autoComplete='off'>
@@ -262,6 +630,376 @@ const OrdenServicioForm = (props) => {
                   }}
                 />
               </Box>
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Referencia factura'
+                  name='referencia_factura'
+                  disabled={disabled}
+                />
+                <Box
+                  display='grid'
+                  gridTemplateColumns='90% 10%'
+                  gridColumnGap='5px'>
+                  <MyTextField
+                    className={classes.myTextField}
+                    label='Facturar a'
+                    name='cliente_factura_documento'
+                    disabled={disabled}
+                  />
+                  {showValid && (
+                    <Box
+                      display='flex'
+                      alignItems='center'
+                      justifyContent='flex-end'>
+                      {validFacturarA ? (
+                        <CheckCircleIcon backgroundColor='green' />
+                      ) : (
+                        <CancelIcon backgroundColor='red' />
+                      )}
+                    </Box>
+                  )}
+                </Box>
+                <MyAutocomplete
+                  options={TIPOS_SERVICIOS}
+                  name='tipo_servicio'
+                  inputValue={initialValues.tipo_servicio}
+                  label='Tipo Servicio'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Tipo Servicio Otro'
+                  name='tipo_servicio_otro'
+                  disabled={disabled || values.tipo_servicio !== 'OTR'}
+                  required={values.tipo_servicio === 'OTR'}
+                />
+              </Box>
+
+              <Box component='h6' mb={2}>
+                Agente de Aduanas
+              </Box>
+
+              <Box className={classes.inputs_2}>
+                <MyAutocompleteTerceroServicio
+                  options={tercerosServicios}
+                  name='agente_aduana_id'
+                  inputValue={initialValues.agente_aduana_id}
+                  label='Agente de Aduanas'
+                  autoHighlight
+                  className={classes.myTextField}
+                  disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label=' '
+                  name='agente_aduana'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Contacto'
+                  name='contacto_agente_aduana'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Telefono'
+                  name='telefono_agente_aduana'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Celular'
+                  name='celular_agente_aduana'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Correo'
+                  name='email_agente_aduana'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+
+              <Box component='h6' mb={2}>
+                Instalación
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Fecha Programada'
+                  name='fecha_programada_instalacion'
+                  required
+                  type='date'
+                  disabled={disabled}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Hora Programada'
+                  name='hora_programada_instalacion'
+                  disabled={disabled}
+                  required
+                  type='time'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <MyAutocomplete
+                  options={departamentosRutaInst}
+                  name='departamento_id_instalacion'
+                  inputValue={initialValues.departamento_id_instalacion}
+                  label='Departamento'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyAutocomplete
+                  options={ciudadesRutaInst}
+                  name='ciudad_id_instalacion'
+                  inputValue={initialValues.ciudad_id_instalacion}
+                  label='Ciudad'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyAutocomplete
+                  options={lugaresRutaInst}
+                  name='lugar_id_instalacion'
+                  inputValue={initialValues.lugar_id_instalacion}
+                  label='Nombre Lugar'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Dirección'
+                  name='direccion_instalacion'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box component='h6' mb={2}>
+                Desinstalación
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Fecha Programada'
+                  name='fecha_programada_desinstalacion'
+                  required
+                  type='date'
+                  disabled={disabled}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Hora Programada'
+                  name='hora_programada_desinstalacion'
+                  disabled={disabled}
+                  required
+                  type='time'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <MyAutocomplete
+                  options={departamentosRutaDesinst}
+                  name='departamento_id_desinstalacion'
+                  inputValue={initialValues.departamento_id_desinstalacion}
+                  label='Departamento'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyAutocomplete
+                  options={ciudadesRutaDesinst}
+                  name='ciudad_id_desinstalacion'
+                  inputValue={initialValues.ciudad_id_desinstalacion}
+                  label='Ciudad'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyAutocomplete
+                  options={lugaresRutaDesinst}
+                  name='lugar_id_desinstalacion'
+                  inputValue={initialValues.lugar_id_desinstalacion}
+                  label='Nombre Lugar'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Dirección'
+                  name='direccion_desinstalacion'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box component='h6' mb={2}>
+                Datos Transportador
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyAutocompleteTerceroServicio
+                  options={tercerosServicios}
+                  name='transportador_id'
+                  inputValue={initialValues.transportador_id}
+                  label='Transportador'
+                  autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label=' '
+                  name='transportador'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Contacto'
+                  name='contacto_transportador'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Telefono'
+                  name='telefono_transportador'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Celular'
+                  name='celular_transportador'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Correo'
+                  name='email_transportador'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Placa Vehículo'
+                  name='placa_vehiculo'
+                  disabled={disabled}
+                  required
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Placa Trailer'
+                  name='placa_trailer'
+                  disabled={disabled}
+                  required
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Número Contenedor'
+                  name='numero_contenedor'
+                  disabled={disabled}
+                  required
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Nombre Conductor'
+                  name='nombre_conductor'
+                  disabled={disabled}
+                  required
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Cédula Conductor'
+                  name='cedula_conductor'
+                  inputProps={{
+                    maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+                  }}
+                  disabled={disabled}
+                  required
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Celular Conductor'
+                  name='celular_conductor'
+                  disabled={disabled}
+                  required
+                  inputProps={{
+                    maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                    minLength: LONGITUD_MINIMA_TELEFONOS,
+                  }}
+                />
+              </Box>
+
               <MyTextField
                 className={classes.myTextField}
                 label='Observaciones'
@@ -271,9 +1009,6 @@ const OrdenServicioForm = (props) => {
               />
             </Box>
           </Box>
-        </Box>
-
-        <Box className={classes.marco}>
           <Box className={classes.bottomsGroup}>
             {accion !== 'ver' ? (
               <Button

@@ -28,7 +28,6 @@ import AddIcon from '@material-ui/icons/Add';
 import {
   onGetColeccion,
   onDelete,
-  onGetColeccionLigeraAsociado,
 } from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';

@@ -6,7 +6,9 @@ import {
   DELETE_ORDEN_SERVICIO,
   CREATE_ORDEN_SERVICIO,
   APPROVE_ORDEN_SERVICIO,
+  GET_ORDEN_SERVICIO_RUTAS,
   GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
+  GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -23,6 +25,8 @@ const initialState = {
   servicios: [],
   consecutivo: [],
   asociados: [],
+  tercerosServicios: [],
+  rutas: [],
 };
 
 const ordenServicioReducer = (state = initialState, action) => {
@@ -74,6 +78,16 @@ const ordenServicioReducer = (state = initialState, action) => {
       return {
         ...state,
         asociados: action.payload.data,
+      };
+    case GET_ORDEN_SERVICIO_RUTAS:
+      return {
+        ...state,
+        rutas: action.payload.data,
+      };
+    case GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN:
+      return {
+        ...state,
+        tercerosServicios: action.payload.data,
       };
     default:
       return state;
