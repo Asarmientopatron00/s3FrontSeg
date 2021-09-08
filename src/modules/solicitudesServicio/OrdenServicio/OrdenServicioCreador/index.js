@@ -165,8 +165,8 @@ const OrdenServicioCreator = (props) => {
               : ''
             : '',
           contacto_asociado: selectedRow
-            ? selectedRow.asociado.contacto
-              ? selectedRow.asociado.contacto
+            ? selectedRow.asociado.contacto.nombre
+              ? selectedRow.asociado.nombre
               : ''
             : '',
 

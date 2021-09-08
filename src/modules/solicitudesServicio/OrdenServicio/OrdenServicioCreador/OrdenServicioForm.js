@@ -252,26 +252,35 @@ const OrdenServicioForm = (props) => {
         ) {
           setFieldValue('asociado', asociado.nombre);
         }
-        if (
-          asociado.telefono !== '' &&
-          asociado.telefono !== undefined &&
-          asociado.telefono !== null
-        ) {
-          setFieldValue('telefono_asociado', asociado.telefono);
-        }
-        if (
-          asociado.email !== '' &&
-          asociado.email !== undefined &&
-          asociado.email !== null
-        ) {
-          setFieldValue('email_asociado', asociado.email);
-        }
-        if (
-          asociado.contacto !== '' &&
-          asociado.contacto !== undefined &&
-          asociado.contacto !== null
-        ) {
-          setFieldValue('contacto_asociado', asociado.contacto);
+        if (asociado.contacto !== null) {
+          if (
+            asociado.contacto.numero_celular !== '' &&
+            asociado.contacto.numero_celular !== undefined &&
+            asociado.contacto.numero_celular !== null
+          ) {
+            setFieldValue(
+              'telefono_asociado',
+              asociado.contacto.numero_celular,
+            );
+          }
+          if (
+            asociado.contacto.email !== '' &&
+            asociado.contacto.email !== undefined &&
+            asociado.contacto.email !== null
+          ) {
+            setFieldValue('email_asociado', asociado.contacto.email);
+          }
+          if (
+            asociado.contacto.nombre !== '' &&
+            asociado.contacto.nombre !== undefined &&
+            asociado.contacto.nombre !== null
+          ) {
+            setFieldValue('contacto_asociado', asociado.contacto.nombre);
+          }
+        } else {
+          setFieldValue('telefono_asociado', '');
+          setFieldValue('email_asociado', '');
+          setFieldValue('contacto_asociado', '');
         }
       }
     });
@@ -685,7 +694,9 @@ const OrdenServicioForm = (props) => {
 
               <Box className={classes.inputs_2}>
                 <MyAutocompleteTerceroServicio
-                  options={tercerosServicios}
+                  options={tercerosServicios.filter(
+                    (tercero) => tercero.tipo === 'AA',
+                  )}
                   name='agente_aduana_id'
                   inputValue={initialValues.agente_aduana_id}
                   label='Agente de Aduanas'
@@ -887,7 +898,9 @@ const OrdenServicioForm = (props) => {
               </Box>
               <Box className={classes.inputs_2}>
                 <MyAutocompleteTerceroServicio
-                  options={tercerosServicios}
+                  options={tercerosServicios.filter(
+                    (tercero) => tercero.tipo === 'TR',
+                  )}
                   name='transportador_id'
                   inputValue={initialValues.transportador_id}
                   label='Transportador'

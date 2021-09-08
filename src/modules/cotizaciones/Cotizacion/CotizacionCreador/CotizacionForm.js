@@ -53,15 +53,11 @@ const MyAutocompleteSolicitud = (props) => {
       }
       inputValue={myvalue}
       renderOption={(option) => {
-        if (option.estado && option.estado_solicitud_cotizacion === 'SOL') {
-          return (
-            <React.Fragment>
-              {option.numero_solicitud + '-' + option.nombre_empresa}
-            </React.Fragment>
-          );
-        } else {
-          return '';
-        }
+        return (
+          <React.Fragment>
+            {option.numero_solicitud + '-' + option.nombre_empresa}
+          </React.Fragment>
+        );
       }}
       getOptionLabel={(option) =>
         option.numero_solicitud + '-' + option.nombre_empresa
@@ -215,7 +211,12 @@ const SolicitudCotizacionForm = (props) => {
             <Box px={{md: 5, lg: 8, xl: 10}}>
               <Box className={classes.inputs_2}>
                 <MyAutocompleteSolicitud
-                  options={solicitudes}
+                  options={solicitudes.filter(
+                    (solicitud) =>
+                      (solicitud.estado &&
+                        solicitud.estado_solicitud_cotizacion === 'SOL') ||
+                      initialValues.solicitud_cotizacion_id === solicitud.id,
+                  )}
                   name='solicitud_cotizacion_id'
                   inputValue={initialValues.solicitud_cotizacion_id}
                   label='Solicitud Cotización'

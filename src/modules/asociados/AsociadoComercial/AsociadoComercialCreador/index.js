@@ -18,11 +18,10 @@ import {makeStyles} from '@material-ui/core/styles/index';
 import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
 import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
 import {
-  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
+  LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
   VALIDACION_REGEX_TELEFONOS,
-  VALIDACION_REGEX_DOCUMENTOS,
 } from '../../../../shared/constants/Constantes';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
@@ -72,12 +71,13 @@ const AsociadoCotnactoLegalCreator = (props) => {
       .required('Requerido'),
     numero_documento: yup
       .string()
-      .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
+      // .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
       .required('Requerido')
       .max(
-        LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
-        mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
-      ),
+        LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+        mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
+      )
+      .min(7, mensajeValidacion('max', 7)),
     nombre: yup
       .string()
       .required('Requerido')
