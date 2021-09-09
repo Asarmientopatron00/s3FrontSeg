@@ -11,11 +11,6 @@ export const solicitudesServicioConfig = [
       },
       {
         exact: true,
-        path: ['/ordenes-servicio'],
-        component: React.lazy(() => import('./OrdenServicio')),
-      },
-      {
-        exact: true,
         path: ['/orden-servicio/:accion/:id'],
         component: React.lazy(() =>
           import('./OrdenServicio/OrdenServicioCreador'),

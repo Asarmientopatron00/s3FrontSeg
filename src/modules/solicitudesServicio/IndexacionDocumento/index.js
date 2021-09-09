@@ -26,7 +26,7 @@ import {
   onGetColeccion,
   onCreate,
   onDelete,
-} from '../../../redux/actions/AsociadoDocumentAction';
+} from '../../../redux/actions/OrdenServicioDocumentoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -42,14 +42,11 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import Swal from 'sweetalert2';
 import {history} from 'redux/store';
 import * as yup from 'yup';
-import {onVerificarInformacion} from '../../../redux/actions/AsociadoAction';
 import {
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
 } from '../../../shared/constants/ActionTypes';
-import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
-import GetUsuario from '../../../shared/functions/GetUsuario';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -339,8 +336,7 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              <IntlMessages id='asociados' /> <span> - </span>
-              <IntlMessages id='asociados.documentos' />
+              Ordenes de servicio - Indexacion de documentos
             </Typography>
             <Box className={classes.horizontalBottoms}></Box>
           </Box>
@@ -577,7 +573,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AsociadoDocumento = () => {
+const OrdenServicioDocumento = () => {
   const {orden_servicio_id} = useParams();
   const [showForm, setShowForm] = useState(false);
   const [documentoId, setDocumentoId] = useState('0');
@@ -593,7 +589,7 @@ const AsociadoDocumento = () => {
   const dense = true; //Borrar cuando se use el change
 
   const {rows, encabezado} = useSelector(
-    ({asociadoDocumentoReducer}) => asociadoDocumentoReducer,
+    ({ordenServicioDocumentoReducer}) => ordenServicioDocumentoReducer,
   );
   // const {pathname} = useLocation();
 
@@ -675,15 +671,7 @@ const AsociadoDocumento = () => {
     }
   }, [rows]);
 
-  const tiposRol = useSelector(({asociadoReducer}) => asociadoReducer.tipo_rol);
-
-  useEffect(() => {
-    dispatch(onGetTipoRol());
-  }, [dispatch]);
-
-  const usuario = GetUsuario();
-
-  const onUploadAsociadoDocumento = (id, nombre) => {
+  const onUploadOrdenServicioDocumento = (id, nombre) => {
     setDocumentoId(id);
     setNombreDocumento(nombre);
     setShowForm(true);
@@ -712,7 +700,7 @@ const AsociadoDocumento = () => {
   //   );
   // };
 
-  const onDeleteAsociadoDocumento = (id) => {
+  const onDeleteOrdenServicioDocumento = (id) => {
     Swal.fire({
       title: 'Confirmar',
       text: '¿Seguro Que Desea Eliminar Documento?',
@@ -842,7 +830,7 @@ const AsociadoDocumento = () => {
                             <Tooltip title={<IntlMessages id='boton.cargar' />}>
                               <PublishIcon
                                 onClick={() =>
-                                  onUploadAsociadoDocumento(
+                                  onUploadOrdenServicioDocumento(
                                     row.id_documento,
                                     row.nombre_archivo,
                                   )
@@ -854,7 +842,7 @@ const AsociadoDocumento = () => {
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
                                   onClick={() =>
-                                    onDeleteAsociadoDocumento(row.id)
+                                    onDeleteOrdenServicioDocumento(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
@@ -883,11 +871,10 @@ const AsociadoDocumento = () => {
                               component='a'
                               className={classes.linkDocumento}
                               href={
-                                'http://solicitudesservicio.test/asociados-documentos/' +
-                                // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-documentos/' +
+                                'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
+                                // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/ordenes-servicios-documentos/' +
                                 row.id
                               }
-                              target='_blank'
                               display='flex'
                               justifyContent='center'>
                               {columnasMostradas[2].value(
@@ -926,77 +913,7 @@ const AsociadoDocumento = () => {
           display='grid'
           gridTemplateColumns='1fr 1fr'
           className={classes.marcoTabla}>
-          <Box>
-            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] && (
-              <FormControl>
-                <Box display='flex' alignItems='center' style={{gap: '20px'}}>
-                  <FormLabel>Información Verificada</FormLabel>
-                  <RadioGroup
-                    row
-                    defaultValue={
-                      encabezado.informacion_verificada_documentos === 'S'
-                        ? 'S'
-                        : encabezado.informacion_verificada_documentos === 'N'
-                        ? 'N'
-                        : ''
-                    }
-                    onClick={(event) => {
-                      setTimeout(function () {
-                        dispatch({type: FETCH_START});
-                      }, 1000);
-                      setTimeout(function () {
-                        dispatch({type: FETCH_SUCCESS});
-                      }, 1000);
-
-                      if (event.target.value === 'S') {
-                        let verificada = true;
-                        rows.forEach((row) => {
-                          if (
-                            (row.obligatorio === 'S') &
-                            ((row.nombre_archivo === '') |
-                              (row.nombre_archivo === null) |
-                              (row.nombre_archivo === undefined))
-                          ) {
-                            verificada = false;
-                          }
-                        });
-                        if (!verificada) {
-                          event.target.value = 'N';
-                          dispatch({
-                            type: FETCH_ERROR,
-                            payload:
-                              'No cumple condiciones para dar información por verificada',
-                          });
-                        } else {
-                          dispatch(
-                            onVerificarInformacion({
-                              id: orden_servicio_id,
-                              tipo_informacion:
-                                'informacion_verificada_documentos',
-                              valor: 'S',
-                              verificar: true,
-                            }),
-                          );
-                        }
-                      }
-                    }}>
-                    <FormControlLabel
-                      value='S'
-                      control={<Radio color='primary' />}
-                      label='Si'
-                      labelPlacement='end'
-                    />
-                    <FormControlLabel
-                      value='N'
-                      control={<Radio color='primary' />}
-                      label='No'
-                      labelPlacement='end'
-                    />
-                  </RadioGroup>
-                </Box>
-              </FormControl>
-            )}
-          </Box>
+          <Box></Box>
           <Box className={classes.bottomsGroup}>
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
@@ -1119,4 +1036,4 @@ const AsociadoDocumento = () => {
   );
 };
 
-export default AsociadoDocumento;
+export default OrdenServicioDocumento;

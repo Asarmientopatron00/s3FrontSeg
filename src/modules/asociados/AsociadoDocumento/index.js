@@ -887,7 +887,6 @@ const AsociadoDocumento = () => {
                                 // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-documentos/' +
                                 row.id
                               }
-                              target='_blank'
                               display='flex'
                               justifyContent='center'>
                               {columnasMostradas[2].value(

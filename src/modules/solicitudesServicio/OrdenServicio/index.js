@@ -42,6 +42,8 @@ import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
+import {useHistory} from 'react-router-dom';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 // import {MessageView} from '../../../@crema';
 
@@ -820,7 +822,10 @@ const OrdenServicio = (props) => {
       }
     });
   };
-
+  const history = useHistory();
+  // const onOpenIndexacionDocumentos = (id) => {
+  //   history.push('orden-servicio-indexacion/' + id);
+  // };
   // const enviarCorreo = (id, estado) => {
   //   if (estado === 'ENV') {
   //     Swal.fire({
@@ -1031,6 +1036,19 @@ const OrdenServicio = (props) => {
                               return <th key={row.id + columna.id}></th>;
                             }
                           })}
+                          <TableCell align='center' className={classes.cell}>
+                            <Box
+                              component='a'
+                              href={'/orden-servicio-indexacion/' + row.id}>
+                              <Tooltip title={'Indexación de documentos'}>
+                                <DescriptionIcon
+                                  // onClick={() =>
+                                  //   onOpenIndexacionDocumentos(row.id)
+                                  // }
+                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></DescriptionIcon>
+                              </Tooltip>
+                            </Box>
+                          </TableCell>
                         </TableRow>
                       );
                     })

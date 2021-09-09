@@ -280,7 +280,6 @@ const EnhancedTableToolbar = (props) => {
                         title='Exportar'
                         component='a'
                         className={classes.linkDocumento}
-                        target='_blank'
                         href={
                           'http://solicitudesservicio.test/asociados-negocio/consulta-actualizacion' +
                           // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/consulta-actualizacion' +

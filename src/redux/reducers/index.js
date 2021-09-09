@@ -47,6 +47,7 @@ import PuestoControlReducer from './PuestoControlReducer';
 import EstadoEquipoReducer from './EstadoEquipoReducer';
 import EventoBitacoraEquipoReducer from './EventoBitacoraEquipoReducer';
 import OrdenServicioReducer from './OrdenServicioReducer';
+import OrdenServicioDocumentoReducer from './OrdenServicioDocumentoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -98,5 +99,6 @@ const reducers = (history) =>
     estadoEquipoReducer: EstadoEquipoReducer,
     eventoBitacoraEquipoReducer: EventoBitacoraEquipoReducer,
     ordenServicioReducer: OrdenServicioReducer,
+    ordenServicioDocumentoReducer: OrdenServicioDocumentoReducer,
   });
 export default reducers;

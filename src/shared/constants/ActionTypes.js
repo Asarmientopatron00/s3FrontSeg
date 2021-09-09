@@ -168,6 +168,13 @@ export const GET_COLECCION_ASOCIADO_DOCUMENTO =
 export const SHOW_ASOCIADO_DOCUMENTO = 'show_asociado_documento';
 export const CREATE_ASOCIADO_DOCUMENTO = 'create_asociado_documento';
 export const DELETE_ASOCIADO_DOCUMENTO = 'delete_asociado_documento';
+export const GET_COLECCION_ORDEN_SERVICIO_DOCUMENTO =
+  'get_coleccion_orden_servicio_documentos';
+export const SHOW_ORDEN_SERVICIO_DOCUMENTO = 'show_orden_servicio_documentos';
+export const CREATE_ORDEN_SERVICIO_DOCUMENTO =
+  'create_orden_servicio_documentos';
+export const DELETE_ORDEN_SERVICIO_DOCUMENTO =
+  'delete_orden_servicio_documentos';
 export const GET_COLECCION_APLICACION = 'get_coleccion_aplicacion';
 export const GET_COLECCION_LIGERA_APLICACION =
   'get_coleccion_ligera_aplicacion';
