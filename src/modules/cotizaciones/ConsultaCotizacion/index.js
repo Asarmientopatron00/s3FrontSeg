@@ -476,8 +476,8 @@ const EnhancedTableToolbar = (props) => {
                     className={classes.linkDocumento}
                     target='_blank'
                     href={
-                      // 'http://solicitudesservicio.test/cotizaciones-servicios/consulta' +
-                      'http://186.97.135.74:3380/solicitudesservicio-backend/public/cotizaciones-servicios/consulta' +
+                      'http://solicitudesservicio.test/cotizaciones-servicios/consulta' +
+                      // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/cotizaciones-servicios/consulta' +
                       '?ids=' +
                       ids
                     }>

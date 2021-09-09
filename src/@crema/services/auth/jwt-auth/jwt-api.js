@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const jwtAxios = axios.create({
-  // baseURL: 'http://solicitudesservicio.test/api/', //YOUR_API_URL HERE
-  baseURL: 'http://186.97.135.74:3380/solicitudesservicio-backend/public/api', //YOUR_API_URL HERE
+  baseURL: 'http://solicitudesservicio.test/api/', //YOUR_API_URL HERE
+  // baseURL: 'http://186.97.135.74:3380/solicitudesservicio-backend/public/api', //YOUR_API_URL HERE
   headers: {
     'Content-Type': 'application/json',
   },

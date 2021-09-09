@@ -41,7 +41,6 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
 import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
-import {useHistory} from 'react-router-dom';
 
 // import {MessageView} from '../../../@crema';
 
@@ -364,7 +363,6 @@ const EnhancedTableToolbar = (props) => {
     limpiarFiltros,
     permisos,
   } = props;
-  const history = useHistory();
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -399,12 +397,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Box
-                  // component='a'
-                  // href='/cotizacion/crear'
-                  onClick={() => {
-                    history.push('/cotizacion/crear');
-                  }}>
+                <Box component='a' href='/cotizacion/crear'>
                   <Tooltip title='Crear Solicitud Cotizacion'>
                     <IconButton
                       className={classes.createButton}
@@ -600,7 +593,6 @@ const Cotizacion = (props) => {
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
-  const history = useHistory();
 
   let columnasMostradasInicial = [];
 
@@ -817,6 +809,7 @@ const Cotizacion = (props) => {
       dispatch(onEnviarCorreo(id, updateColeccion));
     }
   };
+
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.name);
@@ -938,22 +931,17 @@ const Cotizacion = (props) => {
                             align='center'
                             className={classes.acciones}>
                             {permisos.indexOf('Modificar') >= 0 && (
-                              // <Box
-                              //   component='a'
-                              //   href={'/cotizacion/editar/' + row.id}
-                              //   className={classes.generalIcons}>
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() => {
-                                    history.push(
-                                      '/cotizacion/editar/' + row.id,
-                                    );
-                                  }}
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}
-                                />
-                              </Tooltip>
-                              // </Box>
+                              <Box
+                                component='a'
+                                href={'/cotizacion/editar/' + row.id}
+                                className={classes.generalIcons}>
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}
+                                  />
+                                </Tooltip>
+                              </Box>
                             )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
