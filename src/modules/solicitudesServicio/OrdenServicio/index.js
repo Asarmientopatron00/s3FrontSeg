@@ -42,8 +42,9 @@ import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
-import {useHistory} from 'react-router-dom';
+// import {useHistory} from 'react-router-dom';
 import DescriptionIcon from '@material-ui/icons/Description';
+import ConsultaOrdenServicio from '../ConsultaOrdenServicio';
 
 // import {MessageView} from '../../../@crema';
 
@@ -825,7 +826,7 @@ const OrdenServicio = (props) => {
       }
     });
   };
-  const history = useHistory();
+  // const history = useHistory();
   // const onOpenIndexacionDocumentos = (id) => {
   //   history.push('orden-servicio-indexacion/' + id);
   // };
@@ -1120,18 +1121,20 @@ const OrdenServicio = (props) => {
         )}
       </Paper>
 
-      {/* {showForm ? (
-        <ConsultaOrdenServicioCreador
+      {showForm && accion === 'ver' ? (
+        <ConsultaOrdenServicio
           showForm={showForm}
-          consultaOrdenServicio={ordenServicioSeleccionado}
+          ordenServicio={ordenServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
+          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+          ESTADOS_ORDEN_SERVICIO={ESTADOS_ORDEN_SERVICIO}
         />
       ) : (
         ''
-      )} */}
+      )}
 
       <Popover
         id='popoverColumns'

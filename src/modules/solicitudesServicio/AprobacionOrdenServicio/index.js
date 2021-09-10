@@ -21,13 +21,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import {
-  onGetColeccion,
-  onDelete,
-} from '../../../redux/actions/OrdenServicioAction';
+import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -37,7 +32,6 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
 import AprobacionOrdenServicioCreador from './AprobacionOrdenServicioCreador';
 import {
   ESTADOS_ORDEN_SERVICIO,
@@ -45,7 +39,7 @@ import {
 } from '../../../shared/constants/ListasValores';
 // import MenuItem from '@material-ui/core/MenuItem';
 import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
-// import OrdenServicioConsulta from './../OrdenServicio/OrdenServicioConsulta';
+import ConsultaOrdenServicio from '../ConsultaOrdenServicio';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -379,14 +373,12 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddAprobacionOrdenServicio,
     handleOpenPopoverColumns,
     queryFilter,
     numeroFiltro,
     fechaFiltro,
     nombreEmpresaFiltro,
     limpiarFiltros,
-    permisos,
   } = props;
   return (
     <Toolbar
@@ -421,17 +413,6 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear Asociado'
-                  onClick={onOpenAddAprobacionOrdenServicio}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
@@ -496,7 +477,6 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddAprobacionOrdenServicio: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
@@ -794,21 +774,9 @@ const AprobacionOrdenServicio = (props) => {
     }
   };
 
-  const onOpenEditAprobacionOrdenServicio = (id) => {
-    setAprobacionOrdenServicioSeleccionado(id);
-    setAccion('editar');
-    setShowForm(true);
-  };
-
   const onOpenAprobacionOrdenServicio = (id) => {
     setAprobacionOrdenServicioSeleccionado(id);
     setAccion('aprobar');
-    setShowForm(true);
-  };
-
-  const onOpenAddAprobacionOrdenServicio = () => {
-    setAprobacionOrdenServicioSeleccionado(0);
-    setAccion('crear');
     setShowForm(true);
   };
 
@@ -860,32 +828,6 @@ const AprobacionOrdenServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteAprobacionOrdenServicio = (id) => {
-    Swal.fire({
-      title: 'Confirmar',
-      text: '¿Seguro qué desea anular el acuerdo de servicio?',
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'NO',
-      confirmButtonText: 'SI',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(onDelete(id));
-        Swal.fire(
-          'Anulado',
-          'El acuerdo de servicio anulado correctamente',
-          'success',
-        );
-        setTimeout(() => {
-          updateColeccion();
-        }, 1000);
-      }
-    });
-  };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.name);
@@ -926,7 +868,6 @@ const AprobacionOrdenServicio = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddAprobacionOrdenServicio={onOpenAddAprobacionOrdenServicio}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
@@ -1007,17 +948,6 @@ const AprobacionOrdenServicio = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    onClick={() =>
-                                      onOpenEditAprobacionOrdenServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                                </Tooltip>
-                              )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
@@ -1027,17 +957,6 @@ const AprobacionOrdenServicio = (props) => {
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.eliminar' />}>
-                                  <DeleteIcon
-                                    onClick={() =>
-                                      onDeleteAprobacionOrdenServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                                </Tooltip>
-                              )}
                             {permisos.indexOf('Aprobar') >= 0 && (
                               <Tooltip
                                 title={<IntlMessages id='boton.aprobar' />}>
@@ -1152,19 +1071,20 @@ const AprobacionOrdenServicio = (props) => {
         ''
       )}
 
-      {/* {showForm && accion === 'ver' ? (
-        <OrdenServicioConsulta
+      {showForm && accion === 'ver' ? (
+        <ConsultaOrdenServicio
           showForm={showForm}
-          OrdenServicio={aprobacionOrdenServicioSeleccionado}
+          ordenServicio={aprobacionOrdenServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          asociados={asociados}
+          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+          ESTADOS_ORDEN_SERVICIO={ESTADOS_ORDEN_SERVICIO}
         />
       ) : (
         ''
-      )} */}
+      )}
 
       <Popover
         id='popoverColumns'

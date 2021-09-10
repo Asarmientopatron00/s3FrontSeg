@@ -18,7 +18,6 @@ import Paper from '@material-ui/core/Paper';
 // import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PublishIcon from '@material-ui/icons/Publish';
 // import FilterListIcon from '@material-ui/icons/FilterList';
@@ -32,9 +31,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import TextField from '@material-ui/core/TextField';
 import {useParams} from 'react-router-dom';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import {RadioGroup, Radio} from '@material-ui/core';
 import {Formik, Form, useField} from 'formik';
 import {useDropzone} from 'react-dropzone';
 import Dropzone from 'react-dropzone';
@@ -42,11 +38,6 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import Swal from 'sweetalert2';
 import {history} from 'redux/store';
 import * as yup from 'yup';
-import {
-  FETCH_ERROR,
-  FETCH_START,
-  FETCH_SUCCESS,
-} from '../../../shared/constants/ActionTypes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);

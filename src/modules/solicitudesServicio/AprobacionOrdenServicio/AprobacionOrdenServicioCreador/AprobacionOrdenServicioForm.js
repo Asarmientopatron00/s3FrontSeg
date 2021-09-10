@@ -1,15 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Button, Checkbox} from '@material-ui/core';
+import React from 'react';
+import {Box, Button} from '@material-ui/core';
 import {Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -25,8 +21,7 @@ const MyTextField = (props) => {
 };
 
 const AcuerdoServicioForm = (props) => {
-  const {handleOnClose, accion, values, initialValues, setFieldValue, titulo} =
-    props;
+  const {handleOnClose, accion, values, titulo} = props;
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
