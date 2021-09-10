@@ -23,12 +23,12 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-// import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccion,
   onDelete,
 } from '../../../redux/actions/OrdenServicioAction';
+import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,13 +38,14 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import AprobacionOrdenServicioCreador from './AprobacionOrdenServicioCreador';
 import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
-import {useHistory} from 'react-router-dom';
-import DescriptionIcon from '@material-ui/icons/Description';
-
+// import MenuItem from '@material-ui/core/MenuItem';
+import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
+// import OrdenServicioConsulta from './../OrdenServicio/OrdenServicioConsulta';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -105,6 +106,24 @@ const cells = [
     label: 'Nombre Asociado',
     value: (value) => value,
     align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'usuario_modificacion_nombre',
+    typeHead: 'string',
+    label: 'Usuario Última Modificación',
+    value: (value) => value,
+    align: 'left',
+    width: '140px',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_modificacion',
+    typeHead: 'string',
+    label: 'Fecha Última Modificación',
+    value: (value) => new Date(value).toLocaleString('es-CL'),
+    align: 'left',
+    width: '180px',
     mostrarInicio: true,
   },
   {
@@ -169,24 +188,6 @@ const cells = [
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
-    id: 'usuario_modificacion_nombre',
-    typeHead: 'string',
-    label: 'Modificado Por',
-    value: (value) => value,
-    align: 'left',
-    width: '140px',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_modificacion',
-    typeHead: 'string',
-    label: 'Fecha Última Modificación',
-    value: (value) => new Date(value).toLocaleString('es-CL'),
-    align: 'left',
-    width: '180px',
-    mostrarInicio: false,
-  },
-  {
     id: 'usuario_creacion_nombre',
     typeHead: 'string',
     label: 'Creado Por',
@@ -241,9 +242,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCell}>
+        <TableCell align='center' className={classes.headCellWoMargin}>
           {'Acciones'}
         </TableCell>
+
         {columnasMostradas.map((cell) => {
           if (cell.mostrar) {
             return (
@@ -280,9 +282,6 @@ function EnhancedTableHead(props) {
             return <th key={cell.id}></th>;
           }
         })}
-        <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Indexación Documentos'}
-        </TableCell>
       </TableRow>
     </TableHead>
   );
@@ -365,7 +364,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     width: '90%',
     display: 'grid',
     gridTemplateColumns: '4fr 4fr 1fr',
-    columnGap: '20px',
+    gap: '20px',
   },
   pairFilters: {
     display: 'flex',
@@ -380,6 +379,7 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
+    onOpenAddAprobacionOrdenServicio,
     handleOpenPopoverColumns,
     queryFilter,
     numeroFiltro,
@@ -422,15 +422,15 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Box component='a' href='/orden-servicio/crear'>
-                  <Tooltip title='Crear Orden de Servicio'>
-                    <IconButton
-                      className={classes.createButton}
-                      aria-label='filter list'>
-                      <AddIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                <Tooltip
+                  title='Crear Asociado'
+                  onClick={onOpenAddAprobacionOrdenServicio}>
+                  <IconButton
+                    className={classes.createButton}
+                    aria-label='filter list'>
+                    <AddIcon />
+                  </IconButton>
+                </Tooltip>
               )}
             </Box>
           </Box>
@@ -484,7 +484,7 @@ const EnhancedTableToolbar = (props) => {
         ) : (
           ''
         )
-        //  <Tooltip title="Filtros Avanzados">
+        // <Tooltip title="Filtros Avanzados">
         //         <IconButton aria-label="filter list">
         //           <FilterListIcon />
         //         </IconButton>
@@ -496,6 +496,7 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  onOpenAddAprobacionOrdenServicio: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
@@ -526,13 +527,25 @@ const useStyles = makeStyles((theme) => ({
   headCell: {
     padding: '0px 0px 0px 15px',
   },
+  headCellWoMargin: {
+    padding: '0px',
+    width: 'fit-content',
+    fontSize: '12px',
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '14px',
+    },
+  },
   row: {
     // display:'grid',
     // gridTemplateColumns:gridTemplate,
     padding: 'none',
   },
   cell: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    fontSize: '13px',
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '14px',
+    },
+    padding: props.vp + ' 0px ' + props.vp + ' 10px',
     whiteSpace: 'nowrap',
   }),
   cellWidth: (props) => ({
@@ -543,7 +556,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   }),
   acciones: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    padding: props.vp + ' 0px ' + props.vp + ' 10px',
     minWidth: '100px',
   }),
   paper: {
@@ -567,6 +580,10 @@ const useStyles = makeStyles((theme) => ({
     width: 1,
   },
   generalIcons: {
+    height: '20px',
+    [theme.breakpoints.up('xl')]: {
+      height: '25px',
+    },
     '&:hover': {
       color: theme.palette.colorHover,
       cursor: 'pointer',
@@ -575,14 +592,29 @@ const useStyles = makeStyles((theme) => ({
   editIcon: {
     color: theme.palette.primary.main,
   },
+  legalIcon: {
+    color: 'black',
+  },
+  contactIcon: {
+    color: 'lightgreen',
+  },
+  bancariaIcon: {
+    color: 'gray',
+  },
+  comercialIcon: {
+    color: 'darkgreen',
+  },
+  documentosIcon: {
+    color: theme.palette.primary.main,
+  },
+  seguridadIcon: {
+    color: 'red',
+  },
   visivilityIcon: {
     color: theme.palette.grayBottoms,
   },
   deleteIcon: {
     color: theme.palette.redBottoms,
-  },
-  enviarIcon: {
-    color: theme.palette.enviaEmailBottoms,
   },
   popoverColumns: {
     display: 'grid',
@@ -601,10 +633,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrdenServicio = (props) => {
-  const [showForm, setShowForm] = useState(false);
-  const [accion, setAccion] = useState('ver');
-  const [ordenServicioSeleccionado, setOrdenServicioSeleccionado] = useState(0);
+const AprobacionOrdenServicio = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -617,10 +646,15 @@ const OrdenServicio = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
+  const [showForm, setShowForm] = useState(false);
+  const [accion, setAccion] = useState('ver');
+  const [
+    aprobacionOrdenServicioSeleccionado,
+    setAprobacionOrdenServicioSeleccionado,
+  ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
   );
-
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [numeroFiltro, setnumeroFiltro] = useState('');
   const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
@@ -676,6 +710,7 @@ const OrdenServicio = (props) => {
         });
       });
   }, [user, props.route]);
+
   useEffect(() => {
     dispatch(
       onGetColeccion(
@@ -685,7 +720,7 @@ const OrdenServicio = (props) => {
         orderByToSend,
         nombreEmpresaFiltro,
         fechaFiltro,
-        '',
+        'REG',
       ),
     );
   }, [
@@ -699,21 +734,27 @@ const OrdenServicio = (props) => {
   ]);
 
   const updateColeccion = () => {
+    setPage(1);
     dispatch(
       onGetColeccion(
-        1,
+        page,
         rowsPerPage,
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
         fechaFiltro,
-        '',
+        'REG',
       ),
     );
   };
+
   useEffect(() => {
     setPage(1);
   }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro, fechaFiltro]);
+
+  useEffect(() => {
+    dispatch(onGetColeccionLigeraAsociado());
+  }, [dispatch]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
@@ -730,8 +771,6 @@ const OrdenServicio = (props) => {
         break;
     }
   };
-
-  useEffect(() => {}, [dispatch]);
 
   const limpiarFiltros = () => {
     setnumeroFiltro('');
@@ -753,6 +792,36 @@ const OrdenServicio = (props) => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
+  };
+
+  const onOpenEditAprobacionOrdenServicio = (id) => {
+    setAprobacionOrdenServicioSeleccionado(id);
+    setAccion('editar');
+    setShowForm(true);
+  };
+
+  const onOpenAprobacionOrdenServicio = (id) => {
+    setAprobacionOrdenServicioSeleccionado(id);
+    setAccion('aprobar');
+    setShowForm(true);
+  };
+
+  const onOpenAddAprobacionOrdenServicio = () => {
+    setAprobacionOrdenServicioSeleccionado(0);
+    setAccion('crear');
+    setShowForm(true);
+  };
+
+  const onOpenViewAprobacionOrdenServicio = (id) => {
+    setAprobacionOrdenServicioSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setAprobacionOrdenServicioSeleccionado(0);
+    setAccion('ver');
   };
 
   const handleClosePopover = () => {
@@ -778,18 +847,6 @@ const OrdenServicio = (props) => {
     );
   };
 
-  const onOpenViewAprobacionOrdenServicio = (id) => {
-    setOrdenServicioSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setOrdenServicioSeleccionado(0);
-    setAccion('ver');
-  };
-
   const showAllColumns = () => {
     let aux = columnasMostradas;
     setColumnasMostradas(
@@ -803,10 +860,10 @@ const OrdenServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteOrdenServicio = (id) => {
+  const onDeleteAprobacionOrdenServicio = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro que dese anular la orden de servicio?',
+      text: '¿Seguro qué desea anular el acuerdo de servicio?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -816,40 +873,18 @@ const OrdenServicio = (props) => {
       confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(onDelete(id, updateColeccion));
+        dispatch(onDelete(id));
         Swal.fire(
           'Anulado',
-          'La orden de servicio fue anulada correctamente',
+          'El acuerdo de servicio anulado correctamente',
           'success',
         );
+        setTimeout(() => {
+          updateColeccion();
+        }, 1000);
       }
     });
   };
-  const history = useHistory();
-  // const onOpenIndexacionDocumentos = (id) => {
-  //   history.push('orden-servicio-indexacion/' + id);
-  // };
-  // const enviarCorreo = (id, estado) => {
-  //   if (estado === 'ENV') {
-  //     Swal.fire({
-  //       title: 'Confirmar',
-  //       text: '¿Seguro que desea reenviar la orden de servicio?',
-  //       allowEscapeKey: false,
-  //       allowEnterKey: false,
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       cancelButtonText: 'NO',
-  //       confirmButtonText: 'SI',
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         dispatch(onEnviarCorreo(id, updateColeccion));
-  //       }
-  //     });
-  //   } else {
-  //     dispatch(onEnviarCorreo(id, updateColeccion));
-  //   }
-  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -891,6 +926,7 @@ const OrdenServicio = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
+            onOpenAddAprobacionOrdenServicio={onOpenAddAprobacionOrdenServicio}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
@@ -972,51 +1008,46 @@ const OrdenServicio = (props) => {
                             align='center'
                             className={classes.acciones}>
                             {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_orden_servicio !== 'ANU' && (
-                                <Box
-                                  component='a'
-                                  href={'/orden-servicio/editar/' + row.id}
-                                  className={classes.generalIcons}>
-                                  <Tooltip
-                                    title={<IntlMessages id='boton.editar' />}>
-                                    <EditIcon
-                                      className={`${classes.generalIcons} ${classes.editIcon}`}
-                                    />
-                                  </Tooltip>
-                                </Box>
+                              row.estado_acuerdo !== 'ANU' && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    onClick={() =>
+                                      onOpenEditAprobacionOrdenServicio(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                                </Tooltip>
                               )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}
                                   onClick={() =>
                                     onOpenViewAprobacionOrdenServicio(row.id)
                                   }
-                                />
+                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {/* {permisos.indexOf('Enviar') >= 0 && (
-                              <Tooltip
-                                title={
-                                  <IntlMessages id='boton.enviarCorreo' />
-                                }>
-                                <EmailIcon
-                                  onClick={() =>
-                                    enviarCorreo(row.id, row.estado_cotizacion)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
-                              </Tooltip>
-                            )} */}
                             {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_orden_servicio !== 'ANU' && (
-                                <Tooltip title={'Anular'}>
+                              row.estado_acuerdo !== 'ANU' && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.eliminar' />}>
                                   <DeleteIcon
                                     onClick={() =>
-                                      onDeleteOrdenServicio(row.id)
+                                      onDeleteAprobacionOrdenServicio(row.id)
                                     }
                                     className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                                 </Tooltip>
                               )}
+                            {permisos.indexOf('Aprobar') >= 0 && (
+                              <Tooltip
+                                title={<IntlMessages id='boton.aprobar' />}>
+                                <LibraryAddCheckIcon
+                                  onClick={() =>
+                                    onOpenAprobacionOrdenServicio(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
+                              </Tooltip>
+                            )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {
@@ -1039,19 +1070,6 @@ const OrdenServicio = (props) => {
                               return <th key={row.id + columna.id}></th>;
                             }
                           })}
-                          <TableCell align='center' className={classes.cell}>
-                            <Box
-                              component='a'
-                              href={'/orden-servicio-indexacion/' + row.id}>
-                              <Tooltip title={'Indexación de documentos'}>
-                                <DescriptionIcon
-                                  // onClick={() =>
-                                  //   onOpenIndexacionDocumentos(row.id)
-                                  // }
-                                  className={`${classes.generalIcons} ${classes.legalIcon}`}></DescriptionIcon>
-                              </Tooltip>
-                            </Box>
-                          </TableCell>
                         </TableRow>
                       );
                     })
@@ -1120,14 +1138,29 @@ const OrdenServicio = (props) => {
         )}
       </Paper>
 
-      {/* {showForm ? (
-        <ConsultaOrdenServicioCreador
+      {showForm && accion === 'aprobar' ? (
+        <AprobacionOrdenServicioCreador
           showForm={showForm}
-          consultaOrdenServicio={ordenServicioSeleccionado}
+          aprobacionOrdenServicio={aprobacionOrdenServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
+          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+        />
+      ) : (
+        ''
+      )}
+
+      {/* {showForm && accion === 'ver' ? (
+        <OrdenServicioConsulta
+          showForm={showForm}
+          OrdenServicio={aprobacionOrdenServicioSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          updateColeccion={updateColeccion}
+          titulo={titulo}
+          asociados={asociados}
         />
       ) : (
         ''
@@ -1173,4 +1206,4 @@ const OrdenServicio = (props) => {
   );
 };
 
-export default OrdenServicio;
+export default AprobacionOrdenServicio;

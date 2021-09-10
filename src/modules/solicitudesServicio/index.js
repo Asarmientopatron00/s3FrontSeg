@@ -28,6 +28,11 @@ export const solicitudesServicioConfig = [
         path: ['/orden-servicio-indexacion/:orden_servicio_id'],
         component: React.lazy(() => import('./IndexacionDocumento')),
       },
+      {
+        exact: true,
+        path: ['/ordenes-servicio-aprobacion'],
+        component: React.lazy(() => import('./AprobacionOrdenServicio')),
+      },
     ],
   },
 ];
