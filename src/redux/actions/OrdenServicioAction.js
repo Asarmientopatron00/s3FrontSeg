@@ -354,3 +354,38 @@ export const onGetRutas = (asociado_id) => {
       });
   };
 };
+
+export const onImport = (params, setActiveStep, setRows) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    var formData = new FormData();
+    formData.append('archivo', params['archivo']);
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('ordenes-servicios/importar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((data) => {
+        if (data.status === 201) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_ORDEN_SERVICIO_RUTAS, payload: data});
+          setRows(data.data.datos);
+          setActiveStep(1);
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};

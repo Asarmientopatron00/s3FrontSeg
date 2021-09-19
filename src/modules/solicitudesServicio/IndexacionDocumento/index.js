@@ -794,90 +794,84 @@ const OrdenServicioDocumento = () => {
                   columnasMostradas={columnasMostradas}
                 />
                 <TableBody>
-                  {
-                    // stableSort(rows, getComparator(order, orderBy))
-                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    rows.map((row, index) => {
-                      const isItemSelected = isSelected(row.name);
+                  {rows.map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
 
-                      return (
-                        <TableRow
-                          hover
-                          // role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={index}
-                          selected={isItemSelected}
-                          className={classes.row}>
-                          {/* <TableCell padding="checkbox">
+                    return (
+                      <TableRow
+                        hover
+                        // role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={index}
+                        selected={isItemSelected}
+                        className={classes.row}>
+                        {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               inputProps={{ 'aria-labelledby': labelId }}
                             />
                           </TableCell> */}
-                          <TableCell
-                            align='center'
-                            className={classes.acciones}>
-                            <Tooltip title={<IntlMessages id='boton.cargar' />}>
-                              <PublishIcon
-                                onClick={() =>
-                                  onUploadOrdenServicioDocumento(
-                                    row.id_documento,
-                                    row.nombre_archivo,
-                                  )
-                                }
-                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}></PublishIcon>
-                            </Tooltip>
-                            {row.id ? (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
-                                <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteOrdenServicioDocumento(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            ) : (
-                              ''
-                            )}
-                          </TableCell>
-                          <MyCell
-                            align={columnasMostradas[0].align}
-                            width={columnasMostradas[0].width}
-                            claseBase={classes.cell}
-                            value={columnasMostradas[0].value(
-                              row[columnasMostradas[0].id],
-                            )}
-                          />
-                          <MyCell
-                            align={columnasMostradas[1].align}
-                            width={columnasMostradas[1].width}
-                            claseBase={classes.cell}
-                            value={columnasMostradas[1].value(
-                              row[columnasMostradas[1].id],
-                            )}
-                          />
-                          <TableCell>
-                            <Box
-                              component='a'
-                              className={classes.linkDocumento}
-                              href={
-                                'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
-                                // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/ordenes-servicios-documentos/' +
-                                row.id
+                        <TableCell align='center' className={classes.acciones}>
+                          <Tooltip title={<IntlMessages id='boton.cargar' />}>
+                            <PublishIcon
+                              onClick={() =>
+                                onUploadOrdenServicioDocumento(
+                                  row.id_documento,
+                                  row.nombre_archivo,
+                                )
                               }
-                              display='flex'
-                              justifyContent='center'>
-                              {columnasMostradas[2].value(
-                                row[columnasMostradas[2].id],
-                              )}
-                            </Box>
-                          </TableCell>
-                          {/* onClick={()=>showDocumento(row.id)} */}
-                        </TableRow>
-                      );
-                    })
-                  }
+                              className={`${classes.generalIcons} ${classes.visivilityIcon}`}></PublishIcon>
+                          </Tooltip>
+                          {row.id ? (
+                            <Tooltip
+                              title={<IntlMessages id='boton.eliminar' />}>
+                              <DeleteIcon
+                                onClick={() =>
+                                  onDeleteOrdenServicioDocumento(row.id)
+                                }
+                                className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                            </Tooltip>
+                          ) : (
+                            ''
+                          )}
+                        </TableCell>
+                        <MyCell
+                          align={columnasMostradas[0].align}
+                          width={columnasMostradas[0].width}
+                          claseBase={classes.cell}
+                          value={columnasMostradas[0].value(
+                            row[columnasMostradas[0].id],
+                          )}
+                        />
+                        <MyCell
+                          align={columnasMostradas[1].align}
+                          width={columnasMostradas[1].width}
+                          claseBase={classes.cell}
+                          value={columnasMostradas[1].value(
+                            row[columnasMostradas[1].id],
+                          )}
+                        />
+                        <TableCell>
+                          <Box
+                            component='a'
+                            className={classes.linkDocumento}
+                            href={
+                              'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
+                              // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/ordenes-servicios-documentos/' +
+                              row.id
+                            }
+                            display='flex'
+                            justifyContent='center'>
+                            {columnasMostradas[2].value(
+                              row[columnasMostradas[2].id],
+                            )}
+                          </Box>
+                        </TableCell>
+                        {/* onClick={()=>showDocumento(row.id)} */}
+                      </TableRow>
+                    );
+                  })}
                   {/* {emptyRows > 0 && (
                     <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -1006,9 +1000,6 @@ const OrdenServicioDocumento = () => {
                       type='submit'>
                       <IntlMessages id='boton.submit' />
                     </Button>
-                    {/* ) : (
-                  ''
-                )} */}
                     <Button
                       className={`${classes.btnRoot} ${classes.btnSecundary}`}
                       onClick={handleOnCloseForm}>
