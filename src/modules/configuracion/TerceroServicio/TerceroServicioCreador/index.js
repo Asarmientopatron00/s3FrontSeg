@@ -41,7 +41,7 @@ const validationSchema = yup.object({
     .required('Requerido'),
   numero_documento: yup
     .string()
-    .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
+    // .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
     .required('Requerido')
     .when('tipo_persona', {
       is: 'N',
