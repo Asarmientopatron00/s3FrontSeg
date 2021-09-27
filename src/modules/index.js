@@ -20,6 +20,7 @@ import {asociadoConfig} from './asociados';
 import {cotizacionConfig} from './cotizaciones';
 import {acuerdoServicioConfig} from './acuerdosServicio';
 import {solicitudesServicioConfig} from './solicitudesServicio';
+import {inventarioBitacoraEquipoConfig} from './inventarioBitacoraEquipo';
 
 const routeConfigs = [
   ...authRouteConfig,
@@ -39,6 +40,7 @@ const routeConfigs = [
   ...cotizacionConfig,
   ...acuerdoServicioConfig,
   ...solicitudesServicioConfig,
+  ...inventarioBitacoraEquipoConfig,
 ];
 
 const routes = [

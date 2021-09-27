@@ -52,3 +52,4 @@ export * from './PuestoControlAction';
 export * from './EstadoEquipoAction';
 export * from './EventoBitacoraEquipoAction';
 export * from './OrdenServicioDocumentoAction';
+export * from './InformacionEquipoAction';

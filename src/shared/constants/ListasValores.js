@@ -1,7 +1,7 @@
 export const TIPOS_ROLES = [
   {id: 'IN', nombre: 'Interno', estado: 1},
-  {id: 'AC', nombre: 'Administrador cliente', estado: 1},
-  {id: 'AU', nombre: 'Autorizado cliente', estado: 1},
+  {id: 'AC', nombre: 'Administrador asociado', estado: 1},
+  {id: 'AU', nombre: 'Autorizado asociado', estado: 1},
 ];
 
 export const TIPOS_LISTAS_DOCUMENTOS = [
@@ -107,4 +107,9 @@ export const ESTADOS_ORDEN_SERVICIO = [
   {id: 'PDF', nombre: 'Pendiente de facturar', estado: 1},
   {id: 'FAC', nombre: 'Interfaz facturaciÓn recibida', estado: 1},
   {id: 'ANU', nombre: 'Anulada', estado: 1},
+];
+
+export const TIPOS_EQUIPOS = [
+  {id: 'GRL', nombre: 'Uso General', estado: 1},
+  {id: 'SEN', nombre: 'Señuelo', estado: 1},
 ];

@@ -38,7 +38,6 @@ import CheckIcon from '@material-ui/icons/Check';
 import parse from 'html-react-parser';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import ReactExport from 'react-export-excel';
-import format from 'date-fns/format';
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;

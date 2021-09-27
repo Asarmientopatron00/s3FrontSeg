@@ -328,7 +328,14 @@ export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
 export const GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN =
   'get_coleccion_ligera_tercero_servicio_orden';
 export const GET_ORDEN_SERVICIO_RUTAS = 'get_orden_servicio_rutas';
-
+export const GET_COLECCION_INFORMACION_EQUIPO =
+  'get_coleccion_informacion_equipo';
+export const GET_COLECCION_LIGERA_INFORMACION_EQUIPO =
+  'get_coleccion_ligera_informacion_equipo';
+export const SHOW_INFORMACION_EQUIPO = 'show_informacion_equipo';
+export const UPDATE_INFORMACION_EQUIPO = 'update_informacion_equipo';
+export const DELETE_INFORMACION_EQUIPO = 'delete_informacion_equipo';
+export const CREATE_INFORMACION_EQUIPO = 'enviar_informacion_equipo';
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
 export const SET_INITIAL_PATH = 'set_initial_path';
