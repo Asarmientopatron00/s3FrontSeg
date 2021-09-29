@@ -24,11 +24,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import InformacionEquipoCreador from './InformacionEquipoCreador';
-import {
-  onGetColeccion,
-  onDelete,
-} from '../../../redux/actions/InformacionEquipoAction';
+import ProductoCreador from './ProductoCreador';
+import {onGetColeccion, onDelete} from '../../../redux/actions/ProductoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,7 +35,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_EQUIPOS} from '../../../shared/constants/ListasValores';
+import {TIPOS_PRODUCTOS} from '../../../shared/constants/ListasValores';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
@@ -71,79 +68,38 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const cells = [
   {
-    id: 'numero_serial',
+    id: 'codigo_producto',
     typeHead: 'numeric',
-    label: 'Número Serial',
+    label: 'Código Articulo',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'nombre_equipo',
+    id: 'nombre',
     typeHead: 'string',
-    label: 'Nombre',
+    label: 'Nombre Articulo',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'tipo_equipo',
+    id: 'alias_producto',
     typeHead: 'string',
-    label: 'Tipo',
+    label: 'Alias',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'tipo_producto',
+    typeHead: 'string',
+    label: 'Tipo Producto',
     value: (value) =>
-      TIPOS_EQUIPOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
+      TIPOS_PRODUCTOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },
-  {
-    id: 'fecha_compra_equipo',
-    typeHead: 'string',
-    label: 'Fecha Compra',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_activacion_equipo',
-    typeHead: 'string',
-    label: 'Fecha Activacion',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'valor_costo_equipo_USD',
-    typeHead: 'numeric',
-    label: 'Valor Costo USD',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'nombre_proveedor',
-    typeHead: 'string',
-    label: 'Nombre Proveedor',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'equipo_desechable',
-    typeHead: 'string',
-    label: 'Equipo Desechable',
-    value: (value) => (value === 'S' ? 'Si' : value === 'N' ? 'No' : ''),
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'observaciones',
-    typeHead: 'string',
-    label: 'Observaciones',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-
   {
     id: 'estado',
     typeHead: 'boolean',
@@ -154,13 +110,53 @@ const cells = [
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
+    id: 'descripcion_tecnica_producto',
+    typeHead: 'string',
+    label: 'Descripción Producto',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'producto_empaque',
+    typeHead: 'string',
+    label: 'Empaque',
+    value: (value) => (value === 'S' ? 'Si' : 'No'),
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'producto_cliente_especifico',
+    typeHead: 'string',
+    label: 'Cliente Específico',
+    value: (value) => (value === 'S' ? 'Si' : 'No'),
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'producto_produccion_id',
+    typeHead: 'numeric',
+    label: 'Producto Producción',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: false,
+  },
+  {
+    id: 'producto_facturacion_id',
+    typeHead: 'numeric',
+    label: 'Producto Facturación',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: false,
+  },
+  {
     id: 'usuario_modificacion_nombre',
     typeHead: 'string',
     label: 'Modificado Por',
     value: (value) => value,
     align: 'left',
     width: '140px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'fecha_modificacion',
@@ -169,7 +165,7 @@ const cells = [
     value: (value) => new Date(value).toLocaleString('es-CL'),
     align: 'left',
     width: '180px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'usuario_creacion_nombre',
@@ -362,12 +358,12 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddInformacionEquipo,
+    onOpenAddProducto,
     handleOpenPopoverColumns,
     queryFilter,
+    codigoFiltro,
     nombreFiltro,
     tipoFiltro,
-    serialFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -405,9 +401,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear InformacionEquipo'
-                  onClick={onOpenAddInformacionEquipo}>
+                <Tooltip title='Crear Producto' onClick={onOpenAddProducto}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -419,32 +413,21 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
+              label='Código Articulo'
+              name='codigoFiltro'
+              id='codigoFiltro'
+              onChange={queryFilter}
+              value={codigoFiltro}
+              inputProps={{min: 0}}
+            />
+
+            <TextField
               label='Nombre'
               name='nombreFiltro'
               id='nombreFiltro'
               onChange={queryFilter}
               value={nombreFiltro}
             />
-
-            <TextField
-              label='Tipo Equipo'
-              name='tipoFiltro'
-              id='tipoFiltro'
-              onChange={queryFilter}
-              value={tipoFiltro}
-              select>
-              {TIPOS_EQUIPOS.map((tipo) => {
-                return (
-                  <MenuItem
-                    value={tipo.id}
-                    key={tipo.id}
-                    id={tipo.id}
-                    className={classes.pointer}>
-                    {tipo.nombre}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -456,14 +439,25 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
-
             <TextField
-              label='Número Serial'
-              name='serialFiltro'
-              id='serialFiltro'
+              label='Tipo Producto'
+              name='tipoFiltro'
+              id='tipoFiltro'
               onChange={queryFilter}
-              value={serialFiltro}
-            />
+              value={tipoFiltro}
+              select>
+              {TIPOS_PRODUCTOS.map((tipo) => {
+                return (
+                  <MenuItem
+                    value={tipo.id}
+                    key={tipo.id}
+                    id={tipo.id}
+                    className={classes.pointer}>
+                    {tipo.nombre}
+                  </MenuItem>
+                );
+              })}
+            </TextField>
           </Box>
         </>
       )}
@@ -490,13 +484,13 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddInformacionEquipo: PropTypes.func.isRequired,
+  onOpenAddProducto: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
+  codigoFiltro: PropTypes.string.isRequired,
   nombreFiltro: PropTypes.string.isRequired,
   tipoFiltro: PropTypes.string.isRequired,
-  serialFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -593,7 +587,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InformacionEquipo = (props) => {
+const Producto = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -608,15 +602,14 @@ const InformacionEquipo = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [informacionEquipoSeleccionado, setInformacionEquipoSeleccionado] =
-    useState(0);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({informacionEquipoReducer}) => informacionEquipoReducer,
+    ({productoReducer}) => productoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState('');
-  const [serialFiltro, setSerialFiltro] = useState('');
+  const [codigoFiltro, setcodigoFiltro] = useState('');
+  const [nombreFiltro, setnombreFiltro] = useState('');
+  const [tipoFiltro, settipoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -674,20 +667,20 @@ const InformacionEquipo = (props) => {
       onGetColeccion(
         page,
         rowsPerPage,
-        nombreFiltro,
+        codigoFiltro,
         orderByToSend,
+        nombreFiltro,
         tipoFiltro,
-        serialFiltro,
       ),
     );
   }, [
     dispatch,
     page,
     rowsPerPage,
-    nombreFiltro,
+    codigoFiltro,
     orderByToSend,
+    nombreFiltro,
     tipoFiltro,
-    serialFiltro,
   ]);
 
   const updateColeccion = () => {
@@ -695,37 +688,42 @@ const InformacionEquipo = (props) => {
       onGetColeccion(
         1,
         rowsPerPage,
-        nombreFiltro,
+        codigoFiltro,
         orderByToSend,
+        nombreFiltro,
         tipoFiltro,
-        serialFiltro,
       ),
     );
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, tipoFiltro, serialFiltro]);
+  }, [codigoFiltro, orderByToSend, nombreFiltro, tipoFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
+      case 'codigoFiltro':
+        setcodigoFiltro(e.target.value);
+        break;
       case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
+        setnombreFiltro(e.target.value);
         break;
       case 'tipoFiltro':
-        setTipoFiltro(e.target.value);
-        break;
-      case 'serialFiltro':
-        setSerialFiltro(e.target.value);
+        settipoFiltro(e.target.value);
         break;
       default:
         break;
     }
   };
 
+  const ciudades = useSelector(({productoReducer}) => productoReducer.ciudades);
+  const servicios = useSelector(
+    ({productoReducer}) => productoReducer.servicios,
+  );
+
   const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setTipoFiltro('');
-    setSerialFiltro('');
+    setcodigoFiltro('');
+    setnombreFiltro('');
+    settipoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -744,8 +742,8 @@ const InformacionEquipo = (props) => {
     }
   };
 
-  const onOpenEditInformacionEquipo = (id) => {
-    setInformacionEquipoSeleccionado(id);
+  const onOpenEditProducto = (id) => {
+    setProductoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -786,16 +784,16 @@ const InformacionEquipo = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewInformacionEquipo = (id) => {
-    setInformacionEquipoSeleccionado(id);
+  const onOpenViewProducto = (id) => {
+    setProductoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteInformacionEquipo = (id) => {
+  const onDeleteProducto = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro que desea eliminar el equipo?',
+      text: '¿Seguro qué desea eliminar el producto?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -808,7 +806,7 @@ const InformacionEquipo = (props) => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El equipo fue eliminado correctamente',
+          'El producto ha sido eliminada correctamente',
           'success',
         );
         setTimeout(() => {
@@ -818,15 +816,15 @@ const InformacionEquipo = (props) => {
     });
   };
 
-  const onOpenAddInformacionEquipo = () => {
-    setInformacionEquipoSeleccionado(0);
+  const onOpenAddProducto = () => {
+    setProductoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setInformacionEquipoSeleccionado(0);
+    setProductoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -875,13 +873,13 @@ const InformacionEquipo = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddInformacionEquipo={onOpenAddInformacionEquipo}
+            onOpenAddProducto={onOpenAddProducto}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
+            codigoFiltro={codigoFiltro}
             nombreFiltro={nombreFiltro}
             tipoFiltro={tipoFiltro}
-            serialFiltro={serialFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -961,18 +959,14 @@ const InformacionEquipo = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.editar' />}>
                                 <EditIcon
-                                  onClick={() =>
-                                    onOpenEditInformacionEquipo(row.id)
-                                  }
+                                  onClick={() => onOpenEditProducto(row.id)}
                                   className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                               </Tooltip>
                             )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewInformacionEquipo(row.id)
-                                  }
+                                  onClick={() => onOpenViewProducto(row.id)}
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
@@ -980,9 +974,7 @@ const InformacionEquipo = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteInformacionEquipo(row.id)
-                                  }
+                                  onClick={() => onDeleteProducto(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
@@ -1081,14 +1073,16 @@ const InformacionEquipo = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <InformacionEquipoCreador
+        <ProductoCreador
           showForm={showForm}
-          informacionEquipo={informacionEquipoSeleccionado}
+          producto={productoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          TIPOS_EQUIPOS={TIPOS_EQUIPOS}
+          ciudades={ciudades}
+          servicios={servicios}
+          TIPOS_PRODUCTOS={TIPOS_PRODUCTOS}
         />
       ) : (
         ''
@@ -1134,4 +1128,4 @@ const InformacionEquipo = (props) => {
   );
 };
 
-export default InformacionEquipo;
+export default Producto;

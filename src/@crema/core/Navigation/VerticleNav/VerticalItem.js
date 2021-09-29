@@ -32,7 +32,6 @@ const VerticalItem = ({level, item}) => {
       component={Button}
       // to={item.url}
       href={item.url}
-      activeClassName='active'
       className={clsx(classes.navItem, 'nav-item')}
       exact={item.exact}>
       {item.icono_menu ? (

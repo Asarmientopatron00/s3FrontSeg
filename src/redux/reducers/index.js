@@ -49,6 +49,7 @@ import EventoBitacoraEquipoReducer from './EventoBitacoraEquipoReducer';
 import OrdenServicioReducer from './OrdenServicioReducer';
 import OrdenServicioDocumentoReducer from './OrdenServicioDocumentoReducer';
 import InformacionEquipoReducer from './InformacionEquipoReducer';
+import ProductoReducer from './ProductoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -102,5 +103,6 @@ const reducers = (history) =>
     ordenServicioReducer: OrdenServicioReducer,
     ordenServicioDocumentoReducer: OrdenServicioDocumentoReducer,
     informacionEquipoReducer: InformacionEquipoReducer,
+    productoReducer: ProductoReducer,
   });
 export default reducers;

@@ -23,8 +23,7 @@ const LabelItem = ({label}) => {
       key={label.id}
       button
       to={`/apps/mail/label/${label.alias}`}
-      component={NavLink}
-      activeClassName='active'>
+      component={NavLink}>
       <Box
         component='span'
         height={12}

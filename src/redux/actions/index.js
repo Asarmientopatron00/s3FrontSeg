@@ -53,3 +53,4 @@ export * from './EstadoEquipoAction';
 export * from './EventoBitacoraEquipoAction';
 export * from './OrdenServicioDocumentoAction';
 export * from './InformacionEquipoAction';
+export * from './ProductoAction';

@@ -41,6 +41,11 @@ export const cotizacionConfig = [
         path: ['/cotizacion/:accion'],
         component: React.lazy(() => import('./Cotizacion/CotizacionCreador')),
       },
+      {
+        exact: true,
+        path: ['/productos'],
+        component: React.lazy(() => import('./Producto')),
+      },
     ],
   },
 ];

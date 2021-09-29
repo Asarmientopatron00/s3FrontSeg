@@ -321,7 +321,7 @@ export const GET_COLECCION_LIGERA_ORDEN_SERVICIO =
 export const SHOW_ORDEN_SERVICIO = 'show_orden_servicio';
 export const UPDATE_ORDEN_SERVICIO = 'update_orden_servicio';
 export const DELETE_ORDEN_SERVICIO = 'delete_orden_servicio';
-export const CREATE_ORDEN_SERVICIO = 'enviar_orden_servicio';
+export const CREATE_ORDEN_SERVICIO = 'create_orden_servicio';
 export const APPROVE_ORDEN_SERVICIO = 'approve_orden_servicio';
 export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
   'get_coleccion_ligera_asociado_orden';
@@ -335,7 +335,14 @@ export const GET_COLECCION_LIGERA_INFORMACION_EQUIPO =
 export const SHOW_INFORMACION_EQUIPO = 'show_informacion_equipo';
 export const UPDATE_INFORMACION_EQUIPO = 'update_informacion_equipo';
 export const DELETE_INFORMACION_EQUIPO = 'delete_informacion_equipo';
-export const CREATE_INFORMACION_EQUIPO = 'enviar_informacion_equipo';
+export const CREATE_INFORMACION_EQUIPO = 'create_informacion_equipo';
+export const GET_COLECCION_PRODUCTO = 'get_coleccion_producto';
+export const GET_COLECCION_LIGERA_PRODUCTO = 'get_coleccion_ligera_producto';
+export const SHOW_PRODUCTO = 'show_producto';
+export const UPDATE_PRODUCTO = 'update_producto';
+export const DELETE_PRODUCTO = 'delete_producto';
+export const CREATE_PRODUCTO = 'create_producto';
+
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
 export const SET_INITIAL_PATH = 'set_initial_path';

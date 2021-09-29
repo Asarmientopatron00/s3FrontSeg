@@ -380,12 +380,30 @@ export const onImport = (params, setActiveStep, setRows) => {
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        console.log();
+        try {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
+        } catch {
+          try {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: error,
+            });
+          } catch {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: 'Error',
+            });
+          }
+        }
       });
   };
 };

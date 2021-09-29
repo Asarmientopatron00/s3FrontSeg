@@ -71,8 +71,7 @@ const AppsSideBarFolderItem = ({item, path}) => {
       key={item.id}
       to={path}
       component={NavLink}
-      className={classes.listItem}
-      activeClassName='active'>
+      className={classes.listItem}>
       <Box component='span' mr={{xs: 4, xl: 5}}>
         <ListItemIcon className={classes.listItemIcon}>
           <WrappedIcon>{item.icon}</WrappedIcon>

@@ -113,3 +113,9 @@ export const TIPOS_EQUIPOS = [
   {id: 'GRL', nombre: 'Uso General', estado: 1},
   {id: 'SEN', nombre: 'Señuelo', estado: 1},
 ];
+
+export const TIPOS_PRODUCTOS = [
+  {id: 'ADH', nombre: 'Adhesivo', estado: 1},
+  {id: 'ROT', nombre: 'Rotor', estado: 1},
+  {id: 'KIT', nombre: 'Kit', estado: 1},
+];

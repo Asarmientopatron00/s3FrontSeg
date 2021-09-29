@@ -23,8 +23,7 @@ const LabelItem = ({label}) => {
       button
       key={label.id}
       to={`/apps/todo/label/${label.alias}`}
-      component={NavLink}
-      activeClassName='active'>
+      component={NavLink}>
       <Box
         component='span'
         width={12}
