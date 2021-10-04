@@ -209,7 +209,7 @@ const SolicitudCotizacionForm = (props) => {
                 name='ciudad_origen_id'
                 inputValue={initialValues.ciudad_origen_id}
                 label='Ciudad Origen'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -221,7 +221,7 @@ const SolicitudCotizacionForm = (props) => {
                 name='ciudad_destino_id'
                 inputValue={initialValues.ciudad_destino_id}
                 label='Ciudad Destino'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -231,7 +231,7 @@ const SolicitudCotizacionForm = (props) => {
                 name='servicio_id'
                 inputValue={initialValues.servicio_id}
                 label='Servicio'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -241,7 +241,7 @@ const SolicitudCotizacionForm = (props) => {
                 name='tipo_servicio'
                 inputValue={initialValues.tipo_servicio}
                 label='Tipo Servicio'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

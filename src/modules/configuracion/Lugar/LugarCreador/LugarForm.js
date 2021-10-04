@@ -185,7 +185,7 @@ const LugarForm = (props) => {
               name='departamento_id'
               inputValue={initialValues.departamento_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -195,7 +195,7 @@ const LugarForm = (props) => {
               name='ciudad_id'
               inputValue={initialValues.ciudad_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -246,7 +246,7 @@ const LugarForm = (props) => {
               name='asociado_id'
               inputValue={initialValues.asociado_id}
               label='Asociado Negocio'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required={req}
               disabled={!req}

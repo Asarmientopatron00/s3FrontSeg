@@ -50,6 +50,8 @@ import OrdenServicioReducer from './OrdenServicioReducer';
 import OrdenServicioDocumentoReducer from './OrdenServicioDocumentoReducer';
 import InformacionEquipoReducer from './InformacionEquipoReducer';
 import ProductoReducer from './ProductoReducer';
+import PedidoReducer from './PedidoReducer';
+import DetallePedidoReducer from './DetallePedidoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -104,5 +106,7 @@ const reducers = (history) =>
     ordenServicioDocumentoReducer: OrdenServicioDocumentoReducer,
     informacionEquipoReducer: InformacionEquipoReducer,
     productoReducer: ProductoReducer,
+    pedidoReducer: PedidoReducer,
+    detallePedidoReducer: DetallePedidoReducer,
   });
 export default reducers;

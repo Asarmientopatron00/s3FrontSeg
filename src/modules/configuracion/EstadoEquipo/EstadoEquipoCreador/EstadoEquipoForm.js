@@ -122,7 +122,7 @@ const EstadoEquipoForm = (props) => {
               name='tipo'
               inputValue={initialValues.tipo}
               label='Tipo Estado'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

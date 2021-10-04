@@ -356,7 +356,6 @@ export const onGetRutas = (asociado_id) => {
 };
 
 export const onImport = (params, setActiveStep, setRows) => {
-  const {messages} = appIntl();
   return (dispatch) => {
     var formData = new FormData();
     formData.append('archivo', params['archivo']);

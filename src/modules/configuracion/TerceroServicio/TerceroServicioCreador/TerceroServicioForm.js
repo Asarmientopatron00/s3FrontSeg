@@ -212,7 +212,7 @@ const TerceroServicioForm = (props) => {
                 name='tipo'
                 inputValue={initialValues.tipo}
                 label='Tipo de Tercero'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -252,7 +252,7 @@ const TerceroServicioForm = (props) => {
                 name='tipo_documento_id'
                 inputValue={initialValues.tipo_documento_id}
                 label='Tipo de Documento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -348,7 +348,7 @@ const TerceroServicioForm = (props) => {
                 name='departamento_id'
                 inputValue={initialValues.departamento_id}
                 label='Departamento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -381,7 +381,7 @@ const TerceroServicioForm = (props) => {
                 name='ciudad_id'
                 inputValue={initialValues.ciudad_id}
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

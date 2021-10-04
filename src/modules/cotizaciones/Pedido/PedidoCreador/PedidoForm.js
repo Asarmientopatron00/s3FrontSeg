@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Box, Button} from '@material-ui/core';
 import {Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
@@ -6,7 +6,15 @@ import {makeStyles} from '@material-ui/core/styles';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import DetalleCotizacion from '../../DetalleCotizacion';
+import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
+import {useDispatch} from 'react-redux';
+import {
+  LONGITUD_MAXIMA_TELEFONOS,
+  LONGITUD_MINIMA_TELEFONOS,
+} from '../../../../shared/constants/Constantes';
+
+import DetallePedido from '../../DetallePedido';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -21,14 +29,14 @@ const MyTextField = (props) => {
   );
 };
 
-const MyAutocompleteSolicitud = (props) => {
+const MyAutocompleteAsociado = (props) => {
   const [field, meta, form] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   let myvalueAux = '';
   if (field.value !== '') {
     props.options.forEach((option) => {
       if (option.id === field.value) {
-        myvalueAux = option.numero_solicitud + '-' + option.nombre_empresa;
+        myvalueAux = option.numero_documento;
       }
     });
   }
@@ -53,15 +61,17 @@ const MyAutocompleteSolicitud = (props) => {
       }
       inputValue={myvalue}
       renderOption={(option) => {
-        return (
-          <React.Fragment>
-            {option.numero_solicitud + '-' + option.nombre_empresa}
-          </React.Fragment>
-        );
+        if (option.estado) {
+          return (
+            <React.Fragment>
+              {option.numero_documento + '-' + option.nombre}
+            </React.Fragment>
+          );
+        } else {
+          return '';
+        }
       }}
-      getOptionLabel={(option) =>
-        option.numero_solicitud + '-' + option.nombre_empresa
-      }
+      getOptionLabel={(option) => option.numero_documento + '-' + option.nombre}
       renderInput={(params) => {
         return (
           <TextField
@@ -80,14 +90,18 @@ const MyAutocompleteSolicitud = (props) => {
   );
 };
 
-const SolicitudCotizacionForm = (props) => {
+const PedidoForm = (props) => {
   const {
     accion,
     initialValues,
-    solicitudes,
+    asociados,
     values,
     setFieldValue,
     setDetalles,
+    ciudades,
+    departamentos,
+    user,
+    ESTADO_PEDIDOS,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -164,34 +178,53 @@ const SolicitudCotizacionForm = (props) => {
       backgroundColor: theme.palette.gray[200],
     },
   }));
-
   useEffect(() => {
-    let empresa = '';
-    let numero_solicitud_cotizacion = '';
     let asociado_id = '';
-    solicitudes.forEach((solicitud) => {
-      if (solicitud.id === values.solicitud_cotizacion_id) {
-        empresa = solicitud.nombre_empresa;
-        numero_solicitud_cotizacion = solicitud.numero_solicitud;
-        asociado_id = solicitud.asociado_id;
+    let asociado = '';
+    let departamento_id = '';
+    let ciudad_id = '';
+    let direccion = '';
+    let telefono = '';
+    let documento = '';
+    asociados.forEach((temporal) => {
+      if (temporal.id === values.asociado_id) {
+        asociado_id = temporal.id;
+        asociado = temporal.nombre;
+        departamento_id = temporal.infoPedido.departamento_id;
+        ciudad_id = temporal.infoPedido.ciudad_id;
+        direccion = temporal.infoPedido.direccion;
+        telefono = temporal.infoPedido.telefono;
+        documento = temporal.infoPedido.numero_documento;
       }
     });
 
-    if (asociado_id === null) {
-      setFieldValue('empresa_cotizacion', empresa);
-      setFieldValue('asociado_id', '');
+    if (asociado_id === '') {
+      setFieldValue('asociado', '');
     } else {
-      setFieldValue('asociado_id', asociado_id);
-      setFieldValue('empresa_cotizacion', '');
+      setFieldValue('asociado', asociado);
+      setFieldValue('departamento_entrega_id', departamento_id);
+      setFieldValue('ciudad_entrega_id', ciudad_id);
+      setFieldValue('direccion_entrega', direccion);
+      setFieldValue('telefono_entrega', telefono);
+      setFieldValue('documento', documento);
     }
-    setFieldValue('nombre_empresa', empresa);
-    setFieldValue('numero_solicitud_cotizacion', numero_solicitud_cotizacion);
-  }, [
-    values.solicitud_cotizacion_id,
-    setFieldValue,
-    solicitudes,
-    values.nombre_empresa,
-  ]);
+  }, [values.asociado_id, setFieldValue, asociados]);
+
+  const dispatch = useDispatch();
+
+  let onChangeDepartamento1 = useRef();
+  onChangeDepartamento1 = (id) => {
+    dispatch(ciudadColeccionLigera(id));
+    values.ciudad_entrega_id = '';
+  };
+
+  useEffect(() => {
+    if (values.departamento_entrega_id !== '') {
+      onChangeDepartamento1(values.departamento_entrega_id);
+    } else {
+      onChangeDepartamento1(0);
+    }
+  }, [values.departamento_entrega_id]);
 
   const classes = useStyles(props);
   return (
@@ -205,90 +238,155 @@ const SolicitudCotizacionForm = (props) => {
               mb={{xs: 4, xl: 6}}
               fontSize={20}
               fontWeight={Fonts.MEDIUM}>
-              Cotización
+              Pedidos Sellos
             </Box>
 
             <Box px={{md: 5, lg: 8, xl: 10}}>
               <Box className={classes.inputs_2}>
-                <MyAutocompleteSolicitud
-                  options={solicitudes.filter(
-                    (solicitud) =>
-                      (solicitud.estado &&
-                        solicitud.estado_solicitud_cotizacion === 'SOL') ||
-                      initialValues.solicitud_cotizacion_id === solicitud.id,
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Número Pedido'
+                  name='numero_pedido'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyAutocompleteAsociado
+                  options={asociados.filter(
+                    (asociado) =>
+                      asociado.estado ||
+                      initialValues.asociado_id === asociado.id,
                   )}
-                  name='solicitud_cotizacion_id'
-                  inputValue={initialValues.solicitud_cotizacion_id}
-                  label='Solicitud Cotización'
+                  name='asociado_id'
+                  inputValue={initialValues.asociado_id}
+                  label='Asociado de Negocio'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled || user.rol.tipo !== 'IN'}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label=' '
+                  name='asociado'
+                  disabled={true}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Fecha Pedido'
+                  name='fecha_pedido'
+                  disabled={true}
+                  type='date'
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Fecha Entrega'
+                  name='fecha_entrega_pedido'
+                  disabled={disabled}
+                  type='date'
+                  required
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+
+              <Box component='h6'>Dirección Entrega</Box>
+
+              <Box className={classes.inputs_2}>
+                <MyAutocomplete
+                  options={departamentos}
+                  name='departamento_entrega_id'
+                  inputValue={initialValues.departamento_entrega_id}
+                  label='Departamento'
                   //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
                 />
-                <MyTextField
+                <MyAutocomplete
+                  options={ciudades}
+                  name='ciudad_entrega_id'
+                  inputValue={initialValues.ciudad_entrega_id}
+                  label='Ciudad'
+                  //autoHighlight
                   className={classes.myTextField}
-                  label='Empresa'
-                  name='nombre_empresa'
-                  disabled={true}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-
-                <MyTextField
-                  className={classes.myTextField}
-                  label='Fecha Cotización'
-                  name='fecha_cotizacion'
-                  disabled={true}
-                  type='date'
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <MyTextField
-                  className={classes.myTextField}
-                  label='Fecha Vigencia Cotización'
-                  name='fecha_vigencia_cotizacion'
-                  disabled={disabled}
-                  type='date'
                   required
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <MyTextField
-                  className={classes.myTextField}
-                  label='Plazo pago(días)'
-                  name='plazo_pago_cotizacion'
                   disabled={disabled}
-                  required
-                  type='number'
-                />
-                <MyTextField
-                  className={classes.myTextField}
-                  label='Numero de Servicios Mes'
-                  name='numero_viajes_mes'
-                  disabled={disabled}
-                  required
-                  type='number'
                 />
               </Box>
-              <MyTextField
-                className={classes.myTextField}
-                label='Observaciones'
-                name='observaciones'
-                disabled={disabled}
-                multiline
-              />
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Dirección'
+                  name='direccion_entrega'
+                  disabled={disabled}
+                  required
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Telefono'
+                  name='telefono_entrega'
+                  disabled={disabled}
+                  required
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  inputProps={{
+                    maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                    minLength: LONGITUD_MINIMA_TELEFONOS,
+                  }}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Responsable'
+                  name='responsable_entrega'
+                  disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Observaciones'
+                  name='observaciones'
+                  disabled={disabled}
+                  multiline
+                />
+              </Box>
+              <Box className={classes.inputs_2}>
+                <MyAutocomplete
+                  options={ESTADO_PEDIDOS}
+                  name='estado_pedido'
+                  inputValue={initialValues.estado_pedido}
+                  label='Estado Pedido'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled || user.rol.tipo !== 'IN'}
+                />
+              </Box>
             </Box>
           </Box>
         </Box>
 
-        <DetalleCotizacion
-          empresa={values.nombre_empresa}
-          asociado_id={values.asociado_id}
-          fecha={values.fecha_cotizacion}
-          id={values.id ? values.id : 0}
+        <DetallePedido
+          numero_pedido={values.numero_pedido ? values.numero_pedido : 0}
+          fecha={values.fecha_pedido}
+          documento={values.documento}
+          asociado={values.asociado}
           accionDetalle={accion}
           setDetalles={setDetalles}
         />
@@ -308,7 +406,7 @@ const SolicitudCotizacionForm = (props) => {
             {/* <ListItem
               button
               component={NavLink}
-              to={'/cotizaciones'}
+              to={'/pedidos'}
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
             >
               <IntlMessages id='boton.cancel' />
@@ -316,7 +414,7 @@ const SolicitudCotizacionForm = (props) => {
 
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              href='/cotizaciones'>
+              href='/pedidos'>
               <IntlMessages id='boton.cancel' />
             </Button>
           </Box>
@@ -326,4 +424,4 @@ const SolicitudCotizacionForm = (props) => {
   );
 };
 
-export default SolicitudCotizacionForm;
+export default PedidoForm;

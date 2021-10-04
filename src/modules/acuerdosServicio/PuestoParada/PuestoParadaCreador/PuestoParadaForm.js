@@ -253,7 +253,7 @@ const PuestoParada = (props) => {
             name='departamento_id'
             inputValue={initialValues.departamento_id}
             label='Departamento'
-            autoHighlight
+            //autoHighlight
             className={classes.myTextField}
             required
             disabled={disabled}
@@ -264,7 +264,7 @@ const PuestoParada = (props) => {
             name='ciudad_id'
             inputValue={initialValues.ciudad_id}
             label='Ciudad'
-            autoHighlight
+            //autoHighlight
             className={classes.myTextField}
             required
             disabled={disabled}

@@ -123,7 +123,7 @@ const AprobacionCotizacionForm = (props) => {
               name='asociado_id'
               inputValue={initialValues.asociado_id}
               label='Asociado Negocio'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={initialValues.asociado_id !== ''}

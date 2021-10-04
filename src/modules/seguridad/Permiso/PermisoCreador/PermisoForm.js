@@ -167,7 +167,7 @@ const PermisoForm = (props) => {
               name='option_id'
               inputValue={initialValues.option_id}
               label='Opción del Sistema'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

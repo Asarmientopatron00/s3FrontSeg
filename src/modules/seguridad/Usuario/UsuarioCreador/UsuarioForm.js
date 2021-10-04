@@ -180,7 +180,7 @@ const UsuarioForm = (props) => {
               name='asociado_id'
               inputValue={initialValues.asociado_id}
               label='Asociado'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -211,7 +211,7 @@ const UsuarioForm = (props) => {
               name='rol_id'
               inputValue={initialValues.rol_id}
               label='Rol'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

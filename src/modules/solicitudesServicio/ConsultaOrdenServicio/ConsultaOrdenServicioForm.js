@@ -342,7 +342,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_instalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -351,7 +351,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_instalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -512,7 +512,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_desinstalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -521,7 +521,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_desinstalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />

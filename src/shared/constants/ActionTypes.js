@@ -342,7 +342,19 @@ export const SHOW_PRODUCTO = 'show_producto';
 export const UPDATE_PRODUCTO = 'update_producto';
 export const DELETE_PRODUCTO = 'delete_producto';
 export const CREATE_PRODUCTO = 'create_producto';
-
+export const GET_COLECCION_PEDIDO = 'get_coleccion_pedido';
+export const GET_COLECCION_LIGERA_PEDIDO = 'get_coleccion_ligera_pedido';
+export const SHOW_PEDIDO = 'show_pedido';
+export const UPDATE_PEDIDO = 'update_pedido';
+export const CREATE_PEDIDO = 'create_pedido';
+export const DELETE_PEDIDO = 'delete_pedido';
+export const GET_COLECCION_DETALLE_PEDIDO = 'get_coleccion_detalle_pedido';
+export const GET_COLECCION_LIGERA_DETALLE_PEDIDO =
+  'get_coleccion_ligera_detalle_pedido';
+export const SHOW_DETALLE_PEDIDO = 'show_detalle_pedido';
+export const UPDATE_DETALLE_PEDIDO = 'update_detalle_pedido';
+export const CREATE_DETALLE_PEDIDO = 'create_detalle_pedido';
+export const DELETE_DETALLE_PEDIDO = 'delete_detalle_pedido';
 //APP SETTING
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
 export const SET_INITIAL_PATH = 'set_initial_path';

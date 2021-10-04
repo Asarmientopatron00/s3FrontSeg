@@ -165,6 +165,7 @@ const ProductoForm = (props) => {
       baseStyle,
     ],
   );
+  console.log(values.tipo_producto);
   const [imagen, setImagen] = useState('');
   return (
     <Form
@@ -217,9 +218,9 @@ const ProductoForm = (props) => {
                 <MyAutocomplete
                   options={TIPOS_PRODUCTOS}
                   name='tipo_producto'
-                  inputValue={initialValues.tipo_producto}
+                  // inputValue={initialValues.tipo_producto}
                   label='Tipo Servicio'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}

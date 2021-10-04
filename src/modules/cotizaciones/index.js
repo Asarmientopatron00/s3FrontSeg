@@ -46,6 +46,21 @@ export const cotizacionConfig = [
         path: ['/productos'],
         component: React.lazy(() => import('./Producto')),
       },
+      {
+        exact: true,
+        path: '/pedidos',
+        component: React.lazy(() => import('./Pedido')),
+      },
+      {
+        exact: true,
+        path: ['/pedido/:accion/:id'],
+        component: React.lazy(() => import('./Pedido/PedidoCreador')),
+      },
+      {
+        exact: true,
+        path: ['/pedido/:accion'],
+        component: React.lazy(() => import('./Pedido/PedidoCreador')),
+      },
     ],
   },
 ];

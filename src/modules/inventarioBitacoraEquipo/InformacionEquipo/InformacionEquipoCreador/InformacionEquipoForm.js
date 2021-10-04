@@ -134,7 +134,7 @@ const InformacionEquipoForm = (props) => {
                 name='tipo_equipo'
                 inputValue={initialValues.tipo_equipo}
                 label='Tipo Equipo'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

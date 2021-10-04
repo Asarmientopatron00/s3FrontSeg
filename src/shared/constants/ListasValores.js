@@ -118,4 +118,22 @@ export const TIPOS_PRODUCTOS = [
   {id: 'ADH', nombre: 'Adhesivo', estado: 1},
   {id: 'ROT', nombre: 'Rotor', estado: 1},
   {id: 'KIT', nombre: 'Kit', estado: 1},
+  {id: 'Kccc', nombre: 'Kit', estado: 0},
+];
+
+export const ESTADO_PEDIDOS = [
+  {id: 'REG', nombre: 'Registrado', estado: 1},
+  {id: 'CON', nombre: 'Confirmado', estado: 1},
+  {id: 'FAC', nombre: 'Facturado', estado: 1},
+  {id: 'ANU', nombre: 'Anulado', estado: 1},
+];
+
+export const COLORES_EQUIPOS = [
+  {id: '1', nombre: 'Blanco', estado: 1},
+  {id: '2', nombre: 'Negro', estado: 1},
+  {id: '3', nombre: 'Azul', estado: 1},
+  {id: '4', nombre: 'Amarillo', estado: 1},
+  {id: '5', nombre: 'Rojo', estado: 1},
+  {id: '6', nombre: 'Gris', estado: 1},
+  {id: '7', nombre: 'Verde', estado: 1},
 ];

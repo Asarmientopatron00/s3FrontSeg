@@ -248,7 +248,7 @@ const AcuerdoServicioForm = (props) => {
                 name='asociado_id'
                 inputValue={initialValues.asociado_id}
                 label='Asociado de negocio'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
