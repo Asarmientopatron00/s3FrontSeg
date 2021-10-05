@@ -23,7 +23,6 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion, onDelete} from '../../../redux/actions/PedidoAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -596,9 +595,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Pedido = (props) => {
-  const [showForm, setShowForm] = useState(false);
-  const [accion, setAccion] = useState('ver');
-  const [pedidoSeleccionado, setPedidoSeleccionado] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -761,12 +757,6 @@ const Pedido = (props) => {
         }
       }),
     );
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setPedidoSeleccionado(0);
-    setAccion('ver');
   };
 
   const showAllColumns = () => {
@@ -1052,19 +1042,6 @@ const Pedido = (props) => {
           </Box>
         )}
       </Paper>
-
-      {/* {showForm ? (
-        <ConsultaPedidoCreador
-          showForm={showForm}
-          consultaPedido={pedidoSeleccionado}
-          accion={accion}
-          handleOnClose={handleOnClose}
-          updateColeccion={updateColeccion}
-          titulo={titulo}
-        />
-      ) : (
-        ''
-      )} */}
 
       <Popover
         id='popoverColumns'

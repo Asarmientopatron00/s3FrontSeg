@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -6,15 +6,14 @@ import {Scrollbar} from '../../../../@crema';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import DetalleCotizacionForm from './DetallePedidoForm';
+import DetallePedidoForm from './DetallePedidoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
-  CREATE_DETALLE_COTIZACION,
-  UPDATE_DETALLE_COTIZACION,
+  CREATE_DETALLE_PEDIDO,
+  UPDATE_DETALLE_PEDIDO,
 } from '../../../../shared/constants/ActionTypes';
-import {onGetDiasViajes} from '../../../../redux/actions/TarifaAction';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -52,7 +51,7 @@ const validationSchema = yup.object({
     .nullable(),
 });
 
-const DetalleCotizacionCreator = (props) => {
+const DetallePedidoCreator = (props) => {
   const {
     detallePedido,
     handleOnClose,
@@ -62,10 +61,9 @@ const DetalleCotizacionCreator = (props) => {
     fecha,
     rows,
     numero_pedido,
-    numeroPedidoAux,
-    setNumeroPedidoAux,
+    idAux,
+    setIdAux,
     COLORES_EQUIPOS,
-    TIPOS_PRODUCTOS,
     asociado,
     documento,
   } = props;
@@ -101,23 +99,19 @@ const DetalleCotizacionCreator = (props) => {
     }
   }, [selectedRow, accion]);
 
-  let dias_viajes = useRef();
-  dias_viajes = useSelector(({tarifaReducer}) => tarifaReducer.dias_viajes);
-
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
       rows.forEach((row, index) => {
-        if (row.id === detalleCotizacion) {
+        if (row.id === detallePedido) {
           setSelectedRow(row);
           setIndex(index);
         }
       });
     }
     if (accion === 'crear') {
-      dispatch(onGetDiasViajes());
       setSelectedRow();
     }
-  }, [dispatch, accion, detalleCotizacion, rows]);
+  }, [dispatch, accion, detallePedido, rows]);
   return (
     showForm && (
       <Dialog
@@ -136,79 +130,83 @@ const DetalleCotizacionCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
+              numero_pedido: selectedRow
+                ? selectedRow.numero_pedido
+                : numero_pedido,
               fecha: fecha,
-              empresa: empresa,
-              ciudad_origen_id: selectedRow
-                ? selectedRow.ciudad_origen_id
-                  ? selectedRow.ciudad_origen_id
+              asociado: asociado,
+              documento: documento,
+              codigo_producto: selectedRow
+                ? selectedRow.codigo_producto
+                  ? selectedRow.codigo_producto
                   : ''
                 : '',
-              ciudad_destino_id: selectedRow
-                ? selectedRow.ciudad_destino_id
-                  ? selectedRow.ciudad_destino_id
+              cantidad: selectedRow
+                ? selectedRow.cantidad
+                  ? selectedRow.cantidad
                   : ''
                 : '',
-              servicio_id: selectedRow
-                ? selectedRow.servicio_id
-                  ? selectedRow.servicio_id
+              color: selectedRow
+                ? selectedRow.color
+                  ? selectedRow.color
                   : ''
                 : '',
-              tipo_servicio: selectedRow ? selectedRow.tipo_servicio : '',
-              tipo_servicio_otro: selectedRow
-                ? selectedRow.tipo_servicio_otro
+              prefijo: selectedRow ? selectedRow.prefijo : '',
+              posfijo: selectedRow ? selectedRow.posfijo : '',
+              serie_inicial_articulo: selectedRow
+                ? selectedRow.serie_inicial_articulo
                 : '',
-              numero_dias_viaje: selectedRow
-                ? selectedRow.numero_dias_viaje
-                : dias_viajes,
-              valor_servicio: selectedRow ? selectedRow.valor_servicio : '',
-              valor_servicio_dia_adicional: selectedRow
-                ? selectedRow.valor_servicio_dia_adicional
+              serie_final_articulo: selectedRow
+                ? selectedRow.serie_final_articulo
                 : '',
-              cantidad_rutas: 0,
+              longitud_serial: selectedRow ? selectedRow.longitud_serial : '',
+              dimensiones: selectedRow ? selectedRow.dimensiones : '',
+              especificaciones: selectedRow ? selectedRow.especificaciones : '',
             }}
-            validationSchema={validationSchema}
+            // validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
               if (accion === 'crear') {
                 let newRow = {
-                  ciudad_origen_id: data.ciudad_origen_id,
-                  ciudad_destino_id: data.ciudad_destino_id,
-                  servicio_id: data.servicio_id,
-                  tipo_servicio: data.tipo_servicio,
-                  tipo_servicio_otro: data.tipo_servicio_otro,
-                  numero_dias_viaje: data.numero_dias_viaje,
-                  valor_servicio: data.valor_servicio,
-                  valor_servicio_dia_adicional:
-                    data.valor_servicio_dia_adicional,
-                  numero_cotizacion_servicio: id,
+                  producto_id: data.producto_id,
+                  cantidad: data.cantidad,
+                  color: data.color,
+                  prefijo: data.prefijo,
+                  posfijo: data.posfijo,
+                  serie_inicial_articulo: data.serie_inicial_articulo,
+                  serie_final_articulo: data.serie_final_articulo,
+                  longitud_serial: data.longitud_serial,
+                  dimensiones: data.dimensiones,
+                  numero_pedido: numero_pedido,
                   id: idAux,
                 };
 
                 setIdAux(idAux + 1);
 
-                ciudades.forEach((ciudad) => {
-                  if (ciudad.id === newRow.ciudad_origen_id) {
-                    newRow = {
-                      ...newRow,
-                      ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                  if (ciudad.id === newRow.ciudad_destino_id) {
-                    newRow = {
-                      ...newRow,
-                      ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                });
+                // ciudades.forEach((ciudad) => {
+                //   if (ciudad.id === newRow.codigo_producto) {
+                //     newRow = {
+                //       ...newRow,
+                //       ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
+                //     };
+                //   }
+                //   if (ciudad.id === newRow.ciudad_destino_id) {
+                //     newRow = {
+                //       ...newRow,
+                //       ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
+                //     };
+                //   }
+                // });
 
-                servicios.forEach((servicio) => {
-                  if (servicio.id === newRow.servicio_id) {
-                    newRow = {...newRow, servicio: servicio.nombre};
-                  }
-                });
+                // servicios.forEach((servicio) => {
+                //   if (servicio.id === newRow.servicio_id) {
+                //     newRow = {...newRow, servicio: servicio.nombre};
+                //   }
+                // });
 
-                dispatch({type: CREATE_DETALLE_COTIZACION, payload: newRow});
-                handleOnClose();
+                dispatch({type: CREATE_DETALLE_PEDIDO, payload: newRow});
+                console.log(newRow);
+                //handleOnClose();
               } else if (accion === 'editar') {
                 setSubmitting(true);
 
@@ -223,23 +221,22 @@ const DetalleCotizacionCreator = (props) => {
                 aux.valor_servicio_dia_adicional =
                   data.valor_servicio_dia_adicional;
 
-                ciudades.forEach((ciudad) => {
-                  if (ciudad.id === aux.ciudad_origen_id) {
-                    aux = {
-                      ...aux,
-                      ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                  if (ciudad.id === aux.ciudad_destino_id) {
-                    aux = {
-                      ...aux,
-                      ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                });
-
+                // ciudades.forEach((ciudad) => {
+                //   if (ciudad.id === aux.ciudad_origen_id) {
+                //     aux = {
+                //       ...aux,
+                //       ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
+                //     };
+                //   }
+                //   if (ciudad.id === aux.ciudad_destino_id) {
+                //     aux = {
+                //       ...aux,
+                //       ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
+                //     };
+                //   }
+                // });
                 dispatch({
-                  type: UPDATE_DETALLE_COTIZACION,
+                  type: UPDATE_DETALLE_PEDIDO,
                   payload: {aux, index},
                 });
                 handleOnClose();
@@ -247,17 +244,15 @@ const DetalleCotizacionCreator = (props) => {
               setSubmitting(false);
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <DetalleCotizacionForm
+              <DetallePedidoForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
                 titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
-                ciudades={ciudades}
-                servicios={servicios}
-                TIPOS_SERVICIOS={TIPOS_SERVICIOS}
-                asociado_id={asociado_id}
+                productos={productos}
+                COLORES_EQUIPOS={COLORES_EQUIPOS}
               />
             )}
           </Formik>
@@ -267,4 +262,4 @@ const DetalleCotizacionCreator = (props) => {
   );
 };
 
-export default DetalleCotizacionCreator;
+export default DetallePedidoCreator;

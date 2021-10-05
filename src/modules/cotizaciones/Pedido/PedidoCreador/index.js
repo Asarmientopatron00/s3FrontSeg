@@ -9,7 +9,6 @@ import {
   onCreate,
 } from '../../../../redux/actions/PedidoAction';
 import {onGetColeccionLigera} from '../../../../redux/actions/AsociadoAction';
-import {onGetColeccionLigera as coleccionLigeraCiudad} from '../../../../redux/actions/CiudadAction';
 import {onGetColeccionLigera as coleccionLigeraDepartamento} from '../../../../redux/actions/DepartamentoAction';
 import PedidoForm from './PedidoForm';
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';

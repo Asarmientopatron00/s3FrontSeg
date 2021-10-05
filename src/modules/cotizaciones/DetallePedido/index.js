@@ -168,9 +168,9 @@ const cells = [
     mostrarInicio: false,
   },
   {
-    id: 'observaciones',
+    id: 'especificaciones',
     typeHead: 'string',
-    label: 'Observaciones',
+    label: 'Especificaciones',
     value: (value) => value,
     align: 'left',
     mostrarInicio: false,
@@ -563,7 +563,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DetallePedido = (props) => {
-  const [numeroPedidoAux, setNumeroPedidoAux] = useState(-1000);
+  const [idAux, setIdAux] = useState(-1000);
   const {
     id,
     numero_pedido,
@@ -949,14 +949,13 @@ const DetallePedido = (props) => {
           handleOnClose={handleOnClose}
           titulo='Detalle Pedido'
           numero_pedido={numero_pedido}
-          numeroPedidoAux={numeroPedidoAux}
+          idAux={idAux}
           fecha={fecha}
           asociado={asociado}
           documento={documento}
           rows={rows}
-          setNumeroPedidoAux={setNumeroPedidoAux}
+          setIdAux={setIdAux}
           COLORES_EQUIPOS={COLORES_EQUIPOS}
-          TIPOS_PRODUCTOS={TIPOS_PRODUCTOS}
           productos={productos}
         />
       ) : (

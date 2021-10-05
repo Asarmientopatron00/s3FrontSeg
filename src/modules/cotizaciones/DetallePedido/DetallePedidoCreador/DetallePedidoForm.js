@@ -25,14 +25,14 @@ const MyTextField = (props) => {
   );
 };
 
-const MyAutocompleteCiudad = (props) => {
+const MyAutocompleteProducto = (props) => {
   const [field, meta, form] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   let myvalueAux = '';
   if (field.value !== '') {
     props.options.forEach((option) => {
       if (option.id === field.value) {
-        myvalueAux = option.nombre + '-' + option.departamento;
+        myvalueAux = option.codigo_producto;
       }
     });
   }
@@ -57,13 +57,17 @@ const MyAutocompleteCiudad = (props) => {
       }
       inputValue={myvalue}
       renderOption={(option) => {
-        return (
-          <React.Fragment>
-            {option.nombre + '-' + option.departamento}
-          </React.Fragment>
-        );
+        if (option.estado) {
+          return (
+            <React.Fragment>
+              {option.codigo_producto + '-' + option.nombre}
+            </React.Fragment>
+          );
+        } else {
+          return '';
+        }
       }}
-      getOptionLabel={(option) => option.nombre + '-' + option.departamento}
+      getOptionLabel={(option) => option.codigo_producto + '-' + option.nombre}
       renderInput={(params) => {
         return (
           <TextField
@@ -82,18 +86,16 @@ const MyAutocompleteCiudad = (props) => {
   );
 };
 
-const DetalleCotizacionForm = (props) => {
+const DetallePedidoForm = (props) => {
   const {
     handleOnClose,
     accion,
     initialValues,
-    ciudades,
-    servicios,
     titulo,
     values,
     setFieldValue,
-    TIPOS_SERVICIOS,
-    asociado_id,
+    productos,
+    COLORES_EQUIPOS,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -182,14 +184,12 @@ const DetalleCotizacionForm = (props) => {
       values.ciudad_destino_id !== '' &&
       typeof values.ciudad_destino_id === 'number' &&
       values.servicio_id !== '' &&
-      values.tipo_servicio !== '' &&
-      asociado_id !== ''
+      values.tipo_servicio !== ''
     ) {
       dispatch(
         buscarTarifa(
           values.ciudad_origen_id,
           values.ciudad_destino_id,
-          asociado_id,
           values.servicio_id,
           values.tipo_servicio,
         ),
@@ -200,7 +200,6 @@ const DetalleCotizacionForm = (props) => {
     values.ciudad_origen_id,
     values.ciudad_destino_id,
     values.servicio_id,
-    asociado_id,
     values.tipo_servicio,
   ]);
 
@@ -248,8 +247,8 @@ const DetalleCotizacionForm = (props) => {
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Asociado Negocio'
-                name='empresa'
+                label='Número Pedido'
+                name='numero_pedido'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -264,45 +263,63 @@ const DetalleCotizacionForm = (props) => {
                   shrink: true,
                 }}
               />
-
-              <MyAutocompleteCiudad
-                options={ciudades}
-                name='ciudad_origen_id'
-                inputValue={initialValues.ciudad_origen_id}
-                label='Ciudad Origen'
+              <MyTextField
+                className={classes.myTextField}
+                label='Asociado Negocio'
+                name='documento'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Asociado Negocio'
+                name='asociado'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyAutocompleteProducto
+                options={productos}
+                name='producto_id'
+                inputValue={initialValues.codigo_producto}
+                label='Producto'
                 //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
               />
-
-              <MyAutocompleteCiudad
-                options={ciudades}
-                name='ciudad_destino_id'
-                inputValue={initialValues.ciudad_destino_id}
-                label='Ciudad Destino'
-                //autoHighlight
+              <MyTextField
                 className={classes.myTextField}
-                required
-                disabled={disabled}
+                label=' '
+                name='producto'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
+            </Box>
 
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Cantidad'
+                name='cantidad'
+                disabled={disabled}
+                required
+              />
+            </Box>
+
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyAutocomplete
-                options={servicios}
-                name='servicio_id'
-                inputValue={initialValues.servicio_id}
-                label='Servicio'
-                //autoHighlight
-                className={classes.myTextField}
-                required
-                disabled={disabled}
-              />
-
-              <MyAutocomplete
-                options={TIPOS_SERVICIOS}
-                name='tipo_servicio'
-                inputValue={initialValues.tipo_servicio}
-                label='Tipo Servicio'
+                options={COLORES_EQUIPOS}
+                name='color'
+                inputValue={initialValues.color}
+                label='Color'
                 //autoHighlight
                 className={classes.myTextField}
                 required
@@ -310,39 +327,51 @@ const DetalleCotizacionForm = (props) => {
               />
             </Box>
 
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Prefijo'
+                name='prefijo'
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Posfijo'
+                name='posfijo'
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Serie Inicial'
+                name='serie_inicial_articulo'
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Serie Final'
+                name='serie_final_articulo'
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Longitud Serial'
+                name='longitud_serial'
+                disabled={disabled}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Dimensiones'
+                name='dimensiones'
+                disabled={disabled}
+                multiline
+              />
+            </Box>
             <MyTextField
               className={classes.myTextField}
-              label='Tipo Servicio Otro'
-              name='tipo_servicio_otro'
-              disabled={disabled || values.tipo_servicio !== 'OTR'}
-              required={values.tipo_servicio === 'OTR'}
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Número Dias Viaje'
-              name='numero_dias_viaje'
+              label='Especificaciones'
+              name='especificaciones'
               disabled={disabled}
-              type='number'
-              required
             />
-
-            <Box className={classes.inputs_2} minHeight='80px'>
-              <MyTextField
-                className={classes.myTextField}
-                label='Valor Servicio'
-                name='valor_servicio'
-                disabled={disabled}
-                required
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Valor Servicio Dia Adicional'
-                name='valor_servicio_dia_adicional'
-                disabled={disabled}
-              />
-            </Box>
           </Box>
         </Box>
       </Scrollbar>
@@ -367,4 +396,4 @@ const DetalleCotizacionForm = (props) => {
   );
 };
 
-export default DetalleCotizacionForm;
+export default DetallePedidoForm;
