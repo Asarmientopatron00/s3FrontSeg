@@ -21,34 +21,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const validationSchema = yup.object({
-  ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup
-    .string()
-    .required('Requerido')
-    .notOneOf(
-      [yup.ref('ciudad_origen_id')],
-      'Ciudad de destino debe ser diferente a ciudad de origen',
-    )
-    .when(['cantidad_rutas', 'ciudad_origen_id'], {
-      is: (cantidad_rutas, ciudad_origen_id, ciudad_destino_id) =>
-        cantidad_rutas === 0 && ciudad_origen_id !== ciudad_destino_id,
-      then: yup.string().oneOf([-1], 'La ruta seleccionada no existe'),
-    }),
-  servicio_id: yup.string().required('Requerido'),
-  tipo_servicio: yup.string().required('Requerido'),
-  tipo_servicio_otro: yup
-    .string()
-    .nullable()
-    .when('tipo_servicio', {
-      is: 'OTR',
-      then: yup.string().required('Requerido'),
-    }),
-  numero_dias_viaje: yup.number().required('Requerido'),
-  valor_servicio: yup.string().required('Requerido'),
-  valor_tarifa_dia_adicional: yup
+  producto_id: yup.string().required('Requerido'),
+  cantidad: yup
     .number()
     .typeError(mensajeValidacion('numero'))
-    .nullable(),
+    .required('Requerido'),
+  prefijo: yup.string().max(128, mensajeValidacion('max', 128)).nullable(),
+  posfijo: yup.string().max(128, mensajeValidacion('max', 128)).nullable(),
+  dimensiones: yup.string().max(128, mensajeValidacion('max', 128)).nullable(),
 });
 
 const DetallePedidoCreator = (props) => {
@@ -136,9 +116,9 @@ const DetallePedidoCreator = (props) => {
               fecha: fecha,
               asociado: asociado,
               documento: documento,
-              codigo_producto: selectedRow
-                ? selectedRow.codigo_producto
-                  ? selectedRow.codigo_producto
+              producto_id: selectedRow
+                ? selectedRow.producto_id
+                  ? selectedRow.producto_id
                   : ''
                 : '',
               cantidad: selectedRow
@@ -148,7 +128,7 @@ const DetallePedidoCreator = (props) => {
                 : '',
               color: selectedRow
                 ? selectedRow.color
-                  ? selectedRow.color
+                  ? String(selectedRow.color)
                   : ''
                 : '',
               prefijo: selectedRow ? selectedRow.prefijo : '',
@@ -163,7 +143,7 @@ const DetallePedidoCreator = (props) => {
               dimensiones: selectedRow ? selectedRow.dimensiones : '',
               especificaciones: selectedRow ? selectedRow.especificaciones : '',
             }}
-            // validationSchema={validationSchema}
+            validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
               if (accion === 'crear') {
@@ -183,58 +163,43 @@ const DetallePedidoCreator = (props) => {
 
                 setIdAux(idAux + 1);
 
-                // ciudades.forEach((ciudad) => {
-                //   if (ciudad.id === newRow.codigo_producto) {
-                //     newRow = {
-                //       ...newRow,
-                //       ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                //     };
-                //   }
-                //   if (ciudad.id === newRow.ciudad_destino_id) {
-                //     newRow = {
-                //       ...newRow,
-                //       ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
-                //     };
-                //   }
-                // });
-
-                // servicios.forEach((servicio) => {
-                //   if (servicio.id === newRow.servicio_id) {
-                //     newRow = {...newRow, servicio: servicio.nombre};
-                //   }
-                // });
+                productos.forEach((producto) => {
+                  if (producto.id === newRow.producto_id) {
+                    newRow = {
+                      ...newRow,
+                      producto: producto.nombre,
+                      codigo_producto: producto.codigo_producto,
+                      tipo_producto: producto.tipo_producto,
+                    };
+                  }
+                });
 
                 dispatch({type: CREATE_DETALLE_PEDIDO, payload: newRow});
-                console.log(newRow);
-                //handleOnClose();
+                handleOnClose();
               } else if (accion === 'editar') {
                 setSubmitting(true);
 
                 let aux = selectedRow;
-                aux.ciudad_origen_id = data.ciudad_origen_id;
-                aux.ciudad_destino_id = data.ciudad_destino_id;
-                aux.servicio_id = data.servicio_id;
-                aux.tipo_servicio = data.tipo_servicio;
-                aux.tipo_servicio_otro = data.tipo_servicio_otro;
-                aux.numero_dias_viaje = data.numero_dias_viaje;
-                aux.valor_servicio = data.valor_servicio;
-                aux.valor_servicio_dia_adicional =
-                  data.valor_servicio_dia_adicional;
+                aux.producto_id = data.producto_id;
+                aux.cantidad = data.cantidad;
+                aux.color = data.color;
+                aux.prefijo = data.prefijo;
+                aux.posfijo = data.posfijo;
+                aux.serie_inicial_articulo = data.serie_inicial_articulo;
+                aux.serie_final_articulo = data.serie_final_articulo;
+                aux.longitud_serial = data.longitud_serial;
+                aux.dimensiones = data.dimensiones;
 
-                // ciudades.forEach((ciudad) => {
-                //   if (ciudad.id === aux.ciudad_origen_id) {
-                //     aux = {
-                //       ...aux,
-                //       ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                //     };
-                //   }
-                //   if (ciudad.id === aux.ciudad_destino_id) {
-                //     aux = {
-                //       ...aux,
-                //       ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
-                //     };
-                //   }
-                // });
+                productos.forEach((producto) => {
+                  if (producto.id === aux.producto_id) {
+                    aux = {
+                      ...aux,
+                      producto: producto.nombre,
+                      codigo_producto: producto.codigo_producto,
+                      tipo_producto: producto.tipo_producto,
+                    };
+                  }
+                });
                 dispatch({
                   type: UPDATE_DETALLE_PEDIDO,
                   payload: {aux, index},

@@ -153,14 +153,24 @@ const PedidoCreator = (props) => {
             : '',
           estado_pedido: selectedRow ? selectedRow.estado_pedido : 'REG',
           estado: selectedRow ? (selectedRow.estado === 1 ? '1' : '0') : '1',
+          documento: selectedRow
+            ? selectedRow.asociado
+              ? selectedRow.asociado.numero_documento
+              : ''
+            : '',
+          asociado: selectedRow
+            ? selectedRow.asociado
+              ? selectedRow.asociado.nombre
+              : ''
+            : '',
         }}
         validationSchema={validationSchema}
         onSubmit={(data, {setSubmitting, resetForm, setFieldError}) => {
           setSubmitting(true);
 
-          // if (detalles.length === 0) {
-          //   return;
-          // }
+          if (detalles.length === 0) {
+            return;
+          }
 
           if (accion === 'crear') {
             dispatch(onCreate(data, handleOnClose, detalles));

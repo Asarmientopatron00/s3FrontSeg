@@ -446,17 +446,19 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={tipoFiltro}
               select>
-              {TIPOS_PRODUCTOS.map((tipo) => {
-                return (
-                  <MenuItem
-                    value={tipo.id}
-                    key={tipo.id}
-                    id={tipo.id}
-                    className={classes.pointer}>
-                    {tipo.nombre}
-                  </MenuItem>
-                );
-              })}
+              {TIPOS_PRODUCTOS.filter((tipo) => tipo.estado === 1).map(
+                (tipo) => {
+                  return (
+                    <MenuItem
+                      value={tipo.id}
+                      key={tipo.id}
+                      id={tipo.id}
+                      className={classes.pointer}>
+                      {tipo.nombre}
+                    </MenuItem>
+                  );
+                },
+              )}
             </TextField>
           </Box>
         </>

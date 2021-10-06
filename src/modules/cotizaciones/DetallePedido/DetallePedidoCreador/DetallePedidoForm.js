@@ -8,10 +8,6 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
-import {onBuscar} from '../../../../redux/actions/RutaAction';
-import {onBuscar as buscarTarifa} from '../../../../redux/actions/TarifaAction';
-import {useDispatch, useSelector} from 'react-redux';
-import {CLEAN_RUTA} from '../../../../shared/constants/ActionTypes';
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -46,11 +42,16 @@ const MyAutocompleteProducto = (props) => {
     <Autocomplete
       selectOnFocus={false}
       openOnFocus
-      onKeyDown={(e) =>
-        e.key === 'Backspace' && typeof field.value === 'number'
-          ? form.setValue('')
-          : ''
-      }
+      onKeyDown={(e) => {
+        if (e.key === 'Backspace') {
+          props.options.forEach((option) => {
+            console.log(field.value);
+            if (option.id === field.value) {
+              form.setValue('');
+            }
+          });
+        }
+      }}
       {...props}
       onChange={(event, newValue, reasons, details, trial) =>
         newValue ? form.setValue(newValue.id) : form.setValue('')
@@ -67,7 +68,7 @@ const MyAutocompleteProducto = (props) => {
           return '';
         }
       }}
-      getOptionLabel={(option) => option.codigo_producto + '-' + option.nombre}
+      getOptionLabel={(option) => option.codigo_producto}
       renderInput={(params) => {
         return (
           <TextField
@@ -103,6 +104,14 @@ const DetallePedidoForm = (props) => {
       setDisabled(true);
     }
   }, [accion]);
+
+  useEffect(() => {
+    if (values.cantidad > 0 && values.serie_inicial_articulo > 0)
+      setFieldValue(
+        'serie_final_articulo',
+        values.cantidad + values.serie_inicial_articulo,
+      );
+  }, [values.cantidad, values.serie_inicial_articulo]);
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
@@ -164,72 +173,15 @@ const DetallePedidoForm = (props) => {
   }));
 
   const classes = useStyles(props);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      values.ciudad_origen_id !== '' &&
-      typeof values.ciudad_origen_id === 'number' &&
-      values.ciudad_destino_id !== '' &&
-      typeof values.ciudad_destino_id === 'number'
-    ) {
-      dispatch(onBuscar(values.ciudad_origen_id, values.ciudad_destino_id));
-    }
-  }, [dispatch, values.ciudad_origen_id, values.ciudad_destino_id]);
-
-  useEffect(() => {
-    if (
-      values.ciudad_origen_id !== '' &&
-      typeof values.ciudad_origen_id === 'number' &&
-      values.ciudad_destino_id !== '' &&
-      typeof values.ciudad_destino_id === 'number' &&
-      values.servicio_id !== '' &&
-      values.tipo_servicio !== ''
-    ) {
-      dispatch(
-        buscarTarifa(
-          values.ciudad_origen_id,
-          values.ciudad_destino_id,
-          values.servicio_id,
-          values.tipo_servicio,
-        ),
-      );
-    }
-  }, [
-    dispatch,
-    values.ciudad_origen_id,
-    values.ciudad_destino_id,
-    values.servicio_id,
-    values.tipo_servicio,
-  ]);
-
-  const cantidad_rutas = useSelector(
-    ({rutaReducer}) => rutaReducer.cantidadRutas,
-  );
-
-  useEffect(() => {
-    setFieldValue('cantidad_rutas', cantidad_rutas);
-  }, [cantidad_rutas, setFieldValue]);
-
-  const tarifa = useSelector(({tarifaReducer}) => tarifaReducer.valor_tarifa);
-
-  useEffect(() => {
-    if (accion === 'crear') {
-      setFieldValue('valor_servicio', tarifa);
-    }
-  }, [tarifa, accion, setFieldValue]);
-
-  useEffect(() => {
-    return () => {
-      dispatch({type: CLEAN_RUTA});
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (values.tipo_servicio !== 'OTR') {
-      setFieldValue('tipo_servicio_otro', '');
-    }
-  }, [values.tipo_servicio, setFieldValue]);
+    setFieldValue('producto', '');
+    productos.forEach((producto) => {
+      if (producto.id === values.producto_id) {
+        setFieldValue('producto', producto.nombre);
+      }
+    });
+  }, [values.producto_id, productos, setFieldValue]);
 
   return (
     <Form className='' noValidate autoComplete='off'>
@@ -274,7 +226,7 @@ const DetallePedidoForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Asociado Negocio'
+                label=' '
                 name='asociado'
                 disabled={true}
                 InputLabelProps={{
@@ -286,7 +238,7 @@ const DetallePedidoForm = (props) => {
               <MyAutocompleteProducto
                 options={productos}
                 name='producto_id'
-                inputValue={initialValues.codigo_producto}
+                inputValue={initialValues.producto_id}
                 label='Producto'
                 //autoHighlight
                 className={classes.myTextField}
@@ -311,6 +263,7 @@ const DetallePedidoForm = (props) => {
                 name='cantidad'
                 disabled={disabled}
                 required
+                type='number'
               />
             </Box>
 
@@ -322,7 +275,6 @@ const DetallePedidoForm = (props) => {
                 label='Color'
                 //autoHighlight
                 className={classes.myTextField}
-                required
                 disabled={disabled}
               />
             </Box>
@@ -345,18 +297,21 @@ const DetallePedidoForm = (props) => {
                 label='Serie Inicial'
                 name='serie_inicial_articulo'
                 disabled={disabled}
+                type='number'
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Serie Final'
                 name='serie_final_articulo'
                 disabled={disabled}
+                type='number'
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Longitud Serial'
                 name='longitud_serial'
                 disabled={disabled}
+                type='number'
               />
               <MyTextField
                 className={classes.myTextField}
@@ -371,6 +326,7 @@ const DetallePedidoForm = (props) => {
               label='Especificaciones'
               name='especificaciones'
               disabled={disabled}
+              multiline
             />
           </Box>
         </Box>

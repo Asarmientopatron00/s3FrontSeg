@@ -106,7 +106,9 @@ const cells = [
     typeHead: 'string',
     label: 'Color',
     value: (value) =>
-      COLORES_EQUIPOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
+      COLORES_EQUIPOS.map((TIPO) =>
+        TIPO.id === String(value) ? TIPO.nombre : '',
+      ),
     align: 'left',
     mostrarInicio: true,
   },
@@ -565,7 +567,6 @@ const useStyles = makeStyles((theme) => ({
 const DetallePedido = (props) => {
   const [idAux, setIdAux] = useState(-1000);
   const {
-    id,
     numero_pedido,
     fecha,
     documento,
@@ -631,9 +632,16 @@ const DetallePedido = (props) => {
 
   useEffect(() => {
     if (accionDetalle !== 'crear') {
-      dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, id));
+      dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, numero_pedido));
     }
-  }, [dispatch, page, rowsPerPage, orderByToSend, id, accionDetalle]);
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    orderByToSend,
+    numero_pedido,
+    accionDetalle,
+  ]);
 
   useEffect(() => {
     setDetalles(rows);

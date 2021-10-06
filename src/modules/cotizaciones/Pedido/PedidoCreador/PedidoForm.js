@@ -104,6 +104,7 @@ const PedidoForm = (props) => {
     ESTADO_PEDIDOS,
   } = props;
   const [disabled, setDisabled] = useState(false);
+  const [cambioAsociado, setCambioAsociado] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
@@ -190,11 +191,20 @@ const PedidoForm = (props) => {
       if (temporal.id === values.asociado_id) {
         asociado_id = temporal.id;
         asociado = temporal.nombre;
-        departamento_id = temporal.infoPedido.departamento_id;
-        ciudad_id = temporal.infoPedido.ciudad_id;
-        direccion = temporal.infoPedido.direccion;
-        telefono = temporal.infoPedido.telefono;
-        documento = temporal.infoPedido.numero_documento;
+        departamento_id = temporal.infoPedido.departamento_id
+          ? temporal.infoPedido.departamento_id
+          : '';
+        ciudad_id = temporal.infoPedido.ciudad_id
+          ? temporal.infoPedido.ciudad_id
+          : '';
+        direccion = temporal.infoPedido.direccion
+          ? temporal.infoPedido.direccion
+          : '';
+        telefono = temporal.infoPedido.telefono
+          ? temporal.infoPedido.telefono
+          : '';
+        documento = temporal.numero_documento;
+        setCambioAsociado(true);
       }
     });
 
@@ -215,7 +225,11 @@ const PedidoForm = (props) => {
   let onChangeDepartamento1 = useRef();
   onChangeDepartamento1 = (id) => {
     dispatch(ciudadColeccionLigera(id));
-    values.ciudad_entrega_id = '';
+    if (!cambioAsociado) {
+      values.ciudad_entrega_id = '';
+    } else {
+      setCambioAsociado(false);
+    }
   };
 
   useEffect(() => {

@@ -118,7 +118,6 @@ export const TIPOS_PRODUCTOS = [
   {id: 'ADH', nombre: 'Adhesivo', estado: 1},
   {id: 'ROT', nombre: 'Rotor', estado: 1},
   {id: 'KIT', nombre: 'Kit', estado: 1},
-  {id: 'Kccc', nombre: 'Kit', estado: 0},
 ];
 
 export const ESTADO_PEDIDOS = [
