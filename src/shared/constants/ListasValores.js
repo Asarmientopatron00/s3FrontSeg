@@ -110,7 +110,7 @@ export const ESTADOS_ORDEN_SERVICIO = [
 ];
 
 export const TIPOS_EQUIPOS = [
-  {id: 'GRL', nombre: 'Uso General', estado: 1},
+  {id: 'DET', nombre: 'DETC', estado: 1},
   {id: 'SEN', nombre: 'Señuelo', estado: 1},
 ];
 

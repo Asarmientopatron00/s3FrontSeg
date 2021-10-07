@@ -100,6 +100,8 @@ const PedidoCreator = (props) => {
       ),
   });
 
+  const numPedidoCopiar = selectedRow ? selectedRow.numero_pedido : '';
+
   const user = useAuthUser();
   const [detalles, setDetalles] = useState();
   return (
@@ -127,12 +129,18 @@ const PedidoCreator = (props) => {
                 ? selectedRow.asociado_id
                 : ''
               : '',
-          fecha_pedido: selectedRow
-            ? selectedRow.fecha_pedido
-            : format(new Date(Date.now()), 'yyyy-MM-dd'),
-          fecha_entrega_pedido: selectedRow
-            ? selectedRow.fecha_entrega_pedido
-            : '',
+          fecha_pedido:
+            accion === 'copiar'
+              ? format(new Date(Date.now()), 'yyyy-MM-dd')
+              : selectedRow
+              ? selectedRow.fecha_pedido
+              : format(new Date(Date.now()), 'yyyy-MM-dd'),
+          fecha_entrega_pedido:
+            accion === 'copiar'
+              ? ''
+              : selectedRow
+              ? selectedRow.fecha_entrega_pedido
+              : '',
           departamento_entrega_id: selectedRow
             ? selectedRow.departamento_entrega_id
               ? selectedRow.departamento_entrega_id
@@ -191,7 +199,8 @@ const PedidoCreator = (props) => {
 
             return;
           }
-
+          console.log(data);
+          console.log(detalles);
           if ((accion === 'crear') | (accion === 'copiar')) {
             dispatch(onCreate(data, handleOnClose, detalles));
           } else if (accion === 'editar') {
@@ -213,6 +222,7 @@ const PedidoCreator = (props) => {
             ciudades={ciudades}
             user={user}
             ESTADO_PEDIDOS={ESTADO_PEDIDOS}
+            numPedidoCopiar={numPedidoCopiar}
           />
         )}
       </Formik>

@@ -111,7 +111,7 @@ const DetallePedidoForm = (props) => {
         'serie_final_articulo',
         values.cantidad + values.serie_inicial_articulo,
       );
-  }, [values.cantidad, values.serie_inicial_articulo]);
+  }, [values.cantidad, values.serie_inicial_articulo, setFieldValue]);
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',

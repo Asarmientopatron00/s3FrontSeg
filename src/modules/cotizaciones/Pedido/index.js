@@ -6,6 +6,7 @@ import {lighten, makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
+import {SvgIcon} from '@material-ui/core';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 // import TablePagination from '@material-ui/core/TablePagination';
@@ -23,8 +24,6 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-// import CopyAllIcon from '@material-ui/icons/CopyAll';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion, onDelete} from '../../../redux/actions/PedidoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -93,7 +92,7 @@ const cells = [
     mostrarInicio: false,
   },
   {
-    id: 'numero_documento',
+    id: 'documento',
     typeHead: 'numeric',
     label: 'Documento',
     value: (value) => value,
@@ -948,8 +947,17 @@ const Pedido = (props) => {
                                 href={'/pedido/copiar/' + row.id}>
                                 <Tooltip
                                   title={<IntlMessages id='boton.copiar' />}>
-                                  <FilterListIcon
-                                    className={`${classes.generalIcons} ${classes.enviarIcon}`}></FilterListIcon>
+                                  {/* <FilterListIcon */}
+                                  {/* className={`${classes.generalIcons} ${classes.enviarIcon}`}></FilterListIcon> */}
+                                  <SvgIcon
+                                    className={`${classes.generalIcons} ${classes.enviarIcon}`}
+                                    viewBox='0 0 24 24'>
+                                    <path
+                                      path
+                                      fill='currentColor'
+                                      d='M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'
+                                    />
+                                  </SvgIcon>
                                 </Tooltip>
                               </Box>
                             )}

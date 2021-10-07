@@ -59,16 +59,10 @@ const RutaControlCreator = (props) => {
 
   let validationSchema = yup.object({
     tipo_proceso: yup.string().required('Requerido'),
-    nombre: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
+    nombre: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
     departamento_id: yup.string().required('Requerido'),
     ciudad_id: yup.string().required('Requerido'),
-    direccion: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
+    direccion: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
     tipo_documento_id: yup.string().required('Requerido'),
     numero_documento: yup
       .string()

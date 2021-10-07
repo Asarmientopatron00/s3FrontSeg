@@ -252,7 +252,6 @@ const RutaControl = (props) => {
             label='Nombre Lugar'
             name='nombre'
             disabled={disabled}
-            required
           />
 
           <MyTextField
@@ -260,7 +259,6 @@ const RutaControl = (props) => {
             label='Dirección Lugar'
             name='direccion'
             disabled={disabled}
-            required
           />
 
           <Box component='h3'>Información persona encargada:</Box>

@@ -573,6 +573,7 @@ const DetallePedido = (props) => {
     accionDetalle,
     setDetalles,
     asociado,
+    numPedidoCopiar,
   } = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
@@ -632,7 +633,15 @@ const DetallePedido = (props) => {
 
   useEffect(() => {
     if (accionDetalle !== 'crear') {
-      dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, numero_pedido));
+      if (accionDetalle === 'copiar') {
+        dispatch(
+          onGetColeccion(page, rowsPerPage, orderByToSend, numPedidoCopiar),
+        );
+      } else {
+        dispatch(
+          onGetColeccion(page, rowsPerPage, orderByToSend, numero_pedido),
+        );
+      }
     }
   }, [
     dispatch,
@@ -641,10 +650,20 @@ const DetallePedido = (props) => {
     orderByToSend,
     numero_pedido,
     accionDetalle,
+    numPedidoCopiar,
   ]);
 
   useEffect(() => {
-    setDetalles(rows);
+    setDetalles(
+      rows.map((row) => {
+        if (accionDetalle === 'copiar') {
+          setIdAux(idAux + 1);
+          return {...row, id: idAux, numero_pedido: ''};
+        } else {
+          return row;
+        }
+      }),
+    );
   }, [rows, setDetalles]);
 
   useEffect(() => {

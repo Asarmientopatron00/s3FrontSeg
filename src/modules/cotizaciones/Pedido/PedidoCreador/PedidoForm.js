@@ -102,6 +102,7 @@ const PedidoForm = (props) => {
     departamentos,
     user,
     ESTADO_PEDIDOS,
+    numPedidoCopiar,
   } = props;
   const [disabled, setDisabled] = useState(false);
   const [cambioAsociado, setCambioAsociado] = useState(false);
@@ -397,12 +398,19 @@ const PedidoForm = (props) => {
         </Box>
 
         <DetallePedido
-          numero_pedido={values.numero_pedido ? values.numero_pedido : 0}
+          numero_pedido={
+            accion === 'copiar'
+              ? ''
+              : values.numero_pedido
+              ? values.numero_pedido
+              : 0
+          }
           fecha={values.fecha_pedido}
           documento={values.documento}
           asociado={values.asociado}
           accionDetalle={accion}
           setDetalles={setDetalles}
+          numPedidoCopiar={numPedidoCopiar}
         />
 
         <Box className={classes.marco}>
