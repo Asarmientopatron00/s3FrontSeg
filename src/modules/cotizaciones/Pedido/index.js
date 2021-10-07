@@ -23,7 +23,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-// import FilterListIcon from '@material-ui/icons/FilterList';
+// import CopyAllIcon from '@material-ui/icons/CopyAll';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion, onDelete} from '../../../redux/actions/PedidoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -934,24 +935,23 @@ const Pedido = (props) => {
                                 </Tooltip>
                               </Box>
                             )}
-                            {/* {permisos.indexOf('Enviar') >= 0 && (
-                              <Tooltip
-                                title={
-                                  <IntlMessages id='boton.enviarCorreo' />
-                                }>
-                                <EmailIcon
-                                  onClick={() =>
-                                    enviarCorreo(row.id, row.estado_Pedido)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.enviarIcon}`}></EmailIcon>
-                              </Tooltip>
-                            )} */}
                             {permisos.indexOf('Eliminar') >= 0 && (
                               <Tooltip title={'Anular'}>
                                 <DeleteIcon
                                   onClick={() => onDeletePedido(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
+                            )}
+                            {permisos.indexOf('Crear') >= 0 && (
+                              <Box
+                                component='a'
+                                href={'/pedido/copiar/' + row.id}>
+                                <Tooltip
+                                  title={<IntlMessages id='boton.copiar' />}>
+                                  <FilterListIcon
+                                    className={`${classes.generalIcons} ${classes.enviarIcon}`}></FilterListIcon>
+                                </Tooltip>
+                              </Box>
                             )}
                           </TableCell>
 

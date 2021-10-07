@@ -23,7 +23,10 @@ import {
   VALIDACION_REGEX_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
-
+import {
+  FETCH_ERROR,
+  FETCH_START,
+} from '../../../../shared/constants/ActionTypes';
 const PedidoCreator = (props) => {
   const {accion, id} = useParams();
   const handleOnClose = () => {
@@ -57,12 +60,17 @@ const PedidoCreator = (props) => {
     initializeSelectedRow();
   }
 
-  if (accion !== 'editar' && accion !== 'ver' && accion !== 'crear') {
+  if (
+    accion !== 'editar' &&
+    accion !== 'ver' &&
+    accion !== 'crear' &&
+    accion !== 'copiar'
+  ) {
     history.goBack();
   }
 
   useEffect(() => {
-    if ((accion === 'editar') | (accion === 'ver')) {
+    if ((accion === 'editar') | (accion === 'ver') | (accion === 'copiar')) {
       dispatch(onShow(id));
     }
   }, [accion, dispatch, id]);
@@ -101,14 +109,18 @@ const PedidoCreator = (props) => {
         enableReinitialize={true}
         validateOnBlur={false}
         initialValues={{
-          id: selectedRow ? selectedRow.id : '',
-          numero_pedido: selectedRow
-            ? selectedRow.numero_pedido
+          id: accion === 'copiar' ? '' : selectedRow ? selectedRow.id : '',
+          numero_pedido:
+            accion === 'copiar'
+              ? ''
+              : selectedRow
               ? selectedRow.numero_pedido
-              : ''
-            : '',
+                ? selectedRow.numero_pedido
+                : ''
+              : '',
           asociado_id:
-            accion === 'crear' && user.rol.tipo !== 'IN'
+            (accion === 'crear') | (accion === 'copiar') &&
+            user.rol.tipo !== 'IN'
               ? user.asociado.id
               : selectedRow
               ? selectedRow.asociado_id
@@ -166,13 +178,21 @@ const PedidoCreator = (props) => {
         }}
         validationSchema={validationSchema}
         onSubmit={(data, {setSubmitting, resetForm, setFieldError}) => {
+          dispatch({
+            type: FETCH_START,
+          });
           setSubmitting(true);
 
           if (detalles.length === 0) {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: 'Se debe agregar mínimo 1 detalle de pedido.',
+            });
+
             return;
           }
 
-          if (accion === 'crear') {
+          if ((accion === 'crear') | (accion === 'copiar')) {
             dispatch(onCreate(data, handleOnClose, detalles));
           } else if (accion === 'editar') {
             if (selectedRow) {

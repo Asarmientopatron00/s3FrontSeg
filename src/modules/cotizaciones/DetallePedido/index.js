@@ -954,6 +954,7 @@ const DetallePedido = (props) => {
           showForm={showForm}
           detallePedido={detallePedidoSeleccionado}
           accion={accion}
+          accionDetalle={accionDetalle}
           handleOnClose={handleOnClose}
           titulo='Detalle Pedido'
           numero_pedido={numero_pedido}

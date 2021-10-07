@@ -13,6 +13,8 @@ import {useDispatch} from 'react-redux';
 import {
   CREATE_DETALLE_PEDIDO,
   UPDATE_DETALLE_PEDIDO,
+  SHOW_MESSAGE,
+  FETCH_START,
 } from '../../../../shared/constants/ActionTypes';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
@@ -33,6 +35,7 @@ const validationSchema = yup.object({
 
 const DetallePedidoCreator = (props) => {
   const {
+    accionDetalle,
     detallePedido,
     handleOnClose,
     accion,
@@ -109,10 +112,18 @@ const DetallePedidoCreator = (props) => {
             enableReinitialize={true}
             validateOnBlur={false}
             initialValues={{
-              id: selectedRow ? selectedRow.id : '',
-              numero_pedido: selectedRow
-                ? selectedRow.numero_pedido
-                : numero_pedido,
+              id:
+                accionDetalle === 'copiar'
+                  ? ''
+                  : selectedRow
+                  ? selectedRow.id
+                  : '',
+              numero_pedido:
+                accionDetalle === 'copiar'
+                  ? ''
+                  : selectedRow
+                  ? selectedRow.numero_pedido
+                  : numero_pedido,
               fecha: fecha,
               asociado: asociado,
               documento: documento,
@@ -145,6 +156,7 @@ const DetallePedidoCreator = (props) => {
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
+              dispatch({type: FETCH_START});
               setSubmitting(true);
               if (accion === 'crear') {
                 let newRow = {
@@ -162,7 +174,6 @@ const DetallePedidoCreator = (props) => {
                 };
 
                 setIdAux(idAux + 1);
-
                 productos.forEach((producto) => {
                   if (producto.id === newRow.producto_id) {
                     newRow = {
@@ -175,8 +186,13 @@ const DetallePedidoCreator = (props) => {
                 });
 
                 dispatch({type: CREATE_DETALLE_PEDIDO, payload: newRow});
+                dispatch({
+                  type: SHOW_MESSAGE,
+                  payload: 'El detalle ha sido creado',
+                });
                 handleOnClose();
               } else if (accion === 'editar') {
+                dispatch({type: FETCH_START});
                 setSubmitting(true);
 
                 let aux = selectedRow;
@@ -204,6 +220,11 @@ const DetallePedidoCreator = (props) => {
                   type: UPDATE_DETALLE_PEDIDO,
                   payload: {aux, index},
                 });
+                dispatch({
+                  type: SHOW_MESSAGE,
+                  payload: 'El detalle ha sido modificado',
+                });
+
                 handleOnClose();
               }
               setSubmitting(false);
