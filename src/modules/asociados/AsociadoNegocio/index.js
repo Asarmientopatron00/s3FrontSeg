@@ -44,7 +44,7 @@ import SecurityIcon from '@material-ui/icons/Security';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
 import GetAppIcon from '@material-ui/icons/GetApp';
-
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -1060,12 +1060,9 @@ const AsociadoDatoBasico = (props) => {
                               row.informacion_verificada_seguridad && (
                                 <Box
                                   component='a'
-                                  // href={
-                                  //   // 'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
-                                  //   row.id
-                                  // }
                                   href={
-                                    'http://solicitudesservicio-backt.sellosdeseguridad.net/publicasociados-negocio/enviar-aprobacion/' +
+                                    defaultConfig.API_URL +
+                                    '/asociados-negocio/enviar-aprobacion/' +
                                     row.id
                                   }
                                   className={classes.generalIcons}>

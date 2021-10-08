@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../shared/constants/AppEnums';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -729,8 +730,8 @@ const AcuerdoServicioForm = (props) => {
                       component='a'
                       className={classes.linkDocumento}
                       href={
-                        // 'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
-                        'http://solicitudesservicio-backt.sellosdeseguridad.net/publicordenes-servicios-documentos/' +
+                        defaultConfig.API_URL +
+                        '/ordenes-servicios-documentos/' +
                         row.id
                       }
                       display='flex'

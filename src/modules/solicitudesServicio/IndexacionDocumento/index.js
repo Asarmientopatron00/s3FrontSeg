@@ -38,6 +38,7 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import Swal from 'sweetalert2';
 import {history} from 'redux/store';
 import * as yup from 'yup';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -857,8 +858,8 @@ const OrdenServicioDocumento = () => {
                             component='a'
                             className={classes.linkDocumento}
                             href={
-                              // 'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
-                              'http://solicitudesservicio-backt.sellosdeseguridad.net/publicordenes-servicios-documentos/' +
+                              defaultConfig.API_URL +
+                              '/ordenes-servicios-documentos/' +
                               row.id
                             }
                             display='flex'

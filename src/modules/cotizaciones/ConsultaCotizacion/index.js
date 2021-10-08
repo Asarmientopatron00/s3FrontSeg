@@ -35,6 +35,7 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import {ESTADO_COTIZACIONES} from './../../../shared/constants/ListasValores';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 // import {MessageView} from '../../../@crema';
 
@@ -483,8 +484,8 @@ const EnhancedTableToolbar = (props) => {
                     component='a'
                     className={classes.linkDocumento}
                     href={
-                      // 'http://solicitudesservicio.test/cotizaciones-servicios/consulta' +
-                      'http://solicitudesservicio-backt.sellosdeseguridad.net/publiccotizaciones-servicios/consulta' +
+                      defaultConfig.API_URL +
+                      '/cotizaciones-servicios/consulta' +
                       '?ids=' +
                       ids
                     }>

@@ -1,8 +1,9 @@
 import axios from 'axios';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const jwtAxios = axios.create({
   // baseURL: 'http://solicitudesservicio.test/api/', //YOUR_API_URL HERE
-  baseURL: 'http://solicitudesservicio-backt.sellosdeseguridad.net/publicapi', //YOUR_API_URL HERE
+  baseURL: defaultConfig.API_URL + '/api', //YOUR_API_URL HERE
   headers: {
     'Content-Type': 'application/json',
   },

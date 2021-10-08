@@ -26,6 +26,7 @@ import {Fonts} from '../../../shared/constants/AppEnums';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import {Form, Formik, useField} from 'formik';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 // import { history } from 'redux/store';
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -281,8 +282,8 @@ const EnhancedTableToolbar = (props) => {
                         component='a'
                         className={classes.linkDocumento}
                         href={
-                          // 'http://solicitudesservicio.test/asociados-negocio/consulta-actualizacion' +
-                          'http://solicitudesservicio-backt.sellosdeseguridad.net/publicasociados-negocio/consulta-actualizacion' +
+                          defaultConfig.API_URL +
+                          '/asociados-negocio/consulta-actualizacion' +
                           '?nombre=' +
                           values.nombre +
                           '&numero_documento=' +

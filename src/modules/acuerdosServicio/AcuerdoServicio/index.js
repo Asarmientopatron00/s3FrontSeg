@@ -48,7 +48,7 @@ import SwapCallsIcon from '@material-ui/icons/SwapCalls';
 import AcuerdoServicioConsulta from './AcuerdoServicioConsulta';
 // import MenuItem from '@material-ui/core/MenuItem';
 import GetAppIcon from '@material-ui/icons/GetApp';
-
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -1000,14 +1000,7 @@ const AcuerdoServicio = (props) => {
                               )}
                             <Box
                               component='a'
-                              href={
-                                // 'http://solicitudesservicio.test/acuerdos-servicio/descargar-formulario/' +
-                                row.id
-                              }
-                              href={
-                                'http://solicitudesservicio-backt.sellosdeseguridad.net/publicacuerdos-servicio/descargar-formulario/' +
-                                row.id
-                              }
+                              href={defaultConfig.API_URL + row.id}
                               className={classes.generalIcons}>
                               <Tooltip
                                 title={

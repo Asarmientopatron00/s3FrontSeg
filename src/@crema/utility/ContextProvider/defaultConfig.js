@@ -152,5 +152,8 @@ const defaultConfig = {
     icon: 'es',
   },
   rtlLocale: ['ar'],
+  //  API_URL:'http://solicitudesservicio.test'
+
+  API_URL: 'http://solicitudesservicio-backt.sellosdeseguridad.net/public',
 };
 export default defaultConfig;
