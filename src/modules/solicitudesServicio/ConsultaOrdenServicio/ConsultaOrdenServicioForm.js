@@ -729,8 +729,8 @@ const AcuerdoServicioForm = (props) => {
                       component='a'
                       className={classes.linkDocumento}
                       href={
-                        'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
-                        // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/ordenes-servicios-documentos/' +
+                        // 'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
+                        'http://solicitudesservicio-backt.sellosdeseguridad.net/publicordenes-servicios-documentos/' +
                         row.id
                       }
                       display='flex'

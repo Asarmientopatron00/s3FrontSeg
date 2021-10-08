@@ -1001,10 +1001,13 @@ const AcuerdoServicio = (props) => {
                             <Box
                               component='a'
                               href={
-                                'http://solicitudesservicio.test/acuerdos-servicio/descargar-formulario/' +
+                                // 'http://solicitudesservicio.test/acuerdos-servicio/descargar-formulario/' +
                                 row.id
                               }
-                              // href={'http://186.97.135.74:3380/solicitudesservicio-backend/public/acuerdos-servicio/descargar-formulario/' + row.id}
+                              href={
+                                'http://solicitudesservicio-backt.sellosdeseguridad.net/publicacuerdos-servicio/descargar-formulario/' +
+                                row.id
+                              }
                               className={classes.generalIcons}>
                               <Tooltip
                                 title={

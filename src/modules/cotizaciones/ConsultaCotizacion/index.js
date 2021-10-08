@@ -483,8 +483,8 @@ const EnhancedTableToolbar = (props) => {
                     component='a'
                     className={classes.linkDocumento}
                     href={
-                      'http://solicitudesservicio.test/cotizaciones-servicios/consulta' +
-                      // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/cotizaciones-servicios/consulta' +
+                      // 'http://solicitudesservicio.test/cotizaciones-servicios/consulta' +
+                      'http://solicitudesservicio-backt.sellosdeseguridad.net/publiccotizaciones-servicios/consulta' +
                       '?ids=' +
                       ids
                     }>

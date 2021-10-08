@@ -1060,11 +1060,14 @@ const AsociadoDatoBasico = (props) => {
                               row.informacion_verificada_seguridad && (
                                 <Box
                                   component='a'
+                                  // href={
+                                  //   // 'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                                  //   row.id
+                                  // }
                                   href={
-                                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                                    'http://solicitudesservicio-backt.sellosdeseguridad.net/publicasociados-negocio/enviar-aprobacion/' +
                                     row.id
                                   }
-                                  // href={'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' + row.id}
                                   className={classes.generalIcons}>
                                   <Tooltip
                                     title={
