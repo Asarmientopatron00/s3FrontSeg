@@ -355,7 +355,6 @@ export const SHOW_DETALLE_PEDIDO = 'show_detalle_pedido';
 export const UPDATE_DETALLE_PEDIDO = 'update_detalle_pedido';
 export const CREATE_DETALLE_PEDIDO = 'create_detalle_pedido';
 export const DELETE_DETALLE_PEDIDO = 'delete_detalle_pedido';
-//APP SETTING
 export const GET_COLECCION_TIPO_PRODUCTO = 'get_coleccion_tipo_producto';
 export const GET_COLECCION_LIGERA_TIPO_PRODUCTO =
   'get_coleccion_ligera_tipo_producto';
@@ -363,6 +362,13 @@ export const SHOW_TIPO_PRODUCTO = 'show_tipo_producto';
 export const UPDATE_TIPO_PRODUCTO = 'update_tipo_producto';
 export const CREATE_TIPO_PRODUCTO = 'create_tipo_producto';
 export const DELETE_TIPO_PRODUCTO = 'delete_tipo_producto';
+export const GET_COLECCION_COLOR = 'get_coleccion_color';
+export const GET_COLECCION_LIGERA_COLOR = 'get_coleccion_ligera_color';
+export const SHOW_COLOR = 'show_color';
+export const UPDATE_COLOR = 'update_color';
+export const CREATE_COLOR = 'create_color';
+export const DELETE_COLOR = 'delete_color';
+
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

@@ -53,6 +53,7 @@ import ProductoReducer from './ProductoReducer';
 import PedidoReducer from './PedidoReducer';
 import DetallePedidoReducer from './DetallePedidoReducer';
 import TipoProductoReducer from './TipoProductoReducer';
+import ColorReducer from './ColorReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -110,5 +111,6 @@ const reducers = (history) =>
     pedidoReducer: PedidoReducer,
     detallePedidoReducer: DetallePedidoReducer,
     tipoProductoReducer: TipoProductoReducer,
+    colorReducer: ColorReducer,
   });
 export default reducers;
