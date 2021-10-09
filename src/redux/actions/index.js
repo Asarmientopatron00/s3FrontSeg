@@ -56,3 +56,4 @@ export * from './InformacionEquipoAction';
 export * from './ProductoAction';
 export * from './PedidoAction';
 export * from './DetallePedidoAction';
+export * from './TipoProductoAction';

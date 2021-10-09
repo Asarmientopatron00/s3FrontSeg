@@ -356,6 +356,15 @@ export const UPDATE_DETALLE_PEDIDO = 'update_detalle_pedido';
 export const CREATE_DETALLE_PEDIDO = 'create_detalle_pedido';
 export const DELETE_DETALLE_PEDIDO = 'delete_detalle_pedido';
 //APP SETTING
+export const GET_COLECCION_TIPO_PRODUCTO = 'get_coleccion_tipo_producto';
+export const GET_COLECCION_LIGERA_TIPO_PRODUCTO =
+  'get_coleccion_ligera_tipo_producto';
+export const SHOW_TIPO_PRODUCTO = 'show_tipo_producto';
+export const UPDATE_TIPO_PRODUCTO = 'update_tipo_producto';
+export const CREATE_TIPO_PRODUCTO = 'create_tipo_producto';
+export const DELETE_TIPO_PRODUCTO = 'delete_tipo_producto';
+//APP SETTING
+
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
 export const SET_INITIAL_PATH = 'set_initial_path';
 
