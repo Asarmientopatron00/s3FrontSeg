@@ -26,6 +26,8 @@ import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ProductoCreador from './ProductoCreador';
 import {onGetColeccion, onDelete} from '../../../redux/actions/ProductoAction';
+import {onGetColeccionLigera as onGetTipoProductos} from '../../../redux/actions/TipoProductoAction';
+import {onGetColeccionLigera as onGetColores} from '../../../redux/actions/ColorAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -35,7 +37,6 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_PRODUCTOS} from '../../../shared/constants/ListasValores';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
@@ -95,10 +96,33 @@ const cells = [
     id: 'tipo_producto',
     typeHead: 'string',
     label: 'Tipo Producto',
-    value: (value) =>
-      TIPOS_PRODUCTOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
+  },
+  {
+    id: 'color',
+    typeHead: 'string',
+    label: 'Color',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'dimensiones_producto',
+    typeHead: 'string',
+    label: 'Dimensiones',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'caracteristicas_producto',
+    typeHead: 'Caracteristicas',
+    label: 'Color',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
   },
   {
     id: 'estado',
@@ -366,6 +390,7 @@ const EnhancedTableToolbar = (props) => {
     tipoFiltro,
     limpiarFiltros,
     permisos,
+    tiposProductos,
   } = props;
   return (
     <Toolbar
@@ -446,8 +471,9 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={tipoFiltro}
               select>
-              {TIPOS_PRODUCTOS.filter((tipo) => tipo.estado === 1).map(
-                (tipo) => {
+              {tiposProductos
+                .filter((tipo) => tipo.estado === 1)
+                .map((tipo) => {
                   return (
                     <MenuItem
                       value={tipo.id}
@@ -457,8 +483,7 @@ const EnhancedTableToolbar = (props) => {
                       {tipo.nombre}
                     </MenuItem>
                   );
-                },
-              )}
+                })}
             </TextField>
           </Box>
         </>
@@ -701,6 +726,16 @@ const Producto = (props) => {
     setPage(1);
   }, [codigoFiltro, orderByToSend, nombreFiltro, tipoFiltro]);
 
+  useEffect(() => {
+    dispatch(onGetTipoProductos());
+    dispatch(onGetColores());
+  }, [dispatch]);
+
+  const ciudades = useSelector(({productoReducer}) => productoReducer.ciudades);
+  const servicios = useSelector(
+    ({productoReducer}) => productoReducer.servicios,
+  );
+
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'codigoFiltro':
@@ -717,10 +752,11 @@ const Producto = (props) => {
     }
   };
 
-  const ciudades = useSelector(({productoReducer}) => productoReducer.ciudades);
-  const servicios = useSelector(
-    ({productoReducer}) => productoReducer.servicios,
+  const tiposProductos = useSelector(
+    ({tipoProductoReducer}) => tipoProductoReducer.ligera,
   );
+
+  const colores = useSelector(({colorReducer}) => colorReducer.ligera);
 
   const limpiarFiltros = () => {
     setcodigoFiltro('');
@@ -884,6 +920,8 @@ const Producto = (props) => {
             tipoFiltro={tipoFiltro}
             permisos={permisos}
             titulo={titulo}
+            tiposProductos={tiposProductos}
+            colores={colores}
           />
         )}
         {showTable && permisos ? (
@@ -1084,7 +1122,7 @@ const Producto = (props) => {
           titulo={titulo}
           ciudades={ciudades}
           servicios={servicios}
-          TIPOS_PRODUCTOS={TIPOS_PRODUCTOS}
+          tiposProductos={tiposProductos}
         />
       ) : (
         ''

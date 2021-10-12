@@ -632,7 +632,11 @@ const DetallePedido = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (accionDetalle !== 'crear') {
+    if (
+      accionDetalle !== 'crear' &&
+      (numPedidoCopiar !== '' || numero_pedido !== '') &&
+      (numPedidoCopiar !== 0 || numero_pedido !== 0)
+    ) {
       if (accionDetalle === 'copiar') {
         dispatch(
           onGetColeccion(page, rowsPerPage, orderByToSend, numPedidoCopiar),
@@ -657,14 +661,13 @@ const DetallePedido = (props) => {
     setDetalles(
       rows.map((row) => {
         if (accionDetalle === 'copiar') {
-          setIdAux(idAux + 1);
           return {...row, id: idAux, numero_pedido: ''};
         } else {
           return row;
         }
       }),
     );
-  }, [rows, setDetalles]);
+  }, [rows, accionDetalle, setDetalles, idAux]);
 
   useEffect(() => {
     setPage(1);

@@ -38,7 +38,8 @@ const ProductoForm = (props) => {
     values,
     initialValues,
     titulo,
-    TIPOS_PRODUCTOS,
+    tiposProductos,
+    colores,
     setFieldValue,
     errors,
     touched,
@@ -165,7 +166,6 @@ const ProductoForm = (props) => {
       baseStyle,
     ],
   );
-  console.log(values.tipo_producto);
   const [imagen, setImagen] = useState('');
   return (
     <Form
@@ -202,7 +202,7 @@ const ProductoForm = (props) => {
                 />
                 <MyTextField
                   className={classes.myTextField}
-                  label='Alias'
+                  label='Nombre Comercial'
                   name='alias_producto'
                   disabled={disabled}
                   required
@@ -216,10 +216,20 @@ const ProductoForm = (props) => {
                   multiline
                 />
                 <MyAutocomplete
-                  options={TIPOS_PRODUCTOS}
-                  name='tipo_producto'
-                  // inputValue={initialValues.tipo_producto}
-                  label='Tipo Servicio'
+                  options={tiposProductos}
+                  name='tipo_producto_id'
+                  // inputValue={initialValues.tipo_producto_id}
+                  label='Tipo Prodcuto'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+                <MyAutocomplete
+                  options={colores}
+                  name='color_id'
+                  // inputValue={initialValues.color_id}
+                  label='Color'
                   //autoHighlight
                   className={classes.myTextField}
                   required
@@ -397,20 +407,18 @@ const ProductoForm = (props) => {
               </FormControl>
             </Box>
 
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextField}
-                label='Producto Producción'
-                name='producto_produccion_id'
-                disabled={disabled}
-              />
-              <MyTextField
-                className={classes.myTextField}
-                label='Producto Facturación'
-                name='producto_facturacion_id'
-                disabled={disabled}
-              />
-            </Box>
+            <MyTextField
+              className={classes.myTextField}
+              label='Producto Producción'
+              name='producto_produccion_id'
+              disabled={disabled}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Producto Facturación'
+              name='producto_facturacion_id'
+              disabled={disabled}
+            />
 
             <FormControl className={classes.widthFull} component='fieldset'>
               <FormLabel>Estado*</FormLabel>

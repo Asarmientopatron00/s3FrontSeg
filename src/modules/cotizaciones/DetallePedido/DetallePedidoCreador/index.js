@@ -70,7 +70,7 @@ const DetallePedidoCreator = (props) => {
   const classes = useStyles(props);
 
   const [showForm, setShowForm] = useState(false);
-  const [selectedRow, setSelectedRow] = useState();
+  const [selectedRow, setSelectedRow] = useState([]);
   const [index, setIndex] = useState();
   useEffect(() => {
     if (selectedRow) {
@@ -184,7 +184,6 @@ const DetallePedidoCreator = (props) => {
                     };
                   }
                 });
-
                 dispatch({type: CREATE_DETALLE_PEDIDO, payload: newRow});
                 dispatch({
                   type: SHOW_MESSAGE,

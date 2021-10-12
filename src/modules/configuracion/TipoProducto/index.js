@@ -514,7 +514,7 @@ const TipoProducto = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [TipoProductoSeleccionado, setTipoProductoSeleccionado] = useState(0);
+  const [tipoProductoSeleccionado, setTipoProductoSeleccionado] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({tipoProductoReducer}) => tipoProductoReducer,
   );
@@ -939,7 +939,7 @@ const TipoProducto = (props) => {
       {showForm ? (
         <TipoProductoCreador
           showForm={showForm}
-          TipoProducto={TipoProductoSeleccionado}
+          tipoProducto={tipoProductoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}

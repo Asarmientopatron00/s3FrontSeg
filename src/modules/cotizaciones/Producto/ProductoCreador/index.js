@@ -38,10 +38,7 @@ const validationSchema = yup.object({
     .string()
     .required('Requerido')
     .max(128, mensajeValidacion('max', 128)),
-  tipo_producto: yup
-    .string()
-    .required('Requerido')
-    .max(3, mensajeValidacion('max', 3)),
+  tipo_producto_id: yup.string().required('Requerido'),
   producto_empaque: yup
     .string()
     .required('Requerido')
@@ -51,13 +48,13 @@ const validationSchema = yup.object({
     .required('Requerido')
     .max(1, mensajeValidacion('max', 1)),
   producto_produccion_id: yup
-    .number()
-    .typeError(mensajeValidacion('numero'))
-    .nullable(),
+    .string()
+    .nullable()
+    .max(1, mensajeValidacion('max', 128)),
   producto_facturacion_id: yup
-    .number()
-    .typeError(mensajeValidacion('numero'))
-    .nullable(),
+    .string()
+    .nullable()
+    .max(1, mensajeValidacion('max', 128)),
 });
 
 const ProductoCreator = (props) => {
@@ -67,7 +64,8 @@ const ProductoCreator = (props) => {
     accion,
     updateColeccion,
     titulo,
-    TIPOS_PRODUCTOS,
+    tiposProductos,
+    colores,
   } = props;
 
   const dispatch = useDispatch();
@@ -158,9 +156,24 @@ const ProductoCreator = (props) => {
                   ? selectedRow.descripcion_tecnica_producto
                   : ''
                 : '',
-              tipo_producto: selectedRow
-                ? selectedRow.tipo_producto
-                  ? selectedRow.tipo_producto
+              tipo_producto_id: selectedRow
+                ? selectedRow.tipo_producto_id
+                  ? selectedRow.tipo_producto_id
+                  : ''
+                : '',
+              color_id: selectedRow
+                ? selectedRow.color_id
+                  ? selectedRow.color_id
+                  : ''
+                : '',
+              dimensiones_producto: selectedRow
+                ? selectedRow.dimensiones_producto
+                  ? selectedRow.dimensiones_producto
+                  : ''
+                : '',
+              caracteristicas_producto: selectedRow
+                ? selectedRow.caracteristicas_producto
+                  ? selectedRow.caracteristicas_producto
                   : ''
                 : '',
               producto_empaque: selectedRow
@@ -225,7 +238,8 @@ const ProductoCreator = (props) => {
                 titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
-                TIPOS_PRODUCTOS={TIPOS_PRODUCTOS}
+                tiposProductos={tiposProductos}
+                colores={colores}
                 errors={errors}
                 touched={touched}
               />

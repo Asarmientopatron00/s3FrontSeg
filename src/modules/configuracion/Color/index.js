@@ -345,7 +345,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip title='Crear Tipo Producto' onClick={onOpenAddColor}>
+                <Tooltip title='Crear Color' onClick={onOpenAddColor}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -662,7 +662,7 @@ const Color = (props) => {
   const onDeleteColor = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el tipo de producto?',
+      text: '¿Seguro qué desea eliminar el color?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -675,7 +675,7 @@ const Color = (props) => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El tipo de producto fue eliminado correctamente',
+          'El color fue eliminado correctamente',
           'success',
         );
         setTimeout(() => {

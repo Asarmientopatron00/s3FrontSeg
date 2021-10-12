@@ -102,7 +102,6 @@ const PedidoForm = (props) => {
     departamentos,
     user,
     ESTADO_PEDIDOS,
-    numPedidoCopiar,
   } = props;
   const [disabled, setDisabled] = useState(false);
   const [cambioAsociado, setCambioAsociado] = useState(false);
@@ -232,7 +231,6 @@ const PedidoForm = (props) => {
       setCambioAsociado(false);
     }
   };
-
   useEffect(() => {
     if (values.departamento_entrega_id !== '') {
       onChangeDepartamento1(values.departamento_entrega_id);
@@ -401,8 +399,8 @@ const PedidoForm = (props) => {
           numero_pedido={
             accion === 'copiar'
               ? ''
-              : values.numero_pedido
-              ? values.numero_pedido
+              : initialValues.numero_pedido
+              ? initialValues.numero_pedido
               : 0
           }
           fecha={values.fecha_pedido}
@@ -410,7 +408,7 @@ const PedidoForm = (props) => {
           asociado={values.asociado}
           accionDetalle={accion}
           setDetalles={setDetalles}
-          numPedidoCopiar={numPedidoCopiar}
+          numPedidoCopiar={initialValues.numPedidoCopiar}
         />
 
         <Box className={classes.marco}>

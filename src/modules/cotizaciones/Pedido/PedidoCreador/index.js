@@ -100,8 +100,6 @@ const PedidoCreator = (props) => {
       ),
   });
 
-  const numPedidoCopiar = selectedRow ? selectedRow.numero_pedido : '';
-
   const user = useAuthUser();
   const [detalles, setDetalles] = useState();
   return (
@@ -112,6 +110,7 @@ const PedidoCreator = (props) => {
         validateOnBlur={false}
         initialValues={{
           id: accion === 'copiar' ? '' : selectedRow ? selectedRow.id : '',
+          numPedidoCopiar: selectedRow ? selectedRow.numero_pedido : '',
           numero_pedido:
             accion === 'copiar'
               ? ''
@@ -196,11 +195,8 @@ const PedidoCreator = (props) => {
               type: FETCH_ERROR,
               payload: 'Se debe agregar mínimo 1 detalle de pedido.',
             });
-
             return;
           }
-          console.log(data);
-          console.log(detalles);
           if ((accion === 'crear') | (accion === 'copiar')) {
             dispatch(onCreate(data, handleOnClose, detalles));
           } else if (accion === 'editar') {
@@ -222,7 +218,6 @@ const PedidoCreator = (props) => {
             ciudades={ciudades}
             user={user}
             ESTADO_PEDIDOS={ESTADO_PEDIDOS}
-            numPedidoCopiar={numPedidoCopiar}
           />
         )}
       </Formik>
