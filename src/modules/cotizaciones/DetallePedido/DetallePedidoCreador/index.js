@@ -46,7 +46,7 @@ const DetallePedidoCreator = (props) => {
     numero_pedido,
     idAux,
     setIdAux,
-    COLORES_EQUIPOS,
+    colores,
     asociado,
     documento,
   } = props;
@@ -137,9 +137,9 @@ const DetallePedidoCreator = (props) => {
                   ? selectedRow.cantidad
                   : ''
                 : '',
-              color: selectedRow
-                ? selectedRow.color
-                  ? String(selectedRow.color)
+              color_id: selectedRow
+                ? selectedRow.color_id
+                  ? selectedRow.color_id
                   : ''
                 : '',
               prefijo: selectedRow ? selectedRow.prefijo : '',
@@ -162,7 +162,7 @@ const DetallePedidoCreator = (props) => {
                 let newRow = {
                   producto_id: data.producto_id,
                   cantidad: data.cantidad,
-                  color: data.color,
+                  color_id: data.color_id,
                   prefijo: data.prefijo,
                   posfijo: data.posfijo,
                   serie_inicial_articulo: data.serie_inicial_articulo,
@@ -197,7 +197,7 @@ const DetallePedidoCreator = (props) => {
                 let aux = selectedRow;
                 aux.producto_id = data.producto_id;
                 aux.cantidad = data.cantidad;
-                aux.color = data.color;
+                aux.color_id = data.color_id;
                 aux.prefijo = data.prefijo;
                 aux.posfijo = data.posfijo;
                 aux.serie_inicial_articulo = data.serie_inicial_articulo;
@@ -237,7 +237,7 @@ const DetallePedidoCreator = (props) => {
                 accion={accion}
                 initialValues={initialValues}
                 productos={productos}
-                COLORES_EQUIPOS={COLORES_EQUIPOS}
+                colores={colores}
               />
             )}
           </Formik>

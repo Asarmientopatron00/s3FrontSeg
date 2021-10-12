@@ -126,13 +126,3 @@ export const ESTADO_PEDIDOS = [
   {id: 'FAC', nombre: 'Facturado', estado: 1},
   {id: 'ANU', nombre: 'Anulado', estado: 1},
 ];
-
-export const COLORES_EQUIPOS = [
-  {id: '1', nombre: 'Blanco', estado: 1},
-  {id: '2', nombre: 'Negro', estado: 1},
-  {id: '3', nombre: 'Azul', estado: 1},
-  {id: '4', nombre: 'Amarillo', estado: 1},
-  {id: '5', nombre: 'Rojo', estado: 1},
-  {id: '6', nombre: 'Gris', estado: 1},
-  {id: '7', nombre: 'Verde', estado: 1},
-];

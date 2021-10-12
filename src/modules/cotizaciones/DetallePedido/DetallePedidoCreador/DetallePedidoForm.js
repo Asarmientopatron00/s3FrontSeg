@@ -96,7 +96,7 @@ const DetallePedidoForm = (props) => {
     values,
     setFieldValue,
     productos,
-    COLORES_EQUIPOS,
+    colores,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -269,9 +269,9 @@ const DetallePedidoForm = (props) => {
 
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyAutocomplete
-                options={COLORES_EQUIPOS}
-                name='color'
-                inputValue={initialValues.color}
+                options={colores}
+                name='color_id'
+                inputValue={initialValues.color_id}
                 label='Color'
                 //autoHighlight
                 className={classes.myTextField}

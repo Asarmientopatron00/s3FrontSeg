@@ -218,8 +218,8 @@ const ProductoForm = (props) => {
                 <MyAutocomplete
                   options={tiposProductos}
                   name='tipo_producto_id'
-                  // inputValue={initialValues.tipo_producto_id}
-                  label='Tipo Prodcuto'
+                  inputValue={initialValues.tipo_producto_id}
+                  label='Tipo Producto'
                   //autoHighlight
                   className={classes.myTextField}
                   required
@@ -228,12 +228,25 @@ const ProductoForm = (props) => {
                 <MyAutocomplete
                   options={colores}
                   name='color_id'
-                  // inputValue={initialValues.color_id}
+                  inputValue={initialValues.color_id}
                   label='Color'
                   //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Dimensiones'
+                  name='dimensiones_producto'
+                  disabled={disabled}
+                  multiline
+                />
+                <MyTextField
+                  className={classes.myTextField}
+                  label='Características'
+                  name='caracteristicas_producto'
+                  disabled={disabled}
+                  multiline
                 />
               </Box>
               <Box>
@@ -417,6 +430,12 @@ const ProductoForm = (props) => {
               className={classes.myTextField}
               label='Producto Facturación'
               name='producto_facturacion_id'
+              disabled={disabled}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Link Archivo Especificaciones Técnicas'
+              name='link_especificaciones_tecnicas'
               disabled={disabled}
             />
 

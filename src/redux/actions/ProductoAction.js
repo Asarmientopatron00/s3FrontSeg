@@ -20,14 +20,14 @@ export const onGetColeccion = (
   codigo_producto,
   orderByToSend,
   nombre,
-  tipo_producto,
+  tipo_producto_id,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const codigo_productoAux = codigo_producto ? codigo_producto : '';
   const nombreAux = nombre ? nombre : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
-  const tipo_productoAux = tipo_producto ? tipo_producto : '';
+  const tipo_producto_idAux = tipo_producto_id ? tipo_producto_id : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -38,7 +38,7 @@ export const onGetColeccion = (
           limite: rowsPerPage,
           codigo_producto: codigo_productoAux,
           nombre: nombreAux,
-          tipo_producto: tipo_productoAux,
+          tipo_producto_id: tipo_producto_idAux,
           ordenar_por: ordenar_por,
         },
       })

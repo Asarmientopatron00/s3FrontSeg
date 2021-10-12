@@ -1123,6 +1123,7 @@ const Producto = (props) => {
           ciudades={ciudades}
           servicios={servicios}
           tiposProductos={tiposProductos}
+          colores={colores}
         />
       ) : (
         ''

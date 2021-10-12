@@ -26,6 +26,7 @@ import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion} from '../../../redux/actions/DetallePedidoAction';
 import {onGetColeccionLigera} from '../../../redux/actions/ProductoAction';
+import {onGetColeccionLigera as onGetColeccionLigeraColor} from '../../../redux/actions/ColorAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -34,10 +35,6 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import Swal from 'sweetalert2';
 import {DELETE_DETALLE_PEDIDO} from '../../../shared/constants/ActionTypes';
-import {
-  COLORES_EQUIPOS,
-  TIPOS_PRODUCTOS,
-} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -96,8 +93,7 @@ const cells = [
     id: 'tipo_producto',
     typeHead: 'string',
     label: 'Tipo Producto',
-    value: (value) =>
-      TIPOS_PRODUCTOS.map((TIPO) => (TIPO.id === value ? TIPO.nombre : '')),
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -105,10 +101,7 @@ const cells = [
     id: 'color',
     typeHead: 'string',
     label: 'Color',
-    value: (value) =>
-      COLORES_EQUIPOS.map((TIPO) =>
-        TIPO.id === String(value) ? TIPO.nombre : '',
-      ),
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -626,9 +619,11 @@ const DetallePedido = (props) => {
   const dispatch = useDispatch();
 
   const productos = useSelector(({productoReducer}) => productoReducer.ligera);
+  const colores = useSelector(({colorReducer}) => colorReducer.ligera);
 
   useEffect(() => {
     dispatch(onGetColeccionLigera());
+    dispatch(onGetColeccionLigeraColor());
   }, [dispatch]);
 
   useEffect(() => {
@@ -986,7 +981,7 @@ const DetallePedido = (props) => {
           documento={documento}
           rows={rows}
           setIdAux={setIdAux}
-          COLORES_EQUIPOS={COLORES_EQUIPOS}
+          colores={colores}
           productos={productos}
         />
       ) : (
