@@ -9,7 +9,7 @@ import {
   ThemeStyle,
   ThemeStyleRadius,
 } from '../../../shared/constants/AppEnums';
-import environment from './../../../env';
+//import environment from './../../../env';
 
 const breakpoints = createBreakpoints({});
 const cardRadius = ThemeStyleRadius.STANDARD;
