@@ -109,7 +109,7 @@ const DetallePedidoForm = (props) => {
     if (values.cantidad > 0 && values.serie_inicial_articulo > 0)
       setFieldValue(
         'serie_final_articulo',
-        values.cantidad + values.serie_inicial_articulo,
+        parseInt(values.cantidad) + parseInt(values.serie_inicial_articulo),
       );
   }, [values.cantidad, values.serie_inicial_articulo, setFieldValue]);
   const useStyles = makeStyles((theme) => ({
