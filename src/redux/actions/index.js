@@ -58,3 +58,4 @@ export * from './PedidoAction';
 export * from './DetallePedidoAction';
 export * from './TipoProductoAction';
 export * from './ColorAction';
+export * from './RecursoTecnicoAction';

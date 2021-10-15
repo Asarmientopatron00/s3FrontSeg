@@ -126,3 +126,11 @@ export const ESTADO_PEDIDOS = [
   {id: 'FAC', nombre: 'Facturado', estado: 1},
   {id: 'ANU', nombre: 'Anulado', estado: 1},
 ];
+
+export const ESTADOS_RECURSOS_TECNICOS = [
+  {id: 'D', nombre: 'Disponible', estado: 1},
+  {id: 'V', nombre: 'Vacaciones', estado: 1},
+  {id: 'I', nombre: 'Incapacitado', estado: 1},
+  {id: 'L', nombre: 'Licencia', estado: 1},
+  {id: 'R', nombre: 'Retirado', estado: 1},
+];
