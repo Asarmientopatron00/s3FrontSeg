@@ -153,8 +153,8 @@ export const onDelete = (id, updateColeccion) => {
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          updateColeccion();
           dispatch({type: DELETE_PEDIDO, payload: data.data});
+          updateColeccion();
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
