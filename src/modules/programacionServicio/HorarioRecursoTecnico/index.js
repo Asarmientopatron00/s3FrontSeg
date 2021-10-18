@@ -24,15 +24,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import RecursoTecnicoCreador from './RecursoTecnicoCreador';
+import HorarioRecursoTecnicoCreador from './HorarioRecursoTecnicoCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/RecursoTecnicoAction';
-import {onGetColeccionLigera as coleccionLigeraCiudad} from '../../../redux/actions/CiudadAction';
-import {onGetColeccionLigera as coleccionLigeraDepartamento} from '../../../redux/actions/DepartamentoAction';
-import {onGetColeccionLigera as coleccionLigeraTipoDocumento} from '../../../redux/actions/TipoDocumentoAction';
-import {onGetColeccionLigera as coleccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
+} from '../../../redux/actions/HorarioRecursoTecnicoAction';
+import {onGetColeccionLigera} from '../../../redux/actions/RecursoTecnicoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -43,7 +40,6 @@ import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
 import MenuItem from '@material-ui/core/MenuItem';
-import {ESTADOS_RECURSOS_TECNICOS} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
 
@@ -75,60 +71,20 @@ import {ESTADOS_RECURSOS_TECNICOS} from '../../../shared/constants/ListasValores
 
 const cells = [
   {
-    id: 'tipo_documento',
+    id: 'fecha_horario',
     typeHead: 'string',
-    label: 'Tipo Documento',
+    label: 'Fecha',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'numero_documento',
-    typeHead: 'numeric',
-    label: 'Documento',
-    value: (value) => value,
-    align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'nombre_completo',
+    id: 'recurso_tecnico',
     typeHead: 'string',
     label: 'Nombre',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
-  },
-  {
-    id: 'nombre_departamento',
-    typeHead: 'string',
-    label: 'Departamento',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'nombre_ciudad',
-    typeHead: 'string',
-    label: 'Ciudad',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'celular',
-    typeHead: 'numeric',
-    label: 'Celular',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'email',
-    typeHead: 'string',
-    label: 'Correo',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
   },
   {
     id: 'tipo_contrato',
@@ -137,24 +93,21 @@ const cells = [
     value: (value) =>
       value === 'C' ? 'Contrato' : value === 'S' ? 'Servicios' : 'Tercero',
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
-    id: 'asociado',
+    id: 'hora_inicio_horario',
     typeHead: 'string',
-    label: 'Asociado',
+    label: 'Hora Inicio',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
-    id: 'estado_recurso',
+    id: 'hora_final_horario',
     typeHead: 'string',
-    label: 'Estado',
-    value: (value) =>
-      ESTADOS_RECURSOS_TECNICOS.map((tipo) =>
-        tipo.id === value ? tipo.nombre : '',
-      ),
+    label: 'Hora Final',
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -164,7 +117,7 @@ const cells = [
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: false,
+    mostrarInicio: true,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
@@ -376,12 +329,11 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddRecursoTecnico,
+    onOpenAddHorarioRecursoTecnico,
     handleOpenPopoverColumns,
     queryFilter,
-    ciudades,
     nombreFiltro,
-    ciudadFiltro,
+    fechaFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -421,7 +373,7 @@ const EnhancedTableToolbar = (props) => {
               {permisos.indexOf('Crear') >= 0 && (
                 <Tooltip
                   title='Crear Recurso Técnico'
-                  onClick={onOpenAddRecursoTecnico}>
+                  onClick={onOpenAddHorarioRecursoTecnico}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -440,26 +392,16 @@ const EnhancedTableToolbar = (props) => {
               value={nombreFiltro}
             />
             <TextField
-              label='Ciudad'
-              name='ciudadFiltro'
-              id='ciudadFiltro'
-              select={true}
+              label='Fecha'
+              name='fechaFiltro'
+              id='fechaFiltro'
               onChange={queryFilter}
-              value={ciudadFiltro}
-              inputProps={{min: 0}}>
-              {ciudades.map((ciudad) => {
-                return (
-                  <MenuItem
-                    key={ciudad.id}
-                    value={ciudad.id}
-                    className={classes.pointer}
-                    style={ciudad.estado === 0 ? {display: 'none'} : {}}>
-                    {ciudad.nombre}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-
+              value={fechaFiltro}
+              type='date'
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
             <Box display='grid'>
               <Box display='flex' mb={2}>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
@@ -497,12 +439,12 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddRecursoTecnico: PropTypes.func.isRequired,
+  onOpenAddHorarioRecursoTecnico: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
   nombreFiltro: PropTypes.string.isRequired,
-  ciudadFiltro: PropTypes.string.isRequired,
+  fechaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -599,7 +541,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RecursoTecnico = (props) => {
+const HorarioRecursoTecnico = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -614,14 +556,16 @@ const RecursoTecnico = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [recursoTecnicoSeleccionado, setRecursoTecnicoSeleccionado] =
-    useState(0);
+  const [
+    horarioRecursoTecnicoSeleccionado,
+    setHorarioRecursoTecnicoSeleccionado,
+  ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({recursoTecnicoReducer}) => recursoTecnicoReducer,
+    ({horarioRecursoTecnicoReducer}) => horarioRecursoTecnicoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
-  const [ciudadFiltro, setCiudadFiltro] = useState('');
+  const [fechaFiltro, setfechaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -681,43 +625,35 @@ const RecursoTecnico = (props) => {
         rowsPerPage,
         orderByToSend,
         nombreFiltro,
-        ciudadFiltro,
+        fechaFiltro,
       ),
     );
-  }, [dispatch, page, rowsPerPage, orderByToSend, nombreFiltro, ciudadFiltro]);
+  }, [dispatch, page, rowsPerPage, orderByToSend, nombreFiltro, fechaFiltro]);
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccion(1, rowsPerPage, orderByToSend, nombreFiltro, ciudadFiltro),
+      onGetColeccion(1, rowsPerPage, orderByToSend, nombreFiltro, fechaFiltro),
     );
   };
   useEffect(() => {
     setPage(1);
-  }, [orderByToSend, nombreFiltro, ciudadFiltro]);
+  }, [orderByToSend, nombreFiltro, fechaFiltro]);
 
   useEffect(() => {
-    dispatch(coleccionLigeraCiudad());
-    dispatch(coleccionLigeraDepartamento());
-    dispatch(coleccionLigeraTipoDocumento());
-    dispatch(coleccionLigeraAsociado());
+    dispatch(onGetColeccionLigera());
   }, [dispatch]);
 
-  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
-  const departamentos = useSelector(
-    ({departamentoReducer}) => departamentoReducer.ligera,
+  const recursosTecnicos = useSelector(
+    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
   );
-  const tiposDocumentos = useSelector(
-    ({tipoDocumentoReducer}) => tipoDocumentoReducer.ligera,
-  );
-  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'nombreFiltro':
         setnombreFiltro(e.target.value);
         break;
-      case 'ciudadFiltro':
-        setCiudadFiltro(e.target.value);
+      case 'fechaFiltro':
+        setfechaFiltro(e.target.value);
         break;
       default:
         break;
@@ -726,7 +662,7 @@ const RecursoTecnico = (props) => {
 
   const limpiarFiltros = () => {
     setnombreFiltro('');
-    setCiudadFiltro('');
+    setfechaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -745,8 +681,8 @@ const RecursoTecnico = (props) => {
     }
   };
 
-  const onOpenEditRecursoTecnico = (id) => {
-    setRecursoTecnicoSeleccionado(id);
+  const onOpenEditHorarioRecursoTecnico = (id) => {
+    setHorarioRecursoTecnicoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -787,13 +723,13 @@ const RecursoTecnico = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewRecursoTecnico = (id) => {
-    setRecursoTecnicoSeleccionado(id);
+  const onOpenViewHorarioRecursoTecnico = (id) => {
+    setHorarioRecursoTecnicoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteRecursoTecnico = (id) => {
+  const onDeleteHorarioRecursoTecnico = (id) => {
     Swal.fire({
       title: 'Confirmar',
       text: '¿Seguro qué desea eliminar el recurso técnico?',
@@ -819,15 +755,15 @@ const RecursoTecnico = (props) => {
     });
   };
 
-  const onOpenAddRecursoTecnico = () => {
-    setRecursoTecnicoSeleccionado(0);
+  const onOpenAddHorarioRecursoTecnico = () => {
+    setHorarioRecursoTecnicoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setRecursoTecnicoSeleccionado(0);
+    setHorarioRecursoTecnicoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -876,15 +812,14 @@ const RecursoTecnico = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddRecursoTecnico={onOpenAddRecursoTecnico}
+            onOpenAddHorarioRecursoTecnico={onOpenAddHorarioRecursoTecnico}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            ciudadFiltro={ciudadFiltro}
+            fechaFiltro={fechaFiltro}
             nombreFiltro={nombreFiltro}
             permisos={permisos}
             titulo={titulo}
-            ciudades={ciudades}
           />
         )}
         {showTable && permisos ? (
@@ -963,7 +898,7 @@ const RecursoTecnico = (props) => {
                                 title={<IntlMessages id='boton.editar' />}>
                                 <EditIcon
                                   onClick={() =>
-                                    onOpenEditRecursoTecnico(row.id)
+                                    onOpenEditHorarioRecursoTecnico(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                               </Tooltip>
@@ -972,7 +907,7 @@ const RecursoTecnico = (props) => {
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   onClick={() =>
-                                    onOpenViewRecursoTecnico(row.id)
+                                    onOpenViewHorarioRecursoTecnico(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
@@ -981,7 +916,9 @@ const RecursoTecnico = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
-                                  onClick={() => onDeleteRecursoTecnico(row.id)}
+                                  onClick={() =>
+                                    onDeleteHorarioRecursoTecnico(row.id)
+                                  }
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
@@ -1080,17 +1017,14 @@ const RecursoTecnico = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <RecursoTecnicoCreador
+        <HorarioRecursoTecnicoCreador
           showForm={showForm}
-          recursoTecnico={recursoTecnicoSeleccionado}
+          horarioRecursoTecnico={horarioRecursoTecnicoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          ESTADOS_RECURSOS_TECNICOS={ESTADOS_RECURSOS_TECNICOS}
-          departamentos={departamentos}
-          tiposDocumentos={tiposDocumentos}
-          asociados={asociados}
+          recursosTecnicos={recursosTecnicos}
         />
       ) : (
         ''
@@ -1136,4 +1070,4 @@ const RecursoTecnico = (props) => {
   );
 };
 
-export default RecursoTecnico;
+export default HorarioRecursoTecnico;

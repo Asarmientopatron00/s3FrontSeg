@@ -9,6 +9,11 @@ export const programacionServicioConfig = [
         path: ['/recursos-tecnicos'],
         component: React.lazy(() => import('./RecursoTecnico')),
       },
+      {
+        exact: true,
+        path: ['/horarios-recursos-tecnicos'],
+        component: React.lazy(() => import('./HorarioRecursoTecnico')),
+      },
     ],
   },
 ];

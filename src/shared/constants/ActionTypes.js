@@ -368,13 +368,21 @@ export const SHOW_COLOR = 'show_color';
 export const UPDATE_COLOR = 'update_color';
 export const CREATE_COLOR = 'create_color';
 export const DELETE_COLOR = 'delete_color';
-export const GET_COLECCION_RECURSO_TECNICO = 'get_coleccion_color';
+export const GET_COLECCION_RECURSO_TECNICO = 'get_coleccion_recurso_tecnico';
 export const GET_COLECCION_LIGERA_RECURSO_TECNICO =
-  'get_coleccion_ligera_color';
-export const SHOW_RECURSO_TECNICO = 'show_color';
-export const UPDATE_RECURSO_TECNICO = 'update_color';
-export const CREATE_RECURSO_TECNICO = 'create_color';
-export const DELETE_RECURSO_TECNICO = 'delete_color';
+  'get_coleccion_ligera_recurso_tecnico';
+export const SHOW_RECURSO_TECNICO = 'show_recurso_tecnico';
+export const UPDATE_RECURSO_TECNICO = 'update_recurso_tecnico';
+export const CREATE_RECURSO_TECNICO = 'create_recurso_tecnico';
+export const DELETE_RECURSO_TECNICO = 'delete_recurso_tecnico';
+export const GET_COLECCION_HORARIO_RECURSO_TECNICO =
+  'get_coleccion_horario_recurso_tecnico';
+export const GET_COLECCION_LIGERA_HORARIO_RECURSO_TECNICO =
+  'get_coleccion_ligera_horario_recurso_tecnico';
+export const SHOW_HORARIO_RECURSO_TECNICO = 'show_horario_recurso_tecnico';
+export const UPDATE_HORARIO_RECURSO_TECNICO = 'update_horario_recurso_tecnico';
+export const CREATE_HORARIO_RECURSO_TECNICO = 'create_horario_recurso_tecnico';
+export const DELETE_HORARIO_RECURSO_TECNICO = 'delete_horario_recurso_tecnico';
 
 //APP SETTING
 
