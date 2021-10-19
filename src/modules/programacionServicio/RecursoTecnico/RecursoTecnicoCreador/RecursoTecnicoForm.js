@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {useDispatch} from 'react-redux';
 import {
   Box,
   Button,
@@ -45,7 +44,6 @@ const MyTextField = (props) => {
 };
 
 const ProductoForm = (props) => {
-  const dispatch = useDispatch();
   const {
     handleOnClose,
     accion,

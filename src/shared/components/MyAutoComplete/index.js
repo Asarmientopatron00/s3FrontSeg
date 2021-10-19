@@ -57,6 +57,7 @@ const MyAutocomplete = (props) => {
             required={props.required}
             helperText={errorText}
             error={!!errorText}
+            InputLabelProps={props.InputLabelProps}
           />
         );
       }}

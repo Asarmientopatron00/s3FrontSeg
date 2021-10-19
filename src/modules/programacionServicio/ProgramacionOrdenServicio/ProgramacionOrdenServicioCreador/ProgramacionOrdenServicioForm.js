@@ -32,14 +32,19 @@ const HorarioRecursoTecnicoForm = (props) => {
     initialValues,
     titulo,
     recursosTecnicos,
+    equipos,
     setFieldValue,
   } = props;
   const [disabled, setDisabled] = useState(false);
-  useEffect(() => {
-    if (accion === 'ver' || initialValues.estado === '0') {
-      setDisabled(true);
-    }
-  }, [initialValues.estado, accion]);
+  console.log();
+  useEffect(
+    (accion) => {
+      if (accion === 'ver') {
+        setDisabled(true);
+      }
+    },
+    [initialValues.estado, accion],
+  );
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
@@ -166,131 +171,152 @@ const HorarioRecursoTecnicoForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <MyAutocomplete
-              options={recursosTecnicos}
-              name='recurso_tecnico_id'
-              inputValue={initialValues.recurso_tecnico_id}
-              label='Recurso Técnico'
-              //autoHighlight
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label=' Nº Orden de servicio'
+                name='numero_orden_servicio'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Orden'
+                name='fecha_creacion'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+            <MyTextField
               className={classes.myTextField}
-              required
-              disabled={disabled}
+              label='Asociado negocios'
+              name='asociado'
+              disabled={true}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Tipo Documento'
-                name='tipo_documento'
+                label='Tipo Proceso'
+                name='tipo_servicio'
                 disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+
+            <Box className={classes.inputs_2} minWidth='800px'>
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Programada'
+                name='fecha_programada'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Número Documento'
-                name='numero_documento'
+                label='Hora Inicio Programada'
+                name='hora_programada'
                 disabled={true}
-              />
-              <MyTextField
-                className={classes.myTextField}
-                label='Nombre Completo'
-                name='nombre_completo'
-                disabled={true}
-              />
-              <MyTextField
-                className={classes.myTextField}
-                label='Tipo contrato'
-                name='tipo_contrato'
-                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Departamento'
                 name='departamento'
                 disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Ciudad'
                 name='ciudad'
                 disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
+            </Box>
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Celular'
-                name='celular'
+                label='Nombre Lugar'
+                name='lugar'
                 disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
+            </Box>
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Correo Electrónico'
-                name='email'
+                label='Dirección Lugar'
+                name='direccion'
                 disabled={true}
-              />
-            </Box>
-            <Box className={classes.inputs_2}>
-              <MyTextField
-                className={classes.myTextField}
-                label='Fecha'
-                name='fecha_horario'
-                disabled={disabled}
-                required
-                type='date'
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
             </Box>
-            <Box className={classes.inputs_2}>
+            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Hora Inicio'
-                name='hora_inicio_horario'
-                disabled={disabled}
-                required
-                type='time'
+                label='Número de Viaje'
+                name='numero_viaje'
+                disabled={true}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
             </Box>
-            <Box className={classes.inputs_2}>
-              <MyTextField
-                className={classes.myTextField}
-                label='Hora Final'
-                name='hora_final_horario'
-                disabled={disabled}
-                required
-                type='time'
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <FormControl className={classes.widthFull} component='fieldset'>
-              <FormLabel>Estado*</FormLabel>
-              <Field
-                name='estado'
-                type='radio'
-                as={RadioGroup}
-                className={classes.myTextField}
-                disabled={accion === 'ver'}
-                row
-                value={values.estado}>
-                <FormControlLabel
-                  value='1'
-                  control={<Radio color='primary' />}
-                  label='Activo'
-                  labelPlacement='end'
-                  disabled={accion === 'ver'}
-                />
-                <FormControlLabel
-                  value='0'
-                  control={<Radio color='primary' />}
-                  label='Inactivo'
-                  labelPlacement='end'
-                  disabled={accion === 'ver'}
-                />
-              </Field>
-            </FormControl>
+            <MyAutocomplete
+              options={recursosTecnicos}
+              name='recurso_id'
+              inputValue={initialValues.recurso_id}
+              label='Recurso Técnico'
+              //autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            <MyAutocomplete
+              options={equipos}
+              name='equipo_id'
+              inputValue={initialValues.equipo_id}
+              label='Equipo'
+              //autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={
+                disabled || initialValues.tipo_servicio === 'Desinstalación'
+              }
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Observaciones Programación'
+              name='observaciones_programacion'
+              disabled={disabled}
+              multiline
+            />
           </Box>
         </Box>
       </Scrollbar>

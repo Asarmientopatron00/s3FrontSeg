@@ -100,8 +100,6 @@ const RecursoTecnicoCreator = (props) => {
 
   const dispatch = useDispatch();
 
-  const [consecutivo, setConsecutivo] = useState('');
-
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
       position: 'relative',
@@ -367,14 +365,7 @@ const RecursoTecnicoCreator = (props) => {
                 return;
               }
               if (accion === 'crear') {
-                dispatch(
-                  onCreate(
-                    data,
-                    handleOnClose,
-                    updateColeccion,
-                    setConsecutivo,
-                  ),
-                );
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
               } else if (accion === 'editar') {
                 if (selectedRow) {
                   dispatch(onUpdate(data, handleOnClose, updateColeccion));

@@ -21,25 +21,20 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import Person from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import HorarioRecursoTecnicoCreador from './HorarioRecursoTecnicoCreador';
-import {
-  onGetColeccion,
-  onDelete,
-} from '../../../redux/actions/HorarioRecursoTecnicoAction';
+import ProgramacionOrdenServicioCreador from './ProgramacionOrdenServicioCreador';
+import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {onGetColeccionLigera} from '../../../redux/actions/RecursoTecnicoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
-
+import {ESTADOS_ORDEN_SERVICIO} from '../../../shared/constants/ListasValores';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -70,15 +65,34 @@ import Swal from 'sweetalert2';
 
 const cells = [
   {
-    id: 'fecha_horario',
-    typeHead: 'string',
-    label: 'Fecha',
+    id: 'numero_orden_servicio',
+    typeHead: 'numeric',
+    label: 'Orden Servicio',
     value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_creacion',
+    typeHead: 'numeric',
+    label: 'Fecha y Hora',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'estado_orden_servicio',
+    typeHead: 'string',
+    label: 'Estado',
+    value: (value) =>
+      ESTADOS_ORDEN_SERVICIO.map((tipo) =>
+        tipo.id === value ? tipo.nombre : '',
+      ),
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'recurso_tecnico',
+    id: 'asociado',
     typeHead: 'string',
     label: 'Nombre',
     value: (value) => value,
@@ -86,26 +100,49 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'tipo_contrato',
+    id: 'tipo_servicio',
     typeHead: 'string',
-    label: 'Tipo Contrato',
-    value: (value) =>
-      value === 'C' ? 'Contrato' : value === 'S' ? 'Servicios' : 'Tercero',
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'hora_inicio_horario',
-    typeHead: 'string',
-    label: 'Hora Inicio',
+    label: 'Tipo Servicio',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'hora_final_horario',
+    id: 'fecha_programada',
     typeHead: 'string',
-    label: 'Hora Final',
+    label: 'Fecha Programada',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'hora_programada',
+    typeHead: 'string',
+    label: 'Hora Programada',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'ciudad',
+    typeHead: 'string',
+    label: 'Ciudad',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'lugar',
+    typeHead: 'string',
+    label: 'Lugar',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'recurso',
+    typeHead: 'string',
+    label: 'Técnico',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
@@ -116,7 +153,7 @@ const cells = [
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: true,
+    mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
@@ -328,7 +365,6 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddHorarioRecursoTecnico,
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
@@ -369,17 +405,6 @@ const EnhancedTableToolbar = (props) => {
                   <TuneIcon />
                 </IconButton>
               </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear Recurso Técnico'
-                  onClick={onOpenAddHorarioRecursoTecnico}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
             </Box>
           </Box>
           <Box className={classes.contenedorFiltros}>
@@ -438,7 +463,6 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddHorarioRecursoTecnico: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
@@ -540,7 +564,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HorarioRecursoTecnico = (props) => {
+const ProgramacionOrdenServicio = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -556,12 +580,63 @@ const HorarioRecursoTecnico = (props) => {
 
   const [accion, setAccion] = useState('ver');
   const [
-    horarioRecursoTecnicoSeleccionado,
-    setHorarioRecursoTecnicoSeleccionado,
+    programacionOrdenServicioSeleccionado,
+    setProgramacionOrdenServicioSeleccionado,
   ] = useState(0);
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({horarioRecursoTecnicoReducer}) => horarioRecursoTecnicoReducer,
+  const {desde, hasta, ultima_pagina, total} = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer,
   );
+
+  const rowsAux = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer.rows,
+  );
+
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    let aux = [];
+    rowsAux.forEach((row) => {
+      aux.push({
+        id: row.id,
+        numero_orden_servicio: row.numero_orden_servicio,
+        fecha_creacion: row.fecha_creacion,
+        estado_orden_servicio: row.estado_orden_servicio,
+        asociado: row.asociado,
+        fecha_programada: row.fecha_programada_instalacion,
+        hora_programada: row.hora_programada_instalacion,
+        departamento: row.departamento_instalacion,
+        ciudad: row.ciudad_instalacion,
+        lugar: row.lugar_instalacion,
+        direccion: row.direccion_instalacion,
+        recurso: row.recurso_instalacion,
+        tipo_servicio: 'Instalación',
+        numero_viaje: row.numero_viaje,
+        recurso_id: row.recurso_id_instalacion,
+        equipo_id: row.equipo_id,
+        observaciones_programacion: row.observaciones_programacion_instalacion,
+      });
+      aux.push({
+        id: row.id,
+        numero_orden_servicio: row.numero_orden_servicio,
+        fecha_creacion: row.fecha_creacion,
+        estado_orden_servicio: row.estado_orden_servicio,
+        asociado: row.asociado,
+        fecha_programada: row.fecha_programada_desinstalacion,
+        hora_programada: row.hora_programada_desinstalacion,
+        departamento: row.departamento_desinstalacion,
+        ciudad: row.ciudad_desinstalacion,
+        lugar: row.lugar_desinstalacion,
+        direccion: row.direccion_desinstalacion,
+        recurso: row.recurso_desinstalacion,
+        tipo_servicio: 'Desinstalación',
+        numero_viaje: row.numero_viaje,
+        recurso_id: row.recurso_id_desinstalacion,
+        equipo_id: row.equipo_id,
+        observaciones_programacion:
+          row.observaciones_programacion_desinstalacion,
+      });
+    });
+    setRows(aux);
+  }, [rowsAux]);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
   const [fechaFiltro, setfechaFiltro] = useState('');
@@ -622,16 +697,26 @@ const HorarioRecursoTecnico = (props) => {
       onGetColeccion(
         page,
         rowsPerPage,
+        '',
         orderByToSend,
         nombreFiltro,
         fechaFiltro,
+        'REG,PRG',
       ),
     );
   }, [dispatch, page, rowsPerPage, orderByToSend, nombreFiltro, fechaFiltro]);
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccion(1, rowsPerPage, orderByToSend, nombreFiltro, fechaFiltro),
+      onGetColeccion(
+        1,
+        rowsPerPage,
+        '',
+        orderByToSend,
+        nombreFiltro,
+        fechaFiltro,
+        'REG,PRG',
+      ),
     );
   };
   useEffect(() => {
@@ -643,6 +728,10 @@ const HorarioRecursoTecnico = (props) => {
   }, [dispatch]);
 
   const recursosTecnicos = useSelector(
+    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+  );
+
+  const equipos = useSelector(
     ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
   );
 
@@ -680,8 +769,8 @@ const HorarioRecursoTecnico = (props) => {
     }
   };
 
-  const onOpenEditHorarioRecursoTecnico = (id) => {
-    setHorarioRecursoTecnicoSeleccionado(id);
+  const onOpenEditProgramacionOrdenServicio = (row) => {
+    setProgramacionOrdenServicioSeleccionado(row);
     setAccion('editar');
     setShowForm(true);
   };
@@ -722,47 +811,15 @@ const HorarioRecursoTecnico = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewHorarioRecursoTecnico = (id) => {
-    setHorarioRecursoTecnicoSeleccionado(id);
+  const onOpenViewProgramacionOrdenServicio = (id) => {
+    setProgramacionOrdenServicioSeleccionado(id);
     setAccion('ver');
-    setShowForm(true);
-  };
-
-  const onDeleteHorarioRecursoTecnico = (id) => {
-    Swal.fire({
-      title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el recurso técnico?',
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'NO',
-      confirmButtonText: 'SI',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(onDelete(id));
-        Swal.fire(
-          'Eliminado',
-          'El recurso técnico ha sido eliminada correctamente',
-          'success',
-        );
-        setTimeout(() => {
-          updateColeccion();
-        }, 500);
-      }
-    });
-  };
-
-  const onOpenAddHorarioRecursoTecnico = () => {
-    setHorarioRecursoTecnicoSeleccionado(0);
-    setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setHorarioRecursoTecnicoSeleccionado(0);
+    setProgramacionOrdenServicioSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -797,6 +854,7 @@ const HorarioRecursoTecnico = (props) => {
 
   // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   const [showTable, setShowTable] = useState(true);
+
   useEffect(() => {
     if (rows.length === 0) {
       setShowTable(false);
@@ -811,7 +869,6 @@ const HorarioRecursoTecnico = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddHorarioRecursoTecnico={onOpenAddHorarioRecursoTecnico}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
@@ -867,86 +924,63 @@ const HorarioRecursoTecnico = (props) => {
                   columnasMostradas={columnasMostradas}
                 />
                 <TableBody>
-                  {
-                    // stableSort(rows, getComparator(order, orderBy))
-                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    rows.map((row, index) => {
-                      const isItemSelected = isSelected(row.name);
+                  {rows.map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    // subRows.map(subRow=>{
+                    return (
+                      <TableRow
+                        hover
+                        // role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                        className={classes.row}>
+                        <TableCell align='center' className={classes.acciones}>
+                          {permisos.indexOf('Programar') >= 0 && (
+                            <Tooltip title={<IntlMessages id='boton.editar' />}>
+                              <Person
+                                onClick={() =>
+                                  onOpenEditProgramacionOrdenServicio(row)
+                                }
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></Person>
+                            </Tooltip>
+                          )}
+                          {/* {permisos.indexOf('Listar') >= 0 && (
+                                <Tooltip title={<IntlMessages id='boton.ver' />}>
+                                  <VisibilityIcon
+                                    onClick={() =>
+                                      onOpenViewProgramacionOrdenServicio(row)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
+                                </Tooltip>
+                              )} */}
+                        </TableCell>
 
-                      return (
-                        <TableRow
-                          hover
-                          // role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.id}
-                          selected={isItemSelected}
-                          className={classes.row}>
-                          {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell> */}
-
-                          <TableCell
-                            align='center'
-                            className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() =>
-                                    onOpenEditHorarioRecursoTecnico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewHorarioRecursoTecnico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
-                                <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteHorarioRecursoTecnico(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            )}
-                          </TableCell>
-
-                          {columnasMostradas.map((columna) => {
-                            if (columna.mostrar) {
-                              return (
-                                <MyCell
-                                  key={row.id + columna.id}
-                                  align={columna.align}
-                                  width={columna.width}
-                                  claseBase={classes.cell}
-                                  value={columna.value(row[columna.id])}
-                                  cellColor={
-                                    columna.cellColor
-                                      ? columna.cellColor(row[columna.id])
-                                      : ''
-                                  }
-                                />
-                              );
-                            } else {
-                              return <th key={row.id + columna.id}></th>;
-                            }
-                          })}
-                        </TableRow>
-                      );
-                    })
-                  }
+                        {columnasMostradas.map((columna) => {
+                          if (columna.mostrar) {
+                            return (
+                              <MyCell
+                                key={row.id + columna.id}
+                                align={columna.align}
+                                width={columna.width}
+                                claseBase={classes.cell}
+                                value={columna.value(row[columna.id])}
+                                cellColor={
+                                  columna.cellColor
+                                    ? columna.cellColor(row[columna.id])
+                                    : ''
+                                }
+                              />
+                            );
+                          } else {
+                            return <th key={row.id + columna.id}></th>;
+                          }
+                        })}
+                      </TableRow>
+                    );
+                    // });
+                  })}
                   {/* {emptyRows > 0 && (
                 <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
                   <TableCell colSpan={6} />
@@ -1016,14 +1050,15 @@ const HorarioRecursoTecnico = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <HorarioRecursoTecnicoCreador
+        <ProgramacionOrdenServicioCreador
           showForm={showForm}
-          horarioRecursoTecnico={horarioRecursoTecnicoSeleccionado}
+          selectedRow={programacionOrdenServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
           recursosTecnicos={recursosTecnicos}
+          equipos={equipos}
         />
       ) : (
         ''
@@ -1069,4 +1104,4 @@ const HorarioRecursoTecnico = (props) => {
   );
 };
 
-export default HorarioRecursoTecnico;
+export default ProgramacionOrdenServicio;

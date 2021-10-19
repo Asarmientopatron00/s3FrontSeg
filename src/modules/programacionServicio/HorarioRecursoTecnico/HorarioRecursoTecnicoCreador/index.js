@@ -15,7 +15,7 @@ import Slide from '@material-ui/core/Slide';
 import HorarioRecursoTecnicoForm from './HorarioRecursoTecnicoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+// import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
