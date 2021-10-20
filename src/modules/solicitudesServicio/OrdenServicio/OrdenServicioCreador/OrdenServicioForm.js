@@ -772,7 +772,6 @@ const OrdenServicioForm = (props) => {
                   label='Hora Programada'
                   name='hora_programada_instalacion'
                   disabled={disabled}
-                  required
                   type='time'
                   InputLabelProps={{
                     shrink: true,
@@ -808,7 +807,6 @@ const OrdenServicioForm = (props) => {
                   label='Nombre Lugar'
                   //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
 
@@ -843,7 +841,6 @@ const OrdenServicioForm = (props) => {
                   label='Hora Programada'
                   name='hora_programada_desinstalacion'
                   disabled={disabled}
-                  required
                   type='time'
                   InputLabelProps={{
                     shrink: true,
@@ -879,7 +876,6 @@ const OrdenServicioForm = (props) => {
                   label='Nombre Lugar'
                   //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
 
@@ -906,7 +902,6 @@ const OrdenServicioForm = (props) => {
                   label='Transportador'
                   //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
                 <MyTextField
@@ -962,7 +957,6 @@ const OrdenServicioForm = (props) => {
                   label='Placa Vehículo'
                   name='placa_vehiculo'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -970,7 +964,6 @@ const OrdenServicioForm = (props) => {
                   label='Placa Trailer'
                   name='placa_trailer'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -978,7 +971,6 @@ const OrdenServicioForm = (props) => {
                   label='Número Contenedor'
                   name='numero_contenedor'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -986,7 +978,6 @@ const OrdenServicioForm = (props) => {
                   label='Nombre Conductor'
                   name='nombre_conductor'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -997,7 +988,6 @@ const OrdenServicioForm = (props) => {
                     maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
                   }}
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -1005,7 +995,6 @@ const OrdenServicioForm = (props) => {
                   label='Celular Conductor'
                   name='celular_conductor'
                   disabled={disabled}
-                  required
                   inputProps={{
                     maxLength: LONGITUD_MAXIMA_TELEFONOS,
                     minLength: LONGITUD_MINIMA_TELEFONOS,

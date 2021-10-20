@@ -83,23 +83,23 @@ const OrdenServicioCreator = (props) => {
         then: yup.string().required('Requerido'),
       }),
     fecha_programada_instalacion: yup.date().required('Requerido'),
-    hora_programada_instalacion: yup.string().required('Requerido'),
+    hora_programada_instalacion: yup.string().nullable(),
     departamento_id_instalacion: yup.string().required('Requerido'),
     ciudad_id_instalacion: yup.string().required('Requerido'),
-    lugar_id_instalacion: yup.string().required('Requerido'),
-    fecha_programada_desinstalacion: yup.date().required('Requerido'),
-    hora_programada_desinstalacion: yup.string().required('Requerido'),
+    lugar_id_instalacion: yup.string().nullable(),
+    fecha_programada_desinstalacion: yup.date().nullable(),
+    hora_programada_desinstalacion: yup.string().nullable(),
     departamento_id_desinstalacion: yup.string().required('Requerido'),
     ciudad_id_desinstalacion: yup.string().required('Requerido'),
-    lugar_id_desinstalacion: yup.string().required('Requerido'),
-    transportador_id: yup.string().required('Requerido'),
-    placa_trailer: yup.string().required('Requerido'),
-    numero_contenedor: yup.string().required('Requerido'),
-    nombre_conductor: yup.string().required('Requerido'),
+    lugar_id_desinstalacion: yup.string().nullable(),
+    transportador_id: yup.string().nullable(),
+    placa_trailer: yup.string().nullable(),
+    numero_contenedor: yup.string().nullable(),
+    nombre_conductor: yup.string().nullable(),
     cedula_conductor: yup
       .string()
       .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
-      .required('Requerido')
+      .nullable()
       .max(
         LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
         mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
@@ -107,7 +107,7 @@ const OrdenServicioCreator = (props) => {
       .min(7, mensajeValidacion('min', 7)),
     celular_conductor: yup
       .string()
-      .required('Requerido')
+      .nullable()
       .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
       .max(
         LONGITUD_MAXIMA_TELEFONOS,
