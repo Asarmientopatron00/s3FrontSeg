@@ -10,6 +10,7 @@ import {
   onCreate,
 } from '../../../../redux/actions/HorarioRecursoTecnicoAction';
 import Slide from '@material-ui/core/Slide';
+import format from 'date-fns/format';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
 import HorarioRecursoTecnicoForm from './HorarioRecursoTecnicoForm';
@@ -23,7 +24,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   recurso_tecnico_id: yup.string().required('Requerido'),
-  fecha_horario: yup.string().nullable().required('Requerido'),
+  fecha_horario: yup
+    .date()
+    .nullable()
+    .required('Requerido')
+    .min(
+      format(new Date(Date.now()), 'yyyy-MM-dd'),
+      'Debe ser una fecha mayor o igual a la actual',
+    ),
   hora_inicio_horario: yup.string().nullable().required('Requerido'),
   hora_final_horario: yup.string().nullable().required('Requerido'),
   // .min(

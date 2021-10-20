@@ -147,6 +147,11 @@ const ProgramacionOrdenServicioCreator = (props) => {
                   ? selectedRow.equipo_id
                   : ''
                 : '',
+              indicativo_aceptacion: selectedRow
+                ? selectedRow.indicativo_aceptacion
+                  ? selectedRow.indicativo_aceptacion
+                  : ''
+                : '',
               observaciones_programacion: selectedRow
                 ? selectedRow.observaciones_programacion
                   ? selectedRow.observaciones_programacion
@@ -161,13 +166,32 @@ const ProgramacionOrdenServicioCreator = (props) => {
                   const data_aux = {
                     id: data.id,
                     recurso_id_instalacion: data.recurso_id,
+                    observaciones_programacion_instalacion:
+                      data.observaciones_programacion,
                     equipo_id: data.equipo_id,
+                    estado_orden_servicio: 'PRG',
+                    indicativo_aceptacion_instalacion:
+                      data.indicativo_aceptacion !== 'P' &&
+                      (selectedRow.recurso_id !== data.recurso_id ||
+                        selectedRow.equipo_id !== data.equipo_id)
+                        ? 'P'
+                        : data.indicativo_aceptacion,
+                    tipo_proceso: 'Instalación',
                   };
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 } else {
                   const data_aux = {
                     id: data.id,
                     recurso_id_desinstalacion: data.recurso_id,
+                    observaciones_programacion_desinstalacion:
+                      data.observaciones_programacion,
+                    indicativo_aceptacion_desinstalacion:
+                      data.indicativo_aceptacion !== 'P' &&
+                      (selectedRow.recurso_id !== data.recurso_id ||
+                        selectedRow.equipo_id !== data.equipo_id)
+                        ? 'P'
+                        : data.indicativo_aceptacion,
+                    tipo_proceso: 'Desinstalación',
                   };
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 }

@@ -109,6 +109,13 @@ export const ESTADOS_ORDEN_SERVICIO = [
   {id: 'ANU', nombre: 'Anulada', estado: 1},
 ];
 
+export const ESTADOS_APROBACION_OS = [
+  {id: 'A', nombre: 'Aceptada', estado: 1},
+  {id: 'P', nombre: 'Programada', estado: 1},
+  {id: 'R', nombre: 'Rechazada', estado: 1},
+  {id: '', nombre: '', estado: 1},
+];
+
 export const TIPOS_EQUIPOS = [
   {id: 'DET', nombre: 'DETC', estado: 1},
   {id: 'SEN', nombre: 'Señuelo', estado: 1},

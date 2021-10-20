@@ -26,6 +26,11 @@ export const onGetColeccion = (
   nombre_empresa,
   fecha_orden_servicio,
   estados,
+  fechaOSInicial,
+  fechaOSFinal,
+  fechaProgInicial,
+  fechaProgFinal,
+  ciudad,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
@@ -36,6 +41,11 @@ export const onGetColeccion = (
   const fecha_orden_servicioAux = fecha_orden_servicio
     ? fecha_orden_servicio
     : '';
+  const fechaOSInicialAux = fechaOSInicial ? fechaOSInicial : '';
+  const fechaOSFinalAux = fechaOSFinal ? fechaOSFinal : '';
+  const fechaProgInicialAux = fechaProgInicial ? fechaProgInicial : '';
+  const fechaProgFinalAux = fechaProgFinal ? fechaProgFinal : '';
+  const ciudadAux = ciudad ? ciudad : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -49,6 +59,11 @@ export const onGetColeccion = (
           nombre: nombre_empresaAux,
           estados: estadosAux,
           fecha_orden_servicio: fecha_orden_servicioAux,
+          fechaOSInicial: fechaOSInicialAux,
+          fechaOSFinal: fechaOSFinalAux,
+          fechaProgInicial: fechaProgInicialAux,
+          fechaProgFinal: fechaProgFinalAux,
+          ciudad: ciudadAux,
         },
       })
       .then((data) => {
@@ -123,7 +138,7 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose) => {
+export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -135,6 +150,7 @@ export const onUpdate = (params, handleOnClose) => {
             type: UPDATE_ORDEN_SERVICIO,
             payload: data.data,
           });
+          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,

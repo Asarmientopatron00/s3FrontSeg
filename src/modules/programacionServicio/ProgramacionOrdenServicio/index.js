@@ -22,11 +22,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Person from '@material-ui/icons/Person';
-import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ProgramacionOrdenServicioCreador from './ProgramacionOrdenServicioCreador';
 import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {onGetColeccionLigera} from '../../../redux/actions/RecursoTecnicoAction';
+import {onGetColeccionLigera as onGetColeccionLigeraEquipo} from '../../../redux/actions/InformacionEquipoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -34,7 +35,11 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import {ESTADOS_ORDEN_SERVICIO} from '../../../shared/constants/ListasValores';
+import {
+  ESTADOS_ORDEN_SERVICIO,
+  ESTADOS_APROBACION_OS,
+} from '../../../shared/constants/ListasValores';
+
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -143,6 +148,25 @@ const cells = [
     id: 'recurso',
     typeHead: 'string',
     label: 'Técnico',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'indicativo_aceptacion',
+    typeHead: 'string',
+    label: 'Estado Aprobación',
+    value: (value) =>
+      ESTADOS_APROBACION_OS.map((tipo) =>
+        tipo.id === value ? tipo.nombre : '',
+      ),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'equipo',
+    typeHead: 'string',
+    label: 'Equipo',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
@@ -350,7 +374,7 @@ const useToolbarStyles = makeStyles((theme) => ({
     width: '90%',
     display: 'grid',
     gridTemplateColumns: '4fr 4fr 1fr',
-    gap: '20px',
+    columnGap: '20px',
   },
   pairFilters: {
     display: 'flex',
@@ -368,9 +392,14 @@ const EnhancedTableToolbar = (props) => {
     handleOpenPopoverColumns,
     queryFilter,
     nombreFiltro,
-    fechaFiltro,
+    fechaOSInicialFiltro,
+    fechaOSFinalFiltro,
+    fechaProgInicialFiltro,
+    fechaProgFinalFiltro,
+    ciudadFiltro,
+    ordenServicioFiltro,
     limpiarFiltros,
-    permisos,
+    updateColeccion,
   } = props;
   return (
     <Toolbar
@@ -409,25 +438,76 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
+              label='Fecha Orden Servicio Inicial'
+              name='fechaOSInicialFiltro'
+              id='fechaOSInicialFiltro'
+              onChange={queryFilter}
+              value={fechaOSInicialFiltro}
+              type='date'
+              InputLabelProps={{shrink: true}}
+            />
+            <TextField
+              label='Fecha Orden nServicio Final'
+              name='fechaOSFinalFiltro'
+              id='fechaOSFinalFiltro'
+              onChange={queryFilter}
+              value={fechaOSFinalFiltro}
+              type='date'
+              InputLabelProps={{shrink: true}}
+            />
+            <Box />
+            <TextField
+              label='Fecha Programada Inicial'
+              name='fechaProgInicialFiltro'
+              id='fechaProgInicialFiltro'
+              onChange={queryFilter}
+              value={fechaProgInicialFiltro}
+              type='date'
+              InputLabelProps={{shrink: true}}
+            />
+            <TextField
+              label='Fecha Programada Final'
+              name='fechaProgFinalFiltro'
+              id='fechaProgFinalFiltro'
+              onChange={queryFilter}
+              value={fechaProgFinalFiltro}
+              type='date'
+              InputLabelProps={{shrink: true}}
+            />
+            <Box />
+            <TextField
+              label='Ciudad'
+              name='ciudadFiltro'
+              id='ciudadFiltro'
+              onChange={queryFilter}
+              value={ciudadFiltro}
+            />
+            <TextField
               label='Nombre'
               name='nombreFiltro'
               id='nombreFiltro'
               onChange={queryFilter}
               value={nombreFiltro}
             />
+            <Box />
             <TextField
-              label='Fecha'
-              name='fechaFiltro'
-              id='fechaFiltro'
+              label='Orden Servicio'
+              name='ordenServicioFiltro'
+              id='ordenServicioFiltro'
               onChange={queryFilter}
-              value={fechaFiltro}
-              type='date'
-              InputLabelProps={{
-                shrink: true,
-              }}
+              value={ordenServicioFiltro}
+              type='number'
             />
+            <Box />
             <Box display='grid'>
               <Box display='flex' mb={2}>
+                <Tooltip title='Buscar' onClick={updateColeccion}>
+                  <IconButton
+                    className={classes.clearButton}
+                    aria-label='filter list'>
+                    <SearchIcon />
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
                   <IconButton
                     className={classes.clearButton}
@@ -467,7 +547,12 @@ EnhancedTableToolbar.propTypes = {
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
   nombreFiltro: PropTypes.string.isRequired,
-  fechaFiltro: PropTypes.string.isRequired,
+  fechaOSInicialFiltro: PropTypes.string.isRequired,
+  fechaOSFinalFiltro: PropTypes.string.isRequired,
+  fechaProgInicialFiltro: PropTypes.string.isRequired,
+  fechaProgFinalFiltro: PropTypes.string.isRequired,
+  ciudadFiltro: PropTypes.string.isRequired,
+  ordenServicioFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -490,7 +575,7 @@ const useStyles = makeStyles((theme) => ({
     // gridTemplateColumns:gridTemplate,
   },
   headCell: {
-    padding: '0px 0px 0px 15px',
+    padding: '0px 0px 0px 0px',
   },
   row: {
     // display:'grid',
@@ -510,7 +595,7 @@ const useStyles = makeStyles((theme) => ({
   }),
   acciones: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
-    minWidth: '100px',
+    minWidth: '50px',
   }),
   paper: {
     width: '100%',
@@ -612,7 +697,9 @@ const ProgramacionOrdenServicio = (props) => {
         numero_viaje: row.numero_viaje,
         recurso_id: row.recurso_id_instalacion,
         equipo_id: row.equipo_id,
+        equipo: row.equipo,
         observaciones_programacion: row.observaciones_programacion_instalacion,
+        indicativo_aceptacion: row.indicativo_aceptacion_instalacion,
       });
       aux.push({
         id: row.id,
@@ -631,15 +718,22 @@ const ProgramacionOrdenServicio = (props) => {
         numero_viaje: row.numero_viaje,
         recurso_id: row.recurso_id_desinstalacion,
         equipo_id: row.equipo_id,
+        equipo: row.equipo,
         observaciones_programacion:
           row.observaciones_programacion_desinstalacion,
+        indicativo_aceptacion: row.indicativo_aceptacion_desinstalacion,
       });
     });
     setRows(aux);
   }, [rowsAux]);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
-  const [fechaFiltro, setfechaFiltro] = useState('');
+  const [fechaOSInicialFiltro, setfechaOSInicialFiltro] = useState('');
+  const [fechaOSFinalFiltro, setfechaOSFinalFiltro] = useState('');
+  const [fechaProgInicialFiltro, setfechaProgInicialFiltro] = useState('');
+  const [fechaProgFinalFiltro, setfechaProgFinalFiltro] = useState('');
+  const [ciudadFiltro, setciudadFiltro] = useState('');
+  const [ordenServicioFiltro, setordenServicioFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -697,34 +791,42 @@ const ProgramacionOrdenServicio = (props) => {
       onGetColeccion(
         page,
         rowsPerPage,
-        '',
+        ordenServicioFiltro,
         orderByToSend,
         nombreFiltro,
-        fechaFiltro,
-        'REG,PRG',
+        '',
+        'REG,PRG,RUT',
+        fechaOSInicialFiltro,
+        fechaOSFinalFiltro,
+        fechaProgInicialFiltro,
+        fechaProgFinalFiltro,
+        ciudadFiltro,
       ),
     );
-  }, [dispatch, page, rowsPerPage, orderByToSend, nombreFiltro, fechaFiltro]);
+  }, [dispatch, page, rowsPerPage, orderByToSend]);
 
   const updateColeccion = () => {
     dispatch(
       onGetColeccion(
         1,
         rowsPerPage,
-        '',
+        ordenServicioFiltro,
         orderByToSend,
         nombreFiltro,
-        fechaFiltro,
-        'REG,PRG',
+        '',
+        'REG,PRG,RUT',
+        fechaOSInicialFiltro,
+        fechaOSFinalFiltro,
+        fechaProgInicialFiltro,
+        fechaProgFinalFiltro,
+        ciudadFiltro,
       ),
     );
   };
-  useEffect(() => {
-    setPage(1);
-  }, [orderByToSend, nombreFiltro, fechaFiltro]);
 
   useEffect(() => {
     dispatch(onGetColeccionLigera());
+    dispatch(onGetColeccionLigeraEquipo());
   }, [dispatch]);
 
   const recursosTecnicos = useSelector(
@@ -732,7 +834,7 @@ const ProgramacionOrdenServicio = (props) => {
   );
 
   const equipos = useSelector(
-    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+    ({informacionEquipoReducer}) => informacionEquipoReducer.ligera,
   );
 
   const queryFilter = (e) => {
@@ -740,8 +842,23 @@ const ProgramacionOrdenServicio = (props) => {
       case 'nombreFiltro':
         setnombreFiltro(e.target.value);
         break;
-      case 'fechaFiltro':
-        setfechaFiltro(e.target.value);
+      case 'fechaOSInicialFiltro':
+        setfechaOSInicialFiltro(e.target.value);
+        break;
+      case 'fechaOSFinalFiltro':
+        setfechaOSFinalFiltro(e.target.value);
+        break;
+      case 'fechaProgInicialFiltro':
+        setfechaProgInicialFiltro(e.target.value);
+        break;
+      case 'fechaProgFinalFiltro':
+        setfechaProgFinalFiltro(e.target.value);
+        break;
+      case 'ciudadFiltro':
+        setciudadFiltro(e.target.value);
+        break;
+      case 'ordenServicioFiltro':
+        setordenServicioFiltro(e.target.value);
         break;
       default:
         break;
@@ -750,7 +867,28 @@ const ProgramacionOrdenServicio = (props) => {
 
   const limpiarFiltros = () => {
     setnombreFiltro('');
-    setfechaFiltro('');
+    setfechaOSInicialFiltro('');
+    setfechaOSFinalFiltro('');
+    setfechaProgInicialFiltro('');
+    setfechaProgFinalFiltro('');
+    setciudadFiltro('');
+    setordenServicioFiltro('');
+    dispatch(
+      onGetColeccion(
+        1,
+        rowsPerPage,
+        ordenServicioFiltro,
+        orderByToSend,
+        '',
+        '',
+        'REG,PRG,RUT',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ),
+    );
   };
 
   const changeOrderBy = (id) => {
@@ -872,10 +1010,15 @@ const ProgramacionOrdenServicio = (props) => {
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            fechaFiltro={fechaFiltro}
             nombreFiltro={nombreFiltro}
-            permisos={permisos}
+            fechaOSInicialFiltro={fechaOSInicialFiltro}
+            fechaOSFinalFiltro={fechaOSFinalFiltro}
+            fechaProgInicialFiltro={fechaProgInicialFiltro}
+            fechaProgFinalFiltro={fechaProgFinalFiltro}
+            ciudadFiltro={ciudadFiltro}
+            ordenServicioFiltro={ordenServicioFiltro}
             titulo={titulo}
+            updateColeccion={updateColeccion}
           />
         )}
         {showTable && permisos ? (
