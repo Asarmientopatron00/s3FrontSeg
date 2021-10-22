@@ -252,7 +252,7 @@ const ProductoForm = (props) => {
               error={
                 errors.tipo_contrato && touched.tipo_contrato ? true : false
               }>
-              <FormLabel>Empaque*</FormLabel>
+              <FormLabel>Tipo Contrato*</FormLabel>
               <Field
                 name='tipo_contrato'
                 type='radio'
@@ -262,9 +262,9 @@ const ProductoForm = (props) => {
                 row
                 value={values.tipo_contrato}>
                 <FormControlLabel
-                  value='C'
+                  value='F'
                   control={<Radio color='primary' />}
-                  label='Contrato'
+                  label='Fijo'
                   labelPlacement='end'
                   disabled={disabled}
                 />

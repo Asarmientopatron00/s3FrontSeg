@@ -90,7 +90,7 @@ const cells = [
     typeHead: 'string',
     label: 'Tipo Contrato',
     value: (value) =>
-      value === 'C' ? 'Contrato' : value === 'S' ? 'Servicios' : 'Tercero',
+      value === 'F' ? 'Fijo' : value === 'S' ? 'Servicios' : 'Tercero',
     align: 'left',
     mostrarInicio: true,
   },
@@ -371,7 +371,7 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
                 <Tooltip
-                  title='Crear Recurso Técnico'
+                  title='Crear Horario de Recurso Técnico'
                   onClick={onOpenAddHorarioRecursoTecnico}>
                   <IconButton
                     className={classes.createButton}

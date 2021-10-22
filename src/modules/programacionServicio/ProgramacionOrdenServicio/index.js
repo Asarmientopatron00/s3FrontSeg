@@ -26,7 +26,6 @@ import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ProgramacionOrdenServicioCreador from './ProgramacionOrdenServicioCreador';
 import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
-import {onGetColeccionLigera} from '../../../redux/actions/RecursoTecnicoAction';
 import {onGetColeccionLigera as onGetColeccionLigeraEquipo} from '../../../redux/actions/InformacionEquipoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -107,7 +106,7 @@ const cells = [
   {
     id: 'tipo_servicio',
     typeHead: 'string',
-    label: 'Tipo Servicio',
+    label: 'Tipo Proceso',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
@@ -689,6 +688,7 @@ const ProgramacionOrdenServicio = (props) => {
         fecha_programada: row.fecha_programada_instalacion,
         hora_programada: row.hora_programada_instalacion,
         departamento: row.departamento_instalacion,
+        departamento_id: row.departamento_id_instalacion,
         ciudad: row.ciudad_instalacion,
         lugar: row.lugar_instalacion,
         direccion: row.direccion_instalacion,
@@ -710,6 +710,7 @@ const ProgramacionOrdenServicio = (props) => {
         fecha_programada: row.fecha_programada_desinstalacion,
         hora_programada: row.hora_programada_desinstalacion,
         departamento: row.departamento_desinstalacion,
+        departamento_id: row.departamento_id_desinstalacion,
         ciudad: row.ciudad_desinstalacion,
         lugar: row.lugar_desinstalacion,
         direccion: row.direccion_desinstalacion,
@@ -795,7 +796,7 @@ const ProgramacionOrdenServicio = (props) => {
         orderByToSend,
         nombreFiltro,
         '',
-        'REG,PRG,RUT',
+        'REC,PRG,RUT',
         fechaOSInicialFiltro,
         fechaOSFinalFiltro,
         fechaProgInicialFiltro,
@@ -814,7 +815,7 @@ const ProgramacionOrdenServicio = (props) => {
         orderByToSend,
         nombreFiltro,
         '',
-        'REG,PRG,RUT',
+        'REC,PRG,RUT',
         fechaOSInicialFiltro,
         fechaOSFinalFiltro,
         fechaProgInicialFiltro,
@@ -825,13 +826,8 @@ const ProgramacionOrdenServicio = (props) => {
   };
 
   useEffect(() => {
-    dispatch(onGetColeccionLigera());
     dispatch(onGetColeccionLigeraEquipo());
   }, [dispatch]);
-
-  const recursosTecnicos = useSelector(
-    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
-  );
 
   const equipos = useSelector(
     ({informacionEquipoReducer}) => informacionEquipoReducer.ligera,
@@ -881,7 +877,7 @@ const ProgramacionOrdenServicio = (props) => {
         orderByToSend,
         '',
         '',
-        'REG,PRG,RUT',
+        'REC,PRG,RUT',
         '',
         '',
         '',
@@ -1200,7 +1196,6 @@ const ProgramacionOrdenServicio = (props) => {
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          recursosTecnicos={recursosTecnicos}
           equipos={equipos}
         />
       ) : (

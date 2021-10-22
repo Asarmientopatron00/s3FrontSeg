@@ -11,6 +11,8 @@ import Slide from '@material-ui/core/Slide';
 import ProgramacionOrdenServicioForm from './ProgramacionOrdenServicioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
+import {onGetColeccionLigera} from '../../../../redux/actions/RecursoTecnicoAction';
+
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -31,15 +33,8 @@ const validationSchema = yup.object({
 });
 
 const ProgramacionOrdenServicioCreator = (props) => {
-  const {
-    selectedRow,
-    handleOnClose,
-    accion,
-    updateColeccion,
-    titulo,
-    recursosTecnicos,
-    equipos,
-  } = props;
+  const {selectedRow, handleOnClose, accion, updateColeccion, titulo, equipos} =
+    props;
 
   const dispatch = useDispatch();
 
@@ -58,6 +53,19 @@ const ProgramacionOrdenServicioCreator = (props) => {
   }));
 
   const classes = useStyles(props);
+
+  useEffect(() => {
+    dispatch(
+      onGetColeccionLigera(
+        selectedRow.fecha_programada,
+        selectedRow.departamento_id,
+      ),
+    );
+  }, [selectedRow.fecha_programada, selectedRow.departamento_id]);
+
+  const recursosTecnicos = useSelector(
+    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+  );
 
   return (
     true && (

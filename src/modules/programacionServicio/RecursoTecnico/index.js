@@ -135,7 +135,7 @@ const cells = [
     typeHead: 'string',
     label: 'Tipo Contrato',
     value: (value) =>
-      value === 'C' ? 'Contrato' : value === 'S' ? 'Servicios' : 'Tercero',
+      value === 'F' ? 'Fijo' : value === 'S' ? 'Servicios' : 'Tercero',
     align: 'left',
     mostrarInicio: false,
   },

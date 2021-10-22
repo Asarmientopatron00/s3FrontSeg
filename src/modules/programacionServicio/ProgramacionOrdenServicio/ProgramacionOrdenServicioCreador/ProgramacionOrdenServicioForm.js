@@ -65,6 +65,14 @@ const HorarioRecursoTecnicoForm = (props) => {
       },
       height: '65px',
     },
+    myTextFieldSmall: {
+      width: '100%',
+      marginBottom: 0,
+      [theme.breakpoints.up('xl')]: {
+        marginBottom: 0,
+      },
+      height: '55px',
+    },
     MySelectField: {
       width: 'auto',
       marginBottom: 16,
@@ -141,8 +149,8 @@ const HorarioRecursoTecnicoForm = (props) => {
       if (tipoContrato === 'S') {
         setFieldValue('tipo_contrato', 'Servicio');
       } else {
-        if (tipoContrato === 'C') {
-          setFieldValue('tipo_contrato', 'Contrato');
+        if (tipoContrato === 'F') {
+          setFieldValue('tipo_contrato', 'Fijo');
         } else {
           setFieldValue('tipo_contrato', 'Tercero');
         }
@@ -164,7 +172,7 @@ const HorarioRecursoTecnicoForm = (props) => {
         <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
           <Box
             component='h6'
-            mb={{xs: 4, xl: 6}}
+            mb={{xs: 1, xl: 1}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
             {titulo}
@@ -173,7 +181,7 @@ const HorarioRecursoTecnicoForm = (props) => {
           <Box px={{md: 5, lg: 8, xl: 10}}>
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label=' Nº Orden de servicio'
                 name='numero_orden_servicio'
                 disabled={true}
@@ -181,10 +189,8 @@ const HorarioRecursoTecnicoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Fecha Orden'
                 name='fecha_creacion'
                 disabled={true}
@@ -194,7 +200,7 @@ const HorarioRecursoTecnicoForm = (props) => {
               />
             </Box>
             <MyTextField
-              className={classes.myTextField}
+              className={classes.myTextFieldSmall}
               label='Asociado negocios'
               name='asociado'
               disabled={true}
@@ -204,9 +210,18 @@ const HorarioRecursoTecnicoForm = (props) => {
             />
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Tipo Proceso'
                 name='tipo_servicio'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextFieldSmall}
+                label='Número de Viaje'
+                name='numero_viaje'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -216,7 +231,7 @@ const HorarioRecursoTecnicoForm = (props) => {
 
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Fecha Programada'
                 name='fecha_programada'
                 disabled={true}
@@ -225,7 +240,7 @@ const HorarioRecursoTecnicoForm = (props) => {
                 }}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Hora Inicio Programada'
                 name='hora_programada'
                 disabled={true}
@@ -234,7 +249,7 @@ const HorarioRecursoTecnicoForm = (props) => {
                 }}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Departamento'
                 name='departamento'
                 disabled={true}
@@ -243,7 +258,7 @@ const HorarioRecursoTecnicoForm = (props) => {
                 }}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Ciudad'
                 name='ciudad'
                 disabled={true}
@@ -254,7 +269,7 @@ const HorarioRecursoTecnicoForm = (props) => {
             </Box>
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Nombre Lugar'
                 name='lugar'
                 disabled={true}
@@ -262,23 +277,10 @@ const HorarioRecursoTecnicoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Dirección Lugar'
                 name='direccion'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextField}
-                label='Número de Viaje'
-                name='numero_viaje'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,

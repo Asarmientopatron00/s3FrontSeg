@@ -60,6 +60,14 @@ const HorarioRecursoTecnicoForm = (props) => {
       },
       height: '65px',
     },
+    myTextFieldSmall: {
+      width: '100%',
+      marginBottom: 0,
+      [theme.breakpoints.up('xl')]: {
+        marginBottom: 0,
+      },
+      height: '60px',
+    },
     MySelectField: {
       width: 'auto',
       marginBottom: 16,
@@ -136,8 +144,8 @@ const HorarioRecursoTecnicoForm = (props) => {
       if (tipoContrato === 'S') {
         setFieldValue('tipo_contrato', 'Servicio');
       } else {
-        if (tipoContrato === 'C') {
-          setFieldValue('tipo_contrato', 'Contrato');
+        if (tipoContrato === 'F') {
+          setFieldValue('tipo_contrato', 'Fijo');
         } else {
           setFieldValue('tipo_contrato', 'Tercero');
         }
@@ -178,49 +186,49 @@ const HorarioRecursoTecnicoForm = (props) => {
             />
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Tipo Documento'
                 name='tipo_documento'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Número Documento'
                 name='numero_documento'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Nombre Completo'
                 name='nombre_completo'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Tipo contrato'
                 name='tipo_contrato'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Departamento'
                 name='departamento'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Ciudad'
                 name='ciudad'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Celular'
                 name='celular'
                 disabled={true}
               />
               <MyTextField
-                className={classes.myTextField}
+                className={classes.myTextFieldSmall}
                 label='Correo Electrónico'
                 name='email'
                 disabled={true}
@@ -251,8 +259,6 @@ const HorarioRecursoTecnicoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Hora Final'
