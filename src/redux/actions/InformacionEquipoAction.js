@@ -90,6 +90,38 @@ export const onGetColeccionLigera = (depto) => {
   };
 };
 
+export const onGetColeccionLigeraOS = (departamento_id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('informacion-equipos', {
+        params: {
+          ligera: true,
+          orden_servicio: true,
+          departamento_id: departamento_id,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_INFORMACION_EQUIPO,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
 export const onShow = (id) => {
   const {messages} = appIntl();
   return (dispatch) => {

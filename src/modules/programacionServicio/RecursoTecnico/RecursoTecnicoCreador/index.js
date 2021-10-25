@@ -239,12 +239,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_martes: selectedRow
                 ? selectedRow.hora_inicio_martes
-                  ? selectedRow.hora_inicio_martes
+                  ? selectedRow.hora_inicio_martes.replace(':00', '')
                   : ''
                 : '',
               hora_fin_martes: selectedRow
                 ? selectedRow.hora_fin_martes
-                  ? selectedRow.hora_fin_martes
+                  ? selectedRow.hora_fin_martes.replace(':00', '')
                   : ''
                 : '',
               dia_laboral_miercoles: selectedRow
@@ -254,12 +254,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_miercoles: selectedRow
                 ? selectedRow.hora_inicio_miercoles
-                  ? selectedRow.hora_inicio_miercoles
+                  ? selectedRow.hora_inicio_miercoles.replace(':00', '')
                   : ''
                 : '',
               hora_fin_miercoles: selectedRow
                 ? selectedRow.hora_fin_miercoles
-                  ? selectedRow.hora_fin_miercoles
+                  ? selectedRow.hora_fin_miercoles.replace(':00', '')
                   : ''
                 : '',
               dia_laboral_jueves: selectedRow
@@ -269,12 +269,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_jueves: selectedRow
                 ? selectedRow.hora_inicio_jueves
-                  ? selectedRow.hora_inicio_jueves
+                  ? selectedRow.hora_inicio_jueves.replace(':00', '')
                   : ''
                 : '',
               hora_fin_jueves: selectedRow
                 ? selectedRow.hora_fin_jueves
-                  ? selectedRow.hora_fin_jueves
+                  ? selectedRow.hora_fin_jueves.replace(':00', '')
                   : ''
                 : '',
               dia_laboral_viernes: selectedRow
@@ -284,12 +284,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_viernes: selectedRow
                 ? selectedRow.hora_inicio_viernes
-                  ? selectedRow.hora_inicio_viernes
+                  ? selectedRow.hora_inicio_viernes.replace(':00', '')
                   : ''
                 : '',
               hora_fin_viernes: selectedRow
                 ? selectedRow.hora_fin_viernes
-                  ? selectedRow.hora_fin_viernes
+                  ? selectedRow.hora_fin_viernes.replace(':00', '')
                   : ''
                 : '',
               dia_laboral_sabado: selectedRow
@@ -299,12 +299,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_sabado: selectedRow
                 ? selectedRow.hora_inicio_sabado
-                  ? selectedRow.hora_inicio_sabado
+                  ? selectedRow.hora_inicio_sabado.replace(':00', '')
                   : ''
                 : '',
               hora_fin_sabado: selectedRow
                 ? selectedRow.hora_fin_sabado
-                  ? selectedRow.hora_fin_sabado
+                  ? selectedRow.hora_fin_sabado.replace(':00', '')
                   : ''
                 : '',
               dia_laboral_domingo: selectedRow
@@ -314,12 +314,12 @@ const RecursoTecnicoCreator = (props) => {
                 : 'N',
               hora_inicio_domingo: selectedRow
                 ? selectedRow.hora_inicio_domingo
-                  ? selectedRow.hora_inicio_domingo
+                  ? selectedRow.hora_inicio_domingo.replace(':00', '')
                   : ''
                 : '',
               hora_fin_domingo: selectedRow
                 ? selectedRow.hora_fin_domingo
-                  ? selectedRow.hora_fin_domingo
+                  ? selectedRow.hora_fin_domingo.replace(':00', '')
                   : ''
                 : '',
               numero_horas_semana: selectedRow

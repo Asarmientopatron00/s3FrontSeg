@@ -11,7 +11,8 @@ import Slide from '@material-ui/core/Slide';
 import ProgramacionOrdenServicioForm from './ProgramacionOrdenServicioForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {onGetColeccionLigera} from '../../../../redux/actions/RecursoTecnicoAction';
+import {onGetColeccionLigeraOS} from '../../../../redux/actions/RecursoTecnicoAction';
+import {onGetColeccionLigeraOS as onGetColeccionLigeraOSEquipo} from '../../../../redux/actions/InformacionEquipoAction';
 
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
@@ -33,8 +34,7 @@ const validationSchema = yup.object({
 });
 
 const ProgramacionOrdenServicioCreator = (props) => {
-  const {selectedRow, handleOnClose, accion, updateColeccion, titulo, equipos} =
-    props;
+  const {selectedRow, handleOnClose, accion, updateColeccion, titulo} = props;
 
   const dispatch = useDispatch();
 
@@ -56,15 +56,23 @@ const ProgramacionOrdenServicioCreator = (props) => {
 
   useEffect(() => {
     dispatch(
-      onGetColeccionLigera(
+      onGetColeccionLigeraOS(
         selectedRow.fecha_programada,
         selectedRow.departamento_id,
       ),
     );
   }, [selectedRow.fecha_programada, selectedRow.departamento_id]);
 
+  useEffect(() => {
+    dispatch(onGetColeccionLigeraOSEquipo(selectedRow.departamento_id));
+  }, [selectedRow.departamento_id]);
+
   const recursosTecnicos = useSelector(
     ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+  );
+
+  const equipos = useSelector(
+    ({informacionEquipoReducer}) => informacionEquipoReducer.ligera,
   );
 
   return (

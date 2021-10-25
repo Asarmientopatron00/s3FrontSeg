@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
-import {Field, Form, useField} from 'formik';
+import {Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
-import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import MyAutoCompleteRecursoTecnico from '../../../../shared/components/MyAutoCompleteRecursoTecnico';
+import MyAutoCompleteEquipo from '../../../../shared/components/MyAutoCompleteEquipo';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -287,7 +285,7 @@ const HorarioRecursoTecnicoForm = (props) => {
                 }}
               />
             </Box>
-            <MyAutocomplete
+            <MyAutoCompleteRecursoTecnico
               options={recursosTecnicos}
               name='recurso_id'
               inputValue={initialValues.recurso_id}
@@ -297,7 +295,7 @@ const HorarioRecursoTecnicoForm = (props) => {
               required
               disabled={disabled}
             />
-            <MyAutocomplete
+            <MyAutoCompleteEquipo
               options={equipos}
               name='equipo_id'
               inputValue={initialValues.equipo_id}

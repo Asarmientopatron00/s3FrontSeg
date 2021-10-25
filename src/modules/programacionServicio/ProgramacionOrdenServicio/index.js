@@ -26,7 +26,6 @@ import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ProgramacionOrdenServicioCreador from './ProgramacionOrdenServicioCreador';
 import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
-import {onGetColeccionLigera as onGetColeccionLigeraEquipo} from '../../../redux/actions/InformacionEquipoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -825,14 +824,6 @@ const ProgramacionOrdenServicio = (props) => {
     );
   };
 
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraEquipo());
-  }, [dispatch]);
-
-  const equipos = useSelector(
-    ({informacionEquipoReducer}) => informacionEquipoReducer.ligera,
-  );
-
   const queryFilter = (e) => {
     switch (e.target.name) {
       case 'nombreFiltro':
@@ -1196,7 +1187,6 @@ const ProgramacionOrdenServicio = (props) => {
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          equipos={equipos}
         />
       ) : (
         ''
