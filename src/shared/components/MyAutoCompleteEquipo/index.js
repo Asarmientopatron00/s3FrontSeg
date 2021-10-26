@@ -44,7 +44,7 @@ const MyAutoCompleteEquipo = (props) => {
             <React.Fragment>
               {option.nombre +
                 ' ' +
-                option.nombre_completo +
+                option.recurso_tecnico +
                 ' - ' +
                 option.ultima_ciudad}
             </React.Fragment>

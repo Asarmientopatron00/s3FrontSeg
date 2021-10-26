@@ -487,7 +487,15 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={nombreFiltro}
             />
-            <Box />
+            <Box>
+              <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
+                <IconButton
+                  className={classes.clearButton}
+                  aria-label='filter list'>
+                  <ClearAllIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
             <TextField
               label='Orden Servicio'
               name='ordenServicioFiltro'
@@ -501,16 +509,9 @@ const EnhancedTableToolbar = (props) => {
               <Box display='flex' mb={2}>
                 <Tooltip title='Buscar' onClick={updateColeccion}>
                   <IconButton
-                    className={classes.clearButton}
+                    className={classes.createButton}
                     aria-label='filter list'>
                     <SearchIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -676,6 +677,7 @@ const ProgramacionOrdenServicio = (props) => {
 
   const [rows, setRows] = useState([]);
   useEffect(() => {
+    setRows([]);
     let aux = [];
     rowsAux.forEach((row) => {
       aux.push({
@@ -726,6 +728,7 @@ const ProgramacionOrdenServicio = (props) => {
     });
     setRows(aux);
   }, [rowsAux]);
+
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
   const [fechaOSInicialFiltro, setfechaOSInicialFiltro] = useState('');
