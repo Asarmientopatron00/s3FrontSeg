@@ -19,13 +19,13 @@ export const onGetColeccion = (
   rowsPerPage,
   orderByToSend,
   nombre,
-  ciudad_id,
+  ciudad,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const nombreAux = nombre ? nombre : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
-  const ciudad_idAux = ciudad_id ? ciudad_id : '';
+  const ciudadAux = ciudad ? ciudad : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -35,7 +35,7 @@ export const onGetColeccion = (
           page: page,
           limite: rowsPerPage,
           nombre: nombreAux,
-          ciudad_id: ciudad_idAux,
+          ciudad: ciudadAux,
           ordenar_por: ordenar_por,
         },
       })

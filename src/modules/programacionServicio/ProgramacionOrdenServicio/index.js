@@ -25,7 +25,7 @@ import Person from '@material-ui/icons/Person';
 import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ProgramacionOrdenServicioCreador from './ProgramacionOrdenServicioCreador';
-import {onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
+import {onGetColeccionProgramacion as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -254,7 +254,7 @@ function EnhancedTableHead(props) {
         <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-        {columnasMostradas.map((cell) => {
+        {columnasMostradas.map((cell, index) => {
           if (cell.mostrar) {
             return (
               <TableCell
@@ -287,7 +287,7 @@ function EnhancedTableHead(props) {
               </TableCell>
             );
           } else {
-            return <th key={cell.id}></th>;
+            return <th key={index}></th>;
           }
         })}
       </TableRow>
@@ -445,7 +445,7 @@ const EnhancedTableToolbar = (props) => {
               InputLabelProps={{shrink: true}}
             />
             <TextField
-              label='Fecha Orden nServicio Final'
+              label='Fecha Orden Servicio Final'
               name='fechaOSFinalFiltro'
               id='fechaOSFinalFiltro'
               onChange={queryFilter}
@@ -653,7 +653,7 @@ const ProgramacionOrdenServicio = (props) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
-    'fecha_modificacion:desc',
+    'numero_orden_servicio:desc',
   );
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
@@ -667,68 +667,10 @@ const ProgramacionOrdenServicio = (props) => {
     programacionOrdenServicioSeleccionado,
     setProgramacionOrdenServicioSeleccionado,
   ] = useState(0);
-  const {desde, hasta, ultima_pagina, total} = useSelector(
+  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
   );
-
-  const rowsAux = useSelector(
-    ({ordenServicioReducer}) => ordenServicioReducer.rows,
-  );
-
-  const [rows, setRows] = useState([]);
-  useEffect(() => {
-    setRows([]);
-    let aux = [];
-    rowsAux.forEach((row) => {
-      aux.push({
-        id: row.id,
-        numero_orden_servicio: row.numero_orden_servicio,
-        fecha_creacion: row.fecha_creacion,
-        estado_orden_servicio: row.estado_orden_servicio,
-        asociado: row.asociado,
-        fecha_programada: row.fecha_programada_instalacion,
-        hora_programada: row.hora_programada_instalacion,
-        departamento: row.departamento_instalacion,
-        departamento_id: row.departamento_id_instalacion,
-        ciudad: row.ciudad_instalacion,
-        lugar: row.lugar_instalacion,
-        direccion: row.direccion_instalacion,
-        recurso: row.recurso_instalacion,
-        tipo_servicio: 'Instalación',
-        numero_viaje: row.numero_viaje,
-        recurso_id: row.recurso_id_instalacion,
-        equipo_id: row.equipo_id,
-        equipo: row.equipo,
-        observaciones_programacion: row.observaciones_programacion_instalacion,
-        indicativo_aceptacion: row.indicativo_aceptacion_instalacion,
-      });
-      aux.push({
-        id: row.id,
-        numero_orden_servicio: row.numero_orden_servicio,
-        fecha_creacion: row.fecha_creacion,
-        estado_orden_servicio: row.estado_orden_servicio,
-        asociado: row.asociado,
-        fecha_programada: row.fecha_programada_desinstalacion,
-        hora_programada: row.hora_programada_desinstalacion,
-        departamento: row.departamento_desinstalacion,
-        departamento_id: row.departamento_id_desinstalacion,
-        ciudad: row.ciudad_desinstalacion,
-        lugar: row.lugar_desinstalacion,
-        direccion: row.direccion_desinstalacion,
-        recurso: row.recurso_desinstalacion,
-        tipo_servicio: 'Desinstalación',
-        numero_viaje: row.numero_viaje,
-        recurso_id: row.recurso_id_desinstalacion,
-        equipo_id: row.equipo_id,
-        equipo: row.equipo,
-        observaciones_programacion:
-          row.observaciones_programacion_desinstalacion,
-        indicativo_aceptacion: row.indicativo_aceptacion_desinstalacion,
-      });
-    });
-    setRows(aux);
-  }, [rowsAux]);
-
+  console.log(rows);
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
   const [fechaOSInicialFiltro, setfechaOSInicialFiltro] = useState('');
@@ -867,7 +809,7 @@ const ProgramacionOrdenServicio = (props) => {
       onGetColeccion(
         1,
         rowsPerPage,
-        ordenServicioFiltro,
+        '',
         orderByToSend,
         '',
         '',
@@ -1066,7 +1008,8 @@ const ProgramacionOrdenServicio = (props) => {
                         // role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.id}
+                        // key={row.id}
+                        key={index}
                         selected={isItemSelected}
                         className={classes.row}>
                         <TableCell align='center' className={classes.acciones}>
@@ -1090,11 +1033,12 @@ const ProgramacionOrdenServicio = (props) => {
                               )} */}
                         </TableCell>
 
-                        {columnasMostradas.map((columna) => {
+                        {columnasMostradas.map((columna, index) => {
                           if (columna.mostrar) {
                             return (
                               <MyCell
-                                key={row.id + columna.id}
+                                // key={row.id + columna.id}
+                                key={index}
                                 align={columna.align}
                                 width={columna.width}
                                 claseBase={classes.cell}
@@ -1107,7 +1051,7 @@ const ProgramacionOrdenServicio = (props) => {
                               />
                             );
                           } else {
-                            return <th key={row.id + columna.id}></th>;
+                            return <th key={index}></th>;
                           }
                         })}
                       </TableRow>
@@ -1141,9 +1085,9 @@ const ProgramacionOrdenServicio = (props) => {
                   className={classes.rowsPerPageOptions}
                   value={rowsPerPage}
                   onChange={handleChangeRowsPerPage}>
-                  {rowsPerPageOptions.map((option) => {
+                  {rowsPerPageOptions.map((option, index) => {
                     return (
-                      <option key={option} value={option}>
+                      <option key={index} value={option}>
                         {option}
                       </option>
                     );
@@ -1209,10 +1153,10 @@ const ProgramacionOrdenServicio = (props) => {
           horizontal: 'center',
         }}>
         <Box className={classes.popoverColumns}>
-          {columnasMostradas.map((column) => {
+          {columnasMostradas.map((column, index) => {
             return (
               <FormControlLabel
-                key={column.id}
+                key={index}
                 control={
                   <Switch
                     id={column.id}

@@ -443,22 +443,9 @@ const EnhancedTableToolbar = (props) => {
               label='Ciudad'
               name='ciudadFiltro'
               id='ciudadFiltro'
-              select={true}
               onChange={queryFilter}
               value={ciudadFiltro}
-              inputProps={{min: 0}}>
-              {ciudades.map((ciudad) => {
-                return (
-                  <MenuItem
-                    key={ciudad.id}
-                    value={ciudad.id}
-                    className={classes.pointer}
-                    style={ciudad.estado === 0 ? {display: 'none'} : {}}>
-                    {ciudad.nombre}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
+            />
 
             <Box display='grid'>
               <Box display='flex' mb={2}>
