@@ -672,7 +672,7 @@ const Pedido = (props) => {
         numeroFiltro,
         orderByToSend,
         nombreEmpresaFiltro,
-        'REG,CON,FAC',
+        'REG,CON,FAC,DES',
       ),
     );
   }, [

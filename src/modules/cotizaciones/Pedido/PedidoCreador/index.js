@@ -150,6 +150,26 @@ const PedidoCreator = (props) => {
               ? selectedRow.ciudad_entrega_id
               : ''
             : '',
+          fecha_anulacion_pedido: selectedRow
+            ? selectedRow.fecha_anulacion_pedido
+              ? selectedRow.fecha_anulacion_pedido
+              : ''
+            : '',
+          fecha_facturacion_pedido: selectedRow
+            ? selectedRow.fecha_facturacion_pedido
+              ? selectedRow.fecha_facturacion_pedido
+              : ''
+            : '',
+          fecha_despacho_pedido: selectedRow
+            ? selectedRow.fecha_despacho_pedido
+              ? selectedRow.fecha_despacho_pedido
+              : ''
+            : '',
+          fecha_confirmacion_pedido: selectedRow
+            ? selectedRow.fecha_confirmacion_pedido
+              ? selectedRow.fecha_confirmacion_pedido
+              : ''
+            : '',
           direccion_entrega: selectedRow
             ? selectedRow.direccion_entrega
               ? selectedRow.direccion_entrega
