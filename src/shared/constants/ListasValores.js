@@ -130,8 +130,8 @@ export const TIPOS_PRODUCTOS = [
 export const ESTADO_PEDIDOS = [
   {id: 'REG', nombre: 'Registrado', estado: 1},
   {id: 'CON', nombre: 'Confirmado', estado: 1},
-  {id: 'FAC', nombre: 'Facturado', estado: 1},
   {id: 'DES', nombre: 'Despachado', estado: 1},
+  {id: 'FAC', nombre: 'Facturado', estado: 1},
   {id: 'ANU', nombre: 'Anulado', estado: 1},
 ];
 

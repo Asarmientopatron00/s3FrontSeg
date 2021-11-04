@@ -87,6 +87,7 @@ const PedidoCreator = (props) => {
     departamento_entrega_id: yup.string().required('Requerido'),
     ciudad_entrega_id: yup.string().required('Requerido'),
     direccion_entrega: yup.string().required('Requerido'),
+    estado_pedido: yup.string().required('Requerido'),
     telefono_entrega: yup
       .string()
       .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))

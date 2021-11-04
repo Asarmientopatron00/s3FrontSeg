@@ -15,6 +15,7 @@ import {
 } from '../../../../shared/constants/Constantes';
 
 import DetallePedido from '../../DetallePedido';
+import {includes} from 'lodash-es';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -381,7 +382,45 @@ const PedidoForm = (props) => {
               </Box>
               <Box className={classes.inputs_2}>
                 <MyAutocomplete
-                  options={ESTADO_PEDIDOS}
+                  options={ESTADO_PEDIDOS.filter((estado) => {
+                    if (initialValues.estado_pedido === 'REG') {
+                      if (
+                        estado.id === 'REG' ||
+                        estado.id === 'CON' ||
+                        estado.id === 'ANU'
+                      ) {
+                        return estado;
+                      }
+                    }
+                    if (initialValues.estado_pedido === 'CON') {
+                      if (
+                        estado.id === 'CON' ||
+                        estado.id === 'DES' ||
+                        estado.id === 'ANU'
+                      ) {
+                        return estado;
+                      }
+                    }
+                    if (initialValues.estado_pedido === 'DES') {
+                      if (
+                        estado.id === 'DES' ||
+                        estado.id === 'FAC' ||
+                        estado.id === 'ANU'
+                      ) {
+                        return estado;
+                      }
+                    }
+                    if (initialValues.estado_pedido === 'FAC') {
+                      if (estado.id === 'FAC' || estado.id === 'ANU') {
+                        return estado;
+                      }
+                    }
+                    if (initialValues.estado_pedido === 'ANU') {
+                      if (estado.id === 'FAC') {
+                        return estado;
+                      }
+                    }
+                  })}
                   name='estado_pedido'
                   inputValue={initialValues.estado_pedido}
                   label='Estado Pedido'
@@ -401,7 +440,7 @@ const PedidoForm = (props) => {
               ? ''
               : initialValues.numero_pedido
               ? initialValues.numero_pedido
-              : 0
+              : ''
           }
           fecha={values.fecha_pedido}
           documento={values.documento}

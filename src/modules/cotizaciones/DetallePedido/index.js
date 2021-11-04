@@ -627,6 +627,7 @@ const DetallePedido = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(numero_pedido);
     if (
       accionDetalle !== 'crear' &&
       (numPedidoCopiar !== '' || numero_pedido !== '') &&
