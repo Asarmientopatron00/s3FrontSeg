@@ -383,6 +383,32 @@ export const SHOW_HORARIO_RECURSO_TECNICO = 'show_horario_recurso_tecnico';
 export const UPDATE_HORARIO_RECURSO_TECNICO = 'update_horario_recurso_tecnico';
 export const CREATE_HORARIO_RECURSO_TECNICO = 'create_horario_recurso_tecnico';
 export const DELETE_HORARIO_RECURSO_TECNICO = 'delete_horario_recurso_tecnico';
+export const GET_COLECCION_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_solicitud_cotizacion_producto';
+export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_solicitud_cotizacion_producto';
+export const SHOW_SOLICITUD_COTIZACION_PRODUCTO =
+  'show_solicitud_cotizacion_producto';
+export const UPDATE_SOLICITUD_COTIZACION_PRODUCTO =
+  'update_solicitud_cotizacion_producto';
+export const CREATE_SOLICITUD_COTIZACION_PRODUCTO =
+  'create_solicitud_cotizacion_producto';
+export const DELETE_SOLICITUD_COTIZACION_PRODUCTO =
+  'delete_solicitud_cotizacion_producto';
+export const INFORMACION_SOLICITUD_COTIZACION_PRODUCTO_CONTACTO =
+  'informacion_solicitud_contacto';
+export const GET_COLECCION_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_detalle_solicitud_cotizacion_producto';
+export const GET_COLECCION_LIGERA_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_detalle_solicitud_cotizacion_producto';
+export const SHOW_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'show_detalle_solicitud_cotizacion_producto';
+export const UPDATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'update_detalle_solicitud_cotizacion_producto';
+export const CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'create_detalle_solicitud_cotizacion_producto';
+export const DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'delete_detalle_solicitud_cotizacion_producto';
 
 //APP SETTING
 

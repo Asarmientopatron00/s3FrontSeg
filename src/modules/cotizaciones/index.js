@@ -61,6 +61,29 @@ export const cotizacionConfig = [
         path: ['/pedido/:accion'],
         component: React.lazy(() => import('./Pedido/PedidoCreador')),
       },
+      {
+        exact: true,
+        path: ['/solicitud-cotizacion-producto'],
+        component: React.lazy(() => import('./SolicitudCotizacionProducto')),
+      },
+      {
+        exact: true,
+        path: ['/solicitud-cotizacion-productos/:accion/:id'],
+        component: React.lazy(() =>
+          import(
+            './SolicitudCotizacionProducto/SolicitudCotizacionProductoCreador'
+          ),
+        ),
+      },
+      {
+        exact: true,
+        path: ['/solicitud-cotizacion-productos/:accion'],
+        component: React.lazy(() =>
+          import(
+            './SolicitudCotizacionProducto/SolicitudCotizacionProductoCreador'
+          ),
+        ),
+      },
     ],
   },
 ];

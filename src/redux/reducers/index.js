@@ -56,6 +56,8 @@ import TipoProductoReducer from './TipoProductoReducer';
 import ColorReducer from './ColorReducer';
 import RecursoTecnicoReducer from './RecursoTecnicoReducer';
 import HorarioRecursoTecnicoReducer from './HorarioRecursoTecnicoReducer';
+import SolicitudCotizacionProductoReducer from './SolicitudCotizacionProductoReducer';
+import DetalleSolicitudCotizacionProductoReducer from './DetalleSolicitudCotizacionProductoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -116,5 +118,8 @@ const reducers = (history) =>
     colorReducer: ColorReducer,
     recursoTecnicoReducer: RecursoTecnicoReducer,
     horarioRecursoTecnicoReducer: HorarioRecursoTecnicoReducer,
+    solicitudCotizacionProductoReducer: SolicitudCotizacionProductoReducer,
+    detalleSolicitudCotizacionProductoReducer:
+      DetalleSolicitudCotizacionProductoReducer,
   });
 export default reducers;

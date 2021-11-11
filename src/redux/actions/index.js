@@ -60,3 +60,5 @@ export * from './TipoProductoAction';
 export * from './ColorAction';
 export * from './RecursoTecnicoAction';
 export * from './HorarioRecursoTecnicoAction';
+export * from './SolicitudCotizacionProductoAction';
+export * from './DetalleSolicitudCotizacionProductoAction';
