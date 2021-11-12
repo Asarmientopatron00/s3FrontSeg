@@ -18,12 +18,12 @@ export const onGetColeccion = (
   currentPage,
   rowsPerPage,
   orderByToSend,
-  cotizacion_id,
+  solicitud_id,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const ordenar_por = orderByToSend ? orderByToSend : '';
-  const cotizacion_idAux = cotizacion_id ? cotizacion_id : '';
+  const solicitud_idAux = solicitud_id ? solicitud_id : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -33,7 +33,7 @@ export const onGetColeccion = (
           page: page,
           limite: rowsPerPage,
           ordenar_por: ordenar_por,
-          cotizacion_id: cotizacion_idAux,
+          solicitud_id: solicitud_idAux,
         },
       })
       .then((data) => {

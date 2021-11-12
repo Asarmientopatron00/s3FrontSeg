@@ -27,7 +27,6 @@ const MyTextField = (props) => {
 const SolicitudCotizacionForm = (props) => {
   const {accion, initialValues, values, setFieldValue, setDetalles} = props;
 
-  console.log(initialValues.numero_solicitud_cotizacion);
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
@@ -208,8 +207,8 @@ const SolicitudCotizacionForm = (props) => {
         <DetalleSolicitudCotizacionProducto
           empresa={values.nombre_empresa}
           asociado_id={values.asociado_id}
-          fecha={values.fecha_cotizacion}
-          id={values.id ? values.id : 0}
+          fecha={values.fecha_solicitud_cotizacion}
+          id={values.id ? values.id : ''}
           accionDetalle={accion}
           setDetalles={setDetalles}
         />

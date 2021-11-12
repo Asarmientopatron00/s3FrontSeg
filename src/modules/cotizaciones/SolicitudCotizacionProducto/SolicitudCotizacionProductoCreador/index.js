@@ -24,7 +24,7 @@ import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 const SolicitudCotizacionProductoCreator = (props) => {
   const {accion, id} = useParams();
   const handleOnClose = () => {
-    window.location.href = '/cotizaciones';
+    window.location.href = '/solicitud-cotizacion-producto';
   };
 
   const user = useAuthUser();

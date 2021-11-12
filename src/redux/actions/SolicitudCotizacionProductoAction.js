@@ -122,7 +122,8 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose, updateColeccion) => {
+export const onUpdate = (params, handleOnClose, detalles) => {
+  params['detalles'] = detalles;
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -134,7 +135,6 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
             type: UPDATE_SOLICITUD_COTIZACION_PRODUCTO,
             payload: data.data,
           });
-          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
@@ -153,7 +153,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   };
 };
 
-export const onDelete = (id) => {
+export const onDelete = (id, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -165,6 +165,7 @@ export const onDelete = (id) => {
             type: DELETE_SOLICITUD_COTIZACION_PRODUCTO,
             payload: data.data,
           });
+          updateColeccion();
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
@@ -182,13 +183,8 @@ export const onDelete = (id) => {
   };
 };
 
-export const onCreate = (
-  params,
-  handleOnClose,
-  updateColeccion,
-  setConsecutivo,
-) => {
-  // const {messages} = appIntl();
+export const onCreate = (params, handleOnClose, detalles) => {
+  params['detalles'] = detalles;
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -201,8 +197,6 @@ export const onCreate = (
             type: CREATE_SOLICITUD_COTIZACION_PRODUCTO,
             payload: data.data,
           });
-          setConsecutivo(data.data.datos.numero_solicitud);
-          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,

@@ -6,59 +6,35 @@ import {Scrollbar} from '../../../../@crema';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import DetalleCotizacionForm from './DetalleSolicitudCotizacionProductoForm';
+import DetalleSolicitudCotizacionProductoForm from './DetalleSolicitudCotizacionProductoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  CREATE_DETALLE_COTIZACION,
-  UPDATE_DETALLE_COTIZACION,
+  CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO,
+  UPDATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO,
+  SHOW_MESSAGE,
 } from '../../../../shared/constants/ActionTypes';
 import {onGetDiasViajes} from '../../../../redux/actions/TarifaAction';
-import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction='down' ref={ref} {...props} />;
 });
 
 const validationSchema = yup.object({
-  ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup
-    .string()
-    .required('Requerido')
-    .notOneOf(
-      [yup.ref('ciudad_origen_id')],
-      'Ciudad de destino debe ser diferente a ciudad de origen',
-    )
-    .when(['cantidad_rutas', 'ciudad_origen_id'], {
-      is: (cantidad_rutas, ciudad_origen_id, ciudad_destino_id) =>
-        cantidad_rutas === 0 && ciudad_origen_id !== ciudad_destino_id,
-      then: yup.string().oneOf([-1], 'La ruta seleccionada no existe'),
-    }),
-  servicio_id: yup.string().required('Requerido'),
-  tipo_servicio: yup.string().required('Requerido'),
-  tipo_servicio_otro: yup
-    .string()
-    .nullable()
-    .when('tipo_servicio', {
-      is: 'OTR',
-      then: yup.string().required('Requerido'),
-    }),
-  numero_dias_viaje: yup.number().required('Requerido'),
-  valor_servicio: yup.string().required('Requerido'),
-  valor_tarifa_dia_adicional: yup
-    .number()
-    .typeError(mensajeValidacion('numero'))
-    .nullable(),
+  producto_id: yup.string().required('Requerido'),
+  cantidad: yup.string().required('Requerido'),
+  color_id: yup.string().nullable(),
+  dimensiones_producto: yup.string().nullable(),
 });
 
-const DetalleCotizacionCreator = (props) => {
+const DetalleSolicitudCotizacionProductoCreator = (props) => {
   const {
-    detalleCotizacion,
+    detalleSolicitudCotizacionProducto,
     handleOnClose,
     accion,
     productos,
-    servicios,
+    colores,
     titulo,
     empresa,
     fecha,
@@ -66,7 +42,6 @@ const DetalleCotizacionCreator = (props) => {
     id,
     idAux,
     setIdAux,
-    TIPOS_SERVICIOS,
     asociado_id,
   } = props;
 
@@ -107,7 +82,7 @@ const DetalleCotizacionCreator = (props) => {
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
       rows.forEach((row, index) => {
-        if (row.id === detalleCotizacion) {
+        if (row.id === detalleSolicitudCotizacionProducto) {
           setSelectedRow(row);
           setIndex(index);
         }
@@ -117,7 +92,9 @@ const DetalleCotizacionCreator = (props) => {
       dispatch(onGetDiasViajes());
       setSelectedRow();
     }
-  }, [dispatch, accion, detalleCotizacion, rows]);
+  }, [dispatch, accion, detalleSolicitudCotizacionProducto, rows]);
+  console.log(selectedRow);
+
   return (
     showForm && (
       <Dialog
@@ -138,116 +115,110 @@ const DetalleCotizacionCreator = (props) => {
               id: selectedRow ? selectedRow.id : '',
               fecha: fecha,
               empresa: empresa,
-              ciudad_origen_id: selectedRow
-                ? selectedRow.ciudad_origen_id
-                  ? selectedRow.ciudad_origen_id
+              numero_solicitud_cotizacion: selectedRow
+                ? selectedRow.numero_solicitud_cotizacion
+                : '',
+              producto_id: selectedRow
+                ? selectedRow.producto_id
+                  ? selectedRow.producto_id
                   : ''
                 : '',
-              ciudad_destino_id: selectedRow
-                ? selectedRow.ciudad_destino_id
-                  ? selectedRow.ciudad_destino_id
+              cantidad: selectedRow ? selectedRow.cantidad : '',
+              color_id: selectedRow
+                ? selectedRow.color_id
+                  ? selectedRow.color_id
                   : ''
                 : '',
-              servicio_id: selectedRow
-                ? selectedRow.servicio_id
-                  ? selectedRow.servicio_id
+              dimensiones_producto: selectedRow
+                ? selectedRow.dimensiones_producto
+                  ? selectedRow.dimensiones_producto
                   : ''
                 : '',
-              tipo_servicio: selectedRow ? selectedRow.tipo_servicio : '',
-              tipo_servicio_otro: selectedRow
-                ? selectedRow.tipo_servicio_otro
-                : '',
-              numero_dias_viaje: selectedRow
-                ? selectedRow.numero_dias_viaje
-                : dias_viajes,
-              valor_servicio: selectedRow ? selectedRow.valor_servicio : '',
-              valor_servicio_dia_adicional: selectedRow
-                ? selectedRow.valor_servicio_dia_adicional
-                : '',
-              cantidad_rutas: 0,
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
+
               if (accion === 'crear') {
                 let newRow = {
-                  ciudad_origen_id: data.ciudad_origen_id,
-                  ciudad_destino_id: data.ciudad_destino_id,
-                  servicio_id: data.servicio_id,
-                  tipo_servicio: data.tipo_servicio,
-                  tipo_servicio_otro: data.tipo_servicio_otro,
-                  numero_dias_viaje: data.numero_dias_viaje,
-                  valor_servicio: data.valor_servicio,
-                  valor_servicio_dia_adicional:
-                    data.valor_servicio_dia_adicional,
-                  numero_cotizacion_servicio: id,
+                  producto_id: data.producto_id,
+                  cantidad: data.cantidad,
+                  color_id: data.color_id,
+                  dimensiones_producto: data.dimensiones_producto,
+                  numero_solicitud_cotizacion: id,
                   id: idAux,
                 };
 
                 setIdAux(idAux + 1);
 
-                productos.forEach((ciudad) => {
-                  if (ciudad.id === newRow.ciudad_origen_id) {
+                productos.forEach((producto) => {
+                  if (producto.id === newRow.producto_id) {
                     newRow = {
                       ...newRow,
-                      ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                  if (ciudad.id === newRow.ciudad_destino_id) {
-                    newRow = {
-                      ...newRow,
-                      ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
+                      producto: producto.nombre,
+                      codigo_producto: producto.codigo_producto,
                     };
                   }
                 });
 
-                servicios.forEach((servicio) => {
-                  if (servicio.id === newRow.servicio_id) {
-                    newRow = {...newRow, servicio: servicio.nombre};
+                colores.forEach((color) => {
+                  if (color.id === newRow.color_id) {
+                    newRow = {...newRow, color: color.nombre};
                   }
                 });
 
-                dispatch({type: CREATE_DETALLE_COTIZACION, payload: newRow});
                 handleOnClose();
+                dispatch({
+                  type: CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO,
+                  payload: newRow,
+                });
+                dispatch({
+                  type: SHOW_MESSAGE,
+                  payload:
+                    'El detalle de solicitud de cotización ha sido creado',
+                });
               } else if (accion === 'editar') {
                 setSubmitting(true);
 
                 let aux = selectedRow;
-                aux.ciudad_origen_id = data.ciudad_origen_id;
-                aux.ciudad_destino_id = data.ciudad_destino_id;
-                aux.servicio_id = data.servicio_id;
-                aux.tipo_servicio = data.tipo_servicio;
-                aux.tipo_servicio_otro = data.tipo_servicio_otro;
-                aux.numero_dias_viaje = data.numero_dias_viaje;
-                aux.valor_servicio = data.valor_servicio;
-                aux.valor_servicio_dia_adicional =
-                  data.valor_servicio_dia_adicional;
+                aux.producto_id = data.producto_id;
+                aux.cantidad = data.cantidad;
+                aux.color_id = data.color_id;
+                aux.dimensiones_producto = data.dimensiones_producto;
 
-                productos.forEach((ciudad) => {
-                  if (ciudad.id === aux.ciudad_origen_id) {
+                productos.forEach((producto) => {
+                  if (producto.id === aux.producto_id) {
                     aux = {
                       ...aux,
-                      ciudad_origen: ciudad.nombre + '-' + ciudad.departamento,
-                    };
-                  }
-                  if (ciudad.id === aux.ciudad_destino_id) {
-                    aux = {
-                      ...aux,
-                      ciudad_destino: ciudad.nombre + '-' + ciudad.departamento,
+                      producto: producto.nombre,
+                      codigo_producto: producto.codigo_producto,
                     };
                   }
                 });
 
+                colores.forEach((color) => {
+                  if (color.id === aux.color_id) {
+                    aux = {
+                      ...aux,
+                      color: color.nombre,
+                    };
+                  }
+                });
                 dispatch({
-                  type: UPDATE_DETALLE_COTIZACION,
+                  type: UPDATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO,
                   payload: {aux, index},
                 });
                 handleOnClose();
+                dispatch({
+                  type: SHOW_MESSAGE,
+                  payload:
+                    'El detalle de solicitud de cotización ha sido modificado',
+                });
               }
               setSubmitting(false);
             }}>
             {({values, initialValues, setFieldValue}) => (
-              <DetalleCotizacionForm
+              <DetalleSolicitudCotizacionProductoForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
@@ -255,8 +226,7 @@ const DetalleCotizacionCreator = (props) => {
                 accion={accion}
                 initialValues={initialValues}
                 productos={productos}
-                servicios={servicios}
-                TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+                colores={colores}
                 asociado_id={asociado_id}
               />
             )}
@@ -267,4 +237,4 @@ const DetalleCotizacionCreator = (props) => {
   );
 };
 
-export default DetalleCotizacionCreator;
+export default DetalleSolicitudCotizacionProductoCreator;

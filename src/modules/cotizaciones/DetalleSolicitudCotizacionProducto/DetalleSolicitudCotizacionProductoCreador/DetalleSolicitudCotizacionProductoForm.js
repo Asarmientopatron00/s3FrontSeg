@@ -49,7 +49,6 @@ const MyAutocompleteProducto = (props) => {
       onKeyDown={(e) => {
         if (e.key === 'Backspace') {
           props.options.forEach((option) => {
-            console.log(field.value);
             if (option.id === field.value) {
               form.setValue('');
             }
@@ -97,11 +96,10 @@ const DetalleCotizacionForm = (props) => {
     accion,
     initialValues,
     productos,
-    servicios,
+    colores,
     titulo,
     values,
     setFieldValue,
-    TIPOS_SERVICIOS,
     asociado_id,
   } = props;
   const [disabled, setDisabled] = useState(false);
@@ -174,72 +172,14 @@ const DetalleCotizacionForm = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      values.ciudad_origen_id !== '' &&
-      typeof values.ciudad_origen_id === 'number' &&
-      values.ciudad_destino_id !== '' &&
-      typeof values.ciudad_destino_id === 'number'
-    ) {
-      dispatch(onBuscar(values.ciudad_origen_id, values.ciudad_destino_id));
-    }
-  }, [dispatch, values.ciudad_origen_id, values.ciudad_destino_id]);
-
-  useEffect(() => {
-    if (
-      values.ciudad_origen_id !== '' &&
-      typeof values.ciudad_origen_id === 'number' &&
-      values.ciudad_destino_id !== '' &&
-      typeof values.ciudad_destino_id === 'number' &&
-      values.servicio_id !== '' &&
-      values.tipo_servicio !== '' &&
-      asociado_id !== ''
-    ) {
-      dispatch(
-        buscarTarifa(
-          values.ciudad_origen_id,
-          values.ciudad_destino_id,
-          asociado_id,
-          values.servicio_id,
-          values.tipo_servicio,
-        ),
-      );
-    }
-  }, [
-    dispatch,
-    values.ciudad_origen_id,
-    values.ciudad_destino_id,
-    values.servicio_id,
-    asociado_id,
-    values.tipo_servicio,
-  ]);
-
-  const cantidad_rutas = useSelector(
-    ({rutaReducer}) => rutaReducer.cantidadRutas,
-  );
-
-  useEffect(() => {
-    setFieldValue('cantidad_rutas', cantidad_rutas);
-  }, [cantidad_rutas, setFieldValue]);
-
-  const tarifa = useSelector(({tarifaReducer}) => tarifaReducer.valor_tarifa);
-
-  useEffect(() => {
-    if (accion === 'crear') {
-      setFieldValue('valor_servicio', tarifa);
-    }
-  }, [tarifa, accion, setFieldValue]);
-
-  useEffect(() => {
-    return () => {
-      dispatch({type: CLEAN_RUTA});
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (values.tipo_servicio !== 'OTR') {
-      setFieldValue('tipo_servicio_otro', '');
-    }
-  }, [values.tipo_servicio, setFieldValue]);
+    let productoAux = '';
+    productos.forEach((producto) => {
+      if (producto.id === values.producto_id) {
+        productoAux = producto.nombre;
+      }
+    });
+    setFieldValue('producto', productoAux);
+  }, [values.producto_id]);
 
   return (
     <Form className='' noValidate autoComplete='off'>
@@ -295,6 +235,12 @@ const DetalleCotizacionForm = (props) => {
                 required
                 disabled={disabled}
               />
+              <MyTextField
+                className={classes.myTextField}
+                label=' '
+                name='producto'
+                disabled={disabled}
+              />
             </Box>
 
             <Box className={classes.inputs_2} minHeight='80px'>
@@ -304,23 +250,24 @@ const DetalleCotizacionForm = (props) => {
                 name='cantidad'
                 disabled={disabled}
                 required
+                type='numeric'
               />
             </Box>
 
             <Box className={classes.inputs_2} minHeight='80px'>
-              <MyTextField
-                className={classes.myTextField}
-                label='Color'
+              <MyAutocomplete
+                options={colores}
                 name='color_id'
+                inputValue={initialValues.color_id}
+                label='Color'
+                className={classes.myTextField}
                 disabled={disabled}
-                required
               />
               <MyTextField
                 className={classes.myTextField}
                 label='Dimensiones'
-                name='dimentiones'
+                name='dimensiones_producto'
                 disabled={disabled}
-                required
               />
             </Box>
           </Box>

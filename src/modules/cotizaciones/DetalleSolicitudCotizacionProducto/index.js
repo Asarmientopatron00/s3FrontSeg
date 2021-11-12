@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
-import DetalleCotizacionCreador from './DetalleSolicitudCotizacionProductoCreador';
+import DetalleSolicitudCotizacionProductoCreador from './DetalleSolicitudCotizacionProductoCreador';
 import {lighten, makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -26,7 +26,7 @@ import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion} from '../../../redux/actions/DetalleSolicitudCotizacionProductoAction';
 import {onGetColeccionLigera as onGetColeccionLigeraProducto} from '../../../redux/actions/ProductoAction';
-import {onGetColeccionLigera as onGetColeccionLigeraServicio} from '../../../redux/actions/ServicioAction';
+import {onGetColeccionLigera as onGetColeccionLigeraColor} from '../../../redux/actions/ColorAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -34,8 +34,7 @@ import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import Swal from 'sweetalert2';
-import {DELETE_DETALLE_COTIZACION} from '../../../shared/constants/ActionTypes';
-import {TIPOS_SERVICIOS} from '../../../shared/constants/ListasValores';
+import {DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO} from '../../../shared/constants/ActionTypes';
 
 // import {MessageView} from '../../../@crema';
 
@@ -322,8 +321,11 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const {numSelected, handleOpenPopoverColumns, onOpenAddDetalleCotizacion} =
-    props;
+  const {
+    numSelected,
+    handleOpenPopoverColumns,
+    onOpenAddDetalleSolicitudCotizacionProducto,
+  } = props;
   return (
     <Toolbar>
       {numSelected > 0 ? (
@@ -359,7 +361,7 @@ const EnhancedTableToolbar = (props) => {
               <Tooltip
                 title='Crear Detalle Solicitud Cotizacion Producto'
                 onClick={() => {
-                  onOpenAddDetalleCotizacion();
+                  onOpenAddDetalleSolicitudCotizacionProducto();
                 }}>
                 <IconButton
                   className={classes.createButton}
@@ -493,13 +495,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Cotizacion = (props) => {
+const DetalleSolicitudCotizacionProducto = (props) => {
   const [idAux, setIdAux] = useState(-1000);
   const {empresa, fecha, id, accionDetalle, setDetalles, asociado_id} = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
-  const [detalleCotizacionSeleccionado, setDetalleCotizacionSeleccionado] =
-    useState(0);
+  const [
+    detalleSolicitudCotizacionProductoSeleccionado,
+    setDetalleSolicitudCotizacionProductoSeleccionado,
+  ] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -516,7 +520,6 @@ const Cotizacion = (props) => {
     ({detalleSolicitudCotizacionProductoReducer}) =>
       detalleSolicitudCotizacionProductoReducer,
   );
-
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -549,14 +552,14 @@ const Cotizacion = (props) => {
   const dispatch = useDispatch();
 
   const productos = useSelector(({productoReducer}) => productoReducer.ligera);
-  const servicios = useSelector(({servicioReducer}) => servicioReducer.ligera);
+  const colores = useSelector(({colorReducer}) => colorReducer.ligera);
   useEffect(() => {
     dispatch(onGetColeccionLigeraProducto());
-    dispatch(onGetColeccionLigeraServicio());
+    dispatch(onGetColeccionLigeraColor());
   }, [dispatch]);
 
   useEffect(() => {
-    if (accionDetalle !== 'crear') {
+    if (accionDetalle !== 'crear' && id !== '' && id !== '0') {
       dispatch(onGetColeccion(page, rowsPerPage, orderByToSend, id));
     }
   }, [dispatch, page, rowsPerPage, orderByToSend, id, accionDetalle]);
@@ -621,27 +624,27 @@ const Cotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenEditDetalleCotizacion = (id) => {
-    setDetalleCotizacionSeleccionado(id);
+  const onOpenEditDetalleSolicitudCotizacionProducto = (id) => {
+    setDetalleSolicitudCotizacionProductoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
 
-  const onOpenAddDetalleCotizacion = () => {
-    setDetalleCotizacionSeleccionado(0);
+  const onOpenAddDetalleSolicitudCotizacionProducto = () => {
+    setDetalleSolicitudCotizacionProductoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
-  const onOpenViewDetalleCotizacion = (id) => {
-    setDetalleCotizacionSeleccionado(id);
+  const onOpenViewDetalleSolicitudCotizacionProducto = (id) => {
+    setDetalleSolicitudCotizacionProductoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setDetalleCotizacionSeleccionado(0);
+    setDetalleSolicitudCotizacionProductoSeleccionado(0);
     setAccion('ver');
   };
 
@@ -659,7 +662,7 @@ const Cotizacion = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({
-          type: DELETE_DETALLE_COTIZACION,
+          type: DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO,
           payload: rows.filter((row) => row.id !== id),
         });
         Swal.fire(
@@ -701,7 +704,9 @@ const Cotizacion = (props) => {
           <EnhancedTableToolbar
             numSelected={selected.length}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
-            onOpenAddDetalleCotizacion={onOpenAddDetalleCotizacion}
+            onOpenAddDetalleSolicitudCotizacionProducto={
+              onOpenAddDetalleSolicitudCotizacionProducto
+            }
           />
         }
         {true ? (
@@ -780,7 +785,9 @@ const Cotizacion = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.editar' />}
                                 onClick={() =>
-                                  onOpenEditDetalleCotizacion(row.id)
+                                  onOpenEditDetalleSolicitudCotizacionProducto(
+                                    row.id,
+                                  )
                                 }>
                                 <EditIcon
                                   className={`${classes.generalIcons} ${classes.editIcon}`}
@@ -792,7 +799,9 @@ const Cotizacion = (props) => {
                                 <VisibilityIcon
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}
                                   onClick={() =>
-                                    onOpenViewDetalleCotizacion(row.id)
+                                    onOpenViewDetalleSolicitudCotizacionProducto(
+                                      row.id,
+                                    )
                                   }
                                 />
                               </Tooltip>
@@ -874,9 +883,11 @@ const Cotizacion = (props) => {
       </Paper>
 
       {showForm ? (
-        <DetalleCotizacionCreador
+        <DetalleSolicitudCotizacionProductoCreador
           showForm={showForm}
-          detalleCotizacion={detalleCotizacionSeleccionado}
+          detalleSolicitudCotizacionProducto={
+            detalleSolicitudCotizacionProductoSeleccionado
+          }
           accion={accion}
           handleOnClose={handleOnClose}
           titulo='Detalle Cotización'
@@ -884,12 +895,11 @@ const Cotizacion = (props) => {
           asociado_id={asociado_id}
           fecha={fecha}
           productos={productos}
-          servicios={servicios}
+          colores={colores}
           rows={rows}
           id={id}
           idAux={idAux}
           setIdAux={setIdAux}
-          TIPOS_SERVICIOS={TIPOS_SERVICIOS}
         />
       ) : (
         ''
@@ -935,4 +945,4 @@ const Cotizacion = (props) => {
   );
 };
 
-export default Cotizacion;
+export default DetalleSolicitudCotizacionProducto;
