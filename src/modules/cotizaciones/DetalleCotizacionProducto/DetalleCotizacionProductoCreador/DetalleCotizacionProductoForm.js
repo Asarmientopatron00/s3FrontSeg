@@ -6,9 +6,8 @@ import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import MyAutoCompleteProducto from '../../../../shared/components/MyAutoCompleteProducto';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
-
+import MyAutoCompleteProducto from '../../../../shared/components/MyAutoCompleteProducto';
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -33,12 +32,24 @@ const DetalleCotizacionForm = (props) => {
     values,
     setFieldValue,
   } = props;
+
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     if (accion === 'ver') {
       setDisabled(true);
     }
   }, [accion]);
+
+  useEffect(() => {
+    let productoAux = '';
+    productos.forEach((producto) => {
+      if (producto.id === values.producto_id) {
+        productoAux = producto.nombre;
+      }
+    });
+    setFieldValue('producto', productoAux);
+  }, [values.producto_id]);
+
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
       display: 'flex',
@@ -101,16 +112,6 @@ const DetalleCotizacionForm = (props) => {
 
   const classes = useStyles(props);
 
-  useEffect(() => {
-    let productoAux = '';
-    productos.forEach((producto) => {
-      if (producto.id === values.producto_id) {
-        productoAux = producto.nombre;
-      }
-    });
-    setFieldValue('producto', productoAux);
-  }, [values.producto_id]);
-
   return (
     <Form className='' noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -127,8 +128,8 @@ const DetalleCotizacionForm = (props) => {
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextField}
-                label='Número solicitud Cotización'
-                name='numero_solicitud_cotizacion'
+                label='Número Cotización'
+                name='numero_cotizacion_producto'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -153,7 +154,6 @@ const DetalleCotizacionForm = (props) => {
                 shrink: true,
               }}
             />
-
             <Box className={classes.inputs_2} minHeight='80px'>
               <MyAutoCompleteProducto
                 options={productos}
@@ -171,33 +171,40 @@ const DetalleCotizacionForm = (props) => {
                 name='producto'
                 disabled={disabled}
               />
-            </Box>
 
-            <Box className={classes.inputs_2} minHeight='80px'>
               <MyTextField
                 className={classes.myTextField}
                 label='Cantidad'
                 name='cantidad'
                 disabled={disabled}
+                type='number'
                 required
-                type='numeric'
               />
-            </Box>
 
-            <Box className={classes.inputs_2} minHeight='80px'>
-              <MyAutocomplete
-                options={colores}
-                name='color_id'
-                inputValue={initialValues.color_id}
-                label='Color'
-                className={classes.myTextField}
-                disabled={disabled}
-              />
               <MyTextField
                 className={classes.myTextField}
                 label='Dimensiones'
                 name='dimensiones_producto'
                 disabled={disabled}
+              />
+
+              <MyAutocomplete
+                options={colores}
+                name='color_id'
+                inputValue={initialValues.color_id}
+                label='Color'
+                //autoHighlight
+                className={classes.myTextField}
+                disabled={disabled}
+              />
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Valor Unitario'
+                name='valor_unitario_producto'
+                disabled={disabled}
+                type='number'
+                required
               />
             </Box>
           </Box>

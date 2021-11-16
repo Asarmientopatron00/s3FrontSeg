@@ -409,6 +409,28 @@ export const CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
   'create_detalle_solicitud_cotizacion_producto';
 export const DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
   'delete_detalle_solicitud_cotizacion_producto';
+export const GET_COLECCION_COTIZACION_PRODUCTO =
+  'get_coleccion_cotizacion_producto';
+export const GET_COLECCION_LIGERA_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_cotizacion_producto';
+export const SHOW_COTIZACION_PRODUCTO = 'show_cotizacion_producto';
+export const UPDATE_COTIZACION_PRODUCTO = 'update_cotizacion_producto';
+export const CREATE_COTIZACION_PRODUCTO = 'create_cotizacion_producto';
+export const DELETE_COTIZACION_PRODUCTO = 'delete_cotizacion_producto';
+export const ENVIAR_COTIZACION_PRODUCTO = 'enviar_cotizacion_producto';
+export const APPROVE_COTIZACION_PRODUCTO = 'approve_cotizacion_producto';
+export const GET_COLECCION_DETALLE_COTIZACION_PRODUCTO =
+  'get_coleccion_detalle_cotizacion_producto';
+export const GET_COLECCION_LIGERA_DETALLE_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_detalle_cotizacion_producto';
+export const SHOW_DETALLE_COTIZACION_PRODUCTO =
+  'show_detalle_cotizacion_producto';
+export const UPDATE_DETALLE_COTIZACION_PRODUCTO =
+  'update_detalle_cotizacion_producto';
+export const CREATE_DETALLE_COTIZACION_PRODUCTO =
+  'create_detalle_cotizacion_producto';
+export const DELETE_DETALLE_COTIZACION_PRODUCTO =
+  'delete_detalle_cotizacion_producto';
 
 //APP SETTING
 

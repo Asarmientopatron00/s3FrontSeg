@@ -62,3 +62,5 @@ export * from './RecursoTecnicoAction';
 export * from './HorarioRecursoTecnicoAction';
 export * from './SolicitudCotizacionProductoAction';
 export * from './DetalleSolicitudCotizacionProductoAction';
+export * from './CotizacionProductoAction';
+export * from './DetalleCotizacionProductoAction';

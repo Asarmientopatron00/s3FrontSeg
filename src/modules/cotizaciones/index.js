@@ -84,6 +84,25 @@ export const cotizacionConfig = [
           ),
         ),
       },
+      {
+        exact: true,
+        path: '/cotizaciones-productos',
+        component: React.lazy(() => import('./CotizacionProducto')),
+      },
+      {
+        exact: true,
+        path: ['/cotizacion-productos/:accion/:id'],
+        component: React.lazy(() =>
+          import('./CotizacionProducto/CotizacionProductoCreador'),
+        ),
+      },
+      {
+        exact: true,
+        path: ['/cotizacion-productos/:accion'],
+        component: React.lazy(() =>
+          import('./CotizacionProducto/CotizacionProductoCreador'),
+        ),
+      },
     ],
   },
 ];
