@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
-import ConsultaCotizacionCreador from '../ConsultaCotizacion/ConsultaCotizacionCreador';
+import ConsultaCotizacionProductoCreador from '../ConsultaCotizacion/ConsultaCotizacionProductoCreador';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -1071,7 +1071,7 @@ const Cotizacion = (props) => {
       </Paper>
 
       {showForm ? (
-        <ConsultaCotizacionCreador
+        <ConsultaCotizacionProductoCreador
           showForm={showForm}
           consultaCotizacion={cotizacionSeleccionado}
           accion={accion}

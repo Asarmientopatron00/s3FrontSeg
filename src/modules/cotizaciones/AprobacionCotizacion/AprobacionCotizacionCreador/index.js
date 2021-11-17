@@ -5,6 +5,10 @@ import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {onShow, onApprove} from '../../../../redux/actions/CotizacionAction';
+import {
+  onShow as onShowProducto,
+  onApprove as onApproveProducto,
+} from '../../../../redux/actions/CotizacionProductoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
@@ -12,7 +16,6 @@ import AprobacionCotizacionForm from './AprobacionCotizacionForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 
-import {onGetColeccion} from '../../../../redux/actions/DetalleCotizacionAction';
 import {onGetColeccionLigera} from '../../../../redux/actions/AsociadoAction';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -24,8 +27,14 @@ const validationSchema = yup.object({
 });
 
 const AprobacionCotizacionCreator = (props) => {
-  const {aprobacionCotizacion, handleOnClose, accion, updateColeccion, titulo} =
-    props;
+  const {
+    aprobacionCotizacion,
+    handleOnClose,
+    accion,
+    updateColeccion,
+    titulo,
+    tipoCotizacion,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -46,13 +55,29 @@ const AprobacionCotizacionCreator = (props) => {
   const classes = useStyles(props);
 
   const [showForm, setShowForm] = useState(false);
-  let selectedRow = useRef();
-  selectedRow = useSelector(
+  const [selectedRow, setSelectedRow] = useState([]);
+
+  let selectedRowServicio = useRef();
+  let selectedRowProducto = useRef();
+
+  selectedRowServicio = useSelector(
     ({cotizacionReducer}) => cotizacionReducer.selectedRow,
   );
+  selectedRowProducto = useSelector(
+    ({cotizacionProductoReducer}) => cotizacionProductoReducer.selectedRow,
+  );
+
+  useEffect(() => {
+    if (tipoCotizacion === 'Servicios') {
+      setSelectedRow(selectedRowServicio);
+    } else {
+      setSelectedRow(selectedRowProducto);
+    }
+    console.log(selectedRow);
+  }, [selectedRowServicio, selectedRowProducto, tipoCotizacion]);
 
   const initializeSelectedRow = () => {
-    selectedRow = null;
+    setSelectedRow(null);
   };
   useEffect(() => {
     initializeSelectedRow();
@@ -74,21 +99,21 @@ const AprobacionCotizacionCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver') | (accion === 'aprobar')) {
-      dispatch(onShow(aprobacionCotizacion));
+      if (tipoCotizacion === 'Servicios') {
+        dispatch(onShow(aprobacionCotizacion));
+      } else {
+        dispatch(onShowProducto(aprobacionCotizacion));
+      }
     }
-  }, [accion, dispatch, aprobacionCotizacion]);
+  }, [accion, dispatch, aprobacionCotizacion, tipoCotizacion]);
 
-  useEffect(() => {
-    dispatch(onGetColeccion(1, 20, 'id:desc', aprobacionCotizacion));
-  }, [dispatch, aprobacionCotizacion]);
+  // useEffect(() => {
+  //   dispatch(onGetColeccion(1, 20, 'id:desc', aprobacionCotizacion));
+  // }, [dispatch, aprobacionCotizacion]);
 
   useEffect(() => {
     dispatch(onGetColeccionLigera());
   }, [dispatch]);
-
-  const {rows} = useSelector(
-    ({detalleCotizacionReducer}) => detalleCotizacionReducer,
-  );
 
   const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
 
@@ -110,11 +135,18 @@ const AprobacionCotizacionCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
-              numero_cotizacion_servicio: selectedRow
-                ? selectedRow.numero_cotizacion_servicio
-                  ? selectedRow.numero_cotizacion_servicio
-                  : ''
-                : '',
+              numero_cotizacion_servicio:
+                tipoCotizacion === 'Servicios'
+                  ? selectedRow
+                    ? selectedRow.numero_cotizacion_servicio
+                      ? selectedRow.numero_cotizacion_servicio
+                      : ''
+                    : ''
+                  : selectedRow
+                  ? selectedRow.numero_cotizacion_producto
+                    ? selectedRow.numero_cotizacion_producto
+                    : ''
+                  : '',
               solicitud_cotizacion_id: selectedRow
                 ? selectedRow.solicitud_cotizacion_id
                   ? selectedRow.solicitud_cotizacion_id
@@ -139,11 +171,18 @@ const AprobacionCotizacionCreator = (props) => {
                   ? selectedRow.plazo_pago_cotizacion
                   : ''
                 : '',
-              numero_viajes_mes: selectedRow
-                ? selectedRow.numero_viajes_mes
-                  ? selectedRow.numero_viajes_mes
-                  : ''
-                : '',
+              numero_viajes_mes:
+                tipoCotizacion === 'Servicios'
+                  ? selectedRow
+                    ? selectedRow.numero_viajes_mes
+                      ? selectedRow.numero_viajes_mes
+                      : ''
+                    : ''
+                  : selectedRow
+                  ? selectedRow.tiempo_estimado_entrega
+                    ? selectedRow.tiempo_estimado_entrega
+                    : ''
+                  : '',
               observaciones: selectedRow
                 ? selectedRow.observaciones
                   ? selectedRow.observaciones
@@ -159,13 +198,23 @@ const AprobacionCotizacionCreator = (props) => {
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
               if (accion === 'aprobar') {
-                dispatch(
-                  onApprove(
-                    {id: data.id, asociado_id: data.asociado_id},
-                    handleOnClose,
-                    updateColeccion,
-                  ),
-                );
+                if (tipoCotizacion === 'Servicios') {
+                  dispatch(
+                    onApprove(
+                      {id: data.id, asociado_id: data.asociado_id},
+                      handleOnClose,
+                      updateColeccion,
+                    ),
+                  );
+                } else {
+                  dispatch(
+                    onApproveProducto(
+                      {id: data.id, asociado_id: data.asociado_id},
+                      handleOnClose,
+                      updateColeccion,
+                    ),
+                  );
+                }
               }
               setSubmitting(false);
             }}>
@@ -177,8 +226,8 @@ const AprobacionCotizacionCreator = (props) => {
                 titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
-                rows={rows}
                 asociados={asociados}
+                tipoCotizacion={tipoCotizacion}
               />
             )}
           </Formik>

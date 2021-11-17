@@ -22,7 +22,14 @@ const MyTextField = (props) => {
 };
 
 const AprobacionCotizacionForm = (props) => {
-  const {handleOnClose, accion, initialValues, titulo, asociados} = props;
+  const {
+    handleOnClose,
+    accion,
+    initialValues,
+    titulo,
+    asociados,
+    tipoCotizacion,
+  } = props;
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -164,7 +171,11 @@ const AprobacionCotizacionForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Número Servicios Mes'
+                label={
+                  tipoCotizacion === 'Servicios'
+                    ? 'Número Servicios Mes'
+                    : 'Tiempo Estimado Entrega'
+                }
                 name='numero_viajes_mes'
                 disabled={true}
                 required
