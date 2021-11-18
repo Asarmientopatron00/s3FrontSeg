@@ -1000,7 +1000,11 @@ const AcuerdoServicio = (props) => {
                               )}
                             <Box
                               component='a'
-                              href={defaultConfig.API_URL + row.id}
+                              href={
+                                defaultConfig.API_URL +
+                                '/acuerdos-servicio/descargar-formulario/' +
+                                row.id
+                              }
                               className={classes.generalIcons}>
                               <Tooltip
                                 title={

@@ -660,6 +660,7 @@ const Cotizacion = (props) => {
         '',
         '',
         'ENV,GEN',
+        '',
       ),
     );
   }, [
@@ -682,6 +683,7 @@ const Cotizacion = (props) => {
         '',
         '',
         'ENV,GEN',
+        '',
       ),
     );
   };

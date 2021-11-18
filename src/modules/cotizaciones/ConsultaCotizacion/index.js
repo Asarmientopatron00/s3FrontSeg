@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ConsultaCotizacionCreador from './ConsultaCotizacionCreador';
+import ConsultaCotizacionProductoCreador from './ConsultaCotizacionProductoCreador';
 import {onGetColeccion} from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -80,6 +81,14 @@ const cells = [
     label: 'Fecha',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'tipo_cotizacion',
+    typeHead: 'string',
+    label: 'Tipo Cotización',
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -390,7 +399,8 @@ const EnhancedTableToolbar = (props) => {
     fechaFiltro,
     nombreEmpresaFiltro,
     limpiarFiltros,
-    ids,
+    idsServicios,
+    idsProductos,
     permisos,
   } = props;
   return (
@@ -447,15 +457,34 @@ const EnhancedTableToolbar = (props) => {
               value={nombreEmpresaFiltro}
             />
             <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
+              {idsServicios.length > 0 ||
+                (idsProductos.length > 0 && permisos.indexOf('Exportar') >= 0 && (
+                  <Box display='grid'>
+                    <Box display='flex' mb={2}>
+                      <Tooltip
+                        title='Exportar'
+                        component='a'
+                        className={classes.linkDocumento}
+                        href={
+                          defaultConfig.API_URL +
+                          '/cotizaciones-servicios/consulta' +
+                          '?idsservicios=' +
+                          idsServicios +
+                          '&idsproductos=' +
+                          idsProductos
+                        }>
+                        <IconButton
+                          className={classes.exportButton}
+                          aria-label='filter list'>
+                          <Box component='span' className={classes.x}>
+                            X
+                          </Box>
+                          <InsertDriveFileIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                ))}
             </Box>
             <TextField
               label='Documento'
@@ -476,31 +505,17 @@ const EnhancedTableToolbar = (props) => {
               type='date'
               InputLabelProps={{shrink: true}}
             />
-            {ids.length > 0 && permisos.indexOf('Exportar') >= 0 && (
-              <Box display='grid'>
-                <Box display='flex' mb={2}>
-                  <Tooltip
-                    title='Exportar'
-                    component='a'
-                    className={classes.linkDocumento}
-                    href={
-                      defaultConfig.API_URL +
-                      '/cotizaciones-servicios/consulta' +
-                      '?ids=' +
-                      ids
-                    }>
-                    <IconButton
-                      className={classes.exportButton}
-                      aria-label='filter list'>
-                      <Box component='span' className={classes.x}>
-                        X
-                      </Box>
-                      <InsertDriveFileIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+            <Box display='grid'>
+              <Box display='flex' mb={2}>
+                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
+                  <IconButton
+                    className={classes.clearButton}
+                    aria-label='filter list'>
+                    <ClearAllIcon />
+                  </IconButton>
+                </Tooltip>
               </Box>
-            )}
+            </Box>
           </Box>
         </>
       )}
@@ -659,6 +674,7 @@ const ConsultaCotizacion = (props) => {
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
+  const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
 
   let columnasMostradasInicial = [];
 
@@ -718,6 +734,8 @@ const ConsultaCotizacion = (props) => {
         nombreEmpresaFiltro,
         documentoFiltro,
         fechaFiltro,
+        '',
+        true,
       ),
     );
   }, [
@@ -741,6 +759,8 @@ const ConsultaCotizacion = (props) => {
         nombreEmpresaFiltro,
         documentoFiltro,
         fechaFiltro,
+        '',
+        true,
       ),
     );
   };
@@ -838,7 +858,8 @@ const ConsultaCotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewConsultaCotizacion = (id) => {
+  const onOpenViewConsultaCotizacion = (id, tipo_cotizacion) => {
+    setTipoCotizacion(tipo_cotizacion);
     setConsultaCotizacionSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
@@ -887,17 +908,27 @@ const ConsultaCotizacion = (props) => {
 
   // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
   const [showTable, setShowTable] = useState(true);
-  const [ids, setIds] = useState([]);
+  const [idsServicios, setIdsServicios] = useState([]);
+  const [idsProductos, setIdsProductos] = useState([]);
   useEffect(() => {
     if (rows.length === 0) {
       setShowTable(false);
-      setIds([]);
+      setIdsServicios([]);
+      setIdsProductos([]);
     } else {
       setShowTable(true);
-      setIds(rows.map((item) => item.id));
+      setIdsServicios(
+        rows
+          .filter((item) => item.tipo_cotizacion === 'Servicios')
+          .map((item) => item.id),
+      );
+      setIdsProductos(
+        rows
+          .filter((item) => item.tipo_cotizacion === 'Sellos')
+          .map((item) => item.id),
+      );
     }
   }, [rows]);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -914,7 +945,8 @@ const ConsultaCotizacion = (props) => {
             fechaFiltro={fechaFiltro}
             permisos={permisos}
             titulo={titulo}
-            ids={ids}
+            idsServicios={idsServicios}
+            idsProductos={idsProductos}
           />
         )}
         {showTable && permisos ? (
@@ -1003,7 +1035,10 @@ const ConsultaCotizacion = (props) => {
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   onClick={() =>
-                                    onOpenViewConsultaCotizacion(row.id)
+                                    onOpenViewConsultaCotizacion(
+                                      row.id,
+                                      row.tipo_cotizacion,
+                                    )
                                   }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
@@ -1102,8 +1137,20 @@ const ConsultaCotizacion = (props) => {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
-      {showForm ? (
+      {showForm && tipoCotizacion === 'Servicios' ? (
         <ConsultaCotizacionCreador
+          showForm={showForm}
+          consultaCotizacion={consultaCotizacionSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          updateColeccion={updateColeccion}
+          titulo={titulo}
+        />
+      ) : (
+        ''
+      )}
+      {showForm && tipoCotizacion === 'Sellos' ? (
+        <ConsultaCotizacionProductoCreador
           showForm={showForm}
           consultaCotizacion={consultaCotizacionSeleccionado}
           accion={accion}

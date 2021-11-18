@@ -150,7 +150,7 @@ const cells = [
   {
     id: 'estado_recurso',
     typeHead: 'string',
-    label: 'Estado',
+    label: 'Estado Recurso',
     value: (value) =>
       ESTADOS_RECURSOS_TECNICOS.map((tipo) =>
         tipo.id === value ? tipo.nombre : '',
