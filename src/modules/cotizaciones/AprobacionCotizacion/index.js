@@ -84,6 +84,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'tipo_cotizacion',
+    typeHead: 'string',
+    label: 'Tipo Cotización',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
     id: 'numero_documento',
     typeHead: 'numeric',
     label: 'Documento',
@@ -113,14 +121,6 @@ const cells = [
     label: 'Fecha Cotización',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_cotizacion',
-    typeHead: 'string',
-    label: 'Tipo Cotización',
-    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },

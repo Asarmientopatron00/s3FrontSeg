@@ -403,6 +403,7 @@ const EnhancedTableToolbar = (props) => {
     idsProductos,
     permisos,
   } = props;
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -457,8 +458,8 @@ const EnhancedTableToolbar = (props) => {
               value={nombreEmpresaFiltro}
             />
             <Box display='grid'>
-              {idsServicios.length > 0 ||
-                (idsProductos.length > 0 && permisos.indexOf('Exportar') >= 0 && (
+              {(idsServicios.length > 0 || idsProductos.length > 0) &&
+                permisos.indexOf('Exportar') >= 0 && (
                   <Box display='grid'>
                     <Box display='flex' mb={2}>
                       <Tooltip
@@ -469,9 +470,10 @@ const EnhancedTableToolbar = (props) => {
                           defaultConfig.API_URL +
                           '/cotizaciones-servicios/consulta' +
                           '?idsservicios=' +
-                          idsServicios +
-                          '&idsproductos=' +
-                          idsProductos
+                          idsServicios
+                          // +
+                          // '&idsproductos=' +
+                          // idsProductos
                         }>
                         <IconButton
                           className={classes.exportButton}
@@ -484,7 +486,7 @@ const EnhancedTableToolbar = (props) => {
                       </Tooltip>
                     </Box>
                   </Box>
-                ))}
+                )}
             </Box>
             <TextField
               label='Documento'
@@ -929,6 +931,7 @@ const ConsultaCotizacion = (props) => {
       );
     }
   }, [rows]);
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
