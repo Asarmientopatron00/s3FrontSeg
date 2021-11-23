@@ -383,6 +383,8 @@ export const SHOW_HORARIO_RECURSO_TECNICO = 'show_horario_recurso_tecnico';
 export const UPDATE_HORARIO_RECURSO_TECNICO = 'update_horario_recurso_tecnico';
 export const CREATE_HORARIO_RECURSO_TECNICO = 'create_horario_recurso_tecnico';
 export const DELETE_HORARIO_RECURSO_TECNICO = 'delete_horario_recurso_tecnico';
+export const CONSULTAR_FECHAS = 'consultar_fechas';
+export const PROGRAMAR_HORARIOS = 'programar_horarios';
 export const GET_COLECCION_SOLICITUD_COTIZACION_PRODUCTO =
   'get_coleccion_solicitud_cotizacion_producto';
 export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_PRODUCTO =

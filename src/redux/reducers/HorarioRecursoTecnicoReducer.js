@@ -5,6 +5,8 @@ import {
   UPDATE_HORARIO_RECURSO_TECNICO,
   DELETE_HORARIO_RECURSO_TECNICO,
   CREATE_HORARIO_RECURSO_TECNICO,
+  CONSULTAR_FECHAS,
+  PROGRAMAR_HORARIOS,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -31,12 +33,19 @@ const ProductoReducer = (state = initialState, action) => {
         pagina_actual: action.payload.data.pagina_actual,
         ultima_pagina: action.payload.data.ultima_pagina,
         total: action.payload.data.total,
+        fechas: [],
       };
 
     case GET_COLECCION_LIGERA_HORARIO_RECURSO_TECNICO:
       return {
         ...state,
         ligera: action.payload.data,
+      };
+
+    case CONSULTAR_FECHAS:
+      return {
+        ...state,
+        fechas: action.payload,
       };
 
     case SHOW_HORARIO_RECURSO_TECNICO:
@@ -49,6 +58,11 @@ const ProductoReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRow: action.payload.datos,
+      };
+
+    case PROGRAMAR_HORARIOS:
+      return {
+        ...state,
       };
 
     case DELETE_HORARIO_RECURSO_TECNICO:

@@ -5,6 +5,8 @@ import {
   UPDATE_HORARIO_RECURSO_TECNICO,
   DELETE_HORARIO_RECURSO_TECNICO,
   CREATE_HORARIO_RECURSO_TECNICO,
+  CONSULTAR_FECHAS,
+  PROGRAMAR_HORARIOS,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -179,7 +181,6 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
     jwtAxios
       .post('horarios-recursos-tecnicos', params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
@@ -188,6 +189,58 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
           });
           updateColeccion();
           handleOnClose();
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
+      });
+  };
+};
+
+export const getFechasGeneracion = () => {
+  // const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('horarios-recursos-tecnicos/consultar-fechas')
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          console.log(data.data);
+          dispatch({
+            type: CONSULTAR_FECHAS,
+            payload: data.data,
+          });
+        } else {
+          dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
+      });
+  };
+};
+
+export const programarHorarios = (params) => {
+  // const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('horarios-recursos-tecnicos/programar-horarios', params)
+      .then((data) => {
+        console.log(data);
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: PROGRAMAR_HORARIOS,
+            payload: data.data,
+          });
           dispatch({
             type: SHOW_MESSAGE,
             payload: data.data.mensajes[0],
