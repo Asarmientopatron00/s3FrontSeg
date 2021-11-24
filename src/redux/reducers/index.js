@@ -5,7 +5,6 @@ import UserList from './UserList';
 import Auth from './Auth';
 import Common from './Common';
 import UsuarioReducer from './UsuarioReducer';
-import ContactApp from './ContactApp';
 import AsociadoReducer from './AsociadoReducer';
 import RolReducer from './RolReducer';
 import Close from './Close';
@@ -68,7 +67,6 @@ const reducers = (history) =>
     auth: Auth,
     userList: UserList,
     common: Common,
-    contactApp: ContactApp,
     usuarioReducer: UsuarioReducer,
     asociadoReducer: AsociadoReducer,
     close: Close,

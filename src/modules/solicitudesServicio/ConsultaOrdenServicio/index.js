@@ -25,6 +25,7 @@ const AprobacionOrdenServicioCreator = (props) => {
     updateColeccion,
     titulo,
     TIPOS_SERVICIOS,
+    ESTADOS_ORDEN_SERVICIO,
   } = props;
 
   const dispatch = useDispatch();
@@ -110,9 +111,13 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               estado_orden: selectedRow
                 ? selectedRow.estado_orden_servicio
-                  ? TIPOS_SERVICIOS.filter(
-                      (tipo) => tipo.id === selectedRow.tipo_servicio,
-                    )[0].nombre
+                  ? ESTADOS_ORDEN_SERVICIO.filter(
+                      (tipo) => tipo.id === selectedRow.estado_orden_servicio,
+                    )[0]
+                    ? ESTADOS_ORDEN_SERVICIO.filter(
+                        (tipo) => tipo.id === selectedRow.estado_orden_servicio,
+                      )[0].nombre
+                    : ''
                   : ''
                 : '',
               fecha_orden_servicio: selectedRow
@@ -177,7 +182,11 @@ const AprobacionOrdenServicioCreator = (props) => {
                 ? selectedRow.tipo_servicio
                   ? TIPOS_SERVICIOS.filter(
                       (tipo) => tipo.id === selectedRow.tipo_servicio,
-                    )[0].nombre
+                    )[0]
+                    ? TIPOS_SERVICIOS.filter(
+                        (tipo) => tipo.id === selectedRow.tipo_servicio,
+                      )[0].nombre
+                    : ''
                   : ''
                 : '',
               tipo_servicio_otro: selectedRow

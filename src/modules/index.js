@@ -6,7 +6,6 @@ import {dashBoardConfigs} from './dashboard';
 import {muiComponentConfigs} from './muiComponents';
 import {thirdPartyConfigs} from './thirdParty';
 import {userPagesConfig} from './userPages';
-import {appsConfig} from './apps';
 import {extraPagesConfigs} from './extraPages';
 import {userListConfig} from './userList';
 import {errorPagesConfigs} from './errorPages';
@@ -29,7 +28,6 @@ const routeConfigs = [
   ...muiComponentConfigs,
   ...thirdPartyConfigs,
   ...userPagesConfig,
-  ...appsConfig,
   ...userListConfig,
   ...extraPagesConfigs,
   ...errorPagesConfigs,
