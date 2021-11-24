@@ -34,7 +34,14 @@ const MyTextField = (props) => {
 };
 
 const validationSchema = yup.object({
-  fechaInicial: yup.date().required('Requerido'),
+  fechaMinima: yup.date().nullable(),
+  fechaInicial: yup
+    .date()
+    .required('Requerido')
+    .min(
+      yup.ref('fechaMinima'),
+      'La fecha de entrega debe ser mayor a Fecha fin horario generado',
+    ),
   numeroDias: yup.string().required('Requerido'),
 });
 
@@ -141,133 +148,68 @@ const useToolbarStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {numSelected, titulo} = props;
-  const [show, setShow] = useState(false);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getFechasGeneracion());
-  }, [dispatch]);
-
-  let fechas = useRef();
-  fechas = useSelector(
-    ({horarioRecursoTecnicoReducer}) => horarioRecursoTecnicoReducer.fechas,
-  );
-
-  useEffect(() => {
-    if (fechas) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  }, [fechas]);
 
   return (
-    show && (
-      <Toolbar
-        className={clsx(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        })}>
-        {numSelected > 0 ? (
-          <Typography
-            className={classes.title}
-            color='inherit'
-            variant='subtitle1'
-            component='div'>
-            {numSelected} selected
-          </Typography>
+    <Toolbar
+      className={clsx(classes.root, {
+        [classes.highlight]: numSelected > 0,
+      })}>
+      {numSelected > 0 ? (
+        <Typography
+          className={classes.title}
+          color='inherit'
+          variant='subtitle1'
+          component='div'>
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <>
+          <Box className={classes.titleTop}>
+            <Typography
+              className={classes.title}
+              variant='h6'
+              id='tableTitle'
+              component='div'>
+              {titulo}
+            </Typography>
+            <Box className={classes.horizontalBottoms}></Box>
+          </Box>
+        </>
+      )}
+
+      {
+        numSelected > 0 ? (
+          <Tooltip title='Delete'>
+            <IconButton aria-label='delete'>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         ) : (
-          <>
-            <Box className={classes.titleTop}>
-              <Typography
-                className={classes.title}
-                variant='h6'
-                id='tableTitle'
-                component='div'>
-                {titulo}
-              </Typography>
-              <Box className={classes.horizontalBottoms}></Box>
-            </Box>
-            <Formik
-              validationSchema={validationSchema}
-              validateOnChange={false}
-              initialValues={{
-                fechaMaxima: fechas ? fechas['fechaMaxima'] : '',
-                fechaInicial: fechas ? fechas['fechaInicial'] : '',
-                numeroDias: fechas ? fechas['numeroDias'] : '',
-              }}
-              onSubmit={(data, {setSubmitting}) => {
-                setSubmitting(true);
-                dispatch(programarHorarios(data));
-                setSubmitting(false);
-              }}>
-              {({values, initialValues, setFieldValue, resetForm}) => (
-                <Form>
-                  <Box className={classes.contenedorFiltros}>
-                    <Box className={classes.contenedorFiltros1}>
-                      <MyTextField
-                        label='Fecha fin horario generado'
-                        name='fechaMaxima'
-                        disabled={true}
-                        type='date'
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                      <MyTextField
-                        label='Fecha inicial generación horario'
-                        name='fechaInicial'
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        type='date'
-                      />
-
-                      <MyTextField
-                        label='Número dias generacion horario'
-                        name='numeroDias'
-                        required
-                        type='number'
-                      />
-                    </Box>
-                    <Box></Box>
-                    <Box></Box>
-                    <Box>
-                      <Button
-                        className={`${classes.btnRoot} ${classes.btnPrymary}`}
-                        variant='contained'
-                        type='submit'>
-                        Generar
-                      </Button>
-                    </Box>
-                  </Box>
-                </Form>
-              )}
-            </Formik>
-          </>
-        )}
-
-        {
-          numSelected > 0 ? (
-            <Tooltip title='Delete'>
-              <IconButton aria-label='delete'>
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          ) : (
-            ''
-          )
-          // <Tooltip title="Filtros Avanzados">
-          //         <IconButton aria-label="filter list">
-          //           <FilterListIcon />
-          //         </IconButton>
-          //       </Tooltip>
-        }
-      </Toolbar>
-    )
+          ''
+        )
+        // <Tooltip title="Filtros Avanzados">
+        //         <IconButton aria-label="filter list">
+        //           <FilterListIcon />
+        //         </IconButton>
+        //       </Tooltip>
+      }
+    </Toolbar>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
+  contenedorFiltros: {
+    width: '90%',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '20px',
+  },
+  contenedorFiltros1: {
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+  },
   chargedFile: {
     padding: '0px',
   },
@@ -430,6 +372,9 @@ const GeneracionHorarios = (props) => {
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
 
+  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     user &&
       user.permisos.forEach((modulo) => {
@@ -448,6 +393,28 @@ const GeneracionHorarios = (props) => {
       });
   }, [user, props.route]);
 
+  useEffect(() => {
+    dispatch(getFechasGeneracion());
+  }, [dispatch]);
+
+  let fechas = useRef();
+  fechas = useSelector(
+    ({horarioRecursoTecnicoReducer}) => horarioRecursoTecnicoReducer.fechas,
+  );
+
+  useEffect(() => {
+    if (fechas) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [fechas]);
+
+  const updateFechas = () => {
+    dispatch(getFechasGeneracion());
+    setShow(true);
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -456,6 +423,75 @@ const GeneracionHorarios = (props) => {
           titulo={titulo}
           permisos={permisos}
         />
+        <Box className={classes.marcoTabla}>
+          {show && (
+            <Formik
+              validationSchema={validationSchema}
+              validateOnChange={false}
+              initialValues={{
+                fechaMaxima: fechas ? fechas['fechaMaxima'] : '',
+                fechaInicial: fechas ? fechas['fechaInicial'] : '',
+                fechaMinima: fechas ? fechas['fechaInicial'] : '',
+                numeroDias: fechas ? fechas['numeroDias'] : '',
+              }}
+              onSubmit={(data, {setSubmitting, setFieldValue}) => {
+                setSubmitting(true);
+                dispatch(programarHorarios(data));
+                // const date = new Date(data.fechaInicial);
+                // const date2 = new Date(data.fechaInicial);
+                // date.setDate(date.getDate() + data.numeroDias)
+                // date2.setDate(date2.getDate() + data.numeroDias +1)
+                // console.log(date,date2)
+                // setFieldValue('fechaMaxima',date)
+                // setFieldValue('fechaInicial',date2)
+                // setFieldValue('fechaMinima',date2)
+                setSubmitting(true);
+              }}>
+              {({values, initialValues, setFieldValue, resetForm}) => (
+                <Form>
+                  <Box className={classes.contenedorFiltros}>
+                    <Box className={classes.contenedorFiltros1}>
+                      <MyTextField
+                        label='Fecha fin horario generado'
+                        name='fechaMaxima'
+                        disabled={true}
+                        type='date'
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <MyTextField
+                        label='Fecha inicial generación horario'
+                        name='fechaInicial'
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        type='date'
+                      />
+
+                      <MyTextField
+                        label='Número dias generacion horario'
+                        name='numeroDias'
+                        required
+                        type='number'
+                      />
+                    </Box>
+                    <Box></Box>
+                    <Box></Box>
+                    <Box>
+                      <Button
+                        className={`${classes.btnRoot} ${classes.btnPrymary}`}
+                        variant='contained'
+                        type='submit'>
+                        Generar
+                      </Button>
+                    </Box>
+                  </Box>
+                </Form>
+              )}
+            </Formik>
+          )}
+        </Box>
       </Paper>
     </div>
   );

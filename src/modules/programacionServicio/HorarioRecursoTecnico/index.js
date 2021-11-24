@@ -544,9 +544,8 @@ const HorarioRecursoTecnico = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState(
-    'fecha_modificacion:desc',
-  );
+  const [orderByToSend, setOrderByToSend] =
+    React.useState('fecha_horario:desc');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);

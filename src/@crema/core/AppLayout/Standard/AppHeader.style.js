@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       paddingLeft: 30,
       paddingRight: 30,
-      justifyContent: 'flex-end',
+      justifyContent: 'space-between',
     },
   },
   grow: {
@@ -88,10 +88,12 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     boxShadow: '4px 3px 4px 0px rgba(0,0,0,0.12)',
     [theme.breakpoints.up('lg')]: {
-      width: 'calc(100vw - 15rem)',
+      width: 'calc(100vw )',
+      // width: 'calc(100vw - 15rem)',
     },
     [theme.breakpoints.up('xl')]: {
-      width: 'calc(100vw - 19rem)',
+      // width: 'calc(100vw - 19rem)',
+      width: 'calc(100vw)',
     },
   },
   menuItemRoot: {

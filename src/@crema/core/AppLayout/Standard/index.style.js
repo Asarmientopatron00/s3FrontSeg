@@ -42,10 +42,10 @@ const useStyles = makeStyles((theme) => {
       margin: '0rem',
       width: 'fit-content',
       [theme.breakpoints.up('lg')]: {
-        marginLeft: '15rem',
+        // marginLeft: '15rem',
       },
       [theme.breakpoints.up('xl')]: {
-        marginLeft: '19rem',
+        // marginLeft: '19rem',
       },
     },
     mainContainer: {
@@ -53,10 +53,12 @@ const useStyles = makeStyles((theme) => {
       width: 'fit-content',
       marginTop: '0rem',
       [theme.breakpoints.up('lg')]: {
-        width: `calc(100vw - 16.2rem)`,
+        width: `calc(100vw)`,
+        // width: `calc(100vw - 16.2rem)`,
       },
       [theme.breakpoints.up('xl')]: {
-        width: `calc(100vw - 20.2rem)`,
+        // width: `calc(100vw - 20.2rem)`,
+        width: `calc(100vw)`,
       },
 
       '& > .scrollbar-container': {
@@ -95,14 +97,16 @@ const useStyles = makeStyles((theme) => {
           width: '100%',
         },
         '& $mainContent': {
-          width: 'calc(100% - 19rem)',
+          // width: 'calc(100% - 19rem)',
+          // width: 'calc(100%)',
           flex: 'auto',
         },
         '& $mainContainer': {
           width: '100%',
         },
         '& .app-bar': {
-          width: 'calc(100% - 19rem)',
+          width: 'calc(100%)',
+          // width: 'calc(100% - 19rem)',
           position: 'absolute',
           boxShadow: '0px 0px 4px 2px rgba(0,0,0,0.12)',
         },
@@ -113,7 +117,8 @@ const useStyles = makeStyles((theme) => {
       [theme.breakpoints.up('xl')]: {
         maxWidth: 1680,
         '& $mainContent, & .app-bar': {
-          width: 'calc(100% - 21.6rem)',
+          // width: 'calc(100% - 21.6rem)',
+          width: 'calc(100% )',
         },
       },
     },

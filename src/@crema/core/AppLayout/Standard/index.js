@@ -41,21 +41,21 @@ const StandardLayout = () => {
       </Box>
 
       <Box className={classes.mainContent}>
-        <Hidden mdDown>
-          <Box className={classes.mainContainer}>
-            <AppHeader />
-            <ContentView />
-            <AppFixedFooter />
-          </Box>
-        </Hidden>
+        {/* <Hidden mdDown> */}
+        <Box className={classes.mainContainer}>
+          <AppHeader />
+          <ContentView />
+          <AppFixedFooter />
+        </Box>
+        {/* </Hidden> */}
 
-        <Hidden lgUp>
+        {/* <Hidden lgUp>
           <Box className={classes.mainContainerFull}>
             <AppHeader />
             <ContentView />
             <AppFixedFooter />
           </Box>
-        </Hidden>
+        </Hidden> */}
       </Box>
     </Box>
   );

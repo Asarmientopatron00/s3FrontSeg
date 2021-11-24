@@ -54,16 +54,16 @@ const AppHeader = () => {
     <>
       <AppBar color='inherit' className={clsx(classes.appBar, 'app-bar')}>
         <Toolbar className={classes.appToolbar}>
-          <Hidden lgUp>
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='open drawer'
-              onClick={() => dispatch(toggleNavCollapsed())}>
-              <MenuIcon className={classes.menuIcon} />
-            </IconButton>
-          </Hidden>
+          {/* <Hidden lgUp> */}
+          <IconButton
+            edge='start'
+            className={classes.menuButton}
+            color='inherit'
+            aria-label='open drawer'
+            onClick={() => dispatch(toggleNavCollapsed())}>
+            <MenuIcon className={classes.menuIcon} />
+          </IconButton>
+          {/* </Hidden> */}
           {/* <AppLogo />
           <Box className={classes.grow} />
           <SearchBar borderLight placeholder='Search…' />
