@@ -433,6 +433,13 @@ export const CREATE_DETALLE_COTIZACION_PRODUCTO =
   'create_detalle_cotizacion_producto';
 export const DELETE_DETALLE_COTIZACION_PRODUCTO =
   'delete_detalle_cotizacion_producto';
+export const GET_COLECCION_BITACORA_EQUIPO = 'get_coleccion_bitacora_equipo';
+export const GET_COLECCION_LIGERA_BITACORA_EQUIPO =
+  'get_coleccion_ligera_bitacora_equipo';
+export const SHOW_BITACORA_EQUIPO = 'show_bitacora_equipo';
+export const UPDATE_BITACORA_EQUIPO = 'update_bitacora_equipo';
+export const CREATE_BITACORA_EQUIPO = 'create_bitacora_equipo';
+export const DELETE_BITACORA_EQUIPO = 'delete_bitacora_equipo';
 
 //APP SETTING
 

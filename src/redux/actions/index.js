@@ -61,3 +61,4 @@ export * from './SolicitudCotizacionProductoAction';
 export * from './DetalleSolicitudCotizacionProductoAction';
 export * from './CotizacionProductoAction';
 export * from './DetalleCotizacionProductoAction';
+export * from './BitacoraEquipoAction';

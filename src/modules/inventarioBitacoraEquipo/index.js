@@ -9,6 +9,11 @@ export const inventarioBitacoraEquipoConfig = [
         path: ['/informacion-equipos'],
         component: React.lazy(() => import('./InformacionEquipo')),
       },
+      {
+        exact: true,
+        path: ['/bitacora-equipos'],
+        component: React.lazy(() => import('./BitacoraEquipo')),
+      },
     ],
   },
 ];

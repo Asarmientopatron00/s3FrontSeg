@@ -59,6 +59,7 @@ import SolicitudCotizacionProductoReducer from './SolicitudCotizacionProductoRed
 import DetalleSolicitudCotizacionProductoReducer from './DetalleSolicitudCotizacionProductoReducer';
 import CotizacionProductoReducer from './CotizacionProductoReducer';
 import DetalleCotizacionProductoReducer from './DetalleCotizacionProductoReducer';
+import BitacoraEquipoReducer from './BitacoraEquipoReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -123,5 +124,6 @@ const reducers = (history) =>
       DetalleSolicitudCotizacionProductoReducer,
     cotizacionProductoReducer: CotizacionProductoReducer,
     detalleCotizacionProductoReducer: DetalleCotizacionProductoReducer,
+    bitacoraEquipoReducer: BitacoraEquipoReducer,
   });
 export default reducers;

@@ -1,10 +1,10 @@
 import {
-  GET_COLECCION_LUGAR,
-  GET_COLECCION_LIGERA_LUGAR,
-  SHOW_LUGAR,
-  UPDATE_LUGAR,
-  DELETE_LUGAR,
-  CREATE_LUGAR,
+  GET_COLECCION_BITACORA_EQUIPO,
+  GET_COLECCION_LIGERA_BITACORA_EQUIPO,
+  SHOW_BITACORA_EQUIPO,
+  UPDATE_BITACORA_EQUIPO,
+  DELETE_BITACORA_EQUIPO,
+  CREATE_BITACORA_EQUIPO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -17,32 +17,32 @@ import {appIntl} from '../../@crema/utility/Utils';
 export const onGetColeccion = (
   currentPage,
   rowsPerPage,
-  nombre,
   orderByToSend,
-  departamento,
+  orden_servicio_id,
+  numero_serial,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
-  const nombreAux = nombre ? nombre : '';
-  const departamentoAux = departamento ? departamento : '';
+  const orden_servicio_idAux = orden_servicio_id ? orden_servicio_id : '';
+  const numero_serialAux = numero_serial ? numero_serial : '';
   const ordenar_por = orderByToSend ? orderByToSend : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('lugares', {
+      .get('bitacora-equipos', {
         params: {
           page: page,
           limite: rowsPerPage,
-          nombre: nombreAux,
-          departamento: departamentoAux,
+          orden_servicio_id: orden_servicio_idAux,
+          numero_serial: numero_serialAux,
           ordenar_por: ordenar_por,
         },
       })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_LUGAR, payload: data});
+          dispatch({type: GET_COLECCION_BITACORA_EQUIPO, payload: data});
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -56,21 +56,55 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = (ciudad) => {
+export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('lugares', {
+      .get('bitacora-equipos', {
         params: {
           ligera: true,
-          ciudad_id: ciudad,
         },
       })
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: GET_COLECCION_LIGERA_LUGAR, payload: data});
+          dispatch({
+            type: GET_COLECCION_LIGERA_BITACORA_EQUIPO,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionLigeraOS = (departamento_id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('bitacora-equipos', {
+        params: {
+          ligera: true,
+          orden_servicio: true,
+          departamento_id: departamento_id,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_BITACORA_EQUIPO,
+            payload: data,
+          });
         } else {
           dispatch({
             type: FETCH_ERROR,
@@ -90,11 +124,11 @@ export const onShow = (id) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('lugares/' + id)
+        .get('bitacora-equipos/' + id)
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
-            dispatch({type: SHOW_LUGAR, payload: data.data});
+            dispatch({type: SHOW_BITACORA_EQUIPO, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,
@@ -113,12 +147,12 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('lugares/' + params.id, params)
+      .put('bitacora-equipos/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: UPDATE_LUGAR,
+            type: UPDATE_BITACORA_EQUIPO,
             payload: data.data,
           });
           updateColeccion();
@@ -144,11 +178,11 @@ export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .delete('lugares/' + id)
+      .delete('bitacora-equipos/' + id)
       .then((data) => {
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
-          dispatch({type: DELETE_LUGAR, payload: data.data});
+          dispatch({type: DELETE_BITACORA_EQUIPO, payload: data.data});
         } else {
           dispatch({type: FETCH_ERROR, payload: data.data.mensajes[0]});
         }
@@ -171,13 +205,13 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .post('lugares', params)
+      .post('bitacora-equipos', params)
       .then((data) => {
         console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
-            type: CREATE_LUGAR,
+            type: CREATE_BITACORA_EQUIPO,
             payload: data.data,
           });
           updateColeccion();
