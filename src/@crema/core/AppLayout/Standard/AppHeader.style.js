@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 30,
       justifyContent: 'space-between',
     },
+    color: 'white',
   },
   grow: {
     flexGrow: 1,

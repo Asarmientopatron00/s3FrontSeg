@@ -24,6 +24,11 @@ export const programacionServicioConfig = [
         path: ['/generacion-horarios'],
         component: React.lazy(() => import('./GeneracionHorarios')),
       },
+      {
+        exact: true,
+        path: ['/envio-correo-programacion'],
+        component: React.lazy(() => import('./EnvioProgramacion')),
+      },
     ],
   },
 ];

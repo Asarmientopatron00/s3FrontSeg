@@ -328,6 +328,9 @@ export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
 export const GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN =
   'get_coleccion_ligera_tercero_servicio_orden';
 export const GET_ORDEN_SERVICIO_RUTAS = 'get_orden_servicio_rutas';
+export const GET_ORDEN_SERVICIO_PROGRAMACION =
+  'get_orden_servicio_programacion';
+export const ENVIAR_PROGRAMACION = 'enviar_programacion';
 export const GET_COLECCION_INFORMACION_EQUIPO =
   'get_coleccion_informacion_equipo';
 export const GET_COLECCION_LIGERA_INFORMACION_EQUIPO =

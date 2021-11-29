@@ -9,6 +9,8 @@ import {
   GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
   GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
   GET_ORDEN_SERVICIO_RUTAS,
+  GET_ORDEN_SERVICIO_PROGRAMACION,
+  ENVIAR_PROGRAMACION,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -483,6 +485,69 @@ export const onImport = (params, setActiveStep, setRows) => {
             });
           }
         }
+      });
+  };
+};
+
+export const onEnvioCorreos = (fecha, asociados) => {
+  console.log(fecha, asociados);
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('ordenes-servicios/envio-correo-programacion', {
+        fecha_programacion: fecha,
+        asociados: asociados,
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: ENVIAR_PROGRAMACION,
+            payload: data.data,
+          });
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+export const onGetEnvioCorreos = (fecha) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('ordenes-servicios/envio-correo-programacion', {
+        params: {
+          fecha_programacion: fecha,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_ORDEN_SERVICIO_PROGRAMACION,
+            payload: data.data.datos,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
       });
   };
 };
