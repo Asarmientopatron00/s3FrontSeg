@@ -84,6 +84,7 @@ export const onGetColeccion = (
       });
   };
 };
+
 export const onGetColeccionProgramacion = (
   currentPage,
   rowsPerPage,
@@ -117,6 +118,71 @@ export const onGetColeccionProgramacion = (
     dispatch({type: FETCH_START});
     jwtAxios
       .get('ordenes-servicios/programacion', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          numero_orden_servicio: numero_solicitudAux,
+          ordenar_por: ordenar_por,
+          nombre: nombre_empresaAux,
+          estados: estadosAux,
+          fecha_orden_servicio: fecha_orden_servicioAux,
+          fechaOSInicial: fechaOSInicialAux,
+          fechaOSFinal: fechaOSFinalAux,
+          fechaProgInicial: fechaProgInicialAux,
+          fechaProgFinal: fechaProgFinalAux,
+          ciudad: ciudadAux,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_COLECCION_ORDEN_SERVICIO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionAceptacion = (
+  currentPage,
+  rowsPerPage,
+  numero_solicitud,
+  orderByToSend,
+  nombre_empresa,
+  fecha_orden_servicio,
+  estados,
+  fechaOSInicial,
+  fechaOSFinal,
+  fechaProgInicial,
+  fechaProgFinal,
+  ciudad,
+) => {
+  const {messages} = appIntl();
+  const page = currentPage ? currentPage : 0;
+  const numero_solicitudAux = numero_solicitud ? numero_solicitud : '';
+  const ordenar_por = orderByToSend ? orderByToSend : '';
+  const nombre_empresaAux = nombre_empresa ? nombre_empresa : '';
+  const estadosAux = estados ? estados : '';
+  const fecha_orden_servicioAux = fecha_orden_servicio
+    ? fecha_orden_servicio
+    : '';
+  const fechaOSInicialAux = fechaOSInicial ? fechaOSInicial : '';
+  const fechaOSFinalAux = fechaOSFinal ? fechaOSFinal : '';
+  const fechaProgInicialAux = fechaProgInicial ? fechaProgInicial : '';
+  const fechaProgFinalAux = fechaProgFinal ? fechaProgFinal : '';
+  const ciudadAux = ciudad ? ciudad : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('ordenes-servicios/aceptacion', {
         params: {
           page: page,
           limite: rowsPerPage,

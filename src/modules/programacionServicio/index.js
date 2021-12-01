@@ -29,6 +29,11 @@ export const programacionServicioConfig = [
         path: ['/envio-correo-programacion'],
         component: React.lazy(() => import('./EnvioProgramacion')),
       },
+      {
+        exact: true,
+        path: ['/aceptacion-orden-servicio'],
+        component: React.lazy(() => import('./AceptacionOrdenServicio')),
+      },
     ],
   },
 ];
