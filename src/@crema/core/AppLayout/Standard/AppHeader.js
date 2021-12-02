@@ -9,7 +9,7 @@ import Menu from '@material-ui/core/Menu';
 import LanguageSwitcher from '../../LanguageSwitcher';
 import {toggleNavCollapsed} from '../../../../redux/actions';
 import {useDispatch} from 'react-redux';
-import Hidden from '@material-ui/core/Hidden';
+// import Hidden from '@material-ui/core/Hidden';
 // import Box from '@material-ui/core/Box';
 // import SearchBar from '../../SearchBar';
 import useStyles from './AppHeader.style';

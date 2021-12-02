@@ -15,7 +15,6 @@ import {
 } from '../../../../shared/constants/Constantes';
 
 import DetallePedido from '../../DetallePedido';
-import {includes} from 'lodash-es';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);

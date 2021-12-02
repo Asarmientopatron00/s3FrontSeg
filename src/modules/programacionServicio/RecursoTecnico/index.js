@@ -42,7 +42,6 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import MenuItem from '@material-ui/core/MenuItem';
 import {ESTADOS_RECURSOS_TECNICOS} from '../../../shared/constants/ListasValores';
 
 // import {MessageView} from '../../../@crema';
@@ -379,7 +378,6 @@ const EnhancedTableToolbar = (props) => {
     onOpenAddRecursoTecnico,
     handleOpenPopoverColumns,
     queryFilter,
-    ciudades,
     nombreFiltro,
     ciudadFiltro,
     limpiarFiltros,

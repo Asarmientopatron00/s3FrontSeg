@@ -111,7 +111,7 @@ export const ESTADOS_ORDEN_SERVICIO = [
 
 export const ESTADOS_APROBACION_OS = [
   {id: 'A', nombre: 'Aceptada', estado: 1},
-  {id: 'P', nombre: 'Programada', estado: 1},
+  {id: 'P', nombre: 'Pendiente', estado: 1},
   {id: 'R', nombre: 'Rechazada', estado: 1},
   {id: '', nombre: '', estado: 1},
 ];

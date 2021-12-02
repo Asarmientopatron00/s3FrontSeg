@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Box,
   Button,
@@ -21,13 +21,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {useDispatch, useSelector} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import {Fonts} from '../../../shared/constants/AppEnums';
-import {Form, Formik, useField} from 'formik';
+import {Form, Formik} from 'formik';
 import {
   onGetEnvioCorreos,
   onEnvioCorreos,
 } from '../../../redux/actions/OrdenServicioAction';
 import * as yup from 'yup';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import format from 'date-fns/format';
 
 const validationSchema = yup.object({
   fechaMinima: yup.date().nullable(),
@@ -112,11 +112,11 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '3fr 1fr',
+    gridTemplateColumns: '1fr 1fr',
     gap: '20px',
   },
   contenedorFiltros1: {
-    width: '90%',
+    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
@@ -143,7 +143,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const {numSelected, titulo} = props;
+  const {numSelected, titulo, fecha, setFecha, errorText} = props;
 
   return (
     <Toolbar
@@ -169,6 +169,24 @@ const EnhancedTableToolbar = (props) => {
               {titulo}
             </Typography>
             <Box className={classes.horizontalBottoms}></Box>
+          </Box>
+          <Box className={classes.contenedorFiltros1}>
+            <TextField
+              label='Fecha programación servicios:'
+              name='fecha'
+              type='date'
+              className={classes.contenedorFiltros1}
+              value={fecha}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              helperText={errorText}
+              error={!!errorText}
+              onChange={(e) => {
+                setFecha(e.target.value);
+                // setFieldValue('fecha',e.target.value)
+              }}
+            />
           </Box>
         </>
       )}
@@ -277,7 +295,7 @@ const useStyles = makeStyles((theme) => ({
     // gridTemplateColumns:gridTemplate,
   },
   headCell: {
-    padding: '0px 0px 0px 15px',
+    padding: '0px 15px 0px 15px',
   },
   row: {
     // display:'grid',
@@ -285,7 +303,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 'none',
   },
   cell: (props) => ({
-    padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    padding: props.vp + ' 15px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
   }),
   cellWidth: (props) => ({
@@ -368,14 +386,13 @@ const GeneracionHorarios = (props) => {
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
 
-  const [show, setShow] = useState(true);
+  const [show] = useState(true);
   const dispatch = useDispatch();
-  const today = new Date();
-  const [fecha, setFecha] = useState(
-    today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate(),
-  );
-  const [numSelected, setnumSelected] = React.useState(0);
-  const [asociados, setasociados] = React.useState([]);
+  const today = format(new Date(Date.now()), 'yyyy-MM-dd');
+  const [fecha, setFecha] = useState(today);
+  const [numSelected, setnumSelected] = useState(0);
+  const [asociados, setasociados] = useState([]);
+  const [errorText, setErrorText] = useState('');
 
   useEffect(() => {
     dispatch(onGetEnvioCorreos(fecha));
@@ -470,6 +487,9 @@ const GeneracionHorarios = (props) => {
           numSelected={0}
           titulo={titulo}
           permisos={permisos}
+          fecha={fecha}
+          setFecha={setFecha}
+          errorText={errorText}
         />
         <Box className={classes.marcoTabla}>
           {show && (
@@ -497,26 +517,13 @@ const GeneracionHorarios = (props) => {
                   <Form>
                     <Box className={classes.contenedorFiltros}>
                       <Box className={classes.contenedorFiltros1}>
-                        <TextField
-                          label='Fecha programación servicios:'
-                          name='fecha'
-                          type='date'
-                          value={fecha}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          onChange={(e) => {
-                            setFecha(e.target.value);
-                            // setFieldValue('fecha',e.target.value)
-                          }}
-                        />
                         <TableContainer>
                           <Table>
                             <TableHead>
                               <TableRow className={classes.head}>
                                 <TableCell
                                   padding='checkbox'
-                                  className={classes.headCell}>
+                                  className={classes.row}>
                                   <Checkbox
                                     indeterminate={
                                       numSelected > 0 &&
@@ -533,17 +540,17 @@ const GeneracionHorarios = (props) => {
                                   />
                                 </TableCell>
                                 <TableCell
-                                  align='center'
+                                  align='right'
                                   className={classes.headCell}>
                                   {'Documento'}
                                 </TableCell>
                                 <TableCell
-                                  align='center'
+                                  align='left'
                                   className={classes.headCell}>
                                   {'Nombre'}
                                 </TableCell>
                                 <TableCell
-                                  align='center'
+                                  align='right'
                                   className={classes.headCell}>
                                   {'Nº Ordenes'}
                                 </TableCell>
@@ -572,17 +579,17 @@ const GeneracionHorarios = (props) => {
                                         />
                                       </TableCell>
                                       <TableCell
-                                        align='center'
+                                        align='right'
                                         className={classes.headCell}>
                                         {row.numero_documento}
                                       </TableCell>
                                       <TableCell
-                                        align='center'
+                                        align='left'
                                         className={classes.headCell}>
                                         {row.nombre}
                                       </TableCell>
                                       <TableCell
-                                        align='center'
+                                        align='right'
                                         className={classes.headCell}>
                                         {row.numero_ordenes}
                                       </TableCell>
@@ -602,9 +609,17 @@ const GeneracionHorarios = (props) => {
                             variant='contained'
                             // type='submit'
                             onClick={() => {
-                              if (asociados.length > 0) {
-                                dispatch(
-                                  onEnvioCorreos(fecha, asociados.toString()),
+                              console.log();
+                              if (fecha >= today) {
+                                setErrorText('');
+                                if (asociados.length > 0) {
+                                  dispatch(
+                                    onEnvioCorreos(fecha, asociados.toString()),
+                                  );
+                                }
+                              } else {
+                                setErrorText(
+                                  'Debe ser mayor o igual a la fecha actual.',
                                 );
                               }
                             }}>

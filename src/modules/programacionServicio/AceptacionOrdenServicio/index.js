@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import CheckIcon from '@material-ui/icons/Check';
+import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import AceptacionOrdenServicioCreador from './AceptacionOrdenServicioCreador';
@@ -143,6 +143,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'observaciones_programacion',
+    typeHead: 'string',
+    label: 'Observaciones Programación',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
     id: 'recurso',
     typeHead: 'string',
     label: 'Técnico',
@@ -159,15 +167,23 @@ const cells = [
         tipo.id === value ? tipo.nombre : '',
       ),
     align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'observaciones_rechazo',
+    typeHead: 'string',
+    label: 'Observaciones Rechazo',
+    value: (value) => value,
+    align: 'left',
     mostrarInicio: false,
   },
   {
-    id: 'equipo',
+    id: 'numero_serial',
     typeHead: 'string',
     label: 'Equipo',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'estado',
@@ -979,11 +995,11 @@ const AceptacionOrdenServicio = (props) => {
                         <TableCell align='center' className={classes.acciones}>
                           {permisos.indexOf('Aceptar') >= 0 && (
                             <Tooltip title={'Aceptar'}>
-                              <CheckIcon
+                              <LibraryAddCheckIcon
                                 onClick={() =>
                                   onOpenEditAceptacionOrdenServicio(row)
                                 }
-                                className={`${classes.generalIcons} ${classes.editIcon}`}></CheckIcon>
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></LibraryAddCheckIcon>
                             </Tooltip>
                           )}
                           {/* {permisos.indexOf('Listar') >= 0 && (

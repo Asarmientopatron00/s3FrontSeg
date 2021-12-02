@@ -25,7 +25,7 @@ const MyTextField = (props) => {
 };
 
 const SolicitudCotizacionForm = (props) => {
-  const {accion, initialValues, values, setFieldValue, setDetalles} = props;
+  const {accion, initialValues, values, setDetalles} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {

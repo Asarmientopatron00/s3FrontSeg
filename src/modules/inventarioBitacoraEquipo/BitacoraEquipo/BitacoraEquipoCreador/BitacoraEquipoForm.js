@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import {Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
@@ -32,7 +32,6 @@ const BitacoraEquipoForm = (props) => {
     initialValues,
     setFieldValue,
     titulo,
-    errors,
     equipos,
     eventos,
     estados,
@@ -120,7 +119,7 @@ const BitacoraEquipoForm = (props) => {
         setFieldValue('numero_serial_equipo', equipo.numero_serial);
       }
     });
-  }, [equipos, values.equipo_id]);
+  }, [equipos, values.equipo_id, setFieldValue]);
 
   useEffect(() => {
     let asociado = '';
@@ -142,7 +141,7 @@ const BitacoraEquipoForm = (props) => {
     setFieldValue('ciudad_instalacion', ciudad_instalacion);
     setFieldValue('ciudad_desinstalacion', ciudad_desinstalacion);
     setFieldValue('numero_orden_servicio', numero_orden_servicio);
-  }, [ordenesServicio, values.orden_servicio_id]);
+  }, [ordenesServicio, values.orden_servicio_id, setFieldValue]);
 
   useEffect(() => {
     if (accion === 'crear') {
@@ -152,7 +151,7 @@ const BitacoraEquipoForm = (props) => {
         }
       });
     }
-  }, [lugares, values.lugar_id, accion]);
+  }, [lugares, values.lugar_id, accion, setFieldValue]);
 
   useEffect(() => {
     if (accion === 'crear') {
@@ -162,7 +161,7 @@ const BitacoraEquipoForm = (props) => {
         }
       });
     }
-  }, [eventos, values.evento_equipo_id, accion]);
+  }, [eventos, values.evento_equipo_id, accion, setFieldValue]);
 
   let onChangeCiudad1 = useRef();
   onChangeCiudad1 = (id) => {

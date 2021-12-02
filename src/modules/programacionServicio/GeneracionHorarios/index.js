@@ -17,7 +17,6 @@ import {
   programarHorarios,
 } from '../../../redux/actions/HorarioRecursoTecnicoAction';
 import * as yup from 'yup';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -410,10 +409,10 @@ const GeneracionHorarios = (props) => {
     }
   }, [fechas]);
 
-  const updateFechas = () => {
-    dispatch(getFechasGeneracion());
-    setShow(true);
-  };
+  // const updateFechas = () => {
+  //   dispatch(getFechasGeneracion());
+  //   setShow(true);
+  // };
 
   return (
     <div className={classes.root}>

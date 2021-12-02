@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import clsx from 'clsx';
 // import UserInfo from '../../../../shared/components/UserInfo';
 import Navigation from '../../Navigation/VerticleNav';

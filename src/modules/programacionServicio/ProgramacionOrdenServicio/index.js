@@ -143,6 +143,14 @@ const cells = [
     mostrarInicio: true,
   },
   {
+    id: 'observaciones_programacion',
+    typeHead: 'string',
+    label: 'Observaciones Programación',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
     id: 'recurso',
     typeHead: 'string',
     label: 'Técnico',
@@ -162,13 +170,22 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'equipo',
+    id: 'observaciones_rechazo',
+    typeHead: 'string',
+    label: 'Observaciones Rechazo',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: false,
+  },
+  {
+    id: 'numero_serial',
     typeHead: 'string',
     label: 'Equipo',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
+
   {
     id: 'estado',
     typeHead: 'boolean',

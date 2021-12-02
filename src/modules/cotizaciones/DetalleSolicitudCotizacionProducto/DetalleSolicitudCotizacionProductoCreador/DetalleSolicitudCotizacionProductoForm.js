@@ -109,7 +109,7 @@ const DetalleCotizacionForm = (props) => {
       }
     });
     setFieldValue('producto', productoAux);
-  }, [values.producto_id]);
+  }, [values.producto_id, productos, setFieldValue]);
 
   return (
     <Form className='' noValidate autoComplete='off'>

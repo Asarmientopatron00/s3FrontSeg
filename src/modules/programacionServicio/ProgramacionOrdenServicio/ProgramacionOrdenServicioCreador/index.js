@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -61,11 +61,11 @@ const ProgramacionOrdenServicioCreator = (props) => {
         selectedRow.departamento_id,
       ),
     );
-  }, [selectedRow.fecha_programada, selectedRow.departamento_id]);
+  }, [selectedRow.fecha_programada, selectedRow.departamento_id, dispatch]);
 
   useEffect(() => {
     dispatch(onGetColeccionLigeraOSEquipo(selectedRow.departamento_id));
-  }, [selectedRow.departamento_id]);
+  }, [selectedRow.departamento_id, dispatch]);
 
   const recursosTecnicos = useSelector(
     ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,

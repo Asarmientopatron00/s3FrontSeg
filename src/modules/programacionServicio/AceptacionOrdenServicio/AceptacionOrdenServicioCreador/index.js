@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -190,7 +190,6 @@ const AceptacionOrdenServicioCreator = (props) => {
                     indicativo_aceptacion_desinstalacion:
                       data.indicativo_aceptacion === 'S' ? 'A' : 'R',
                     tipo_proceso: 'Desinstalación',
-                    tipo_proceso: 'Instalación',
                     accion: 'aceptar',
                   };
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
