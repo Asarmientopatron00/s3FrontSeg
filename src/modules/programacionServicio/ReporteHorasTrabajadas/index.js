@@ -21,11 +21,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
+import EditIcon from '@material-ui/icons/Edit';
 import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import AceptacionOrdenServicioCreador from './AceptacionOrdenServicioCreador';
-import {onGetColeccionAceptacion as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
+import ReporteHorasTrabajadasCreador from './ReporteHorasTrabajadasCreador';
+import {onGetColeccionReporteHoras as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
@@ -641,7 +641,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AceptacionOrdenServicio = (props) => {
+const ReporteHorasTrabajadas = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -657,8 +657,8 @@ const AceptacionOrdenServicio = (props) => {
 
   const [accion, setAccion] = useState('ver');
   const [
-    aceptacionOrdenServicioSeleccionado,
-    setAceptacionOrdenServicioSeleccionado,
+    reporteHorasTrabajadasSeleccionado,
+    setReporteHorasTrabajadasSeleccionado,
   ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
@@ -821,8 +821,8 @@ const AceptacionOrdenServicio = (props) => {
     }
   };
 
-  const onOpenEditAceptacionOrdenServicio = (row) => {
-    setAceptacionOrdenServicioSeleccionado(row);
+  const onOpenEditReporteHorasTrabajadas = (row) => {
+    setReporteHorasTrabajadasSeleccionado(row);
     setAccion('editar');
     setShowForm(true);
   };
@@ -863,15 +863,15 @@ const AceptacionOrdenServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAceptacionOrdenServicio = (id) => {
-    setAceptacionOrdenServicioSeleccionado(id);
+  const onOpenViewReporteHorasTrabajadas = (id) => {
+    setReporteHorasTrabajadasSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setAceptacionOrdenServicioSeleccionado(0);
+    setReporteHorasTrabajadasSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -993,20 +993,20 @@ const AceptacionOrdenServicio = (props) => {
                         selected={isItemSelected}
                         className={classes.row}>
                         <TableCell align='center' className={classes.acciones}>
-                          {permisos.indexOf('Aceptar') >= 0 && (
-                            <Tooltip title={'Aceptar'}>
-                              <LibraryAddCheckIcon
+                          {permisos.indexOf('Reportar') >= 0 && (
+                            <Tooltip title={'Editar'}>
+                              <EditIcon
                                 onClick={() =>
-                                  onOpenEditAceptacionOrdenServicio(row)
+                                  onOpenEditReporteHorasTrabajadas(row)
                                 }
-                                className={`${classes.generalIcons} ${classes.editIcon}`}></LibraryAddCheckIcon>
+                                className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                             </Tooltip>
                           )}
                           {/* {permisos.indexOf('Listar') >= 0 && (
                                 <Tooltip title={<IntlMessages id='boton.ver' />}>
                                   <VisibilityIcon
                                     onClick={() =>
-                                      onOpenViewAceptacionOrdenServicio(row)
+                                      onOpenViewReporteHorasTrabajadas(row)
                                     }
                                     className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                                 </Tooltip>
@@ -1107,9 +1107,9 @@ const AceptacionOrdenServicio = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <AceptacionOrdenServicioCreador
+        <ReporteHorasTrabajadasCreador
           showForm={showForm}
-          selectedRow={aceptacionOrdenServicioSeleccionado}
+          selectedRow={reporteHorasTrabajadasSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
@@ -1159,4 +1159,4 @@ const AceptacionOrdenServicio = (props) => {
   );
 };
 
-export default AceptacionOrdenServicio;
+export default ReporteHorasTrabajadas;

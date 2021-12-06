@@ -8,9 +8,10 @@ import {onUpdate} from '../../../../redux/actions/OrdenServicioAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import AceptacionOrdenServicioForm from './AceptacionOrdenServicioForm';
+import ReporteHorasTrabajadasForm from './ReporteHorasTrabajadasForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
+import moment from 'moment';
 
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
 
@@ -19,15 +20,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const validationSchema = yup.object({
-  indicativo_aceptacion: yup.string().required('Requerido'),
-  observaciones_rechazo: yup.string().when('indicativo_aceptacion', {
-    is: 'N',
-    then: yup.string().required('Requerido'),
-    otherwise: yup.string().nullable(),
-  }),
+  fecha_prestacion_servicio: yup.string().required('Requerido'),
+  hora_inicio_servicio: yup.string().required('Requerido'),
+  hora_final_servicio: yup
+    .string()
+    .required('Requerido')
+    .test('is-greater', 'Debe ser mayor a la hora inicio', function (value) {
+      const {hora_inicio_servicio} = this.parent;
+      return moment(value, 'HH:mm').isSameOrAfter(
+        moment(hora_inicio_servicio, 'HH:mm'),
+      );
+    }),
+  observaciones_ejecucion: yup.string().nullable(),
 });
 
-const AceptacionOrdenServicioCreator = (props) => {
+const ReporteHorasTrabajadasCreator = (props) => {
   const {selectedRow, handleOnClose, accion, updateColeccion, titulo} = props;
 
   const dispatch = useDispatch();
@@ -166,6 +173,26 @@ const AceptacionOrdenServicioCreator = (props) => {
                   ? selectedRow.observaciones_rechazo
                   : ''
                 : '',
+              fecha_prestacion_servicio: selectedRow
+                ? selectedRow.fecha_prestacion_servicio
+                  ? selectedRow.fecha_prestacion_servicio
+                  : selectedRow.fecha_programada
+                : selectedRow.fecha_programada,
+              hora_inicio_servicio: selectedRow
+                ? selectedRow.hora_inicio_servicio
+                  ? selectedRow.hora_inicio_servicio
+                  : ''
+                : '',
+              hora_final_servicio: selectedRow
+                ? selectedRow.hora_final_servicio
+                  ? selectedRow.hora_final_servicio
+                  : ''
+                : '',
+              observaciones_ejecucion: selectedRow
+                ? selectedRow.observaciones_ejecucion
+                  ? selectedRow.observaciones_ejecucion
+                  : ''
+                : '',
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
@@ -174,29 +201,25 @@ const AceptacionOrdenServicioCreator = (props) => {
                 if (data.tipo_servicio === 'Instalación') {
                   const data_aux = {
                     id: data.id,
-                    observaciones_rechazo_instalacion:
-                      data.observaciones_rechazo,
-                    indicativo_aceptacion_instalacion:
-                      data.indicativo_aceptacion === 'S' ? 'A' : 'R',
+                    fecha_instalacion: data.fecha_prestacion_servicio,
+                    hora_inicio_instalacion: data.hora_inicio_servicio,
+                    hora_final_instalacion: data.hora_final_servicio,
+                    observaciones_ejecucion_instalacion:
+                      data.observaciones_ejecucion,
                     tipo_proceso: 'Instalación',
-                    accion:
-                      data.indicativo_aceptacion === 'S'
-                        ? 'Aceptar'
-                        : 'Rechazar',
+                    accion: 'Reg.Horas.Trab',
                   };
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 } else {
                   const data_aux = {
                     id: data.id,
-                    observaciones_rechazo_desinstalacion:
-                      data.observaciones_rechazo,
-                    indicativo_aceptacion_desinstalacion:
-                      data.indicativo_aceptacion === 'S' ? 'A' : 'R',
+                    fecha_desinstalacion: data.fecha_prestacion_servicio,
+                    hora_inicio_desinstalacion: data.hora_inicio_servicio,
+                    hora_final_desinstalacion: data.hora_final_servicio,
+                    observaciones_ejecucion_desinstalacion:
+                      data.observaciones_ejecucion,
                     tipo_proceso: 'Desinstalación',
-                    accion:
-                      data.indicativo_aceptacion === 'S'
-                        ? 'Aceptar'
-                        : 'Rechazar',
+                    accion: 'Reg.Horas.Trab',
                   };
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 }
@@ -207,7 +230,7 @@ const AceptacionOrdenServicioCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue, errors, touched}) => (
-              <AceptacionOrdenServicioForm
+              <ReporteHorasTrabajadasForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
@@ -225,4 +248,4 @@ const AceptacionOrdenServicioCreator = (props) => {
   );
 };
 
-export default AceptacionOrdenServicioCreator;
+export default ReporteHorasTrabajadasCreator;

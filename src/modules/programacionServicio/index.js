@@ -34,6 +34,11 @@ export const programacionServicioConfig = [
         path: ['/aceptacion-orden-servicio'],
         component: React.lazy(() => import('./AceptacionOrdenServicio')),
       },
+      {
+        exact: true,
+        path: ['/reporte-horas-trabajadas'],
+        component: React.lazy(() => import('./ReporteHorasTrabajadas')),
+      },
     ],
   },
 ];

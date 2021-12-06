@@ -180,7 +180,7 @@ const cells = [
   {
     id: 'numero_serial',
     typeHead: 'string',
-    label: 'Equipo',
+    label: 'Serial Equipo',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
