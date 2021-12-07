@@ -96,7 +96,7 @@ const asociadoReducer = (state = initialState, action) => {
     case VERIFICAR_ASOCIADO:
       return {
         ...state,
-        selectedRow: action.payload,
+        // selectedRow: action.payload,
       };
 
     case UPDATE_ASOCIADO:

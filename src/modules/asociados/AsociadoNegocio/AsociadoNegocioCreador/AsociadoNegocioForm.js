@@ -1252,7 +1252,8 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] ? (
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] &&
+            accion !== 'crear' ? (
               <MyRadioField
                 label='Información Verificada'
                 className={classes.MyRadioField}

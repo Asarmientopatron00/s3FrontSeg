@@ -29,17 +29,17 @@ import {
 import * as yup from 'yup';
 import format from 'date-fns/format';
 
-const validationSchema = yup.object({
-  fechaMinima: yup.date().nullable(),
-  fechaInicial: yup
-    .date()
-    .required('Requerido')
-    .min(
-      yup.ref('fechaMinima'),
-      'La fecha de entrega debe ser mayor a Fecha fin horario generado',
-    ),
-  numeroDias: yup.string().required('Requerido'),
-});
+// const validationSchema = yup.object({
+//   fechaMinima: yup.date().nullable(),
+//   fechaInicial: yup
+//     .date()
+//     .required('Requerido')
+//     .min(
+//       yup.ref('fechaMinima'),
+//       'La fecha de entrega debe ser mayor a Fecha fin horario generado',
+//     ),
+//   numeroDias: yup.string().required('Requerido'),
+// });
 
 const useToolbarStyles = makeStyles((theme) => ({
   root: {
@@ -494,7 +494,7 @@ const GeneracionHorarios = (props) => {
         <Box className={classes.marcoTabla}>
           {show && (
             <Formik
-              validationSchema={validationSchema}
+              // validationSchema={validationSchema}
               validateOnChange={false}
               onSubmit={(data, {setSubmitting, setFieldValue}) => {
                 setSubmitting(true);
