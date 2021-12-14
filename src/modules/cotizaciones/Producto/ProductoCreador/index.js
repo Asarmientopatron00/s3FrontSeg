@@ -50,11 +50,11 @@ const validationSchema = yup.object({
   producto_produccion_id: yup
     .string()
     .nullable()
-    .max(1, mensajeValidacion('max', 128)),
+    .max(64, mensajeValidacion('max', 64)),
   producto_facturacion_id: yup
     .string()
     .nullable()
-    .max(1, mensajeValidacion('max', 128)),
+    .max(64, mensajeValidacion('max', 64)),
 });
 
 const ProductoCreator = (props) => {

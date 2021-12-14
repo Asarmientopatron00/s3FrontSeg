@@ -10,6 +10,7 @@ import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 import MyAutoCompleteEquipoSerial from '../../../../shared/components/MyAutoCompleteEquipoSerial';
 import MyAutoCompleteOrdenServicio from '../../../../shared/components/MyAutoCompleteOrdenServicio';
 import MyAutoCompleteCiudad from '../../../../shared/components/MyAutoCompleteCiudad';
+import {TimePicker} from '@material-ui/pickers';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -221,6 +222,19 @@ const BitacoraEquipoForm = (props) => {
                 disabled={disabled}
                 InputLabelProps={{
                   shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextFieldSmall}
+                label='Hora Evento'
+                name='hora_evento'
+                disabled={disabled}
+                type='time'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                inputProps={{
+                  ampm: false,
                 }}
               />
               <MyAutocomplete

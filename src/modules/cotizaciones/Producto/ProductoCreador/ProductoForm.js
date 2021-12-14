@@ -269,6 +269,8 @@ const ProductoForm = (props) => {
                 </Box>
                 <Dropzone
                   onDrop={(acceptedFiles) => {
+                    console.log(acceptedFiles[0]);
+
                     if (acceptedFiles.length === 0) {
                       dispatch({
                         type: FETCH_ERROR,
@@ -289,6 +291,7 @@ const ProductoForm = (props) => {
                         type='file'
                         id='archivo'
                         onChange={(event) => {
+                          console.log(event.target.files[0]);
                           if (event.target.files[0].type.includes('image')) {
                             setFieldValue('archivo', event.target.files[0]);
                             setImagen(

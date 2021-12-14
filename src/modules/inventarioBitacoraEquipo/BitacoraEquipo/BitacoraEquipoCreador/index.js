@@ -136,6 +136,7 @@ const BitacoraEquipoCreator = (props) => {
                 ? selectedRow.numero_serial_equipo
                 : '',
               fecha_evento: selectedRow ? selectedRow.fecha_evento : '',
+              hora_evento: selectedRow ? selectedRow.hora_evento : '',
               evento_equipo_id: selectedRow
                 ? selectedRow.evento_equipo_id
                   ? selectedRow.evento_equipo_id
