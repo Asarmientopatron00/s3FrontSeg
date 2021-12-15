@@ -85,18 +85,19 @@ const AprobacionOrdenServicioCreator = (props) => {
   useEffect(() => {
     dispatch(onGetColeccion(ordenServicio));
   }, [dispatch, ordenServicio]);
-
+  console.log(TIPOS_SERVICIOS);
   return (
     showForm && (
       <Dialog
         open={showForm}
+        fullWidth={true}
         onClose={handleOnClose}
         aria-labelledby='simple-modal-title'
         TransitionComponent={Transition}
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'lg'}>
+        maxWidth={'xl'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
@@ -250,7 +251,7 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.equipo_id
                   : ''
                 : '',
-              recurso_tecnico: selectedRow
+              recurso_tecnico_instalacion: selectedRow
                 ? selectedRow.recursoInstalacion
                   ? selectedRow.recursoInstalacion.nombre
                   : ''
@@ -262,7 +263,9 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               indicativo_aceptacion_instalacion: selectedRow
                 ? selectedRow.indicativo_aceptacion_instalacion
-                  ? selectedRow.indicativo_aceptacion_instalacion
+                  ? selectedRow.indicativo_aceptacion_instalacion === 'A'
+                    ? 'Aprobada'
+                    : 'Rechazada'
                   : ''
                 : '',
               observaciones_rechazo_instalacion: selectedRow
@@ -302,8 +305,8 @@ const AprobacionOrdenServicioCreator = (props) => {
                   : ''
                 : '',
               departamento_desinstalacion: selectedRow
-                ? selectedRow.departamentodesInstalacion
-                  ? selectedRow.departamentodesInstalacion.nombre
+                ? selectedRow.departamentoDesinstalacion
+                  ? selectedRow.departamentoDesinstalacion.nombre
                   : ''
                 : '',
               hora_final_desinstalacion: selectedRow
@@ -312,18 +315,23 @@ const AprobacionOrdenServicioCreator = (props) => {
                   : ''
                 : '',
               ciudad_desinstalacion: selectedRow
-                ? selectedRow.ciudaddesInstalacion
-                  ? selectedRow.ciudaddesInstalacion.nombre
+                ? selectedRow.ciudadDesinstalacion
+                  ? selectedRow.ciudadDesinstalacion.nombre
                   : ''
                 : '',
               lugar_desinstalacion: selectedRow
-                ? selectedRow.lugardesInstalacion
-                  ? selectedRow.lugardesInstalacion.nombre
+                ? selectedRow.lugarDesinstalacion
+                  ? selectedRow.lugarDesinstalacion.nombre
                   : ''
                 : '',
               direccion_desinstalacion: selectedRow
-                ? selectedRow.lugardesInstalacion
-                  ? selectedRow.lugardesInstalacion.direccion
+                ? selectedRow.lugarDesinstalacion
+                  ? selectedRow.lugarDesinstalacion.direccion
+                  : ''
+                : '',
+              recurso_tecnico_desinstalacion: selectedRow
+                ? selectedRow.recursoDesinstalacion
+                  ? selectedRow.recursoDesinstalacion.nombre
                   : ''
                 : '',
               indicativo_aceptacion_desinstalacion: selectedRow
@@ -376,7 +384,36 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.transportador.email_contacto
                   : ''
                 : '',
-
+              placa_vehiculo: selectedRow
+                ? selectedRow.placa_vehiculo
+                  ? selectedRow.placa_vehiculo
+                  : ''
+                : '',
+              placa_trailer: selectedRow
+                ? selectedRow.placa_trailer
+                  ? selectedRow.placa_trailer
+                  : ''
+                : '',
+              numero_contenedor: selectedRow
+                ? selectedRow.numero_contenedor
+                  ? selectedRow.numero_contenedor
+                  : ''
+                : '',
+              nombre_conductor: selectedRow
+                ? selectedRow.nombre_conductor
+                  ? selectedRow.nombre_conductor
+                  : ''
+                : '',
+              cedula_conductor: selectedRow
+                ? selectedRow.cedula_conductor
+                  ? selectedRow.cedula_conductor
+                  : ''
+                : '',
+              celular_conductor: selectedRow
+                ? selectedRow.celular_conductor
+                  ? selectedRow.celular_conductor
+                  : ''
+                : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'

@@ -91,8 +91,8 @@ const AcuerdoServicioForm = (props) => {
 
   const classes = useStyles(props);
   return (
-    <Form style={{maxHeight: 600, width: 600}} noValidate autoComplete='off'>
-      <Scrollbar style={{maxHeight: 600, maxWidth: 600}}>
+    <Form noValidate autoComplete='off'>
+      <Scrollbar>
         <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
           <Box
             component='h6'

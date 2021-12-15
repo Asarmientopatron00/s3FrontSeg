@@ -335,7 +335,7 @@ export const onShow = (id) => {
   };
 };
 
-export const onUpdate = (params, handleOnClose, updateColeccion) => {
+export const onUpdate = (params, handleOnClose) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -347,7 +347,6 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
             type: UPDATE_ORDEN_SERVICIO,
             payload: data.data,
           });
-          updateColeccion();
           handleOnClose();
           dispatch({
             type: SHOW_MESSAGE,
