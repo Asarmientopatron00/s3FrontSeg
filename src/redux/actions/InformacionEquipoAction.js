@@ -59,6 +59,58 @@ export const onGetColeccion = (
   };
 };
 
+export const onGetColeccionInformacion = (
+  currentPage,
+  rowsPerPage,
+  numero_serial,
+  responsable,
+  ciudad_evento,
+  lugar_evento,
+  estado_equipo,
+  orderByToSend,
+) => {
+  const {messages} = appIntl();
+  const page = currentPage ? currentPage : 0;
+  const numero_serialAux = numero_serial ? numero_serial : '';
+  const responsableAux = responsable ? responsable : '';
+  const ciudad_eventoAux = ciudad_evento ? ciudad_evento : '';
+  const lugar_eventoAux = lugar_evento ? lugar_evento : '';
+  const estado_equipoAux = estado_equipo ? estado_equipo : '';
+
+  const ordenar_por = orderByToSend ? orderByToSend : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('informacion-equipos/historia', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          numero_serial: numero_serialAux,
+          responsable: responsableAux,
+          ciudad_evento: ciudad_eventoAux,
+          lugar_evento: lugar_eventoAux,
+          estado_equipo: estado_equipoAux,
+          ordenar_por: ordenar_por,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_COLECCION_INFORMACION_EQUIPO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
 export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {

@@ -24,10 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import UsuarioCreador from './UsuarioCreador';
-import {onGetColeccion, onDelete} from '../../../redux/actions/UsuarioAction';
-import {onGetColeccionLigera as asociadoColeccionLigera} from '../../../redux/actions/AsociadoAction';
-import {onGetColeccionLigera as rolColeccionLigera} from '../../../redux/actions/RolAction';
+import HistoriaEquipoCreador from './HistoriaEquipoCreador';
+import {
+  onGetColeccionInformacion,
+  onDelete,
+} from '../../../redux/actions/InformacionEquipoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -37,6 +38,8 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {TIPOS_EQUIPOS} from '../../../shared/constants/ListasValores';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // import {MessageView} from '../../../@crema';
 
@@ -66,120 +69,46 @@ import Swal from 'sweetalert2';
 //   return stabilizedThis.map((el) => el[0]);
 // }
 
-// const headCells = [
-//   { id: 'identificacion_usuario', type: 'string', label: 'Identificación',mostrarInicio:true},
-//   { id: 'nombre', type: 'string', label: 'Nombre',mostrarInicio:true},
-//   { id: 'nombre_asociado', type: 'string', label: 'Nombre Asociado',mostrarInicio:true},
-//   { id: 'email', type: 'string', label: 'E-mail',mostrarInicio:true},
-//   { id: 'cargo', type: 'string', label: 'Cargo',mostrarInicio:true},
-//   { id: 'numero_celular', type: 'string', label: 'Celular',mostrarInicio:true},
-//   { id: 'rol_nombre', type: 'string', label: 'Rol',mostrarInicio:true},
-//   { id: 'estado', type: 'boolean', label: 'Estado',mostrarInicio:true},
-//   { id: 'usuario_modificacion_nombre', type: 'string', label: ':',mostrarInicio:true},
-//   { id: 'fecha_modificacion', type: 'string', label: 'Fecha Última Modificación',mostrarInicio:true},
-// ];
-
 const cells = [
   {
-    id: 'identificacion_usuario',
+    id: 'numero_serial',
+    typeHead: 'numeric',
+    label: 'Serial',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'ciudad_evento',
     typeHead: 'string',
-    label: 'Identificación',
+    label: 'Ciudad',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'nombre',
+    id: 'lugar_evento',
     typeHead: 'string',
-    label: 'Nombre',
+    label: 'Lugar',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'nombre_asociado',
+    id: 'responsable',
     typeHead: 'string',
-    label: 'Nombre Asociado',
+    label: 'Responsable',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'email',
+    id: 'estado_equipo',
     typeHead: 'string',
-    label: 'E-mail',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'cargo',
-    typeHead: 'string',
-    label: 'Cargo',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'numero_celular',
-    typeHead: 'string',
-    label: 'Celular',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'rol_nombre',
-    typeHead: 'string',
-    label: 'Rol',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'estado',
-    typeHead: 'boolean',
     label: 'Estado',
-    value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
-    align: 'center',
-    mostrarInicio: true,
-    cellColor: (value) => (value === 1 ? 'green' : 'red'),
-  },
-  {
-    id: 'usuario_modificacion_nombre',
-    typeHead: 'string',
-    label: 'Modificado Por',
     value: (value) => value,
     align: 'left',
-    width: '140px',
     mostrarInicio: true,
-  },
-  {
-    id: 'fecha_modificacion',
-    typeHead: 'string',
-    label: 'Fecha Última Modificación',
-    value: (value) => new Date(value).toLocaleString('es-CL'),
-    align: 'left',
-    width: '180px',
-    mostrarInicio: true,
-  },
-  {
-    id: 'usuario_creacion_nombre',
-    typeHead: 'string',
-    label: 'Creado Por',
-    value: (value) => value,
-    align: 'left',
-    width: '140px',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_creacion',
-    typeHead: 'string',
-    label: 'Fecha Creación',
-    value: (value) => new Date(value).toLocaleString('es-CL'),
-    align: 'left',
-    width: '180px',
-    mostrarInicio: false,
   },
 ];
 
@@ -338,8 +267,8 @@ const useToolbarStyles = makeStyles((theme) => ({
   contenedorFiltros: {
     width: '90%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '20px',
+    gridTemplateColumns: '4fr 4fr 1fr',
+    columnGap: '20px',
   },
   pairFilters: {
     display: 'flex',
@@ -354,10 +283,14 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddUsuario,
+    onOpenAddHistoriaEquipo,
     handleOpenPopoverColumns,
     queryFilter,
-    nombreFiltro,
+    serialFiltro,
+    responsableFiltro,
+    ciudadFiltro,
+    lugarFiltro,
+    estadoFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -395,7 +328,9 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip title='Crear Usuario' onClick={onOpenAddUsuario}>
+                <Tooltip
+                  title='Crear HistoriaEquipo'
+                  onClick={onOpenAddHistoriaEquipo}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -407,11 +342,19 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Nombre'
-              name='nombre'
-              id='nombreFiltro'
+              label='Serial'
+              name='serialFiltro'
+              id='serialFiltro'
               onChange={queryFilter}
-              value={nombreFiltro}
+              value={serialFiltro}
+            />
+
+            <TextField
+              label='Responsable'
+              name='responsableFiltro'
+              id='responsableFiltro'
+              onChange={queryFilter}
+              value={responsableFiltro}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -424,6 +367,28 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
+            <TextField
+              label='Ciudad'
+              name='ciudadFiltro'
+              id='ciudadFiltro'
+              onChange={queryFilter}
+              value={ciudadFiltro}
+            />
+            <TextField
+              label='Lugar'
+              name='lugarFiltro'
+              id='lugarFiltro'
+              onChange={queryFilter}
+              value={lugarFiltro}
+            />
+            <Box></Box>
+            <TextField
+              label='Estado'
+              name='estadoFiltro'
+              id='estadoFiltro'
+              onChange={queryFilter}
+              value={estadoFiltro}
+            />
           </Box>
         </>
       )}
@@ -450,11 +415,15 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddUsuario: PropTypes.func.isRequired,
+  onOpenAddHistoriaEquipo: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
+  serialFiltro: PropTypes.string.isRequired,
+  responsableFiltro: PropTypes.string.isRequired,
+  ciudadFiltro: PropTypes.string.isRequired,
+  lugarFiltro: PropTypes.string.isRequired,
+  estadoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -478,7 +447,6 @@ const useStyles = makeStyles((theme) => ({
   },
   headCell: {
     padding: '0px 0px 0px 15px',
-    whiteSpace: 'nowrap',
   },
   row: {
     // display:'grid',
@@ -552,13 +520,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Usuarios = (props) => {
+const HistoriaEquipo = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState(
-    'fecha_modificacion:desc',
-  );
+  const [orderByToSend, setOrderByToSend] =
+    React.useState('numero_serial:desc');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
@@ -567,12 +534,17 @@ const Usuarios = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(0);
+  const [historiaEquipoSeleccionado, setHistoriaEquipoSeleccionado] =
+    useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({usuarioReducer}) => usuarioReducer,
+    ({informacionEquipoReducer}) => informacionEquipoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
+  const [serialFiltro, setSerialFiltro] = useState('');
+  const [responsableFiltro, setResponsableFiltro] = useState('');
+  const [ciudadFiltro, setCiudadFiltro] = useState('');
+  const [lugarFiltro, setLugarFiltro] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -626,32 +598,83 @@ const Usuarios = (props) => {
   }, [user, props.route]);
 
   useEffect(() => {
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
-  }, [dispatch, page, rowsPerPage, nombreFiltro, orderByToSend, showForm]);
+    dispatch(
+      onGetColeccionInformacion(
+        page,
+        rowsPerPage,
+        serialFiltro,
+        responsableFiltro,
+        ciudadFiltro,
+        lugarFiltro,
+        estadoFiltro,
+        orderByToSend,
+      ),
+    );
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    serialFiltro,
+    responsableFiltro,
+    ciudadFiltro,
+    lugarFiltro,
+    estadoFiltro,
+    orderByToSend,
+  ]);
 
-  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
-  useEffect(() => {
-    dispatch(asociadoColeccionLigera());
-  }, [dispatch]);
-
-  const roles = useSelector(({rolReducer}) => rolReducer.ligera);
-  useEffect(() => {
-    dispatch(rolColeccionLigera());
-  }, [dispatch]);
   const updateColeccion = () => {
-    setPage(1);
-    dispatch(onGetColeccion(page, rowsPerPage, nombreFiltro, orderByToSend));
+    dispatch(
+      onGetColeccionInformacion(
+        1,
+        rowsPerPage,
+        serialFiltro,
+        responsableFiltro,
+        ciudadFiltro,
+        lugarFiltro,
+        estadoFiltro,
+        orderByToSend,
+      ),
+    );
   };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend]);
+  }, [
+    serialFiltro,
+    responsableFiltro,
+    ciudadFiltro,
+    lugarFiltro,
+    estadoFiltro,
+    orderByToSend,
+  ]);
 
   const queryFilter = (e) => {
-    setNombreFiltro(e.target.value);
+    switch (e.target.name) {
+      case 'serialFiltro':
+        setSerialFiltro(e.target.value);
+        break;
+      case 'responsableFiltro':
+        setResponsableFiltro(e.target.value);
+        break;
+      case 'ciudadFiltro':
+        setCiudadFiltro(e.target.value);
+        break;
+      case 'lugarFiltro':
+        setLugarFiltro(e.target.value);
+        break;
+      case 'estadoFiltro':
+        setEstadoFiltro(e.target.value);
+        break;
+      default:
+        break;
+    }
   };
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
+    setSerialFiltro('');
+    setResponsableFiltro('');
+    setCiudadFiltro('');
+    setLugarFiltro('');
+    setEstadoFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -670,8 +693,8 @@ const Usuarios = (props) => {
     }
   };
 
-  const onOpenEditUsuario = (id) => {
-    setUsuarioSeleccionado(id);
+  const onOpenEditHistoriaEquipo = (id) => {
+    setHistoriaEquipoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -712,16 +735,16 @@ const Usuarios = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewUsuario = (id) => {
-    setUsuarioSeleccionado(id);
+  const onOpenViewHistoriaEquipo = (id) => {
+    setHistoriaEquipoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteUsuario = (id) => {
+  const onDeleteHistoriaEquipo = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro Que Desea Eliminar El Usuario?',
+      text: '¿Seguro que desea eliminar el equipo?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -734,25 +757,25 @@ const Usuarios = (props) => {
         dispatch(onDelete(id));
         Swal.fire(
           'Eliminado',
-          'El Usuario Fue Eliminado Correctamente',
+          'El equipo fue eliminado correctamente',
           'success',
         );
         setTimeout(() => {
           updateColeccion();
-        }, 1000);
+        }, 500);
       }
     });
   };
 
-  const onOpenAddUsuario = () => {
-    setUsuarioSeleccionado(0);
+  const onOpenAddHistoriaEquipo = () => {
+    setHistoriaEquipoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setUsuarioSeleccionado(0);
+    setHistoriaEquipoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -801,11 +824,13 @@ const Usuarios = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddUsuario={onOpenAddUsuario}
+            onOpenAddHistoriaEquipo={onOpenAddHistoriaEquipo}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
+            responsableFiltro={responsableFiltro}
+            ciudadFiltro={ciudadFiltro}
+            serialFiltro={serialFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -885,14 +910,18 @@ const Usuarios = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.editar' />}>
                                 <EditIcon
-                                  onClick={() => onOpenEditUsuario(row.id)}
+                                  onClick={() =>
+                                    onOpenEditHistoriaEquipo(row.id)
+                                  }
                                   className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                               </Tooltip>
                             )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
-                                  onClick={() => onOpenViewUsuario(row.id)}
+                                  onClick={() =>
+                                    onOpenViewHistoriaEquipo(row.id)
+                                  }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
@@ -900,7 +929,7 @@ const Usuarios = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
-                                  onClick={() => onDeleteUsuario(row.id)}
+                                  onClick={() => onDeleteHistoriaEquipo(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
@@ -999,15 +1028,14 @@ const Usuarios = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <UsuarioCreador
+        <HistoriaEquipoCreador
           showForm={showForm}
-          usuario={usuarioSeleccionado}
+          historiaEquipo={historiaEquipoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          asociados={asociados}
-          roles={roles}
+          TIPOS_EQUIPOS={TIPOS_EQUIPOS}
         />
       ) : (
         ''
@@ -1053,4 +1081,4 @@ const Usuarios = (props) => {
   );
 };
 
-export default Usuarios;
+export default HistoriaEquipo;
