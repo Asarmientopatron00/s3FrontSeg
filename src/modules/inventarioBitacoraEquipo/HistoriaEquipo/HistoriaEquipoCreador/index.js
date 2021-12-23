@@ -5,14 +5,14 @@ import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
-  onShow,
+  onShowHistoria,
   onUpdate,
   onCreate,
 } from '../../../../redux/actions/InformacionEquipoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import InformacionEquipoForm from './HistoriaEquipoForm';
+import HistoriaEquipoForm from './HistoriaEquipoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
@@ -47,9 +47,9 @@ const validationSchema = yup.object({
   equipo_desechable: yup.string().required('Requerido'),
 });
 
-const InformacionEquipoCreator = (props) => {
+const HistoriaEquipoCreator = (props) => {
   const {
-    informacionEquipo,
+    historiaEquipo,
     handleOnClose,
     accion,
     updateColeccion,
@@ -104,13 +104,14 @@ const InformacionEquipoCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(informacionEquipo));
+      dispatch(onShowHistoria(historiaEquipo));
     }
-  }, [accion, dispatch, informacionEquipo]);
+  }, [accion, dispatch, historiaEquipo]);
 
   return (
     showForm && (
       <Dialog
+        fullWidth={true}
         open={showForm}
         onClose={handleOnClose}
         aria-labelledby='simple-modal-title'
@@ -118,7 +119,7 @@ const InformacionEquipoCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'sm'}>
+        maxWidth={'lg'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
@@ -135,14 +136,29 @@ const InformacionEquipoCreator = (props) => {
               fecha_activacion_equipo: selectedRow
                 ? selectedRow.fecha_activacion_equipo
                 : '',
-              valor_costo_equipo_USD: selectedRow
-                ? selectedRow.valor_costo_equipo_USD
+              ciudad: selectedRow ? selectedRow.ciudad : '',
+              lugar: selectedRow ? selectedRow.lugar : '',
+              responsable: selectedRow ? selectedRow.responsable : '',
+              estado: selectedRow ? selectedRow.estado : '',
+              ultimo_mantenimiento_equipo: selectedRow
+                ? selectedRow.ultimo_mantenimiento_equipo
                 : '',
-              nombre_proveedor: selectedRow ? selectedRow.nombre_proveedor : '',
-              equipo_desechable: selectedRow
-                ? selectedRow.equipo_desechable
+              dias_equipo: selectedRow ? selectedRow.dias_equipo : '',
+              horas_equipo: selectedRow ? selectedRow.horas_equipo : '',
+              horasTrabajo: selectedRow ? selectedRow.horasTrabajo : '',
+              trabajo: selectedRow ? selectedRow.trabajo : '',
+              horasMantenimiento: selectedRow
+                ? selectedRow.horasMantenimiento
                 : '',
-              observaciones: selectedRow ? selectedRow.observaciones : '',
+              mantenimiento: selectedRow ? selectedRow.mantenimiento : '',
+              horasOtro: selectedRow ? selectedRow.horasOtro : '',
+              otros: selectedRow ? selectedRow.otros : '',
+              horas_disponibles: selectedRow
+                ? selectedRow.horas_disponibles
+                : '',
+              detalles: selectedRow ? selectedRow.detalles : '',
+              estado_servicio: selectedRow ? selectedRow.estado_servicio : '',
+
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
@@ -165,7 +181,7 @@ const InformacionEquipoCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue, errors}) => (
-              <InformacionEquipoForm
+              <HistoriaEquipoForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
@@ -183,4 +199,4 @@ const InformacionEquipoCreator = (props) => {
   );
 };
 
-export default InformacionEquipoCreator;
+export default HistoriaEquipoCreator;

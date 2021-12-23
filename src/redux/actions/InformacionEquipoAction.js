@@ -198,6 +198,31 @@ export const onShow = (id) => {
   };
 };
 
+export const onShowHistoria = (id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    if (id !== 0) {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .get('informacion-equipos/historia/' + id)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({type: SHOW_INFORMACION_EQUIPO, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
+  };
+};
+
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});

@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
+import {
+  Box,
+  Button,
+  RadioGroup,
+  Radio,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
@@ -124,7 +134,7 @@ const HistoriaEquipoForm = (props) => {
             <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
-                label='Número Serial'
+                label='Serial'
                 name='numero_serial'
                 disabled={disabled}
                 required
@@ -152,10 +162,9 @@ const HistoriaEquipoForm = (props) => {
             <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
-                label='Fecha Compra'
-                name='fecha_compra_equipo'
+                label='Ciudad'
+                name='ciudad'
                 required
-                type='date'
                 disabled={disabled}
                 InputLabelProps={{
                   shrink: true,
@@ -164,10 +173,43 @@ const HistoriaEquipoForm = (props) => {
 
               <MyTextField
                 className={classes.myTextField}
-                label='Fecha Activación'
+                label='Lugar'
+                name='lugar'
+                required
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Responsable'
+                name='responsable'
+                required
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Estado'
+                name='estado_servicio'
+                required
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </Box>
+            <Box className={classes.inputs_2}>
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Activación Equipo'
                 name='fecha_activacion_equipo'
                 required
-                type='date'
                 disabled={disabled}
                 InputLabelProps={{
                   shrink: true,
@@ -175,89 +217,202 @@ const HistoriaEquipoForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Valor Costo USD'
-                name='valor_costo_equipo_USD'
+                label='Fecha Último Mantenimiento'
+                name='ultimo_mantenimiento_equipo'
+                required
                 disabled={disabled}
-              />
-
-              <MyTextField
-                className={classes.myTextField}
-                label='Nombre proveedor'
-                name='nombre_proveedor'
-                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Box>
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Observaciones'
-              name='observaciones'
-              disabled={disabled}
-              multiline
-            />
 
             <Box className={classes.inputs_2}>
-              <FormControl
-                className={classes.widthFull}
-                component='fieldset'
-                error={errors.equipo_desechable ? true : false}>
-                <FormLabel>Desechable*</FormLabel>
-                <Field
-                  name='equipo_desechable'
-                  type='radio'
-                  as={RadioGroup}
-                  className={classes.myTextField}
-                  disabled={disabled}
-                  row
-                  value={values.equipo_desechable}>
-                  <FormControlLabel
-                    value='S'
-                    control={<Radio color='primary' />}
-                    label='Si'
-                    labelPlacement='end'
-                    disabled={disabled}
-                  />
-                  <FormControlLabel
-                    value='N'
-                    control={<Radio color='primary' />}
-                    label='No'
-                    labelPlacement='end'
-                    disabled={disabled}
-                  />
-                </Field>
-                {errors.equipo_desechable && (
-                  <FormHelperText className={classes.helperText}>
-                    Requerido
-                  </FormHelperText>
-                )}
-              </FormControl>
-              <FormControl className={classes.widthFull} component='fieldset'>
-                <FormLabel>Estado*</FormLabel>
-                <Field
-                  name='estado'
-                  type='radio'
-                  as={RadioGroup}
-                  className={classes.myTextField}
-                  disabled={accion === 'ver'}
-                  row
-                  value={values.estado}>
-                  <FormControlLabel
-                    value='1'
-                    control={<Radio color='primary' />}
-                    label='Activo'
-                    labelPlacement='end'
-                    disabled={accion === 'ver'}
-                  />
-                  <FormControlLabel
-                    value='0'
-                    control={<Radio color='primary' />}
-                    label='Inactivo'
-                    labelPlacement='end'
-                    disabled={accion === 'ver'}
-                  />
-                </Field>
-              </FormControl>
+              <MyTextField
+                className={classes.myTextField}
+                label='Dias Equipo'
+                name='dias_equipo'
+                required
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <MyTextField
+                className={classes.myTextField}
+                label='Horas Equipo'
+                name='horas_equipo'
+                required
+                disabled={disabled}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </Box>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Box component={'h6'}> Tiempo Trabajado</Box>
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>Porcentaje</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {values.trabajo.map((elemento) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
+                      <TableCell>{elemento.n_horas}</TableCell>
+                      <TableCell>
+                        {parseFloat(
+                          (elemento.n_horas * 100) / values.horas_equipo,
+                        ).toFixed(2) + '%'}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                <TableRow>
+                  <TableCell>Total Horas Trabajadas:</TableCell>
+                  <TableCell>{values.horasTrabajo}</TableCell>
+                  <TableCell>
+                    {parseFloat(
+                      (values.horasTrabajo * 100) / values.horas_equipo,
+                    ).toFixed(2) + '%'}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Box component={'h6'}> Tiempo Mantenimiento</Box>
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>Porcentaje</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {values.mantenimiento.map((elemento) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
+                      <TableCell>{elemento.n_horas}</TableCell>
+                      <TableCell>
+                        {parseFloat(
+                          (elemento.n_horas * 100) / values.horas_equipo,
+                        ).toFixed(2) + '%'}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                <TableRow>
+                  <TableCell>Total Mantenimiento:</TableCell>
+                  <TableCell>{values.horasMantenimiento}</TableCell>
+                  <TableCell>
+                    {parseFloat(
+                      (values.horasMantenimiento * 100) / values.horas_equipo,
+                    ).toFixed(2) + '%'}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Box component={'h6'}> Tiempo Otros</Box>
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>Porcentaje</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {values.otros.map((elemento) => {
+                  return (
+                    <TableRow>
+                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
+                      <TableCell>{elemento.n_horas}</TableCell>
+                      <TableCell>
+                        {parseFloat(
+                          (elemento.n_horas * 100) / values.horas_equipo,
+                        ).toFixed(2) + '%'}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+                <TableRow>
+                  <TableCell>Total Mantenimiento:</TableCell>
+                  <TableCell>{values.horasOtro}</TableCell>
+                  <TableCell>
+                    {parseFloat(
+                      (values.horasOtro * 100) / values.horas_equipo,
+                    ).toFixed(2) + '%'}
+                  </TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Horas Disponibles:</TableCell>
+                  <TableCell>{values.horas_disponibles}</TableCell>
+                  <TableCell>
+                    {parseFloat(
+                      (values.horas_disponibles * 100) / values.horas_equipo,
+                    ).toFixed(2) + '%'}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+            {values.detalles.length > 0 && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Box component={'h6'}>Fecha Novedad</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Novedad</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Estado</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Orden de Servicio</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Asociado</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Ciudad Origen</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Ciudad Destino</Box>
+                    </TableCell>
+                    <TableCell>
+                      <Box component={'h6'}>Número Horas</Box>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {values.detalles.map((elemento) => {
+                    return (
+                      <TableRow>
+                        <TableCell>{elemento.fecha_evento}</TableCell>
+                        <TableCell>{elemento.novedad}</TableCell>
+                        <TableCell>{elemento.estado}</TableCell>
+                        <TableCell>{elemento.orden_servicio}</TableCell>
+                        <TableCell>{elemento.asociado}</TableCell>
+                        <TableCell>{elemento.ciudad_origen}</TableCell>
+                        <TableCell>{elemento.ciudad_destino}</TableCell>
+                        <TableCell>{elemento.numero_horas}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
           </Box>
         </Box>
       </Scrollbar>
