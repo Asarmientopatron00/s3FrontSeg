@@ -71,7 +71,7 @@ const HistoriaEquipoForm = (props) => {
       [theme.breakpoints.up('xl')]: {
         marginBottom: 5,
       },
-      height: '70px',
+      height: '50px',
     },
     MySelectField: {
       width: 'auto',
@@ -113,6 +113,13 @@ const HistoriaEquipoForm = (props) => {
     },
     helperText: {
       color: 'red',
+    },
+    rowHoras: {
+      display: 'grid',
+      gridTemplateColumns: '40% 15% 15%',
+    },
+    cellHoras: {
+      padding: '3px',
     },
   }));
 
@@ -251,21 +258,27 @@ const HistoriaEquipoForm = (props) => {
             </Box>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
                     <Box component={'h6'}> Tiempo Trabajado</Box>
                   </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>Porcentaje</TableCell>
+                  <TableCell className={classes.cellHoras}></TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    Porcentaje
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {values.trabajo.map((elemento) => {
                   return (
-                    <TableRow>
-                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
-                      <TableCell>{elemento.n_horas}</TableCell>
-                      <TableCell>
+                    <TableRow className={classes.rowHoras}>
+                      <TableCell className={classes.cellHoras}>
+                        {'Horas ' + elemento.nombre}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
+                        {elemento.n_horas}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
                         {parseFloat(
                           (elemento.n_horas * 100) / values.horas_equipo,
                         ).toFixed(2) + '%'}
@@ -273,10 +286,14 @@ const HistoriaEquipoForm = (props) => {
                     </TableRow>
                   );
                 })}
-                <TableRow>
-                  <TableCell>Total Horas Trabajadas:</TableCell>
-                  <TableCell>{values.horasTrabajo}</TableCell>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
+                    Total Horas Trabajadas:
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    {values.horasTrabajo}
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
                     {parseFloat(
                       (values.horasTrabajo * 100) / values.horas_equipo,
                     ).toFixed(2) + '%'}
@@ -286,21 +303,27 @@ const HistoriaEquipoForm = (props) => {
             </Table>
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
                     <Box component={'h6'}> Tiempo Mantenimiento</Box>
                   </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>Porcentaje</TableCell>
+                  <TableCell className={classes.cellHoras}></TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    Porcentaje
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {values.mantenimiento.map((elemento) => {
                   return (
-                    <TableRow>
-                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
-                      <TableCell>{elemento.n_horas}</TableCell>
-                      <TableCell>
+                    <TableRow className={classes.rowHoras}>
+                      <TableCell className={classes.cellHoras}>
+                        {'Horas ' + elemento.nombre}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
+                        {elemento.n_horas}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
                         {parseFloat(
                           (elemento.n_horas * 100) / values.horas_equipo,
                         ).toFixed(2) + '%'}
@@ -308,10 +331,14 @@ const HistoriaEquipoForm = (props) => {
                     </TableRow>
                   );
                 })}
-                <TableRow>
-                  <TableCell>Total Mantenimiento:</TableCell>
-                  <TableCell>{values.horasMantenimiento}</TableCell>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
+                    Total Mantenimiento:
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    {values.horasMantenimiento}
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
                     {parseFloat(
                       (values.horasMantenimiento * 100) / values.horas_equipo,
                     ).toFixed(2) + '%'}
@@ -322,21 +349,27 @@ const HistoriaEquipoForm = (props) => {
 
             <Table>
               <TableHead>
-                <TableRow>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
                     <Box component={'h6'}> Tiempo Otros</Box>
                   </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell>Porcentaje</TableCell>
+                  <TableCell className={classes.cellHoras}></TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    Porcentaje
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {values.otros.map((elemento) => {
                   return (
-                    <TableRow>
-                      <TableCell>{'Horas ' + elemento.nombre}</TableCell>
-                      <TableCell>{elemento.n_horas}</TableCell>
-                      <TableCell>
+                    <TableRow className={classes.rowHoras}>
+                      <TableCell className={classes.cellHoras}>
+                        {'Horas ' + elemento.nombre}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
+                        {elemento.n_horas}
+                      </TableCell>
+                      <TableCell className={classes.cellHoras}>
                         {parseFloat(
                           (elemento.n_horas * 100) / values.horas_equipo,
                         ).toFixed(2) + '%'}
@@ -344,20 +377,28 @@ const HistoriaEquipoForm = (props) => {
                     </TableRow>
                   );
                 })}
-                <TableRow>
-                  <TableCell>Total Mantenimiento:</TableCell>
-                  <TableCell>{values.horasOtro}</TableCell>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
+                    Total Mantenimiento:
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    {values.horasOtro}
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
                     {parseFloat(
                       (values.horasOtro * 100) / values.horas_equipo,
                     ).toFixed(2) + '%'}
                   </TableCell>
                 </TableRow>
 
-                <TableRow>
-                  <TableCell>Horas Disponibles:</TableCell>
-                  <TableCell>{values.horas_disponibles}</TableCell>
-                  <TableCell>
+                <TableRow className={classes.rowHoras}>
+                  <TableCell className={classes.cellHoras}>
+                    Horas Disponibles:
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
+                    {values.horas_disponibles}
+                  </TableCell>
+                  <TableCell className={classes.cellHoras}>
                     {parseFloat(
                       (values.horas_disponibles * 100) / values.horas_equipo,
                     ).toFixed(2) + '%'}
@@ -365,32 +406,33 @@ const HistoriaEquipoForm = (props) => {
                 </TableRow>
               </TableBody>
             </Table>
+            <br></br>
             {values.detalles.length > 0 && (
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Fecha Novedad</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Novedad</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Estado</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Orden de Servicio</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Asociado</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Ciudad Origen</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Ciudad Destino</Box>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={classes.cellHoras}>
                       <Box component={'h6'}>Número Horas</Box>
                     </TableCell>
                   </TableRow>
@@ -399,14 +441,30 @@ const HistoriaEquipoForm = (props) => {
                   {values.detalles.map((elemento) => {
                     return (
                       <TableRow>
-                        <TableCell>{elemento.fecha_evento}</TableCell>
-                        <TableCell>{elemento.novedad}</TableCell>
-                        <TableCell>{elemento.estado}</TableCell>
-                        <TableCell>{elemento.orden_servicio}</TableCell>
-                        <TableCell>{elemento.asociado}</TableCell>
-                        <TableCell>{elemento.ciudad_origen}</TableCell>
-                        <TableCell>{elemento.ciudad_destino}</TableCell>
-                        <TableCell>{elemento.numero_horas}</TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.fecha_evento}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.novedad}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.estado}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.orden_servicio}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.asociado}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.ciudad_origen}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.ciudad_destino}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.numero_horas}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
