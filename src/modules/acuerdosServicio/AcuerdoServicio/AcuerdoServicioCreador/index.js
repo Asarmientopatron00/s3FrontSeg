@@ -80,7 +80,6 @@ const AcuerdoServicioCreator = (props) => {
       dispatch(onShow(acuerdoServicio));
     }
   }, [accion, dispatch, acuerdoServicio]);
-
   return (
     showForm && (
       <Dialog

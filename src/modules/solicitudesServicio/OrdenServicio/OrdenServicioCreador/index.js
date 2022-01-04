@@ -10,6 +10,7 @@ import {
   onGetColeccionLigeraAsociado,
   onGetColeccionLigeraTerceroServicio,
   onGetRutas,
+  onGetColeccionLigeraServicio,
 } from '../../../../redux/actions/OrdenServicioAction';
 import OrdenServicioForm from './OrdenServicioForm';
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
@@ -47,6 +48,9 @@ const OrdenServicioCreator = (props) => {
   const tercerosServicios = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer.tercerosServicios,
   );
+  const servicios = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer.servicios,
+  );
 
   let rutas = [];
   rutas = useSelector(({ordenServicioReducer}) => ordenServicioReducer.rutas);
@@ -74,6 +78,7 @@ const OrdenServicioCreator = (props) => {
   const validationSchema = yup.object({
     fecha_orden_servicio: yup.date().required('Requerido'),
     asociado_id: yup.string().required('Requerido'),
+    servicio_id: yup.string().required('Requerido'),
     tipo_servicio: yup.string().required('Requerido'),
     tipo_servicio_otro: yup
       .string()
@@ -122,6 +127,7 @@ const OrdenServicioCreator = (props) => {
   useEffect(() => {
     dispatch(onGetColeccionLigeraAsociado());
     dispatch(onGetColeccionLigeraTerceroServicio());
+    dispatch(onGetColeccionLigeraServicio());
   }, [dispatch]);
 
   const updateRutas = (asociado_id) => {
@@ -178,6 +184,11 @@ const OrdenServicioCreator = (props) => {
           cliente_factura: selectedRow
             ? selectedRow.cliente_factura
               ? selectedRow.cliente_factura
+              : ''
+            : '',
+          servicio_id: selectedRow
+            ? selectedRow.servicio_id
+              ? selectedRow.servicio_id
               : ''
             : '',
           tipo_servicio: selectedRow
@@ -313,6 +324,7 @@ const OrdenServicioCreator = (props) => {
             asociados={asociados}
             TIPOS_SERVICIOS={TIPOS_SERVICIOS}
             tercerosServicios={tercerosServicios}
+            servicios={servicios}
             rutas={rutas}
             updateRutas={updateRutas}
           />

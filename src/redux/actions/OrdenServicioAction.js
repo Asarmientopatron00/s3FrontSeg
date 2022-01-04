@@ -8,6 +8,7 @@ import {
   APPROVE_ORDEN_SERVICIO,
   GET_COLECCION_LIGERA_ASOCIADO_ORDEN,
   GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
+  GET_COLECCION_LIGERA_SERVICIOS_ORDEN,
   GET_ORDEN_SERVICIO_RUTAS,
   GET_ORDEN_SERVICIO_PROGRAMACION,
   ENVIAR_PROGRAMACION,
@@ -525,6 +526,36 @@ export const onGetColeccionLigeraTerceroServicio = () => {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionLigeraServicio = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('servicios', {
+        params: {
+          ligera: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_LIGERA_SERVICIOS_ORDEN,
             payload: data,
           });
         } else {

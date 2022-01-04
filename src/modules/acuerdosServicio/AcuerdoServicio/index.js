@@ -215,7 +215,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell
+          align='left'
+          className={classes.headCellWoMargin}
+          style={{paddingLeft: '30px'}}>
           {'Acciones'}
         </TableCell>
 
@@ -965,8 +968,9 @@ const AcuerdoServicio = (props) => {
                       </TableCell> */}
 
                           <TableCell
-                            align='center'
-                            className={classes.acciones}>
+                            align='left'
+                            className={classes.acciones}
+                            style={{paddingLeft: '30px'}}>
                             {permisos.indexOf('Modificar') >= 0 &&
                               row.estado_acuerdo !== 'ANU' && (
                                 <Tooltip
@@ -1007,9 +1011,7 @@ const AcuerdoServicio = (props) => {
                               }
                               className={classes.generalIcons}>
                               <Tooltip
-                                title={
-                                  'Descargar Formulario Representante Legal'
-                                }>
+                                title={'Descargar formulario acuerdo servicio'}>
                                 <GetAppIcon
                                   className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>
                               </Tooltip>

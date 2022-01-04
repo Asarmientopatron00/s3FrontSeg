@@ -391,9 +391,11 @@ const HistoriaEquipoForm = (props) => {
                   </TableCell>
                 </TableRow>
 
-                <TableRow className={classes.rowHoras}>
+                <TableRow
+                  className={classes.rowHoras}
+                  style={{marginTop: '15px'}}>
                   <TableCell className={classes.cellHoras}>
-                    Horas Disponibles:
+                    <Box component={'h6'}>Horas Disponibles:</Box>
                   </TableCell>
                   <TableCell className={classes.cellHoras}>
                     {values.horas_disponibles}

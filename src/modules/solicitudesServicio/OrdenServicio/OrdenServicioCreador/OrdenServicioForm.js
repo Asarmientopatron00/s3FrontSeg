@@ -159,6 +159,7 @@ const OrdenServicioForm = (props) => {
     asociados,
     TIPOS_SERVICIOS,
     tercerosServicios,
+    servicios,
     updateRutas,
     rutas,
   } = props;
@@ -669,6 +670,16 @@ const OrdenServicioForm = (props) => {
                     </Box>
                   )}
                 </Box>
+                <MyAutocomplete
+                  options={servicios}
+                  name='servicio_id'
+                  inputValue={initialValues.tipo_servicio}
+                  label='Servicio'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
                 <MyAutocomplete
                   options={TIPOS_SERVICIOS}
                   name='tipo_servicio'

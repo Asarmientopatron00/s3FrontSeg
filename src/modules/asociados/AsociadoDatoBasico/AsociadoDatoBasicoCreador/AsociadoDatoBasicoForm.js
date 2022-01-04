@@ -128,7 +128,7 @@ const AsociadoDatoBasicoForm = (props) => {
       gap: '10px',
       backgroundColor: 'white',
       paddingRight: '20px',
-      position: 'sticky',
+      //position: 'sticky',
       left: 0,
       bottom: 0,
     },
