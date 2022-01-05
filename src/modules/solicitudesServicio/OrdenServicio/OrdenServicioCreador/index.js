@@ -134,6 +134,12 @@ const OrdenServicioCreator = (props) => {
     dispatch(onGetRutas(asociado_id));
   };
 
+  useEffect(() => {
+    if (accion !== 'crear' && selectedRow) {
+      dispatch(onGetRutas(selectedRow.asociado_id));
+    }
+  }, [accion, dispatch, selectedRow]);
+
   return (
     <Scrollbar>
       <Formik

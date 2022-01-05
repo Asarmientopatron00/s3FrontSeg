@@ -129,6 +129,11 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.asociado.nombre
                   : ''
                 : '',
+              servicio: selectedRow
+                ? selectedRow.servicio
+                  ? selectedRow.servicio.nombre
+                  : ''
+                : '',
               tipo_servicio: selectedRow
                 ? selectedRow.tipo_servicio
                   ? TIPOS_SERVICIOS.filter(
