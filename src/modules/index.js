@@ -21,6 +21,7 @@ import {acuerdoServicioConfig} from './acuerdosServicio';
 import {solicitudesServicioConfig} from './solicitudesServicio';
 import {inventarioBitacoraEquipoConfig} from './inventarioBitacoraEquipo';
 import {programacionServicioConfig} from './programacionServicio';
+import {facturacionConfig} from './facturacion';
 
 const routeConfigs = [
   ...authRouteConfig,
@@ -41,6 +42,7 @@ const routeConfigs = [
   ...solicitudesServicioConfig,
   ...inventarioBitacoraEquipoConfig,
   ...programacionServicioConfig,
+  ...facturacionConfig,
 ];
 
 const routes = [

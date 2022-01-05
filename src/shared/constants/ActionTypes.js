@@ -443,7 +443,12 @@ export const SHOW_BITACORA_EQUIPO = 'show_bitacora_equipo';
 export const UPDATE_BITACORA_EQUIPO = 'update_bitacora_equipo';
 export const CREATE_BITACORA_EQUIPO = 'create_bitacora_equipo';
 export const DELETE_BITACORA_EQUIPO = 'delete_bitacora_equipo';
-
+export const GET_COLECCION_FACTURAR_SERVICIO_TERMINADO =
+  'get_coleccion_facturar_servicio_terminado';
+export const GET_COLECCION_LIGERA_FACTURAR_SERVICIO_TERMINADO =
+  'get_coleccion_ligera_facturar_servicio_terminado';
+export const SHOW_FACTURAR_SERVICIO_TERMINADO =
+  'show_facturar_servicio_terminado';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
