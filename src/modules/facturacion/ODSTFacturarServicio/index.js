@@ -40,6 +40,7 @@ import {
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
 import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
+import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
 
 const cells = [
   {
@@ -1023,9 +1024,9 @@ const ODSTFacturarServicio = (props) => {
       </Paper>
 
       {showForm && accion === 'ver' ? (
-        <ODSTFacturarServicioCreator
+        <ConsultaOrdenServicio
           showForm={showForm}
-          oDSTFacturarServicio={oDSTFacturarServicioSeleccionado}
+          ordenServicio={oDSTFacturarServicioSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
