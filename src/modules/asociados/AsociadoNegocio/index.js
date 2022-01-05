@@ -257,7 +257,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell
+          align='left'
+          className={classes.headCellWoMargin}
+          style={{paddingLeft: '30px'}}>
           {'Acciones'}
         </TableCell>
 
@@ -1020,8 +1023,9 @@ const AsociadoDatoBasico = (props) => {
                       </TableCell> */}
 
                           <TableCell
-                            align='center'
-                            className={classes.acciones}>
+                            align='left'
+                            className={classes.acciones}
+                            style={{paddingLeft: '30px'}}>
                             {permisos.indexOf('Modificar') >= 0 && (
                               <Tooltip
                                 title={<IntlMessages id='boton.editar' />}>
@@ -1068,7 +1072,7 @@ const AsociadoDatoBasico = (props) => {
                                   className={classes.generalIcons}>
                                   <Tooltip
                                     title={
-                                      'Descargar Formulario Acuerdo Servicio'
+                                      'Descargar formulario asociado negocios'
                                     }>
                                     <GetAppIcon
                                       className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>

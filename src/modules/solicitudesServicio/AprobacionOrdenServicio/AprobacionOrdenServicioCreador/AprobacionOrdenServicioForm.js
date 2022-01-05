@@ -154,6 +154,13 @@ const AcuerdoServicioForm = (props) => {
             </Box>
             <Box className={classes.inputs_2}>
               <MyTextField
+                name='servicio'
+                label='Servicio'
+                className={classes.myTextField}
+                required
+                disabled={true}
+              />
+              <MyTextField
                 name='tipo_servicio'
                 label='Tipo Servicio'
                 className={classes.myTextField}

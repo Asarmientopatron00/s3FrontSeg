@@ -908,6 +908,7 @@ const ProgramacionOrdenServicio = (props) => {
     setShowForm(false);
     setProgramacionOrdenServicioSeleccionado(0);
     setAccion('ver');
+    updateColeccion();
   };
   // const handleRequestSort = (event, property) => {
   //   const isAsc = orderBy === property && order === 'asc';

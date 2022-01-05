@@ -215,7 +215,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell
+          align='left'
+          className={classes.headCellWoMargin}
+          style={{paddingLeft: '30px'}}>
           {'Acciones'}
         </TableCell>
 
@@ -534,6 +537,7 @@ const useStyles = makeStyles((theme) => ({
   acciones: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 10px',
     minWidth: '120px',
+    display: 'flex',
   }),
   paper: {
     width: '100%',
@@ -965,19 +969,22 @@ const AcuerdoServicio = (props) => {
                       </TableCell> */}
 
                           <TableCell
-                            align='center'
-                            className={classes.acciones}>
+                            align='left'
+                            className={classes.acciones}
+                            style={{paddingLeft: '30px'}}>
                             {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.editar' />}>
-                                  <EditIcon
-                                    onClick={() =>
-                                      onOpenEditAcuerdoServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                                </Tooltip>
-                              )}
+                            row.estado_acuerdo !== 'ANU' ? (
+                              <Tooltip
+                                title={<IntlMessages id='boton.editar' />}>
+                                <EditIcon
+                                  onClick={() =>
+                                    onOpenEditAcuerdoServicio(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                              </Tooltip>
+                            ) : (
+                              <Box style={{width: '25px'}}></Box>
+                            )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
@@ -988,16 +995,18 @@ const AcuerdoServicio = (props) => {
                               </Tooltip>
                             )}
                             {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_acuerdo !== 'ANU' && (
-                                <Tooltip
-                                  title={<IntlMessages id='boton.eliminar' />}>
-                                  <DeleteIcon
-                                    onClick={() =>
-                                      onDeleteAcuerdoServicio(row.id)
-                                    }
-                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                                </Tooltip>
-                              )}
+                            row.estado_acuerdo !== 'ANU' ? (
+                              <Tooltip
+                                title={<IntlMessages id='boton.eliminar' />}>
+                                <DeleteIcon
+                                  onClick={() =>
+                                    onDeleteAcuerdoServicio(row.id)
+                                  }
+                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                              </Tooltip>
+                            ) : (
+                              <Box style={{width: '25px'}}></Box>
+                            )}
                             <Box
                               component='a'
                               href={
@@ -1007,9 +1016,7 @@ const AcuerdoServicio = (props) => {
                               }
                               className={classes.generalIcons}>
                               <Tooltip
-                                title={
-                                  'Descargar Formulario Representante Legal'
-                                }>
+                                title={'Descargar formulario acuerdo servicio'}>
                                 <GetAppIcon
                                   className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>
                               </Tooltip>

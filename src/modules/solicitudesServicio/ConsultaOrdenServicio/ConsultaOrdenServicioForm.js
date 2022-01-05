@@ -225,6 +225,15 @@ const AcuerdoServicioForm = (props) => {
                 disabled={true}
               />
               <MyTextField
+                name='servicio'
+                label='Servicio'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
                 name='tipo_servicio'
                 label='Tipo Servicio'
                 className={classes.myTextField}
@@ -242,6 +251,8 @@ const AcuerdoServicioForm = (props) => {
                   shrink: true,
                 }}
               />
+            </Box>
+            <Box className={classes.inputs_2}>
               <MyTextField
                 name='documento_agente_aduana'
                 label='Agente Aduana'

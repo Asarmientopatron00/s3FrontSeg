@@ -111,7 +111,6 @@ const BitacoraEquipoCreator = (props) => {
   const onChangeCiudad = (id) => {
     dispatch(onGetColeccionLigeraLugar(id));
   };
-
   const lugares = useSelector(({lugarReducer}) => lugarReducer.ligera);
   return (
     showForm && (

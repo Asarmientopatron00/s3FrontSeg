@@ -159,8 +159,10 @@ const OrdenServicioForm = (props) => {
     asociados,
     TIPOS_SERVICIOS,
     tercerosServicios,
+    servicios,
     updateRutas,
     rutas,
+    touched,
   } = props;
   const [disabled, setDisabled] = useState(false);
   const [validFacturarA, setValidFacturarA] = useState(false);
@@ -423,6 +425,12 @@ const OrdenServicioForm = (props) => {
   const [ciudadesRutaDesinst, setCiudadesRutaDesinst] = useState([]);
   const [lugaresRutaInst, setLugaresRutaInst] = useState([]);
   const [lugaresRutaDesinst, setLugaresRutaDesinst] = useState([]);
+  const [aux_dep_inst, set_aux_dep_inst] = useState(
+    initialValues.departamento_id_instalacion,
+  );
+  const [aux_dep_des, set_aux_dep_des] = useState(
+    initialValues.departamento_id_desinstalacion,
+  );
 
   useEffect(() => {
     if (values.asociado_id !== '') {
@@ -462,9 +470,15 @@ const OrdenServicioForm = (props) => {
         setCiudadesRutaInst(ciudadesInstalacion);
       }
     }
-    values.ciudad_id_instalacion = '';
-    values.lugar_id_instalacion = '';
-    values.direccion_instalacion = '';
+    if (
+      aux_dep_inst !== values.departamento_id_instalacion &&
+      values.departamento_id_instalacion !== ''
+    ) {
+      values.ciudad_id_instalacion = '';
+      values.lugar_id_instalacion = '';
+      values.direccion_instalacion = '';
+      set_aux_dep_inst(values.departamento_id_instalacion);
+    }
   }, [values.departamento_id_instalacion, rutas.ciudades]);
 
   useEffect(() => {
@@ -482,9 +496,16 @@ const OrdenServicioForm = (props) => {
         setCiudadesRutaDesinst(ciudadesDesinstalacion);
       }
     }
-    values.ciudad_id_desinstalacion = '';
-    values.lugar_id_desinstalacion = '';
-    values.direccion_desinstalacion = '';
+
+    if (
+      aux_dep_des !== values.departamento_id_desinstalacion &&
+      values.departamento_id_desinstalacion !== ''
+    ) {
+      values.ciudad_id_desinstalacion = '';
+      values.lugar_id_desinstalacion = '';
+      values.direccion_desinstalacion = '';
+      set_aux_dep_des(values.departamento_id_desinstalacion);
+    }
   }, [values.departamento_id_desinstalacion, rutas.ciudades]);
 
   useEffect(() => {
@@ -669,6 +690,16 @@ const OrdenServicioForm = (props) => {
                     </Box>
                   )}
                 </Box>
+                <MyAutocomplete
+                  options={servicios}
+                  name='servicio_id'
+                  inputValue={initialValues.tipo_servicio}
+                  label='Servicio'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
                 <MyAutocomplete
                   options={TIPOS_SERVICIOS}
                   name='tipo_servicio'

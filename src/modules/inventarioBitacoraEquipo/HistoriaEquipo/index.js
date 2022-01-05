@@ -422,8 +422,8 @@ EnhancedTableToolbar.propTypes = {
   serialFiltro: PropTypes.string.isRequired,
   responsableFiltro: PropTypes.string.isRequired,
   ciudadFiltro: PropTypes.string.isRequired,
-  lugarFiltro: PropTypes.string.isRequired,
-  estadoFiltro: PropTypes.string.isRequired,
+  //lugarFiltro: PropTypes.string.isRequired,
+  //estadoFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -524,8 +524,7 @@ const HistoriaEquipo = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] =
-    React.useState('numero_serial:desc');
+  const [orderByToSend, setOrderByToSend] = React.useState();
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
@@ -893,7 +892,8 @@ const HistoriaEquipo = (props) => {
                           // role="checkbox"
                           aria-checked={isItemSelected}
                           tabIndex={-1}
-                          key={row.id}
+                          // key={row.id}
+                          key={index}
                           selected={isItemSelected}
                           className={classes.row}>
                           {/* <TableCell padding="checkbox">
