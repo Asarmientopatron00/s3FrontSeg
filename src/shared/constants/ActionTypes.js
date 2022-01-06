@@ -451,6 +451,12 @@ export const GET_COLECCION_LIGERA_FACTURAR_SERVICIO_TERMINADO =
   'get_coleccion_ligera_facturar_servicio_terminado';
 export const SHOW_FACTURAR_SERVICIO_TERMINADO =
   'show_facturar_servicio_terminado';
+export const GET_COLECCION_FACTURAR_CLIENTE_TERMINADO =
+  'get_coleccion_facturar_cliente_terminado';
+export const GET_COLECCION_LIGERA_FACTURAR_CLIENTE_TERMINADO =
+  'get_coleccion_ligera_facturar_cliente_terminado';
+export const SHOW_FACTURAR_CLIENTE_TERMINADO =
+  'show_facturar_cliente_terminado';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

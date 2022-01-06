@@ -1,7 +1,7 @@
 import {
-  GET_COLECCION_FACTURAR_SERVICIO_TERMINADO,
-  GET_COLECCION_LIGERA_FACTURAR_SERVICIO_TERMINADO,
-  SHOW_FACTURAR_SERVICIO_TERMINADO,
+  GET_COLECCION_FACTURAR_CLIENTE_TERMINADO,
+  GET_COLECCION_LIGERA_FACTURAR_CLIENTE_TERMINADO,
+  SHOW_FACTURAR_CLIENTE_TERMINADO,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -16,9 +16,9 @@ const initialState = {
   total: 1,
 };
 
-const ODSTFacturarServicioReducer = (state = initialState, action) => {
+const ODSTFacturarClienteReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_COLECCION_FACTURAR_SERVICIO_TERMINADO:
+    case GET_COLECCION_FACTURAR_CLIENTE_TERMINADO:
       return {
         ...state,
         rows: action.payload.data.datos,
@@ -30,13 +30,13 @@ const ODSTFacturarServicioReducer = (state = initialState, action) => {
         total: action.payload.data.total,
       };
 
-    case GET_COLECCION_LIGERA_FACTURAR_SERVICIO_TERMINADO:
+    case GET_COLECCION_LIGERA_FACTURAR_CLIENTE_TERMINADO:
       return {
         ...state,
         ligera: action.payload.data,
       };
 
-    case SHOW_FACTURAR_SERVICIO_TERMINADO:
+    case SHOW_FACTURAR_CLIENTE_TERMINADO:
       return {
         ...state,
         selectedRow: action.payload,
@@ -46,4 +46,4 @@ const ODSTFacturarServicioReducer = (state = initialState, action) => {
       return state;
   }
 };
-export default ODSTFacturarServicioReducer;
+export default ODSTFacturarClienteReducer;
