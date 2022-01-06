@@ -141,7 +141,7 @@ export const onGetColeccionLigera = () => {
   };
 };
 
-export const onGetColeccionLigeraOS = (departamento_id) => {
+export const onGetColeccionLigeraOS = (departamento_id, orden_servicio_id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -151,6 +151,7 @@ export const onGetColeccionLigeraOS = (departamento_id) => {
           ligera: true,
           orden_servicio: true,
           departamento_id: departamento_id,
+          orden_servicio_id: orden_servicio_id,
         },
       })
       .then((data) => {

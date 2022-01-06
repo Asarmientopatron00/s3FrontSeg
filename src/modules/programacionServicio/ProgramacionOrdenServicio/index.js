@@ -185,7 +185,6 @@ const cells = [
     align: 'left',
     mostrarInicio: true,
   },
-
   {
     id: 'estado',
     typeHead: 'boolean',
@@ -687,7 +686,7 @@ const ProgramacionOrdenServicio = (props) => {
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
   );
-  console.log(rows);
+
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreFiltro, setnombreFiltro] = useState('');
   const [fechaOSInicialFiltro, setfechaOSInicialFiltro] = useState('');

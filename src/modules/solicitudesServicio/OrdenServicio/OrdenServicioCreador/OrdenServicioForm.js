@@ -167,7 +167,7 @@ const OrdenServicioForm = (props) => {
   const [disabled, setDisabled] = useState(false);
   const [validFacturarA, setValidFacturarA] = useState(false);
   const [showValid, setShowValid] = useState(false);
-
+  const [aux_asociado, set_aux_asociado] = useState(initialValues.asociado_id);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
@@ -286,6 +286,15 @@ const OrdenServicioForm = (props) => {
         }
       }
     });
+    if (aux_asociado !== values.asociado_id && values.asociado_id !== '') {
+      setFieldValue('departamento_id_desinstalacion', '');
+      setFieldValue('departamento_id_instalacion', '');
+      setFieldValue('ciudad_id_desinstalacion', '');
+      setFieldValue('ciudad_id_instalacion', '');
+      setFieldValue('lugar_id_desinstalacion', '');
+      setFieldValue('lugar_id_instalacion', '');
+      set_aux_asociado(values.asociado_id);
+    }
   }, [values.asociado_id, asociados, setFieldValue]);
 
   useEffect(() => {
