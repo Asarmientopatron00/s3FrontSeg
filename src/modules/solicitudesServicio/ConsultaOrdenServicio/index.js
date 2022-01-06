@@ -85,7 +85,7 @@ const AprobacionOrdenServicioCreator = (props) => {
   useEffect(() => {
     dispatch(onGetColeccion(ordenServicio));
   }, [dispatch, ordenServicio]);
-  console.log(TIPOS_SERVICIOS);
+
   return (
     showForm && (
       <Dialog
@@ -251,9 +251,9 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.lugarInstalacion.direccion
                   : ''
                 : '',
-              equipo_id: selectedRow
-                ? selectedRow.equipo_id
-                  ? selectedRow.equipo_id
+              equipo: selectedRow
+                ? selectedRow.equipo
+                  ? selectedRow.equipo
                   : ''
                 : '',
               recurso_tecnico_instalacion: selectedRow
@@ -341,7 +341,9 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               indicativo_aceptacion_desinstalacion: selectedRow
                 ? selectedRow.indicativo_aceptacion_desinstalacion
-                  ? selectedRow.indicativo_aceptacion_desinstalacion
+                  ? selectedRow.indicativo_aceptacion_desinstalacion === 'A'
+                    ? 'Aprobada'
+                    : 'Rechazada'
                   : ''
                 : '',
               observaciones_rechazo_desinstalacion: selectedRow
