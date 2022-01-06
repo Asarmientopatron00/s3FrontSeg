@@ -64,8 +64,10 @@ const ProgramacionOrdenServicioCreator = (props) => {
   }, [selectedRow.fecha_programada, selectedRow.departamento_id, dispatch]);
 
   useEffect(() => {
-    dispatch(onGetColeccionLigeraOSEquipo(selectedRow.departamento_id));
-  }, [selectedRow.departamento_id, dispatch]);
+    dispatch(
+      onGetColeccionLigeraOSEquipo(selectedRow.departamento_id, selectedRow.id),
+    );
+  }, [selectedRow.departamento_id, selectedRow.selected_row, dispatch]);
 
   const recursosTecnicos = useSelector(
     ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,

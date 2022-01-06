@@ -41,7 +41,7 @@ const AceptacionOrdenServicioForm = (props) => {
       gap: '10px',
       backgroundColor: 'white',
       paddingRight: '20px',
-      position: 'sticky',
+      //position: 'sticky',
       left: 0,
       bottom: 0,
     },
@@ -234,26 +234,6 @@ const AceptacionOrdenServicioForm = (props) => {
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextFieldSmall}
-                label='Nombre Lugar'
-                name='lugar'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Dirección Lugar'
-                name='direccion'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
                 label='Equipo'
                 name='numero_serial'
                 disabled={true}
@@ -305,24 +285,24 @@ const AceptacionOrdenServicioForm = (props) => {
             />
           </Box>
         </Box>
-      </Scrollbar>
-      <Box className={classes.bottomsGroup}>
-        {accion !== 'ver' ? (
+        <Box className={classes.bottomsGroup}>
+          {accion !== 'ver' ? (
+            <Button
+              className={`${classes.btnRoot} ${classes.btnPrymary}`}
+              variant='contained'
+              type='submit'>
+              <IntlMessages id='boton.submit' />
+            </Button>
+          ) : (
+            ''
+          )}
           <Button
-            className={`${classes.btnRoot} ${classes.btnPrymary}`}
-            variant='contained'
-            type='submit'>
-            <IntlMessages id='boton.submit' />
+            className={`${classes.btnRoot} ${classes.btnSecundary}`}
+            onClick={handleOnClose}>
+            <IntlMessages id='boton.cancel' />
           </Button>
-        ) : (
-          ''
-        )}
-        <Button
-          className={`${classes.btnRoot} ${classes.btnSecundary}`}
-          onClick={handleOnClose}>
-          <IntlMessages id='boton.cancel' />
-        </Button>
-      </Box>
+        </Box>
+      </Scrollbar>
     </Form>
   );
 };

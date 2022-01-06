@@ -59,6 +59,7 @@ const VerticalCollapse = ({item, level}) => {
 
   const handleClick = () => {
     setOpen(!open);
+    console.log();
   };
 
   const {user} = useSelector(({auth}) => auth);

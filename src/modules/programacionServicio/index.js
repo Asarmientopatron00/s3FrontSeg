@@ -1,8 +1,9 @@
 import React from 'react';
+import {authRole} from '../../shared/constants/AppConst';
 
 export const programacionServicioConfig = [
   {
-    auth: '',
+    auth: authRole.user,
     routes: [
       {
         exact: true,

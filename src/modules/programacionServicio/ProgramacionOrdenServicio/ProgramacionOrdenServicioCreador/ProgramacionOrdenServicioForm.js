@@ -51,7 +51,7 @@ const HorarioRecursoTecnicoForm = (props) => {
       gap: '10px',
       backgroundColor: 'white',
       paddingRight: '20px',
-      position: 'sticky',
+      // position: 'sticky',
       left: 0,
       bottom: 0,
     },
@@ -319,24 +319,24 @@ const HorarioRecursoTecnicoForm = (props) => {
             />
           </Box>
         </Box>
-      </Scrollbar>
-      <Box className={classes.bottomsGroup}>
-        {accion !== 'ver' ? (
+        <Box className={classes.bottomsGroup}>
+          {accion !== 'ver' ? (
+            <Button
+              className={`${classes.btnRoot} ${classes.btnPrymary}`}
+              variant='contained'
+              type='submit'>
+              <IntlMessages id='boton.submit' />
+            </Button>
+          ) : (
+            ''
+          )}
           <Button
-            className={`${classes.btnRoot} ${classes.btnPrymary}`}
-            variant='contained'
-            type='submit'>
-            <IntlMessages id='boton.submit' />
+            className={`${classes.btnRoot} ${classes.btnSecundary}`}
+            onClick={handleOnClose}>
+            <IntlMessages id='boton.cancel' />
           </Button>
-        ) : (
-          ''
-        )}
-        <Button
-          className={`${classes.btnRoot} ${classes.btnSecundary}`}
-          onClick={handleOnClose}>
-          <IntlMessages id='boton.cancel' />
-        </Button>
-      </Box>
+        </Box>
+      </Scrollbar>
     </Form>
   );
 };
