@@ -650,6 +650,58 @@ export const onImport = (params, setActiveStep, setRows) => {
   };
 };
 
+export const onImportAFacturar = (params, setActiveStep, setRows) => {
+  return (dispatch) => {
+    var formData = new FormData();
+    formData.append('archivo', params['archivo']);
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('ordenes-servicios/importar-a-facturar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((data) => {
+        if (data.status === 201) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_ORDEN_SERVICIO_RUTAS, payload: data});
+          setRows(data.data.datos);
+          setActiveStep(1);
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: data.data.mensajes[0],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log();
+        try {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
+        } catch {
+          try {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: error,
+            });
+          } catch {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: 'Error',
+            });
+          }
+        }
+      });
+  };
+};
+
 export const onEnvioCorreos = (fecha, asociados) => {
   console.log(fecha, asociados);
   const {messages} = appIntl();

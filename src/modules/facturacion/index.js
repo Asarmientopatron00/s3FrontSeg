@@ -14,6 +14,13 @@ export const facturacionConfig = [
         path: ['/facturacion-cliente'],
         component: React.lazy(() => import('./ODSTFacturarCliente')),
       },
+      {
+        exact: true,
+        path: ['/ordenes-servicio-importacion-a-facturar'],
+        component: React.lazy(() =>
+          import('./ImportacionOrdenServicioAFacturar'),
+        ),
+      },
     ],
   },
 ];
