@@ -9,6 +9,7 @@ import {
   ThemeStyle,
   ThemeStyleRadius,
 } from '../../../shared/constants/AppEnums';
+import environment from './../../../env';
 
 const breakpoints = createBreakpoints({});
 const cardRadius = ThemeStyleRadius.STANDARD;
@@ -152,5 +153,8 @@ const defaultConfig = {
     icon: 'es',
   },
   rtlLocale: ['ar'],
+  API_URL: environment.API_URL,
+  // API_URL: 'https://solicitudesservicio-back.sellosdeseguridad.net/public',
+  version: 'V 14.0.1',
 };
 export default defaultConfig;

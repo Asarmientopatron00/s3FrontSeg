@@ -25,6 +25,7 @@ export const onGetColeccion = (
   documento,
   fecha_cotizacion,
   estados,
+  todos,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
@@ -34,6 +35,7 @@ export const onGetColeccion = (
   const documentoAux = documento ? documento : '';
   const fecha_cotizacionAux = fecha_cotizacion ? fecha_cotizacion : '';
   const estadosAux = estados ? estados : '';
+  const todosAux = todos ? todos : '';
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -48,6 +50,7 @@ export const onGetColeccion = (
           documento: documentoAux,
           fecha_cotizacion: fecha_cotizacionAux,
           estados: estadosAux,
+          todos: todosAux,
         },
       })
       .then((data) => {

@@ -56,7 +56,7 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = (depto) => {
+export const onGetColeccionLigera = (ciudad) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
@@ -64,7 +64,7 @@ export const onGetColeccionLigera = (depto) => {
       .get('lugares', {
         params: {
           ligera: true,
-          departamento_id: depto,
+          ciudad_id: ciudad,
         },
       })
       .then((data) => {

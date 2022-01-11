@@ -40,7 +40,6 @@ function HorizontalItem(props) {
     <ListItem
       component={NavLink}
       to={item.url}
-      activeClassName='active'
       className={clsx('navItemSubmenu', classes.root, dense && 'dense')}
       exact={item.exact}>
       {item.icon && (

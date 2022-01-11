@@ -167,7 +167,7 @@ const RutaForm = (props) => {
               name='ciudad_origen_id'
               inputValue={initialValues.ciudad_origen_id}
               label='Ciudad Origen'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -177,7 +177,7 @@ const RutaForm = (props) => {
               name='ciudad_destino_id'
               inputValue={initialValues.ciudad_destino_id}
               label='Ciudad Destino'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

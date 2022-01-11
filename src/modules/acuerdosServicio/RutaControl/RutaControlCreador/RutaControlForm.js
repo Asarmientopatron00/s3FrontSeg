@@ -217,7 +217,7 @@ const RutaControl = (props) => {
             name='tipo_proceso'
             inputValue={initialValues.tipo_proceso}
             label='Tipo Proceso'
-            autoHighlight
+            //autoHighlight
             className={classes.myTextField}
             required
             disabled={disabled}
@@ -229,7 +229,7 @@ const RutaControl = (props) => {
               name='departamento_id'
               inputValue={initialValues.departamento_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -240,7 +240,7 @@ const RutaControl = (props) => {
               name='ciudad_id'
               inputValue={initialValues.ciudad_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -252,7 +252,6 @@ const RutaControl = (props) => {
             label='Nombre Lugar'
             name='nombre'
             disabled={disabled}
-            required
           />
 
           <MyTextField
@@ -260,7 +259,6 @@ const RutaControl = (props) => {
             label='Dirección Lugar'
             name='direccion'
             disabled={disabled}
-            required
           />
 
           <Box component='h3'>Información persona encargada:</Box>
@@ -270,7 +268,7 @@ const RutaControl = (props) => {
               name='tipo_documento_id'
               inputValue={initialValues.ciudad_id}
               label='Tipo Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

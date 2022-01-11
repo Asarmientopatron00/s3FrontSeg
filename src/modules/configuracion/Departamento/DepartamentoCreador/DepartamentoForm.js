@@ -115,7 +115,7 @@ const DepartamentoForm = (props) => {
               name='pais_id'
               inputValue={initialValues.pais_id}
               label='País'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

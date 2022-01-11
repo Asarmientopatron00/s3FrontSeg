@@ -50,6 +50,7 @@ import {
 } from '../../../shared/constants/ActionTypes';
 import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
 import GetUsuario from '../../../shared/functions/GetUsuario';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -883,8 +884,8 @@ const AsociadoDocumento = () => {
                               component='a'
                               className={classes.linkDocumento}
                               href={
-                                'http://solicitudesservicio.test/asociados-documentos/' +
-                                // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-documentos/' +
+                                defaultConfig.API_URL +
+                                '/asociados-documentos/' +
                                 row.id
                               }
                               display='flex'

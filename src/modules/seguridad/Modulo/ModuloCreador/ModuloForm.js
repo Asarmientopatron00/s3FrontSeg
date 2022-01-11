@@ -166,7 +166,7 @@ const UsuarioForm = (props) => {
               name='aplicacion_id'
               inputValue={initialValues.aplicacion_id}
               label='Aplicación'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

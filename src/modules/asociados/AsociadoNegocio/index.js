@@ -44,7 +44,7 @@ import SecurityIcon from '@material-ui/icons/Security';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {history} from 'redux/store';
 import GetAppIcon from '@material-ui/icons/GetApp';
-
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 // import {MessageView} from '../../../@crema';
 
 // function descendingComparator(a, b, orderBy) {
@@ -257,7 +257,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell> */}
-        <TableCell align='center' className={classes.headCellWoMargin}>
+        <TableCell
+          align='left'
+          className={classes.headCellWoMargin}
+          style={{paddingLeft: '30px'}}>
           {'Acciones'}
         </TableCell>
 
@@ -1020,8 +1023,9 @@ const AsociadoDatoBasico = (props) => {
                       </TableCell> */}
 
                           <TableCell
-                            align='center'
-                            className={classes.acciones}>
+                            align='left'
+                            className={classes.acciones}
+                            style={{paddingLeft: '30px'}}>
                             {permisos.indexOf('Modificar') >= 0 && (
                               <Tooltip
                                 title={<IntlMessages id='boton.editar' />}>
@@ -1061,14 +1065,14 @@ const AsociadoDatoBasico = (props) => {
                                 <Box
                                   component='a'
                                   href={
-                                    'http://solicitudesservicio.test/asociados-negocio/enviar-aprobacion/' +
+                                    defaultConfig.API_URL +
+                                    '/asociados-negocio/enviar-aprobacion/' +
                                     row.id
                                   }
-                                  // href={'http://186.97.135.74:3380/solicitudesservicio-backend/public/asociados-negocio/enviar-aprobacion/' + row.id}
                                   className={classes.generalIcons}>
                                   <Tooltip
                                     title={
-                                      'Descargar Formulario Acuerdo Servicio'
+                                      'Descargar formulario asociado negocios'
                                     }>
                                     <GetAppIcon
                                       className={`${classes.generalIcons} ${classes.descargarIcon}`}></GetAppIcon>

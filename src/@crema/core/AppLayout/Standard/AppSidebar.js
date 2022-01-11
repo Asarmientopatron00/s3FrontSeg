@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import clsx from 'clsx';
 // import UserInfo from '../../../../shared/components/UserInfo';
 import Navigation from '../../Navigation/VerticleNav';
@@ -25,35 +24,34 @@ const AppSidebar = (props) => {
   let sidebarClasses = classes.sidebarStandard;
   return (
     <>
-      <Hidden lgUp>
-        <Drawer
-          anchor={props.position}
-          open={navCollapsed}
-          onClose={(ev) => handleToggleDrawer()}
-          classes={{
-            root: clsx(props.variant),
-            paper: clsx(props.variant),
-          }}
-          style={{position: 'absolute'}}>
-          <Box height='100%' className={classes.container}>
-            <Box className={clsx(classes.sidebarBg, sidebarClasses)}>
-              {/* <UserInfo /> */}
-              <AppLogo />
-              <Scrollbar
-                scrollToTop={false}
-                className={classes.drawerScrollAppSidebar}>
-                <Navigation />
-              </Scrollbar>
-            </Box>
+      {/* <Hidden lgUp> */}
+      <Drawer
+        anchor={props.position}
+        open={navCollapsed}
+        onClose={(ev) => handleToggleDrawer()}
+        classes={{
+          root: clsx(props.variant),
+          paper: clsx(props.variant),
+        }}
+        style={{position: 'absolute'}}>
+        <Box height='100%' className={classes.container}>
+          <Box className={clsx(classes.sidebarBg, sidebarClasses)}>
+            <AppLogo />
+            <Scrollbar
+              scrollToTop={false}
+              className={classes.drawerScrollAppSidebar}>
+              <Navigation />
+            </Scrollbar>
           </Box>
-        </Drawer>
-      </Hidden>
-      <Hidden mdDown>
+        </Box>
+      </Drawer>
+      {/* </Hidden> */}
+
+      {/* <Hidden mdDown>
         <Box
           height='fit-content'
           className={clsx(classes.container, 'app-sidebar')}>
           <Box className={clsx(classes.sidebarBg, sidebarClasses)}>
-            {/* <UserInfo /> */}
             <AppLogo />
             <Scrollbar
               scrollToTop={true}
@@ -63,7 +61,7 @@ const AppSidebar = (props) => {
               }></Scrollbar>
           </Box>
         </Box>
-      </Hidden>
+      </Hidden> */}
     </>
   );
 };

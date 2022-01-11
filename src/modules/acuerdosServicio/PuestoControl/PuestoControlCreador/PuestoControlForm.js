@@ -212,7 +212,7 @@ const PuestoControl = (props) => {
               name='departamento_id'
               inputValue={initialValues.departamento_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -223,7 +223,7 @@ const PuestoControl = (props) => {
               name='ciudad_id'
               inputValue={initialValues.ciudad_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -243,7 +243,7 @@ const PuestoControl = (props) => {
             name='tipo_puesto_control'
             inputValue={initialValues.tipo_puesto_control}
             label='Tipo Puesto Control'
-            autoHighlight
+            //autoHighlight
             className={classes.myTextField}
             required
             disabled={disabled}

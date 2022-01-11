@@ -175,6 +175,7 @@ const ParametroCorreoForm = (props) => {
               label='Parámetros'
               name='parametros'
               disabled={disabled}
+              multiline
             />
 
             <FormControl className={classes.widthFull} component='fieldset'>

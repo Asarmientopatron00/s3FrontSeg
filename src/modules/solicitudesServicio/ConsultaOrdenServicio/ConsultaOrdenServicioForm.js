@@ -6,6 +6,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../shared/constants/AppEnums';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -90,8 +91,8 @@ const AcuerdoServicioForm = (props) => {
 
   const classes = useStyles(props);
   return (
-    <Form style={{maxHeight: 600, width: 600}} noValidate autoComplete='off'>
-      <Scrollbar style={{maxHeight: 600, maxWidth: 600}}>
+    <Form noValidate autoComplete='off'>
+      <Scrollbar>
         <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
           <Box
             component='h6'
@@ -224,6 +225,15 @@ const AcuerdoServicioForm = (props) => {
                 disabled={true}
               />
               <MyTextField
+                name='servicio'
+                label='Servicio'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
                 name='tipo_servicio'
                 label='Tipo Servicio'
                 className={classes.myTextField}
@@ -241,6 +251,8 @@ const AcuerdoServicioForm = (props) => {
                   shrink: true,
                 }}
               />
+            </Box>
+            <Box className={classes.inputs_2}>
               <MyTextField
                 name='documento_agente_aduana'
                 label='Agente Aduana'
@@ -342,7 +354,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_instalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -351,7 +363,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_instalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -370,8 +382,8 @@ const AcuerdoServicioForm = (props) => {
 
               <MyTextField
                 className={classes.myTextField}
-                label='Equipo'
-                name='equipo_id'
+                label='Serial Equipo'
+                name='equipo'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -382,7 +394,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 className={classes.myTextField}
                 label='Recurso Técnico'
-                name='recurso_tecnico'
+                name='recurso_tecnico_instalacion'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -420,7 +432,7 @@ const AcuerdoServicioForm = (props) => {
 
               <MyTextField
                 className={classes.myTextField}
-                label='Observaciones'
+                label='Observaciones Programación'
                 name='observaciones_programacion_instalacion'
                 disabled={true}
                 InputLabelProps={{
@@ -430,7 +442,7 @@ const AcuerdoServicioForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Observación'
+                label='Observación Ejecución'
                 name='observaciones_ejecucion_instalacion'
                 disabled={true}
                 InputLabelProps={{
@@ -512,7 +524,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_desinstalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -521,7 +533,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_desinstalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 disabled={true}
               />
@@ -541,7 +553,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 className={classes.myTextField}
                 label='Recurso Técnico'
-                name='recurso_tecnico'
+                name='recurso_tecnico_desinstalacion'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
@@ -571,7 +583,7 @@ const AcuerdoServicioForm = (props) => {
 
               <MyTextField
                 className={classes.myTextField}
-                label='Observaciones'
+                label='Observaciones Programacion'
                 name='observaciones_programacion_desinstalacion'
                 disabled={true}
                 InputLabelProps={{
@@ -581,7 +593,7 @@ const AcuerdoServicioForm = (props) => {
               />
               <MyTextField
                 className={classes.myTextField}
-                label='Observación'
+                label='Observación Ejecución'
                 name='observaciones_ejecucion_desinstalacion'
                 disabled={true}
                 InputLabelProps={{
@@ -729,8 +741,8 @@ const AcuerdoServicioForm = (props) => {
                       component='a'
                       className={classes.linkDocumento}
                       href={
-                        'http://solicitudesservicio.test/ordenes-servicios-documentos/' +
-                        // 'http://186.97.135.74:3380/solicitudesservicio-backend/public/ordenes-servicios-documentos/' +
+                        defaultConfig.API_URL +
+                        '/ordenes-servicios-documentos/' +
                         row.id
                       }
                       display='flex'

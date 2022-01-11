@@ -41,6 +41,7 @@ const MyAutocompleteAsociado = (props) => {
   } else {
     myvalue = myvalueAux;
   }
+
   return (
     <Autocomplete
       selectOnFocus={false}
@@ -210,6 +211,7 @@ const AcuerdoServicioForm = (props) => {
   };
 
   const classes = useStyles(props);
+
   return (
     <Form className='' noValidate autoComplete='off'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -248,7 +250,7 @@ const AcuerdoServicioForm = (props) => {
                 name='asociado_id'
                 inputValue={initialValues.asociado_id}
                 label='Asociado de negocio'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

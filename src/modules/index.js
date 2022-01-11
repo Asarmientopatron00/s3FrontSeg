@@ -6,7 +6,6 @@ import {dashBoardConfigs} from './dashboard';
 import {muiComponentConfigs} from './muiComponents';
 import {thirdPartyConfigs} from './thirdParty';
 import {userPagesConfig} from './userPages';
-import {appsConfig} from './apps';
 import {extraPagesConfigs} from './extraPages';
 import {userListConfig} from './userList';
 import {errorPagesConfigs} from './errorPages';
@@ -21,6 +20,8 @@ import {cotizacionConfig} from './cotizaciones';
 import {acuerdoServicioConfig} from './acuerdosServicio';
 import {solicitudesServicioConfig} from './solicitudesServicio';
 import {inventarioBitacoraEquipoConfig} from './inventarioBitacoraEquipo';
+import {programacionServicioConfig} from './programacionServicio';
+import {facturacionConfig} from './facturacion';
 
 const routeConfigs = [
   ...authRouteConfig,
@@ -28,7 +29,6 @@ const routeConfigs = [
   ...muiComponentConfigs,
   ...thirdPartyConfigs,
   ...userPagesConfig,
-  ...appsConfig,
   ...userListConfig,
   ...extraPagesConfigs,
   ...errorPagesConfigs,
@@ -41,6 +41,8 @@ const routeConfigs = [
   ...acuerdoServicioConfig,
   ...solicitudesServicioConfig,
   ...inventarioBitacoraEquipoConfig,
+  ...programacionServicioConfig,
+  ...facturacionConfig,
 ];
 
 const routes = [

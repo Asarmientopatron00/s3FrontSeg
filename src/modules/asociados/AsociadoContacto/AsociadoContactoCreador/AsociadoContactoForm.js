@@ -161,7 +161,7 @@ const AsociadoContacto = (props) => {
               name='tipo'
               inputValue={initialValues.tipo}
               label='Tipo de Contacto'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -190,7 +190,7 @@ const AsociadoContacto = (props) => {
               name='tipo_documento_id'
               inputValue={initialValues.tipo_documento_id}
               label='Tipo de Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

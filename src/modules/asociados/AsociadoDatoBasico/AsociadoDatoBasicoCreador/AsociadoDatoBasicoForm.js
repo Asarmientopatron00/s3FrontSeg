@@ -75,7 +75,7 @@ const AsociadoDatoBasicoForm = (props) => {
   calcularDV = (documento) => {
     let suma = 0;
     const factores = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
-    if (documento !== '') {
+    if (documento !== '' && documento !== undefined) {
       for (let i = 0; i < documento.length; i++) {
         suma += parseFloat(documento[i]) * factores[documento.length - i - 1];
       }
@@ -128,7 +128,7 @@ const AsociadoDatoBasicoForm = (props) => {
       gap: '10px',
       backgroundColor: 'white',
       paddingRight: '20px',
-      position: 'sticky',
+      //position: 'sticky',
       left: 0,
       bottom: 0,
     },
@@ -222,7 +222,7 @@ const AsociadoDatoBasicoForm = (props) => {
                 name='tipo_documento_id'
                 inputValue={initialValues.tipo_documento_id}
                 label='Tipo de Documento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

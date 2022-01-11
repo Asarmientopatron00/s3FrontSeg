@@ -134,7 +134,7 @@ const InformacionEquipoForm = (props) => {
                 name='tipo_equipo'
                 inputValue={initialValues.tipo_equipo}
                 label='Tipo Equipo'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -209,15 +209,13 @@ const InformacionEquipoForm = (props) => {
                   className={classes.myTextField}
                   disabled={disabled}
                   row
-                  value={values.equipo_desechable}
-                  err>
+                  value={values.equipo_desechable}>
                   <FormControlLabel
                     value='S'
                     control={<Radio color='primary' />}
                     label='Si'
                     labelPlacement='end'
                     disabled={disabled}
-                    err
                   />
                   <FormControlLabel
                     value='N'

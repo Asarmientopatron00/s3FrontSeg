@@ -24,7 +24,6 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
   VALIDACION_REGEX_TELEFONOS,
-  VALIDACION_REGEX_DOCUMENTOS,
 } from './../../../../shared/constants/Constantes';
 import mensajeValidacion from './../../../../shared/functions/MensajeValidacion';
 

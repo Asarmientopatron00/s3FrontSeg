@@ -1,6 +1,7 @@
 import React, {useState, useMemo} from 'react';
 import {Box, Button} from '@material-ui/core';
 import {styled} from '@material-ui/styles';
+import {FETCH_ERROR} from '../../../shared/constants/ActionTypes';
 
 import clsx from 'clsx';
 import {lighten, makeStyles, withStyles} from '@material-ui/core/styles';
@@ -138,7 +139,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const ColorlibStepIconRoot = styled('div')(({theme, ownerState}) => ({
+const ColorlibStepIconRoot = styled('div')(({theme, ownerstate}) => ({
   backgroundColor:
     theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
   zIndex: 1,
@@ -149,12 +150,12 @@ const ColorlibStepIconRoot = styled('div')(({theme, ownerState}) => ({
   borderRadius: '50%',
   justifyContent: 'center',
   alignItems: 'center',
-  ...(ownerState.active && {
+  ...(ownerstate.active && {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   }),
-  ...(ownerState.completed && {
+  ...(ownerstate.completed && {
     backgroundImage:
       'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
   }),
@@ -175,7 +176,7 @@ const ColorlibStepIcon = (props) => {
   return (
     <Tooltip title={messages[String(props.icon)]}>
       <ColorlibStepIconRoot
-        ownerState={{completed, active}}
+        ownerstate={{completed, active}}
         className={className}>
         {icons[String(props.icon)]}
       </ColorlibStepIconRoot>
@@ -543,10 +544,21 @@ const OrdenServicioDocumento = () => {
                   <Form encType='multipart/form-data'>
                     <Box py={5} px={{xs: 5, lg: 8, xl: 10}} height='200px'>
                       <Dropzone
-                        onDrop={(event) => {
-                          setFieldValue('archivo', event[0]);
-                          setFieldValue('nombre_archivo', event[0].name);
-                        }}>
+                        onDrop={(acceptedFiles) => {
+                          if (acceptedFiles.length === 0) {
+                            dispatch({
+                              type: FETCH_ERROR,
+                              payload: 'Solo se aceptan archivos excel',
+                            });
+                          } else {
+                            setFieldValue('archivo', acceptedFiles[0]);
+                            setFieldValue(
+                              'nombre_archivo',
+                              acceptedFiles[0].name,
+                            );
+                          }
+                        }}
+                        accept='.XLSX,.XLSM,.XLTX,.XLTM,.XLAM'>
                         {({getRootProps, getInputProps}) => (
                           <div {...getRootProps({style})}>
                             <input
@@ -555,14 +567,52 @@ const OrdenServicioDocumento = () => {
                               type='file'
                               id='archivo'
                               onChange={(event) => {
-                                setFieldValue(
-                                  'archivo',
-                                  event.currentTarget.files[0],
-                                );
-                                setFieldValue(
-                                  'nombre_archivo',
-                                  event.currentTarget.files[0].name,
-                                );
+                                if (
+                                  event.currentTarget.files[0].name.includes(
+                                    '.XLSX',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.XLSM',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.XLTX',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.XLTM',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.XLAM',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.xlsx',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.xlsm',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.xltx',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.xltm',
+                                  ) ||
+                                  event.currentTarget.files[0].name.includes(
+                                    '.xlam',
+                                  )
+                                ) {
+                                  setFieldValue(
+                                    'archivo',
+                                    event.currentTarget.files[0],
+                                  );
+                                  setFieldValue(
+                                    'nombre_archivo',
+                                    event.currentTarget.files[0].name,
+                                  );
+                                } else {
+                                  dispatch({
+                                    type: FETCH_ERROR,
+                                    payload: 'Solo se aceptan archivos excel',
+                                  });
+                                }
                               }}
                             />
                             <p>Arrastra un archivo o haz click para cargarlo</p>

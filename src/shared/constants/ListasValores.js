@@ -53,8 +53,8 @@ export const TIPOS_CONTACTOS = [
 ];
 
 export const ESTADO_COTIZACIONES = [
-  {id: 'ENV', nombre: 'Enviada', estado: 1},
   {id: 'GEN', nombre: 'Generada', estado: 1},
+  {id: 'ENV', nombre: 'Enviada', estado: 1},
   {id: 'ANU', nombre: 'Anulada', estado: 1},
   {id: 'APR', nombre: 'Aprobada', estado: 1},
 ];
@@ -109,7 +109,36 @@ export const ESTADOS_ORDEN_SERVICIO = [
   {id: 'ANU', nombre: 'Anulada', estado: 1},
 ];
 
+export const ESTADOS_APROBACION_OS = [
+  {id: 'A', nombre: 'Aceptada', estado: 1},
+  {id: 'P', nombre: 'Pendiente', estado: 1},
+  {id: 'R', nombre: 'Rechazada', estado: 1},
+  {id: '', nombre: '', estado: 1},
+];
+
 export const TIPOS_EQUIPOS = [
-  {id: 'GRL', nombre: 'Uso General', estado: 1},
+  {id: 'DET', nombre: 'DETC', estado: 1},
   {id: 'SEN', nombre: 'Señuelo', estado: 1},
+];
+
+export const TIPOS_PRODUCTOS = [
+  {id: 'ADH', nombre: 'Adhesivo', estado: 1},
+  {id: 'ROT', nombre: 'Rotor', estado: 1},
+  {id: 'KIT', nombre: 'Kit', estado: 1},
+];
+
+export const ESTADO_PEDIDOS = [
+  {id: 'REG', nombre: 'Registrado', estado: 1},
+  {id: 'CON', nombre: 'Confirmado', estado: 1},
+  {id: 'DES', nombre: 'Despachado', estado: 1},
+  {id: 'FAC', nombre: 'Facturado', estado: 1},
+  {id: 'ANU', nombre: 'Anulado', estado: 1},
+];
+
+export const ESTADOS_RECURSOS_TECNICOS = [
+  {id: 'D', nombre: 'Disponible', estado: 1},
+  {id: 'V', nombre: 'Vacaciones', estado: 1},
+  {id: 'I', nombre: 'Incapacitado', estado: 1},
+  {id: 'L', nombre: 'Licencia', estado: 1},
+  {id: 'R', nombre: 'Retirado', estado: 1},
 ];

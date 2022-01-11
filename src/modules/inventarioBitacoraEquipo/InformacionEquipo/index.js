@@ -90,7 +90,8 @@ const cells = [
     id: 'tipo_equipo',
     typeHead: 'string',
     label: 'Tipo',
-    value: (value) => value,
+    value: (value) =>
+      TIPOS_EQUIPOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
     align: 'left',
     mostrarInicio: true,
   },

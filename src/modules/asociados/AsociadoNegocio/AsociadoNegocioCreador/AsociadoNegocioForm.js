@@ -150,7 +150,7 @@ const AsociadoNegocioForm = (props) => {
   calcularDV = (documento) => {
     let suma = 0;
     const factores = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
-    if (documento !== '') {
+    if (documento !== '' && documento !== undefined) {
       for (let i = 0; i < documento.length; i++) {
         suma += parseFloat(documento[i]) * factores[documento.length - i - 1];
       }
@@ -369,7 +369,7 @@ const AsociadoNegocioForm = (props) => {
               name='tipo_documento_id'
               inputValue={initialValues.tipo_documento_id}
               label='Tipo de Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -511,7 +511,7 @@ const AsociadoNegocioForm = (props) => {
               name='departamento_id'
               inputValue={initialValues.departamento_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -521,7 +521,7 @@ const AsociadoNegocioForm = (props) => {
               name='ciudad_id'
               inputValue={initialValues.ciudad_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -633,7 +633,7 @@ const AsociadoNegocioForm = (props) => {
               name='departamento_otro_id'
               inputValue={initialValues.departamento_otro_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               disabled={disabled}
             />
@@ -661,7 +661,7 @@ const AsociadoNegocioForm = (props) => {
               name='ciudad_otra_id'
               inputValue={initialValues.ciudad_otra_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               disabled={disabled}
             />
@@ -783,7 +783,7 @@ const AsociadoNegocioForm = (props) => {
               name='actividad_economica_id'
               inputValue={initialValues.actividad_economica_id}
               label='Código CIIU'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -1068,7 +1068,7 @@ const AsociadoNegocioForm = (props) => {
               name='tipo_documento_facturacion_id'
               inputValue={initialValues.tipo_documento_facturacion_id}
               label='Tipo de Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               disabled={disabled}
             />
@@ -1252,7 +1252,8 @@ const AsociadoNegocioForm = (props) => {
           </Box>
 
           <Box className={classes.inputs_2}>
-            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] ? (
+            {usuario.rol.tipo === tiposRol['TIPO_ROL_INTERNO'] &&
+            accion !== 'crear' ? (
               <MyRadioField
                 label='Información Verificada'
                 className={classes.MyRadioField}

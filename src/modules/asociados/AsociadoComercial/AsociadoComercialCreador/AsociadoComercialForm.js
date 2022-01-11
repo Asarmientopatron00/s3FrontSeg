@@ -154,7 +154,7 @@ const AsociadoComercial = (props) => {
               name='tipo_documento_id'
               inputValue={initialValues.tipo_documento_id}
               label='Tipo de Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

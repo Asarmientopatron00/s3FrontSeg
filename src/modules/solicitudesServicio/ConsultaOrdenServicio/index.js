@@ -25,6 +25,7 @@ const AprobacionOrdenServicioCreator = (props) => {
     updateColeccion,
     titulo,
     TIPOS_SERVICIOS,
+    ESTADOS_ORDEN_SERVICIO,
   } = props;
 
   const dispatch = useDispatch();
@@ -89,13 +90,14 @@ const AprobacionOrdenServicioCreator = (props) => {
     showForm && (
       <Dialog
         open={showForm}
+        fullWidth={true}
         onClose={handleOnClose}
         aria-labelledby='simple-modal-title'
         TransitionComponent={Transition}
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'lg'}>
+        maxWidth={'xl'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
@@ -110,9 +112,13 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               estado_orden: selectedRow
                 ? selectedRow.estado_orden_servicio
-                  ? TIPOS_SERVICIOS.filter(
-                      (tipo) => tipo.id === selectedRow.tipo_servicio,
-                    )[0].nombre
+                  ? ESTADOS_ORDEN_SERVICIO.filter(
+                      (tipo) => tipo.id === selectedRow.estado_orden_servicio,
+                    )[0]
+                    ? ESTADOS_ORDEN_SERVICIO.filter(
+                        (tipo) => tipo.id === selectedRow.estado_orden_servicio,
+                      )[0].nombre
+                    : ''
                   : ''
                 : '',
               fecha_orden_servicio: selectedRow
@@ -173,11 +179,20 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.clienteFactura.nombre
                   : ''
                 : '',
+              servicio: selectedRow
+                ? selectedRow.servicio
+                  ? selectedRow.servicio.nombre
+                  : ''
+                : '',
               tipo_servicio: selectedRow
                 ? selectedRow.tipo_servicio
                   ? TIPOS_SERVICIOS.filter(
                       (tipo) => tipo.id === selectedRow.tipo_servicio,
-                    )[0].nombre
+                    )[0]
+                    ? TIPOS_SERVICIOS.filter(
+                        (tipo) => tipo.id === selectedRow.tipo_servicio,
+                      )[0].nombre
+                    : ''
                   : ''
                 : '',
               tipo_servicio_otro: selectedRow
@@ -236,12 +251,12 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.lugarInstalacion.direccion
                   : ''
                 : '',
-              equipo_id: selectedRow
-                ? selectedRow.equipo_id
-                  ? selectedRow.equipo_id
+              equipo: selectedRow
+                ? selectedRow.equipo
+                  ? selectedRow.equipo
                   : ''
                 : '',
-              recurso_tecnico: selectedRow
+              recurso_tecnico_instalacion: selectedRow
                 ? selectedRow.recursoInstalacion
                   ? selectedRow.recursoInstalacion.nombre
                   : ''
@@ -253,7 +268,9 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               indicativo_aceptacion_instalacion: selectedRow
                 ? selectedRow.indicativo_aceptacion_instalacion
-                  ? selectedRow.indicativo_aceptacion_instalacion
+                  ? selectedRow.indicativo_aceptacion_instalacion === 'A'
+                    ? 'Aprobada'
+                    : 'Rechazada'
                   : ''
                 : '',
               observaciones_rechazo_instalacion: selectedRow
@@ -293,8 +310,8 @@ const AprobacionOrdenServicioCreator = (props) => {
                   : ''
                 : '',
               departamento_desinstalacion: selectedRow
-                ? selectedRow.departamentodesInstalacion
-                  ? selectedRow.departamentodesInstalacion.nombre
+                ? selectedRow.departamentoDesinstalacion
+                  ? selectedRow.departamentoDesinstalacion.nombre
                   : ''
                 : '',
               hora_final_desinstalacion: selectedRow
@@ -303,23 +320,30 @@ const AprobacionOrdenServicioCreator = (props) => {
                   : ''
                 : '',
               ciudad_desinstalacion: selectedRow
-                ? selectedRow.ciudaddesInstalacion
-                  ? selectedRow.ciudaddesInstalacion.nombre
+                ? selectedRow.ciudadDesinstalacion
+                  ? selectedRow.ciudadDesinstalacion.nombre
                   : ''
                 : '',
               lugar_desinstalacion: selectedRow
-                ? selectedRow.lugardesInstalacion
-                  ? selectedRow.lugardesInstalacion.nombre
+                ? selectedRow.lugarDesinstalacion
+                  ? selectedRow.lugarDesinstalacion.nombre
                   : ''
                 : '',
               direccion_desinstalacion: selectedRow
-                ? selectedRow.lugardesInstalacion
-                  ? selectedRow.lugardesInstalacion.direccion
+                ? selectedRow.lugarDesinstalacion
+                  ? selectedRow.lugarDesinstalacion.direccion
+                  : ''
+                : '',
+              recurso_tecnico_desinstalacion: selectedRow
+                ? selectedRow.recursoDesinstalacion
+                  ? selectedRow.recursoDesinstalacion.nombre
                   : ''
                 : '',
               indicativo_aceptacion_desinstalacion: selectedRow
                 ? selectedRow.indicativo_aceptacion_desinstalacion
-                  ? selectedRow.indicativo_aceptacion_desinstalacion
+                  ? selectedRow.indicativo_aceptacion_desinstalacion === 'A'
+                    ? 'Aprobada'
+                    : 'Rechazada'
                   : ''
                 : '',
               observaciones_rechazo_desinstalacion: selectedRow
@@ -367,7 +391,36 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.transportador.email_contacto
                   : ''
                 : '',
-
+              placa_vehiculo: selectedRow
+                ? selectedRow.placa_vehiculo
+                  ? selectedRow.placa_vehiculo
+                  : ''
+                : '',
+              placa_trailer: selectedRow
+                ? selectedRow.placa_trailer
+                  ? selectedRow.placa_trailer
+                  : ''
+                : '',
+              numero_contenedor: selectedRow
+                ? selectedRow.numero_contenedor
+                  ? selectedRow.numero_contenedor
+                  : ''
+                : '',
+              nombre_conductor: selectedRow
+                ? selectedRow.nombre_conductor
+                  ? selectedRow.nombre_conductor
+                  : ''
+                : '',
+              cedula_conductor: selectedRow
+                ? selectedRow.cedula_conductor
+                  ? selectedRow.cedula_conductor
+                  : ''
+                : '',
+              celular_conductor: selectedRow
+                ? selectedRow.celular_conductor
+                  ? selectedRow.celular_conductor
+                  : ''
+                : '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'

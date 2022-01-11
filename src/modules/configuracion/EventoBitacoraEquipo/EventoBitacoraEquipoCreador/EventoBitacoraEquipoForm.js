@@ -116,7 +116,7 @@ const EstadoEquipoForm = (props) => {
               name='estado_equipo_id'
               inputValue={initialValues.estado_equipo_id}
               label='Estado equipo por defecto:'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               disabled={disabled}
             />

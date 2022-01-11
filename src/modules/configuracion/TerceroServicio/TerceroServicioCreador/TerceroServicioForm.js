@@ -78,7 +78,8 @@ const TerceroServicioForm = (props) => {
   calcularDV = (documento) => {
     let suma = 0;
     const factores = [3, 7, 13, 17, 19, 23, 29, 37, 41, 43, 47, 53, 59, 67, 71];
-    if (documento !== '') {
+    if (documento !== '' && documento !== undefined) {
+      console.log(documento);
       for (let i = 0; i < documento.length; i++) {
         suma += parseFloat(documento[i]) * factores[documento.length - i - 1];
       }
@@ -212,7 +213,7 @@ const TerceroServicioForm = (props) => {
                 name='tipo'
                 inputValue={initialValues.tipo}
                 label='Tipo de Tercero'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -252,7 +253,7 @@ const TerceroServicioForm = (props) => {
                 name='tipo_documento_id'
                 inputValue={initialValues.tipo_documento_id}
                 label='Tipo de Documento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -348,7 +349,7 @@ const TerceroServicioForm = (props) => {
                 name='departamento_id'
                 inputValue={initialValues.departamento_id}
                 label='Departamento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}
@@ -381,7 +382,7 @@ const TerceroServicioForm = (props) => {
                 name='ciudad_id'
                 inputValue={initialValues.ciudad_id}
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={disabled}

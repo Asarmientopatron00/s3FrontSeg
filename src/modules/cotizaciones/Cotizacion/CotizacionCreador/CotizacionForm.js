@@ -220,7 +220,7 @@ const SolicitudCotizacionForm = (props) => {
                   name='solicitud_cotizacion_id'
                   inputValue={initialValues.solicitud_cotizacion_id}
                   label='Solicitud Cotización'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}

@@ -159,13 +159,14 @@ const OrdenServicioForm = (props) => {
     asociados,
     TIPOS_SERVICIOS,
     tercerosServicios,
+    servicios,
     updateRutas,
     rutas,
   } = props;
   const [disabled, setDisabled] = useState(false);
   const [validFacturarA, setValidFacturarA] = useState(false);
   const [showValid, setShowValid] = useState(false);
-
+  const [aux_asociado, set_aux_asociado] = useState(initialValues.asociado_id);
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
@@ -284,6 +285,15 @@ const OrdenServicioForm = (props) => {
         }
       }
     });
+    if (aux_asociado !== values.asociado_id && values.asociado_id !== '') {
+      setFieldValue('departamento_id_desinstalacion', '');
+      setFieldValue('departamento_id_instalacion', '');
+      setFieldValue('ciudad_id_desinstalacion', '');
+      setFieldValue('ciudad_id_instalacion', '');
+      setFieldValue('lugar_id_desinstalacion', '');
+      setFieldValue('lugar_id_instalacion', '');
+      set_aux_asociado(values.asociado_id);
+    }
   }, [values.asociado_id, asociados, setFieldValue]);
 
   useEffect(() => {
@@ -423,6 +433,12 @@ const OrdenServicioForm = (props) => {
   const [ciudadesRutaDesinst, setCiudadesRutaDesinst] = useState([]);
   const [lugaresRutaInst, setLugaresRutaInst] = useState([]);
   const [lugaresRutaDesinst, setLugaresRutaDesinst] = useState([]);
+  const [aux_dep_inst, set_aux_dep_inst] = useState(
+    initialValues.departamento_id_instalacion,
+  );
+  const [aux_dep_des, set_aux_dep_des] = useState(
+    initialValues.departamento_id_desinstalacion,
+  );
 
   useEffect(() => {
     if (values.asociado_id !== '') {
@@ -462,9 +478,15 @@ const OrdenServicioForm = (props) => {
         setCiudadesRutaInst(ciudadesInstalacion);
       }
     }
-    values.ciudad_id_instalacion = '';
-    values.lugar_id_instalacion = '';
-    values.direccion_instalacion = '';
+    if (
+      aux_dep_inst !== values.departamento_id_instalacion &&
+      values.departamento_id_instalacion !== ''
+    ) {
+      values.ciudad_id_instalacion = '';
+      values.lugar_id_instalacion = '';
+      values.direccion_instalacion = '';
+      set_aux_dep_inst(values.departamento_id_instalacion);
+    }
   }, [values.departamento_id_instalacion, rutas.ciudades]);
 
   useEffect(() => {
@@ -482,9 +504,16 @@ const OrdenServicioForm = (props) => {
         setCiudadesRutaDesinst(ciudadesDesinstalacion);
       }
     }
-    values.ciudad_id_desinstalacion = '';
-    values.lugar_id_desinstalacion = '';
-    values.direccion_desinstalacion = '';
+
+    if (
+      aux_dep_des !== values.departamento_id_desinstalacion &&
+      values.departamento_id_desinstalacion !== ''
+    ) {
+      values.ciudad_id_desinstalacion = '';
+      values.lugar_id_desinstalacion = '';
+      values.direccion_desinstalacion = '';
+      set_aux_dep_des(values.departamento_id_desinstalacion);
+    }
   }, [values.departamento_id_desinstalacion, rutas.ciudades]);
 
   useEffect(() => {
@@ -597,7 +626,7 @@ const OrdenServicioForm = (props) => {
                   name='asociado_id'
                   inputValue={initialValues.asociado_id}
                   label='Asociados de negocios'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -670,11 +699,21 @@ const OrdenServicioForm = (props) => {
                   )}
                 </Box>
                 <MyAutocomplete
+                  options={servicios}
+                  name='servicio_id'
+                  inputValue={initialValues.tipo_servicio}
+                  label='Servicio'
+                  //autoHighlight
+                  className={classes.myTextField}
+                  required
+                  disabled={disabled}
+                />
+                <MyAutocomplete
                   options={TIPOS_SERVICIOS}
                   name='tipo_servicio'
                   inputValue={initialValues.tipo_servicio}
                   label='Tipo Servicio'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -700,7 +739,7 @@ const OrdenServicioForm = (props) => {
                   name='agente_aduana_id'
                   inputValue={initialValues.agente_aduana_id}
                   label='Agente de Aduanas'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   disabled={disabled}
                 />
@@ -772,7 +811,6 @@ const OrdenServicioForm = (props) => {
                   label='Hora Programada'
                   name='hora_programada_instalacion'
                   disabled={disabled}
-                  required
                   type='time'
                   InputLabelProps={{
                     shrink: true,
@@ -784,7 +822,7 @@ const OrdenServicioForm = (props) => {
                   name='departamento_id_instalacion'
                   inputValue={initialValues.departamento_id_instalacion}
                   label='Departamento'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -795,7 +833,7 @@ const OrdenServicioForm = (props) => {
                   name='ciudad_id_instalacion'
                   inputValue={initialValues.ciudad_id_instalacion}
                   label='Ciudad'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -806,9 +844,8 @@ const OrdenServicioForm = (props) => {
                   name='lugar_id_instalacion'
                   inputValue={initialValues.lugar_id_instalacion}
                   label='Nombre Lugar'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
 
@@ -843,7 +880,6 @@ const OrdenServicioForm = (props) => {
                   label='Hora Programada'
                   name='hora_programada_desinstalacion'
                   disabled={disabled}
-                  required
                   type='time'
                   InputLabelProps={{
                     shrink: true,
@@ -855,7 +891,7 @@ const OrdenServicioForm = (props) => {
                   name='departamento_id_desinstalacion'
                   inputValue={initialValues.departamento_id_desinstalacion}
                   label='Departamento'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -866,7 +902,7 @@ const OrdenServicioForm = (props) => {
                   name='ciudad_id_desinstalacion'
                   inputValue={initialValues.ciudad_id_desinstalacion}
                   label='Ciudad'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
                   required
                   disabled={disabled}
@@ -877,9 +913,8 @@ const OrdenServicioForm = (props) => {
                   name='lugar_id_desinstalacion'
                   inputValue={initialValues.lugar_id_desinstalacion}
                   label='Nombre Lugar'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
 
@@ -904,9 +939,8 @@ const OrdenServicioForm = (props) => {
                   name='transportador_id'
                   inputValue={initialValues.transportador_id}
                   label='Transportador'
-                  autoHighlight
+                  //autoHighlight
                   className={classes.myTextField}
-                  required
                   disabled={disabled}
                 />
                 <MyTextField
@@ -962,7 +996,6 @@ const OrdenServicioForm = (props) => {
                   label='Placa Vehículo'
                   name='placa_vehiculo'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -970,7 +1003,6 @@ const OrdenServicioForm = (props) => {
                   label='Placa Trailer'
                   name='placa_trailer'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -978,7 +1010,6 @@ const OrdenServicioForm = (props) => {
                   label='Número Contenedor'
                   name='numero_contenedor'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -986,7 +1017,6 @@ const OrdenServicioForm = (props) => {
                   label='Nombre Conductor'
                   name='nombre_conductor'
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -997,7 +1027,6 @@ const OrdenServicioForm = (props) => {
                     maxLength: LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
                   }}
                   disabled={disabled}
-                  required
                 />
 
                 <MyTextField
@@ -1005,7 +1034,6 @@ const OrdenServicioForm = (props) => {
                   label='Celular Conductor'
                   name='celular_conductor'
                   disabled={disabled}
-                  required
                   inputProps={{
                     maxLength: LONGITUD_MAXIMA_TELEFONOS,
                     minLength: LONGITUD_MINIMA_TELEFONOS,

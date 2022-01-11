@@ -98,7 +98,7 @@ const UsuarioForm = (props) => {
       gap: '10px',
       backgroundColor: 'white',
       paddingRight: '20px',
-      position: 'sticky',
+      //position: 'sticky',
       left: 0,
       bottom: 0,
     },
@@ -180,7 +180,7 @@ const UsuarioForm = (props) => {
               name='asociado_id'
               inputValue={initialValues.asociado_id}
               label='Asociado'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -211,7 +211,7 @@ const UsuarioForm = (props) => {
               name='rol_id'
               inputValue={initialValues.rol_id}
               label='Rol'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -309,24 +309,24 @@ const UsuarioForm = (props) => {
             ></MySelectField> */}
           </Box>
         </Box>
-      </Scrollbar>
-      <Box className={classes.bottomsGroup}>
-        {accion !== 'ver' && values ? (
+        <Box className={classes.bottomsGroup}>
+          {accion !== 'ver' && values ? (
+            <Button
+              className={`${classes.btnRoot} ${classes.btnPrymary}`}
+              variant='contained'
+              type='submit'>
+              <IntlMessages id='boton.submit' />
+            </Button>
+          ) : (
+            ''
+          )}
           <Button
-            className={`${classes.btnRoot} ${classes.btnPrymary}`}
-            variant='contained'
-            type='submit'>
-            <IntlMessages id='boton.submit' />
+            className={`${classes.btnRoot} ${classes.btnSecundary}`}
+            onClick={handleOnClose}>
+            <IntlMessages id='boton.cancel' />
           </Button>
-        ) : (
-          ''
-        )}
-        <Button
-          className={`${classes.btnRoot} ${classes.btnSecundary}`}
-          onClick={handleOnClose}>
-          <IntlMessages id='boton.cancel' />
-        </Button>
-      </Box>
+        </Box>
+      </Scrollbar>
     </Form>
   );
 };

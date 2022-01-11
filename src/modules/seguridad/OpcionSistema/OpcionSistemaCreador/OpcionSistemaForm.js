@@ -165,7 +165,7 @@ const OpcionSistemaForm = (props) => {
               name='modulo_id'
               inputValue={initialValues.modulo_id}
               label='Módulo'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

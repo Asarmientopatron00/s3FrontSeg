@@ -321,13 +321,18 @@ export const GET_COLECCION_LIGERA_ORDEN_SERVICIO =
 export const SHOW_ORDEN_SERVICIO = 'show_orden_servicio';
 export const UPDATE_ORDEN_SERVICIO = 'update_orden_servicio';
 export const DELETE_ORDEN_SERVICIO = 'delete_orden_servicio';
-export const CREATE_ORDEN_SERVICIO = 'enviar_orden_servicio';
+export const CREATE_ORDEN_SERVICIO = 'create_orden_servicio';
 export const APPROVE_ORDEN_SERVICIO = 'approve_orden_servicio';
 export const GET_COLECCION_LIGERA_ASOCIADO_ORDEN =
   'get_coleccion_ligera_asociado_orden';
+export const GET_COLECCION_LIGERA_SERVICIOS_ORDEN =
+  'get_coleccion_ligera_servicios_orden';
 export const GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN =
   'get_coleccion_ligera_tercero_servicio_orden';
 export const GET_ORDEN_SERVICIO_RUTAS = 'get_orden_servicio_rutas';
+export const GET_ORDEN_SERVICIO_PROGRAMACION =
+  'get_orden_servicio_programacion';
+export const ENVIAR_PROGRAMACION = 'enviar_programacion';
 export const GET_COLECCION_INFORMACION_EQUIPO =
   'get_coleccion_informacion_equipo';
 export const GET_COLECCION_LIGERA_INFORMACION_EQUIPO =
@@ -335,8 +340,129 @@ export const GET_COLECCION_LIGERA_INFORMACION_EQUIPO =
 export const SHOW_INFORMACION_EQUIPO = 'show_informacion_equipo';
 export const UPDATE_INFORMACION_EQUIPO = 'update_informacion_equipo';
 export const DELETE_INFORMACION_EQUIPO = 'delete_informacion_equipo';
-export const CREATE_INFORMACION_EQUIPO = 'enviar_informacion_equipo';
+export const CREATE_INFORMACION_EQUIPO = 'create_informacion_equipo';
+export const GET_COLECCION_PRODUCTO = 'get_coleccion_producto';
+export const GET_COLECCION_LIGERA_PRODUCTO = 'get_coleccion_ligera_producto';
+export const SHOW_PRODUCTO = 'show_producto';
+export const UPDATE_PRODUCTO = 'update_producto';
+export const DELETE_PRODUCTO = 'delete_producto';
+export const CREATE_PRODUCTO = 'create_producto';
+export const GET_COLECCION_PEDIDO = 'get_coleccion_pedido';
+export const GET_COLECCION_LIGERA_PEDIDO = 'get_coleccion_ligera_pedido';
+export const SHOW_PEDIDO = 'show_pedido';
+export const UPDATE_PEDIDO = 'update_pedido';
+export const CREATE_PEDIDO = 'create_pedido';
+export const DELETE_PEDIDO = 'delete_pedido';
+export const GET_COLECCION_DETALLE_PEDIDO = 'get_coleccion_detalle_pedido';
+export const GET_COLECCION_LIGERA_DETALLE_PEDIDO =
+  'get_coleccion_ligera_detalle_pedido';
+export const SHOW_DETALLE_PEDIDO = 'show_detalle_pedido';
+export const UPDATE_DETALLE_PEDIDO = 'update_detalle_pedido';
+export const CREATE_DETALLE_PEDIDO = 'create_detalle_pedido';
+export const DELETE_DETALLE_PEDIDO = 'delete_detalle_pedido';
+export const GET_COLECCION_TIPO_PRODUCTO = 'get_coleccion_tipo_producto';
+export const GET_COLECCION_LIGERA_TIPO_PRODUCTO =
+  'get_coleccion_ligera_tipo_producto';
+export const SHOW_TIPO_PRODUCTO = 'show_tipo_producto';
+export const UPDATE_TIPO_PRODUCTO = 'update_tipo_producto';
+export const CREATE_TIPO_PRODUCTO = 'create_tipo_producto';
+export const DELETE_TIPO_PRODUCTO = 'delete_tipo_producto';
+export const GET_COLECCION_COLOR = 'get_coleccion_color';
+export const GET_COLECCION_LIGERA_COLOR = 'get_coleccion_ligera_color';
+export const SHOW_COLOR = 'show_color';
+export const UPDATE_COLOR = 'update_color';
+export const CREATE_COLOR = 'create_color';
+export const DELETE_COLOR = 'delete_color';
+export const GET_COLECCION_RECURSO_TECNICO = 'get_coleccion_recurso_tecnico';
+export const GET_COLECCION_LIGERA_RECURSO_TECNICO =
+  'get_coleccion_ligera_recurso_tecnico';
+export const SHOW_RECURSO_TECNICO = 'show_recurso_tecnico';
+export const UPDATE_RECURSO_TECNICO = 'update_recurso_tecnico';
+export const CREATE_RECURSO_TECNICO = 'create_recurso_tecnico';
+export const DELETE_RECURSO_TECNICO = 'delete_recurso_tecnico';
+export const GET_COLECCION_HORARIO_RECURSO_TECNICO =
+  'get_coleccion_horario_recurso_tecnico';
+export const GET_COLECCION_CONSULTA_HORAS_TECNICO =
+  'get_coleccion_consulta_horas_tecnico';
+export const GET_COLECCION_LIGERA_HORARIO_RECURSO_TECNICO =
+  'get_coleccion_ligera_horario_recurso_tecnico';
+export const SHOW_HORARIO_RECURSO_TECNICO = 'show_horario_recurso_tecnico';
+export const SHOW_HORARIO_CONSULTA_RECURSO_TECNICO =
+  'show_horario_consulta_recurso_tecnico';
+export const UPDATE_HORARIO_RECURSO_TECNICO = 'update_horario_recurso_tecnico';
+export const CREATE_HORARIO_RECURSO_TECNICO = 'create_horario_recurso_tecnico';
+export const DELETE_HORARIO_RECURSO_TECNICO = 'delete_horario_recurso_tecnico';
+export const CONSULTAR_FECHAS = 'consultar_fechas';
+export const PROGRAMAR_HORARIOS = 'programar_horarios';
+export const GET_COLECCION_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_solicitud_cotizacion_producto';
+export const GET_COLECCION_LIGERA_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_solicitud_cotizacion_producto';
+export const SHOW_SOLICITUD_COTIZACION_PRODUCTO =
+  'show_solicitud_cotizacion_producto';
+export const UPDATE_SOLICITUD_COTIZACION_PRODUCTO =
+  'update_solicitud_cotizacion_producto';
+export const CREATE_SOLICITUD_COTIZACION_PRODUCTO =
+  'create_solicitud_cotizacion_producto';
+export const DELETE_SOLICITUD_COTIZACION_PRODUCTO =
+  'delete_solicitud_cotizacion_producto';
+export const INFORMACION_SOLICITUD_COTIZACION_PRODUCTO_CONTACTO =
+  'informacion_solicitud_contacto';
+export const GET_COLECCION_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_detalle_solicitud_cotizacion_producto';
+export const GET_COLECCION_LIGERA_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_detalle_solicitud_cotizacion_producto';
+export const SHOW_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'show_detalle_solicitud_cotizacion_producto';
+export const UPDATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'update_detalle_solicitud_cotizacion_producto';
+export const CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'create_detalle_solicitud_cotizacion_producto';
+export const DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
+  'delete_detalle_solicitud_cotizacion_producto';
+export const GET_COLECCION_COTIZACION_PRODUCTO =
+  'get_coleccion_cotizacion_producto';
+export const GET_COLECCION_LIGERA_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_cotizacion_producto';
+export const SHOW_COTIZACION_PRODUCTO = 'show_cotizacion_producto';
+export const UPDATE_COTIZACION_PRODUCTO = 'update_cotizacion_producto';
+export const CREATE_COTIZACION_PRODUCTO = 'create_cotizacion_producto';
+export const DELETE_COTIZACION_PRODUCTO = 'delete_cotizacion_producto';
+export const ENVIAR_COTIZACION_PRODUCTO = 'enviar_cotizacion_producto';
+export const APPROVE_COTIZACION_PRODUCTO = 'approve_cotizacion_producto';
+export const GET_COLECCION_DETALLE_COTIZACION_PRODUCTO =
+  'get_coleccion_detalle_cotizacion_producto';
+export const GET_COLECCION_LIGERA_DETALLE_COTIZACION_PRODUCTO =
+  'get_coleccion_ligera_detalle_cotizacion_producto';
+export const SHOW_DETALLE_COTIZACION_PRODUCTO =
+  'show_detalle_cotizacion_producto';
+export const UPDATE_DETALLE_COTIZACION_PRODUCTO =
+  'update_detalle_cotizacion_producto';
+export const CREATE_DETALLE_COTIZACION_PRODUCTO =
+  'create_detalle_cotizacion_producto';
+export const DELETE_DETALLE_COTIZACION_PRODUCTO =
+  'delete_detalle_cotizacion_producto';
+export const GET_COLECCION_BITACORA_EQUIPO = 'get_coleccion_bitacora_equipo';
+export const GET_COLECCION_LIGERA_BITACORA_EQUIPO =
+  'get_coleccion_ligera_bitacora_equipo';
+export const SHOW_BITACORA_EQUIPO = 'show_bitacora_equipo';
+export const UPDATE_BITACORA_EQUIPO = 'update_bitacora_equipo';
+export const CREATE_BITACORA_EQUIPO = 'create_bitacora_equipo';
+export const DELETE_BITACORA_EQUIPO = 'delete_bitacora_equipo';
+export const GET_COLECCION_FACTURAR_SERVICIO_TERMINADO =
+  'get_coleccion_facturar_servicio_terminado';
+export const GET_COLECCION_LIGERA_FACTURAR_SERVICIO_TERMINADO =
+  'get_coleccion_ligera_facturar_servicio_terminado';
+export const SHOW_FACTURAR_SERVICIO_TERMINADO =
+  'show_facturar_servicio_terminado';
+export const GET_COLECCION_FACTURAR_CLIENTE_TERMINADO =
+  'get_coleccion_facturar_cliente_terminado';
+export const GET_COLECCION_LIGERA_FACTURAR_CLIENTE_TERMINADO =
+  'get_coleccion_ligera_facturar_cliente_terminado';
+export const SHOW_FACTURAR_CLIENTE_TERMINADO =
+  'show_facturar_cliente_terminado';
 //APP SETTING
+
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';
 export const SET_INITIAL_PATH = 'set_initial_path';
 

@@ -116,7 +116,7 @@ const CiudadForm = (props) => {
               name='departamento_id'
               inputValue={initialValues.departamento_id}
               label='Departamento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}

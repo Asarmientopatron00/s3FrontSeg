@@ -154,6 +154,13 @@ const AcuerdoServicioForm = (props) => {
             </Box>
             <Box className={classes.inputs_2}>
               <MyTextField
+                name='servicio'
+                label='Servicio'
+                className={classes.myTextField}
+                required
+                disabled={true}
+              />
+              <MyTextField
                 name='tipo_servicio'
                 label='Tipo Servicio'
                 className={classes.myTextField}
@@ -211,7 +218,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_instalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={true}
@@ -220,7 +227,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_instalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={true}
@@ -267,7 +274,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='departamento_desinstalacion'
                 label='Departamento'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={true}
@@ -276,7 +283,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='ciudad_desinstalacion'
                 label='Ciudad'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={true}
@@ -285,7 +292,7 @@ const AcuerdoServicioForm = (props) => {
               <MyTextField
                 name='lugar_desinstalacion'
                 label='Nombre Lugar'
-                autoHighlight
+                //autoHighlight
                 className={classes.myTextField}
                 required
                 disabled={true}

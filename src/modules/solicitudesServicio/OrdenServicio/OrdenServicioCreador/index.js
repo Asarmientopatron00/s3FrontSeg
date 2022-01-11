@@ -10,6 +10,7 @@ import {
   onGetColeccionLigeraAsociado,
   onGetColeccionLigeraTerceroServicio,
   onGetRutas,
+  onGetColeccionLigeraServicio,
 } from '../../../../redux/actions/OrdenServicioAction';
 import OrdenServicioForm from './OrdenServicioForm';
 // import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
@@ -47,6 +48,9 @@ const OrdenServicioCreator = (props) => {
   const tercerosServicios = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer.tercerosServicios,
   );
+  const servicios = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer.servicios,
+  );
 
   let rutas = [];
   rutas = useSelector(({ordenServicioReducer}) => ordenServicioReducer.rutas);
@@ -74,6 +78,7 @@ const OrdenServicioCreator = (props) => {
   const validationSchema = yup.object({
     fecha_orden_servicio: yup.date().required('Requerido'),
     asociado_id: yup.string().required('Requerido'),
+    servicio_id: yup.string().required('Requerido'),
     tipo_servicio: yup.string().required('Requerido'),
     tipo_servicio_otro: yup
       .string()
@@ -83,23 +88,23 @@ const OrdenServicioCreator = (props) => {
         then: yup.string().required('Requerido'),
       }),
     fecha_programada_instalacion: yup.date().required('Requerido'),
-    hora_programada_instalacion: yup.string().required('Requerido'),
+    hora_programada_instalacion: yup.string().nullable(),
     departamento_id_instalacion: yup.string().required('Requerido'),
     ciudad_id_instalacion: yup.string().required('Requerido'),
-    lugar_id_instalacion: yup.string().required('Requerido'),
-    fecha_programada_desinstalacion: yup.date().required('Requerido'),
-    hora_programada_desinstalacion: yup.string().required('Requerido'),
+    lugar_id_instalacion: yup.string().nullable(),
+    fecha_programada_desinstalacion: yup.date().nullable(),
+    hora_programada_desinstalacion: yup.string().nullable(),
     departamento_id_desinstalacion: yup.string().required('Requerido'),
     ciudad_id_desinstalacion: yup.string().required('Requerido'),
-    lugar_id_desinstalacion: yup.string().required('Requerido'),
-    transportador_id: yup.string().required('Requerido'),
-    placa_trailer: yup.string().required('Requerido'),
-    numero_contenedor: yup.string().required('Requerido'),
-    nombre_conductor: yup.string().required('Requerido'),
+    lugar_id_desinstalacion: yup.string().nullable(),
+    transportador_id: yup.string().nullable(),
+    placa_trailer: yup.string().nullable(),
+    numero_contenedor: yup.string().nullable(),
+    nombre_conductor: yup.string().nullable(),
     cedula_conductor: yup
       .string()
       .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
-      .required('Requerido')
+      .nullable()
       .max(
         LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
         mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
@@ -107,7 +112,7 @@ const OrdenServicioCreator = (props) => {
       .min(7, mensajeValidacion('min', 7)),
     celular_conductor: yup
       .string()
-      .required('Requerido')
+      .nullable()
       .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
       .max(
         LONGITUD_MAXIMA_TELEFONOS,
@@ -122,11 +127,18 @@ const OrdenServicioCreator = (props) => {
   useEffect(() => {
     dispatch(onGetColeccionLigeraAsociado());
     dispatch(onGetColeccionLigeraTerceroServicio());
+    dispatch(onGetColeccionLigeraServicio());
   }, [dispatch]);
 
   const updateRutas = (asociado_id) => {
     dispatch(onGetRutas(asociado_id));
   };
+
+  useEffect(() => {
+    if (accion !== 'crear' && selectedRow) {
+      dispatch(onGetRutas(selectedRow.asociado_id));
+    }
+  }, [accion, dispatch, selectedRow]);
 
   return (
     <Scrollbar>
@@ -165,8 +177,8 @@ const OrdenServicioCreator = (props) => {
               : ''
             : '',
           contacto_asociado: selectedRow
-            ? selectedRow.asociado.contacto.nombre
-              ? selectedRow.asociado.nombre
+            ? selectedRow.asociado.contacto
+              ? selectedRow.asociado.contacto
               : ''
             : '',
 
@@ -178,6 +190,11 @@ const OrdenServicioCreator = (props) => {
           cliente_factura: selectedRow
             ? selectedRow.cliente_factura
               ? selectedRow.cliente_factura
+              : ''
+            : '',
+          servicio_id: selectedRow
+            ? selectedRow.servicio_id
+              ? selectedRow.servicio_id
               : ''
             : '',
           tipo_servicio: selectedRow
@@ -313,6 +330,7 @@ const OrdenServicioCreator = (props) => {
             asociados={asociados}
             TIPOS_SERVICIOS={TIPOS_SERVICIOS}
             tercerosServicios={tercerosServicios}
+            servicios={servicios}
             rutas={rutas}
             updateRutas={updateRutas}
           />

@@ -231,7 +231,7 @@ const AsociadoCotnactoLegal = (props) => {
               name='tipo_documento_id'
               inputValue={initialValues.tipo_documento_id}
               label='Tipo de Documento'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -275,7 +275,7 @@ const AsociadoCotnactoLegal = (props) => {
               name='ciudad_expedicion_id'
               inputValue={initialValues.ciudad_expedicion_id}
               label='Ciudad de Expedición'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               required
               disabled={disabled}
@@ -322,7 +322,7 @@ const AsociadoCotnactoLegal = (props) => {
               name='ciudad_id'
               inputValue={initialValues.ciudad_id}
               label='Ciudad'
-              autoHighlight
+              //autoHighlight
               className={classes.myTextField}
               disabled={disabled}
             />

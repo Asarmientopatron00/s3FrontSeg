@@ -24,6 +24,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import ConsultaCotizacionCreador from './../ConsultaCotizacion/ConsultaCotizacionCreador';
+import ConsultaCotizacionProductoCreador from './../ConsultaCotizacion/ConsultaCotizacionProductoCreador';
 import AprobacionCotizacionCreador from './AprobacionCotizacionCreador';
 import {onGetColeccion} from '../../../redux/actions/CotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -79,6 +80,14 @@ const cells = [
     label: 'Fecha Solicitud',
     value: (value) =>
       new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'tipo_cotizacion',
+    typeHead: 'string',
+    label: 'Tipo Cotización',
+    value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
@@ -608,6 +617,7 @@ const AprobacionCotizacion = (props) => {
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
+  const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
 
   let columnasMostradasInicial = [];
 
@@ -668,6 +678,7 @@ const AprobacionCotizacion = (props) => {
         documentoFiltro,
         fechaFiltro,
         'ENV',
+        true,
       ),
     );
   }, [
@@ -789,13 +800,15 @@ const AprobacionCotizacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAprobacionCotizacion = (id) => {
+  const onOpenViewAprobacionCotizacion = (id, tipo_cotizacion) => {
+    setTipoCotizacion(tipo_cotizacion);
     setAprobacionCotizacionSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onOpenAprobacionCotizacion = (id) => {
+  const onOpenAprobacionCotizacion = (id, tipo_cotizacion) => {
+    setTipoCotizacion(tipo_cotizacion);
     setAprobacionCotizacionSeleccionado(id);
     setAccion('aprobar');
     setShowForm(true);
@@ -960,7 +973,10 @@ const AprobacionCotizacion = (props) => {
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   onClick={() =>
-                                    onOpenViewAprobacionCotizacion(row.id)
+                                    onOpenViewAprobacionCotizacion(
+                                      row.id,
+                                      row.tipo_cotizacion,
+                                    )
                                   }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
@@ -970,7 +986,10 @@ const AprobacionCotizacion = (props) => {
                                 title={<IntlMessages id='boton.aprobar' />}>
                                 <LibraryAddCheckIcon
                                   onClick={() =>
-                                    onOpenAprobacionCotizacion(row.id)
+                                    onOpenAprobacionCotizacion(
+                                      row.id,
+                                      row.tipo_cotizacion,
+                                    )
                                   }
                                   className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
                               </Tooltip>
@@ -1069,8 +1088,20 @@ const AprobacionCotizacion = (props) => {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Cambiar Densidad"
       /> */}
-      {showForm && accion === 'ver' ? (
+      {showForm && accion === 'ver' && tipoCotizacion === 'Servicios' ? (
         <ConsultaCotizacionCreador
+          showForm={showForm}
+          consultaCotizacion={aprobacionCotizacionSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          updateColeccion={updateColeccion}
+          titulo={titulo}
+        />
+      ) : (
+        ''
+      )}
+      {showForm && accion === 'ver' && tipoCotizacion === 'Sellos' ? (
+        <ConsultaCotizacionProductoCreador
           showForm={showForm}
           consultaCotizacion={aprobacionCotizacionSeleccionado}
           accion={accion}
@@ -1086,6 +1117,7 @@ const AprobacionCotizacion = (props) => {
           showForm={showForm}
           aprobacionCotizacion={aprobacionCotizacionSeleccionado}
           accion={accion}
+          tipoCotizacion={tipoCotizacion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}

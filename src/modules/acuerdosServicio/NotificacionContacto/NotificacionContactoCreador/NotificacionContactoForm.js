@@ -196,7 +196,7 @@ const NotificacionContacto = (props) => {
             name='evento_notificacion_id'
             inputValue={initialValues.evento_notificacion_id}
             label='Evento'
-            autoHighlight
+            //autoHighlight
             className={classes.myTextField}
             required
             disabled={disabled}

@@ -4,7 +4,7 @@ import {makeStyles} from '@material-ui/core/styles';
 // import AppContext from '../../../@crema/utility/AppContext';
 // import {ThemeMode} from '../../constants/AppEnums';
 import Hidden from '@material-ui/core/Hidden';
-
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 const AppLogo = () => {
   // const {themeMode} = useContext(AppContext);
   const useStyles = makeStyles(() => ({
@@ -23,7 +23,11 @@ const AppLogo = () => {
   }));
   const classes = useStyles();
   return (
-    <Box className={classes.logoRoot} component='a' href='/'>
+    <Box
+      className={classes.logoRoot}
+      component='a'
+      href='/'
+      title={defaultConfig.version}>
       <Hidden smUp>
         <img
           className={classes.logo}

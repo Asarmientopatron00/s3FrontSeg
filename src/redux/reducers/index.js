@@ -5,7 +5,6 @@ import UserList from './UserList';
 import Auth from './Auth';
 import Common from './Common';
 import UsuarioReducer from './UsuarioReducer';
-import ContactApp from './ContactApp';
 import AsociadoReducer from './AsociadoReducer';
 import RolReducer from './RolReducer';
 import Close from './Close';
@@ -49,6 +48,20 @@ import EventoBitacoraEquipoReducer from './EventoBitacoraEquipoReducer';
 import OrdenServicioReducer from './OrdenServicioReducer';
 import OrdenServicioDocumentoReducer from './OrdenServicioDocumentoReducer';
 import InformacionEquipoReducer from './InformacionEquipoReducer';
+import ProductoReducer from './ProductoReducer';
+import PedidoReducer from './PedidoReducer';
+import DetallePedidoReducer from './DetallePedidoReducer';
+import TipoProductoReducer from './TipoProductoReducer';
+import ColorReducer from './ColorReducer';
+import RecursoTecnicoReducer from './RecursoTecnicoReducer';
+import HorarioRecursoTecnicoReducer from './HorarioRecursoTecnicoReducer';
+import SolicitudCotizacionProductoReducer from './SolicitudCotizacionProductoReducer';
+import DetalleSolicitudCotizacionProductoReducer from './DetalleSolicitudCotizacionProductoReducer';
+import CotizacionProductoReducer from './CotizacionProductoReducer';
+import DetalleCotizacionProductoReducer from './DetalleCotizacionProductoReducer';
+import BitacoraEquipoReducer from './BitacoraEquipoReducer';
+import ODSTFacturarServicioReducer from './ODSTFacturarServicioReducer';
+import ODSTFacturarClienteReducer from './ODSTFacturarClienteReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -57,7 +70,6 @@ const reducers = (history) =>
     auth: Auth,
     userList: UserList,
     common: Common,
-    contactApp: ContactApp,
     usuarioReducer: UsuarioReducer,
     asociadoReducer: AsociadoReducer,
     close: Close,
@@ -102,5 +114,20 @@ const reducers = (history) =>
     ordenServicioReducer: OrdenServicioReducer,
     ordenServicioDocumentoReducer: OrdenServicioDocumentoReducer,
     informacionEquipoReducer: InformacionEquipoReducer,
+    productoReducer: ProductoReducer,
+    pedidoReducer: PedidoReducer,
+    detallePedidoReducer: DetallePedidoReducer,
+    tipoProductoReducer: TipoProductoReducer,
+    colorReducer: ColorReducer,
+    recursoTecnicoReducer: RecursoTecnicoReducer,
+    horarioRecursoTecnicoReducer: HorarioRecursoTecnicoReducer,
+    solicitudCotizacionProductoReducer: SolicitudCotizacionProductoReducer,
+    detalleSolicitudCotizacionProductoReducer:
+      DetalleSolicitudCotizacionProductoReducer,
+    cotizacionProductoReducer: CotizacionProductoReducer,
+    detalleCotizacionProductoReducer: DetalleCotizacionProductoReducer,
+    bitacoraEquipoReducer: BitacoraEquipoReducer,
+    oDSTFacturarServicioReducer: ODSTFacturarServicioReducer,
+    oDSTFacturarClienteReducer: ODSTFacturarClienteReducer,
   });
 export default reducers;

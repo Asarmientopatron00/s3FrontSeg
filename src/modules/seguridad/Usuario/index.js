@@ -86,7 +86,7 @@ const cells = [
     label: 'Identificación',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
     id: 'nombre',
