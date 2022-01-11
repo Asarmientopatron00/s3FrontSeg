@@ -175,7 +175,9 @@ const AceptacionOrdenServicioCreator = (props) => {
                   const data_aux = {
                     id: data.id,
                     observaciones_rechazo_instalacion:
-                      data.observaciones_rechazo,
+                      data.indicativo_aceptacion === 'S'
+                        ? ''
+                        : data.observaciones_rechazo,
                     indicativo_aceptacion_instalacion:
                       data.indicativo_aceptacion === 'S' ? 'A' : 'R',
                     tipo_proceso: 'Instalación',
@@ -189,7 +191,9 @@ const AceptacionOrdenServicioCreator = (props) => {
                   const data_aux = {
                     id: data.id,
                     observaciones_rechazo_desinstalacion:
-                      data.observaciones_rechazo,
+                      data.indicativo_aceptacion === 'S'
+                        ? ''
+                        : data.observaciones_rechazo,
                     indicativo_aceptacion_desinstalacion:
                       data.indicativo_aceptacion === 'S' ? 'A' : 'R',
                     tipo_proceso: 'Desinstalación',

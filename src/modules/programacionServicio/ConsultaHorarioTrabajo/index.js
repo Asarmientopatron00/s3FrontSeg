@@ -24,11 +24,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import HistoriaEquipoCreador from './HistoriaEquipoCreador';
+import ConsultaHorarioTrabajoCreador from './ConsultaHorarioTrabajoCreador';
 import {
-  onGetColeccionInformacion,
+  onGetColeccionConsulta,
   onDelete,
-} from '../../../redux/actions/InformacionEquipoAction';
+} from '../../../redux/actions/HorarioRecursoTecnicoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -38,7 +38,8 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_EQUIPOS} from '../../../shared/constants/ListasValores';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 // import {MessageView} from '../../../@crema';
 
@@ -70,15 +71,23 @@ import {TIPOS_EQUIPOS} from '../../../shared/constants/ListasValores';
 
 const cells = [
   {
-    id: 'numero_serial',
-    typeHead: 'numeric',
-    label: 'Serial',
+    id: 'fecha_horario',
+    typeHead: 'string',
+    label: 'Fecha',
     value: (value) => value,
-    align: 'right',
+    align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'ciudad_evento',
+    id: 'recurso_tecnico',
+    typeHead: 'string',
+    label: 'Nombre Recurso Técnico',
+    value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'ciudad',
     typeHead: 'string',
     label: 'Ciudad',
     value: (value) => value,
@@ -86,27 +95,51 @@ const cells = [
     mostrarInicio: true,
   },
   {
-    id: 'lugar_evento',
+    id: 'hora_inicio_horario',
     typeHead: 'string',
-    label: 'Lugar',
+    label: 'Hora Inicio Turno',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'responsable',
+    id: 'hora_final_horario',
     typeHead: 'string',
-    label: 'Responsable',
+    label: 'Hora Final Turno',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'estado_equipo',
-    typeHead: 'string',
-    label: 'Estado',
+    id: 'total_horas_turno',
+    typeHead: 'numeric',
+    label: 'Total Horas Turno',
     value: (value) => value,
-    align: 'left',
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'numero_servicios',
+    typeHead: 'numeric',
+    label: 'Número Servicios Asignados',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'horas_trabajadas',
+    typeHead: 'numeric',
+    label: 'Horas Trabajadas',
+    value: (value) => value,
+    align: 'right',
+    mostrarInicio: true,
+  },
+  {
+    id: 'horas_disponibles',
+    typeHead: 'numeric',
+    label: 'Horas Disponibles',
+    value: (value) => value,
+    align: 'right',
     mostrarInicio: true,
   },
 ];
@@ -223,6 +256,23 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+  exportButton: {
+    backgroundColor: '#4caf50',
+    color: 'white',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  x: {
+    position: 'absolute',
+    color: '#4caf50',
+    fontSize: '14px',
+    top: '19px',
+    fontWeight: 'bold',
+  },
   createButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
@@ -282,14 +332,13 @@ const EnhancedTableToolbar = (props) => {
   const {
     numSelected,
     titulo,
-    onOpenAddHistoriaEquipo,
+    onOpenAddConsultaHorarioTrabajo,
     handleOpenPopoverColumns,
     queryFilter,
-    serialFiltro,
-    responsableFiltro,
+    nombreFiltro,
     ciudadFiltro,
-    lugarFiltro,
-    estadoFiltro,
+    fecha_desdeFiltro,
+    fecha_hastaFiltro,
     limpiarFiltros,
     permisos,
   } = props;
@@ -328,8 +377,8 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
               {permisos.indexOf('Crear') >= 0 && (
                 <Tooltip
-                  title='Crear HistoriaEquipo'
-                  onClick={onOpenAddHistoriaEquipo}>
+                  title='Crear ConsultaHorarioTrabajo'
+                  onClick={onOpenAddConsultaHorarioTrabajo}>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
@@ -341,19 +390,73 @@ const EnhancedTableToolbar = (props) => {
           </Box>
           <Box className={classes.contenedorFiltros}>
             <TextField
-              label='Serial'
-              name='serialFiltro'
-              id='serialFiltro'
+              label='Recurso Técnico'
+              name='nombreFiltro'
+              id='nombreFiltro'
               onChange={queryFilter}
-              value={serialFiltro}
+              value={nombreFiltro}
             />
-
             <TextField
-              label='Responsable'
-              name='responsableFiltro'
-              id='responsableFiltro'
+              label='Ciudad'
+              name='ciudadFiltro'
+              id='ciudadFiltro'
               onChange={queryFilter}
-              value={responsableFiltro}
+              value={ciudadFiltro}
+            />
+            <Box display='grid'>
+              {permisos.indexOf('Exportar') >= 0 && (
+                <Box display='grid'>
+                  <Box display='flex' mb={2}>
+                    <Tooltip
+                      title='Exportar'
+                      component='a'
+                      className={classes.linkDocumento}
+                      href={
+                        defaultConfig.API_URL +
+                        '/horarios-recursos-tecnicos/exportar?' +
+                        'nombre=' +
+                        nombreFiltro +
+                        '&ciudad=' +
+                        ciudadFiltro +
+                        '&fecha_desde=' +
+                        fecha_desdeFiltro +
+                        '&fecha_hasta=' +
+                        fecha_hastaFiltro
+                      }>
+                      <IconButton
+                        className={classes.exportButton}
+                        aria-label='filter list'>
+                        <Box component='span' className={classes.x}>
+                          X
+                        </Box>
+                        <InsertDriveFileIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              )}
+            </Box>
+            <TextField
+              label='Fecha Desde'
+              name='fecha_desdeFiltro'
+              id='fecha_desdeFiltro'
+              onChange={queryFilter}
+              value={fecha_desdeFiltro}
+              type='date'
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label='Fecha Hasta'
+              name='fecha_hastaFiltro'
+              id='fecha_hastaFiltro'
+              onChange={queryFilter}
+              value={fecha_hastaFiltro}
+              type='date'
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <Box display='grid'>
               <Box display='flex' mb={2}>
@@ -366,28 +469,6 @@ const EnhancedTableToolbar = (props) => {
                 </Tooltip>
               </Box>
             </Box>
-            <TextField
-              label='Ciudad'
-              name='ciudadFiltro'
-              id='ciudadFiltro'
-              onChange={queryFilter}
-              value={ciudadFiltro}
-            />
-            <TextField
-              label='Lugar'
-              name='lugarFiltro'
-              id='lugarFiltro'
-              onChange={queryFilter}
-              value={lugarFiltro}
-            />
-            <Box></Box>
-            <TextField
-              label='Estado'
-              name='estadoFiltro'
-              id='estadoFiltro'
-              onChange={queryFilter}
-              value={estadoFiltro}
-            />
           </Box>
         </>
       )}
@@ -414,15 +495,14 @@ const EnhancedTableToolbar = (props) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onOpenAddHistoriaEquipo: PropTypes.func.isRequired,
+  onOpenAddConsultaHorarioTrabajo: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  serialFiltro: PropTypes.string.isRequired,
-  responsableFiltro: PropTypes.string.isRequired,
+  nombreFiltro: PropTypes.string.isRequired,
   ciudadFiltro: PropTypes.string.isRequired,
-  //lugarFiltro: PropTypes.string.isRequired,
-  //estadoFiltro: PropTypes.string.isRequired,
+  fecha_desdeFiltro: PropTypes.string.isRequired,
+  fecha_hastaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -519,30 +599,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const HistoriaEquipo = (props) => {
+const ConsultaHorarioTrabajo = (props) => {
   const [showForm, setShowForm] = useState(false);
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState();
+  const [order, setOrder] = React.useState('desc');
+  const [orderBy, setOrderBy] = React.useState('fecha_horario');
+  const [orderByToSend, setOrderByToSend] =
+    React.useState('fecha_horario:desc');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
   const dense = true; //Borrar cuando se use el change
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
-  const [historiaEquipoSeleccionado, setHistoriaEquipoSeleccionado] =
-    useState(0);
+  const [
+    consultaHorarioTrabajoSeleccionado,
+    setConsultaHorarioTrabajoSeleccionado,
+  ] = useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({informacionEquipoReducer}) => informacionEquipoReducer,
+    ({horarioRecursoTecnicoReducer}) => horarioRecursoTecnicoReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [serialFiltro, setSerialFiltro] = useState('');
-  const [responsableFiltro, setResponsableFiltro] = useState('');
+  const [nombreFiltro, setNombreFiltro] = useState('');
   const [ciudadFiltro, setCiudadFiltro] = useState('');
-  const [lugarFiltro, setLugarFiltro] = useState('');
-  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [fecha_desdeFiltro, setFecha_desdeFiltro] = useState('');
+  const [fecha_hastaFiltro, setFecha_hastaFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -597,70 +679,63 @@ const HistoriaEquipo = (props) => {
 
   useEffect(() => {
     dispatch(
-      onGetColeccionInformacion(
+      onGetColeccionConsulta(
         page,
         rowsPerPage,
-        serialFiltro,
-        responsableFiltro,
-        ciudadFiltro,
-        lugarFiltro,
-        estadoFiltro,
         orderByToSend,
+        nombreFiltro,
+        ciudadFiltro,
+        fecha_desdeFiltro,
+        fecha_hastaFiltro,
       ),
     );
   }, [
     dispatch,
     page,
     rowsPerPage,
-    serialFiltro,
-    responsableFiltro,
-    ciudadFiltro,
-    lugarFiltro,
-    estadoFiltro,
     orderByToSend,
+    nombreFiltro,
+    ciudadFiltro,
+    fecha_desdeFiltro,
+    fecha_hastaFiltro,
   ]);
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccionInformacion(
+      onGetColeccionConsulta(
         1,
         rowsPerPage,
-        serialFiltro,
-        responsableFiltro,
-        ciudadFiltro,
-        lugarFiltro,
-        estadoFiltro,
         orderByToSend,
+        nombreFiltro,
+        ciudadFiltro,
+        fecha_desdeFiltro,
+        fecha_hastaFiltro,
       ),
     );
   };
   useEffect(() => {
     setPage(1);
   }, [
-    serialFiltro,
-    responsableFiltro,
+    nombreFiltro,
     ciudadFiltro,
-    lugarFiltro,
-    estadoFiltro,
+    fecha_desdeFiltro,
+    fecha_hastaFiltro,
     orderByToSend,
   ]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'serialFiltro':
-        setSerialFiltro(e.target.value);
-        break;
-      case 'responsableFiltro':
-        setResponsableFiltro(e.target.value);
+      case 'nombreFiltro':
+        setNombreFiltro(e.target.value);
         break;
       case 'ciudadFiltro':
         setCiudadFiltro(e.target.value);
         break;
-      case 'lugarFiltro':
-        setLugarFiltro(e.target.value);
+      case 'fecha_desdeFiltro':
+        setFecha_desdeFiltro(e.target.value);
         break;
-      case 'estadoFiltro':
-        setEstadoFiltro(e.target.value);
+      case 'fecha_hastaFiltro':
+        setFecha_hastaFiltro(e.target.value);
         break;
       default:
         break;
@@ -668,11 +743,10 @@ const HistoriaEquipo = (props) => {
   };
 
   const limpiarFiltros = () => {
-    setSerialFiltro('');
-    setResponsableFiltro('');
+    setNombreFiltro('');
     setCiudadFiltro('');
-    setLugarFiltro('');
-    setEstadoFiltro('');
+    setFecha_desdeFiltro('');
+    setFecha_hastaFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -691,8 +765,8 @@ const HistoriaEquipo = (props) => {
     }
   };
 
-  const onOpenEditHistoriaEquipo = (id) => {
-    setHistoriaEquipoSeleccionado(id);
+  const onOpenEditConsultaHorarioTrabajo = (id) => {
+    setConsultaHorarioTrabajoSeleccionado(id);
     setAccion('editar');
     setShowForm(true);
   };
@@ -733,13 +807,13 @@ const HistoriaEquipo = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewHistoriaEquipo = (id) => {
-    setHistoriaEquipoSeleccionado(id);
+  const onOpenViewConsultaHorarioTrabajo = (id) => {
+    setConsultaHorarioTrabajoSeleccionado(id);
     setAccion('ver');
     setShowForm(true);
   };
 
-  const onDeleteHistoriaEquipo = (id) => {
+  const onDeleteConsultaHorarioTrabajo = (id) => {
     Swal.fire({
       title: 'Confirmar',
       text: '¿Seguro que desea eliminar el equipo?',
@@ -765,15 +839,15 @@ const HistoriaEquipo = (props) => {
     });
   };
 
-  const onOpenAddHistoriaEquipo = () => {
-    setHistoriaEquipoSeleccionado(0);
+  const onOpenAddConsultaHorarioTrabajo = () => {
+    setConsultaHorarioTrabajoSeleccionado(0);
     setAccion('crear');
     setShowForm(true);
   };
 
   const handleOnClose = () => {
     setShowForm(false);
-    setHistoriaEquipoSeleccionado(0);
+    setConsultaHorarioTrabajoSeleccionado(0);
     setAccion('ver');
   };
   // const handleRequestSort = (event, property) => {
@@ -822,13 +896,14 @@ const HistoriaEquipo = (props) => {
         {permisos && (
           <EnhancedTableToolbar
             numSelected={selected.length}
-            onOpenAddHistoriaEquipo={onOpenAddHistoriaEquipo}
+            onOpenAddConsultaHorarioTrabajo={onOpenAddConsultaHorarioTrabajo}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            responsableFiltro={responsableFiltro}
             ciudadFiltro={ciudadFiltro}
-            serialFiltro={serialFiltro}
+            fecha_desdeFiltro={fecha_desdeFiltro}
+            fecha_hastaFiltro={fecha_hastaFiltro}
+            nombreFiltro={nombreFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -910,7 +985,7 @@ const HistoriaEquipo = (props) => {
                                 title={<IntlMessages id='boton.editar' />}>
                                 <EditIcon
                                   onClick={() =>
-                                    onOpenEditHistoriaEquipo(row.id)
+                                    onOpenEditConsultaHorarioTrabajo(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
                               </Tooltip>
@@ -919,7 +994,7 @@ const HistoriaEquipo = (props) => {
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
                                   onClick={() =>
-                                    onOpenViewHistoriaEquipo(row.id)
+                                    onOpenViewConsultaHorarioTrabajo(row.id)
                                   }
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
@@ -928,7 +1003,9 @@ const HistoriaEquipo = (props) => {
                               <Tooltip
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
-                                  onClick={() => onDeleteHistoriaEquipo(row.id)}
+                                  onClick={() =>
+                                    onDeleteConsultaHorarioTrabajo(row.id)
+                                  }
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
@@ -1027,14 +1104,13 @@ const HistoriaEquipo = (props) => {
         label="Cambiar Densidad"
       /> */}
       {showForm ? (
-        <HistoriaEquipoCreador
+        <ConsultaHorarioTrabajoCreador
           showForm={showForm}
-          historiaEquipo={historiaEquipoSeleccionado}
+          consultaHorarioTrabajo={consultaHorarioTrabajoSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          TIPOS_EQUIPOS={TIPOS_EQUIPOS}
         />
       ) : (
         ''
@@ -1080,4 +1156,4 @@ const HistoriaEquipo = (props) => {
   );
 };
 
-export default HistoriaEquipo;
+export default ConsultaHorarioTrabajo;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
@@ -9,7 +9,7 @@ import Slide from '@material-ui/core/Slide';
 import DetalleCotizacionForm from './DetalleCotizacionProductoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {
   CREATE_DETALLE_COTIZACION_PRODUCTO,
   UPDATE_DETALLE_COTIZACION_PRODUCTO,
@@ -83,8 +83,8 @@ const DetalleCotizacionCreator = (props) => {
     }
   }, [selectedRow, accion]);
 
-  let dias_viajes = useRef();
-  dias_viajes = useSelector(({tarifaReducer}) => tarifaReducer.dias_viajes);
+  // let dias_viajes = useRef();
+  // dias_viajes = useSelector(({tarifaReducer}) => tarifaReducer.dias_viajes);
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {

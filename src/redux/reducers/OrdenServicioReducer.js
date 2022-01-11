@@ -29,7 +29,6 @@ const initialState = {
   consecutivo: [],
   asociados: [],
   tercerosServicios: [],
-  servicios: [],
   rutas: [],
   ordenesEnviar: [],
 };

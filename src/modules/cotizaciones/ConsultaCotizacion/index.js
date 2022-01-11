@@ -470,10 +470,9 @@ const EnhancedTableToolbar = (props) => {
                           defaultConfig.API_URL +
                           '/cotizaciones-servicios/consulta' +
                           '?idsservicios=' +
-                          idsServicios
-                          // +
-                          // '&idsproductos=' +
-                          // idsProductos
+                          idsServicios +
+                          '&idsproductos=' +
+                          idsProductos
                         }>
                         <IconButton
                           className={classes.exportButton}

@@ -764,7 +764,19 @@ const ProgramacionOrdenServicio = (props) => {
         ciudadFiltro,
       ),
     );
-  }, [dispatch, page, rowsPerPage, orderByToSend]);
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    ordenServicioFiltro,
+    orderByToSend,
+    nombreFiltro,
+    fechaOSInicialFiltro,
+    fechaOSFinalFiltro,
+    fechaProgInicialFiltro,
+    fechaProgFinalFiltro,
+    ciudadFiltro,
+  ]);
 
   const updateColeccion = () => {
     dispatch(
@@ -897,11 +909,11 @@ const ProgramacionOrdenServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewProgramacionOrdenServicio = (id) => {
-    setProgramacionOrdenServicioSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
+  // const onOpenViewProgramacionOrdenServicio = (id) => {
+  //   setProgramacionOrdenServicioSeleccionado(id);
+  //   setAccion('ver');
+  //   setShowForm(true);
+  // };
 
   const handleOnClose = () => {
     setShowForm(false);

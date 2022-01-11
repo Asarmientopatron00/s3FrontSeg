@@ -738,7 +738,17 @@ const AceptacionOrdenServicio = (props) => {
         ciudadFiltro,
       ),
     );
-  }, [dispatch, page, rowsPerPage, orderByToSend]);
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    ordenServicioFiltro,
+    orderByToSend,
+    nombreFiltro,
+    fechaProgInicialFiltro,
+    fechaProgFinalFiltro,
+    ciudadFiltro,
+  ]);
 
   const updateColeccion = () => {
     dispatch(
@@ -863,11 +873,11 @@ const AceptacionOrdenServicio = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewAceptacionOrdenServicio = (id) => {
-    setAceptacionOrdenServicioSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
+  // const onOpenViewAceptacionOrdenServicio = (id) => {
+  //   setAceptacionOrdenServicioSeleccionado(id);
+  //   setAccion('ver');
+  //   setShowForm(true);
+  // };
 
   const handleOnClose = () => {
     setShowForm(false);

@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import AppHeader from './AppHeader';
 import AppSidebar from './AppSidebar';
 import {ContentView} from '../../../index';
-import Hidden from '@material-ui/core/Hidden';
+// import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
 import useStyles from './index.style';
 import clsx from 'clsx';

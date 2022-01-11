@@ -5,14 +5,14 @@ import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
 import {
-  onShowHistoria,
+  onShowConsulta,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/InformacionEquipoAction';
+} from '../../../../redux/actions/HorarioRecursoTecnicoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
-import HistoriaEquipoForm from './HistoriaEquipoForm';
+import ConsultaHorarioTrabajoForm from './ConsultaHorarioTrabajoForm';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import {makeStyles} from '@material-ui/core/styles/index';
 import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
@@ -47,13 +47,12 @@ const validationSchema = yup.object({
   equipo_desechable: yup.string().required('Requerido'),
 });
 
-const HistoriaEquipoCreator = (props) => {
+const ConsultaHorarioTrabajoCreator = (props) => {
   const {
-    historiaEquipo,
+    consultaHorarioTrabajo,
     handleOnClose,
     accion,
     updateColeccion,
-    TIPOS_EQUIPOS,
     titulo,
   } = props;
 
@@ -78,7 +77,8 @@ const HistoriaEquipoCreator = (props) => {
   const [showForm, setShowForm] = useState(false);
   let selectedRow = useRef();
   selectedRow = useSelector(
-    ({informacionEquipoReducer}) => informacionEquipoReducer.selectedRow,
+    ({horarioRecursoTecnicoReducer}) =>
+      horarioRecursoTecnicoReducer.selectedRow,
   );
 
   const initializeSelectedRow = () => {
@@ -104,9 +104,9 @@ const HistoriaEquipoCreator = (props) => {
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShowHistoria(historiaEquipo));
+      dispatch(onShowConsulta(consultaHorarioTrabajo));
     }
-  }, [accion, dispatch, historiaEquipo]);
+  }, [accion, dispatch, consultaHorarioTrabajo]);
 
   return (
     showForm && (
@@ -127,37 +127,36 @@ const HistoriaEquipoCreator = (props) => {
             validateOnBlur={false}
             initialValues={{
               id: selectedRow ? selectedRow.id : '',
-              numero_serial: selectedRow ? selectedRow.numero_serial : '',
-              nombre_equipo: selectedRow ? selectedRow.nombre_equipo : '',
-              tipo_equipo: selectedRow ? selectedRow.tipo_equipo : '',
-              fecha_compra_equipo: selectedRow
-                ? selectedRow.fecha_compra_equipo
+              recurso_tecnico_id: selectedRow
+                ? selectedRow.recurso_tecnico_id
                 : '',
-              fecha_activacion_equipo: selectedRow
-                ? selectedRow.fecha_activacion_equipo
-                : '',
+              numero_documento: selectedRow ? selectedRow.numero_documento : '',
+              nombre_completo: selectedRow ? selectedRow.nombre_completo : '',
               ciudad: selectedRow ? selectedRow.ciudad : '',
-              lugar: selectedRow ? selectedRow.lugar : '',
-              responsable: selectedRow ? selectedRow.responsable : '',
-              ultimo_mantenimiento_equipo: selectedRow
-                ? selectedRow.ultimo_mantenimiento_equipo
+              tipo_contrato: selectedRow
+                ? selectedRow.tipo_contrato === 'F'
+                  ? 'Fijo'
+                  : selectedRow.tipo_contrato === 'S'
+                  ? 'Servicios'
+                  : 'Tercero'
                 : '',
-              dias_equipo: selectedRow ? selectedRow.dias_equipo : '',
-              horas_equipo: selectedRow ? selectedRow.horas_equipo : '',
-              horasTrabajo: selectedRow ? selectedRow.horasTrabajo : '',
-              trabajo: selectedRow ? selectedRow.trabajo : '',
-              horasMantenimiento: selectedRow
-                ? selectedRow.horasMantenimiento
+              fecha_horario: selectedRow ? selectedRow.fecha_horario : '',
+              hora_inicio_horario: selectedRow
+                ? selectedRow.hora_inicio_horario
                 : '',
-              mantenimiento: selectedRow ? selectedRow.mantenimiento : '',
-              horasOtro: selectedRow ? selectedRow.horasOtro : '',
-              otros: selectedRow ? selectedRow.otros : '',
+              hora_final_horario: selectedRow
+                ? selectedRow.hora_final_horario
+                : '',
+              total_horas_turno: selectedRow
+                ? selectedRow.total_horas_turno
+                : '',
+              horas_trabajadas: selectedRow ? selectedRow.horas_trabajadas : '',
               horas_disponibles: selectedRow
                 ? selectedRow.horas_disponibles
                 : '',
-              detalles: selectedRow ? selectedRow.detalles : '',
-              estado_servicio: selectedRow ? selectedRow.estado_servicio : '',
-
+              horas_extras: selectedRow ? selectedRow.horas_extras : '',
+              horasTrabajo: selectedRow ? selectedRow.horasTrabajo : '',
+              ordenes: selectedRow ? selectedRow.ordenes : [],
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
@@ -180,14 +179,13 @@ const HistoriaEquipoCreator = (props) => {
               // updateColeccion();
             }}>
             {({values, initialValues, setFieldValue, errors}) => (
-              <HistoriaEquipoForm
+              <ConsultaHorarioTrabajoForm
                 values={values}
                 setFieldValue={setFieldValue}
                 handleOnClose={handleOnClose}
                 titulo={titulo}
                 accion={accion}
                 initialValues={initialValues}
-                TIPOS_EQUIPOS={TIPOS_EQUIPOS}
                 errors={errors}
               />
             )}
@@ -198,4 +196,4 @@ const HistoriaEquipoCreator = (props) => {
   );
 };
 
-export default HistoriaEquipoCreator;
+export default ConsultaHorarioTrabajoCreator;

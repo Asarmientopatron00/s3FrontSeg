@@ -419,6 +419,7 @@ const PedidoForm = (props) => {
                         return estado;
                       }
                     }
+                    return '';
                   })}
                   name='estado_pedido'
                   inputValue={initialValues.estado_pedido}

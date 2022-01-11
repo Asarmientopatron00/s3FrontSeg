@@ -2,25 +2,19 @@ import React, {useEffect, useState} from 'react';
 import {
   Box,
   Button,
-  RadioGroup,
-  Radio,
   Table,
   TableHead,
   TableRow,
   TableCell,
   TableBody,
 } from '@material-ui/core';
-import {Field, Form, useField} from 'formik';
+import {Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
-import FormControl from '@material-ui/core/FormControl';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -36,15 +30,8 @@ const MyTextField = (props) => {
 };
 
 const HistoriaEquipoForm = (props) => {
-  const {
-    handleOnClose,
-    accion,
-    values,
-    initialValues,
-    TIPOS_EQUIPOS,
-    titulo,
-    errors,
-  } = props;
+  const {handleOnClose, accion, values, initialValues, TIPOS_EQUIPOS, titulo} =
+    props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {

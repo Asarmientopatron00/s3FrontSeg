@@ -547,12 +547,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SolicitudCotizacionProducto = (props) => {
-  const [showForm, setShowForm] = useState(false);
-  const [accion, setAccion] = useState('ver');
-  const [
-    solicitudCotizacionProductoSeleccionado,
-    setSolicitudCotizacionProductoSeleccionado,
-  ] = useState(0);
+  // const [showForm, setShowForm] = useState(false);
+  // const [accion, setAccion] = useState('ver');
+  // const [
+  //   solicitudCotizacionProductoSeleccionado,
+  //   setSolicitudCotizacionProductoSeleccionado,
+  // ] = useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
@@ -722,17 +722,17 @@ const SolicitudCotizacionProducto = (props) => {
     );
   };
 
-  const onOpenViewAprobacionSolicitudCotizacionProducto = (id) => {
-    setSolicitudCotizacionProductoSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
+  // const onOpenViewAprobacionSolicitudCotizacionProducto = (id) => {
+  //   setSolicitudCotizacionProductoSeleccionado(id);
+  //   setAccion('ver');
+  //   setShowForm(true);
+  // };
 
-  const handleOnClose = () => {
-    setShowForm(false);
-    setSolicitudCotizacionProductoSeleccionado(0);
-    setAccion('ver');
-  };
+  // const handleOnClose = () => {
+  //   setShowForm(false);
+  //   setSolicitudCotizacionProductoSeleccionado(0);
+  //   setAccion('ver');
+  // };
 
   const showAllColumns = () => {
     let aux = columnasMostradas;

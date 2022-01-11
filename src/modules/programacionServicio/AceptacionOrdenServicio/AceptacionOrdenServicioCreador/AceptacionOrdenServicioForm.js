@@ -279,7 +279,7 @@ const AceptacionOrdenServicioForm = (props) => {
               className={classes.myTextField}
               label='Causa Rechazo'
               name='observaciones_rechazo'
-              disabled={disabled}
+              disabled={values.indicativo_aceptacion === 'S'}
               multiline
               required={values.indicativo_aceptacion === 'N'}
             />

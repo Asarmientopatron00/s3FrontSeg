@@ -67,7 +67,12 @@ const ProgramacionOrdenServicioCreator = (props) => {
     dispatch(
       onGetColeccionLigeraOSEquipo(selectedRow.departamento_id, selectedRow.id),
     );
-  }, [selectedRow.departamento_id, selectedRow.selected_row, dispatch]);
+  }, [
+    selectedRow.departamento_id,
+    selectedRow.selected_row,
+    dispatch,
+    selectedRow.id,
+  ]);
 
   const recursosTecnicos = useSelector(
     ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
@@ -181,7 +186,7 @@ const ProgramacionOrdenServicioCreator = (props) => {
               setSubmitting(true);
               if (selectedRow) {
                 if (data.tipo_servicio === 'Instalación') {
-                  const data_aux = {
+                  let data_aux = {
                     id: data.id,
                     recurso_id_instalacion: data.recurso_id,
                     observaciones_programacion_instalacion:
@@ -196,9 +201,15 @@ const ProgramacionOrdenServicioCreator = (props) => {
                         : data.indicativo_aceptacion,
                     tipo_proceso: 'Instalación',
                   };
+                  if (data_aux.indicativo_aceptacion_instalacion === 'P') {
+                    data_aux = {
+                      ...data_aux,
+                      observaciones_rechazo_instalacion: '',
+                    };
+                  }
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 } else {
-                  const data_aux = {
+                  let data_aux = {
                     id: data.id,
                     recurso_id_desinstalacion: data.recurso_id,
                     observaciones_programacion_desinstalacion:
@@ -211,6 +222,12 @@ const ProgramacionOrdenServicioCreator = (props) => {
                         : data.indicativo_aceptacion,
                     tipo_proceso: 'Desinstalación',
                   };
+                  if (data_aux.indicativo_aceptacion_desinstalacion === 'P') {
+                    data_aux = {
+                      ...data_aux,
+                      observaciones_rechazo_desinstalacion: '',
+                    };
+                  }
                   dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
                 }
               }
