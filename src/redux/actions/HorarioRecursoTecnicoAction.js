@@ -1,7 +1,9 @@
 import {
   GET_COLECCION_HORARIO_RECURSO_TECNICO,
+  GET_COLECCION_CONSULTA_HORAS_TECNICO,
   GET_COLECCION_LIGERA_HORARIO_RECURSO_TECNICO,
   SHOW_HORARIO_RECURSO_TECNICO,
+  SHOW_HORARIO_CONSULTA_RECURSO_TECNICO,
   UPDATE_HORARIO_RECURSO_TECNICO,
   DELETE_HORARIO_RECURSO_TECNICO,
   CREATE_HORARIO_RECURSO_TECNICO,
@@ -61,6 +63,57 @@ export const onGetColeccion = (
   };
 };
 
+export const onGetColeccionConsulta = (
+  currentPage,
+  rowsPerPage,
+  orderByToSend,
+  nombre,
+  ciudad,
+  fecha_desde,
+  fecha_hasta,
+) => {
+  const {messages} = appIntl();
+  const page = currentPage ? currentPage : 0;
+  const nombreAux = nombre ? nombre : '';
+  const ordenar_por = orderByToSend ? orderByToSend : '';
+  const fecha_desdeAux = fecha_desde ? fecha_desde : '';
+  const fecha_hastaAux = fecha_hasta ? fecha_hasta : '';
+  const ciudadAux = ciudad ? ciudad : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('horarios-recursos-tecnicos/consulta', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          nombre: nombreAux,
+          fecha_desde: fecha_desdeAux,
+          fecha_hasta: fecha_hastaAux,
+          ciudad: ciudadAux,
+          ordenar_por: ordenar_por,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_CONSULTA_HORAS_TECNICO,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
 export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
@@ -102,6 +155,34 @@ export const onShow = (id) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
             dispatch({type: SHOW_HORARIO_RECURSO_TECNICO, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
+  };
+};
+
+export const onShowConsulta = (id) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    if (id !== 0) {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .get('horarios-recursos-tecnicos/consulta/' + id)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({
+              type: SHOW_HORARIO_CONSULTA_RECURSO_TECNICO,
+              payload: data.data,
+            });
           } else {
             dispatch({
               type: FETCH_ERROR,

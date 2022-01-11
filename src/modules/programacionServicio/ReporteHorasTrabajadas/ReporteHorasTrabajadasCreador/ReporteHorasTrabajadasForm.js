@@ -6,7 +6,6 @@ import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import MyRadioField from '../../../../shared/components/MyRadioField';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);

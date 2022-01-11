@@ -10,7 +10,7 @@ const MyAutoCompleteEquipoSerial = (props) => {
   if (field.value !== '') {
     props.options.forEach((option) => {
       if (option.id === field.value) {
-        myvalueAux = option.nombre;
+        myvalueAux = option.numero_serial;
       }
     });
   }

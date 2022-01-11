@@ -26,7 +26,6 @@ import {
   onGetEnvioCorreos,
   onEnvioCorreos,
 } from '../../../redux/actions/OrdenServicioAction';
-import * as yup from 'yup';
 import format from 'date-fns/format';
 
 // const validationSchema = yup.object({

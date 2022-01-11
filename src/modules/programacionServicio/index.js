@@ -40,6 +40,11 @@ export const programacionServicioConfig = [
         path: ['/reporte-horas-trabajadas'],
         component: React.lazy(() => import('./ReporteHorasTrabajadas')),
       },
+      {
+        exact: true,
+        path: ['/consulta-horario-tecnicos'],
+        component: React.lazy(() => import('./ConsultaHorarioTrabajo')),
+      },
     ],
   },
 ];

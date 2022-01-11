@@ -73,7 +73,6 @@ const AprobacionCotizacionCreator = (props) => {
     } else {
       setSelectedRow(selectedRowProducto);
     }
-    console.log(selectedRow);
   }, [selectedRowServicio, selectedRowProducto, tipoCotizacion]);
 
   const initializeSelectedRow = () => {

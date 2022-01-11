@@ -738,7 +738,17 @@ const ReporteHorasTrabajadas = (props) => {
         ciudadFiltro,
       ),
     );
-  }, [dispatch, page, rowsPerPage, orderByToSend]);
+  }, [
+    dispatch,
+    page,
+    rowsPerPage,
+    ordenServicioFiltro,
+    orderByToSend,
+    nombreFiltro,
+    fechaProgInicialFiltro,
+    fechaProgFinalFiltro,
+    ciudadFiltro,
+  ]);
 
   const updateColeccion = () => {
     dispatch(
@@ -863,11 +873,11 @@ const ReporteHorasTrabajadas = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewReporteHorasTrabajadas = (id) => {
-    setReporteHorasTrabajadasSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
+  // const onOpenViewReporteHorasTrabajadas = (id) => {
+  //   setReporteHorasTrabajadasSeleccionado(id);
+  //   setAccion('ver');
+  //   setShowForm(true);
+  // };
 
   const handleOnClose = () => {
     setShowForm(false);

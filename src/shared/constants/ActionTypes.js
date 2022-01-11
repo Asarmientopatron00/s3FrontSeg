@@ -382,9 +382,13 @@ export const CREATE_RECURSO_TECNICO = 'create_recurso_tecnico';
 export const DELETE_RECURSO_TECNICO = 'delete_recurso_tecnico';
 export const GET_COLECCION_HORARIO_RECURSO_TECNICO =
   'get_coleccion_horario_recurso_tecnico';
+export const GET_COLECCION_CONSULTA_HORAS_TECNICO =
+  'get_coleccion_consulta_horas_tecnico';
 export const GET_COLECCION_LIGERA_HORARIO_RECURSO_TECNICO =
   'get_coleccion_ligera_horario_recurso_tecnico';
 export const SHOW_HORARIO_RECURSO_TECNICO = 'show_horario_recurso_tecnico';
+export const SHOW_HORARIO_CONSULTA_RECURSO_TECNICO =
+  'show_horario_consulta_recurso_tecnico';
 export const UPDATE_HORARIO_RECURSO_TECNICO = 'update_horario_recurso_tecnico';
 export const CREATE_HORARIO_RECURSO_TECNICO = 'create_horario_recurso_tecnico';
 export const DELETE_HORARIO_RECURSO_TECNICO = 'delete_horario_recurso_tecnico';

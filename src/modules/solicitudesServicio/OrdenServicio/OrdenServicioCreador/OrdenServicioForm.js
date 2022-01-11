@@ -162,7 +162,6 @@ const OrdenServicioForm = (props) => {
     servicios,
     updateRutas,
     rutas,
-    touched,
   } = props;
   const [disabled, setDisabled] = useState(false);
   const [validFacturarA, setValidFacturarA] = useState(false);
