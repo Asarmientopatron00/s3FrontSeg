@@ -86,6 +86,85 @@ export const onGetColeccion = (
   };
 };
 
+export const onGetColeccion2 = (
+  currentPage,
+  rowsPerPage,
+  orderByToSend,
+  fechaOSIFiltro,
+  fechaOSFFiltro,
+  fechaProgIFiltro,
+  fechaProgFFiltro,
+  fechaEjecIFiltro,
+  fechaEjecFFiltro,
+  odsIFiltro,
+  odsFFiltro,
+  ciudadIFiltro,
+  ciudadFFiltro,
+  estadoFiltro,
+  nombreAsociadoFiltro,
+  nombreTransportadoraFiltro,
+) => {
+  const {messages} = appIntl();
+  const page = currentPage ? currentPage : 0;
+  const ordenar_por = orderByToSend ? orderByToSend : '';
+  const fechaOSIFiltroAux = fechaOSIFiltro ? fechaOSIFiltro : '';
+  const fechaOSFFiltroAux = fechaOSFFiltro ? fechaOSFFiltro : '';
+  const fechaProgIFiltroAux = fechaProgIFiltro ? fechaProgIFiltro : '';
+  const fechaProgFFiltroAux = fechaProgFFiltro ? fechaProgFFiltro : '';
+  const fechaEjecIFiltroAux = fechaEjecIFiltro ? fechaEjecIFiltro : '';
+  const fechaEjecFFiltroAux = fechaEjecFFiltro ? fechaEjecFFiltro : '';
+  const odsIFiltroAux = odsIFiltro ? odsIFiltro : '';
+  const odsFFiltroAux = odsFFiltro ? odsFFiltro : '';
+  const ciudadIFiltroAux = ciudadIFiltro ? ciudadIFiltro : '';
+  const ciudadFFiltroAux = ciudadFFiltro ? ciudadFFiltro : '';
+  const estadoFiltroAux = estadoFiltro ? estadoFiltro : '';
+  const nombreAsociadoFiltroAux = nombreAsociadoFiltro
+    ? nombreAsociadoFiltro
+    : '';
+  const nombreTransportadoraFiltroAux = nombreTransportadoraFiltro
+    ? nombreTransportadoraFiltro
+    : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('ordenes-servicios', {
+        params: {
+          page: page,
+          limite: rowsPerPage,
+          ordenar_por: ordenar_por,
+          fechaOSInicial: fechaOSIFiltroAux,
+          fechaOSFinal: fechaOSFFiltroAux,
+          fechaProgInicial: fechaProgIFiltroAux,
+          fechaProgFinal: fechaProgFFiltroAux,
+          fechaEjecInicial: fechaEjecIFiltroAux,
+          fechaEjecFinal: fechaEjecFFiltroAux,
+          ODSInicial: odsIFiltroAux,
+          ODSFinal: odsFFiltroAux,
+          ciudadOri: ciudadIFiltroAux,
+          ciudadDes: ciudadFFiltroAux,
+          estados: estadoFiltroAux,
+          asociado: nombreAsociadoFiltroAux,
+          transportador: nombreTransportadoraFiltroAux,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_COLECCION_ORDEN_SERVICIO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
 export const onGetColeccionProgramacion = (
   currentPage,
   rowsPerPage,

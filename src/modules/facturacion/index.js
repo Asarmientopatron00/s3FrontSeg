@@ -21,6 +21,11 @@ export const facturacionConfig = [
           import('./ImportacionOrdenServicioAFacturar'),
         ),
       },
+      {
+        exact: true,
+        path: ['/consulta-facturacion'],
+        component: React.lazy(() => import('./ConsultaFacturacion')),
+      },
     ],
   },
 ];
