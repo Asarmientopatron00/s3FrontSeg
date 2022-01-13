@@ -24,7 +24,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import ODSTFacturarServicioCreator from './ODSTFacturarServicioCreator';
+//import ODSTFacturarServicioCreator from './ODSTFacturarServicioCreator';
 import {onGetColeccion} from '../../../redux/actions/ODSTFacturarServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -390,7 +390,7 @@ const EnhancedTableToolbar = (props) => {
     fechaInicialFiltro,
     limpiarFiltros,
     permisos,
-    validationSchema,
+    //validationSchema,
   } = props;
 
   return (
@@ -634,7 +634,7 @@ const ODSTFacturarServicio = (props) => {
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
-  const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
+  //const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
 
   let columnasMostradasInicial = [];
 

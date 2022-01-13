@@ -200,8 +200,6 @@ const ConsultaHorarioTrabajoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Horas Trabajas'
@@ -211,8 +209,6 @@ const ConsultaHorarioTrabajoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Horas Disponibles'
@@ -222,8 +218,6 @@ const ConsultaHorarioTrabajoForm = (props) => {
                   shrink: true,
                 }}
               />
-            </Box>
-            <Box className={classes.inputs_2}>
               <MyTextField
                 className={classes.myTextField}
                 label='Horas Extras'
