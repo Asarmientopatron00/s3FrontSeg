@@ -392,7 +392,7 @@ const EnhancedTableToolbar = (props) => {
     limpiarFiltros,
     permisos,
     asociados,
-    validationSchema,
+    //validationSchema,
   } = props;
 
   return (
@@ -659,7 +659,7 @@ const ODSTFacturarServicio = (props) => {
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
-  const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
+  //const [tipoCotizacion, setTipoCotizacion] = useState('Servicios');
 
   let columnasMostradasInicial = [];
 
