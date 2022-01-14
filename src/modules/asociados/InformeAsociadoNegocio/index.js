@@ -215,16 +215,6 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <>
-          <Box className={classes.titleTop}>
-            <Typography
-              className={classes.title}
-              variant='h6'
-              id='tableTitle'
-              component='div'>
-              {'Informe Actualización Asociados'}
-            </Typography>
-            <Box className={classes.horizontalBottoms}></Box>
-          </Box>
           <Formik
             validateOnChange={false}
             initialValues={{
@@ -238,6 +228,43 @@ const EnhancedTableToolbar = (props) => {
             }}>
             {({values, initialValues, setFieldValue, resetForm}) => (
               <Form>
+                <Box className={classes.titleTop}>
+                  <Typography
+                    className={classes.title}
+                    variant='h6'
+                    id='tableTitle'
+                    component='div'>
+                    {'Informe Actualización Asociados'}
+                  </Typography>
+                  <Box display='flex' mb={2}>
+                    <Tooltip
+                      title='Exportar'
+                      component='a'
+                      className={classes.linkDocumento}
+                      href={
+                        defaultConfig.API_URL +
+                        '/asociados-negocio/consulta-actualizacion' +
+                        '?nombre=' +
+                        values.nombre +
+                        '&numero_documento=' +
+                        values.numero_documento +
+                        '&fecha_desde=' +
+                        values.fecha_desde +
+                        '&fecha_hasta=' +
+                        values.fecha_hasta
+                      }>
+                      <IconButton
+                        className={classes.exportButton}
+                        aria-label='filter list'>
+                        <Box component='span' className={classes.x}>
+                          X
+                        </Box>
+                        <InsertDriveFileIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                  <Box className={classes.horizontalBottoms}></Box>
+                </Box>
                 <Box className={classes.contenedorFiltros}>
                   <MyTextField label='Nombre' name='nombre' />
 
@@ -245,19 +272,7 @@ const EnhancedTableToolbar = (props) => {
                     label='Número Documento'
                     name='numero_documento'
                   />
-                  <Box display='grid'>
-                    <Box display='flex' mb={2}>
-                      <Tooltip
-                        title='Limpiar Filtros'
-                        onClick={() => resetForm(initialValues)}>
-                        <IconButton
-                          className={classes.clearButton}
-                          aria-label='filter list'>
-                          <ClearAllIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  </Box>
+                  <Box></Box>
                   <MyTextField
                     label='Fecha última actualización desde'
                     name='fecha_desde'
@@ -278,66 +293,14 @@ const EnhancedTableToolbar = (props) => {
                   <Box display='grid'>
                     <Box display='flex' mb={2}>
                       <Tooltip
-                        title='Exportar'
-                        component='a'
-                        className={classes.linkDocumento}
-                        href={
-                          defaultConfig.API_URL +
-                          '/asociados-negocio/consulta-actualizacion' +
-                          '?nombre=' +
-                          values.nombre +
-                          '&numero_documento=' +
-                          values.numero_documento +
-                          '&fecha_desde=' +
-                          values.fecha_desde +
-                          '&fecha_hasta=' +
-                          values.fecha_hasta
-                        }>
+                        title='Limpiar Filtros'
+                        onClick={() => resetForm(initialValues)}>
                         <IconButton
-                          className={classes.exportButton}
+                          className={classes.clearButton}
                           aria-label='filter list'>
-                          <Box component='span' className={classes.x}>
-                            X
-                          </Box>
-                          <InsertDriveFileIcon />
+                          <ClearAllIcon />
                         </IconButton>
                       </Tooltip>
-
-                      {/* <Tooltip title='Trial' */}
-                      {/* onClick={()=>{
-                          jwtAxios
-                          .post('/asociados-negocio/consulta-actualizacion', 
-                            values,
-                          )
-                          .then((data) => {
-                            if (data.status === 200) {
-                              var wbout = XLSX.write(data.data, {type:"array", bookType:'xlsx'});
-                              var url = URL.createObjectURL(new Blob([wbout], {type: 'application/octet-stream'}));
-                              const link = document.createElement('a');
-                              link.href = url;
-                              link.setAttribute('download', 'file.xlsx'); //or any other extension
-                              document.body.appendChild(link);
-                              link.click();
-                            } else {
-                             
-                            }
-                          })
-                          .catch((error) => {
-
-                          });
-
-                        }}
-                      >
-                        <IconButton
-                          className={classes.exportButton}
-                          aria-label='filter list'
-                        >
-                          <Box component='span'
-                            className={classes.x}
-                          >X</Box>
-                          <InsertDriveFileIcon/>
-                        </IconButton>
-                      </Tooltip> */}
                     </Box>
                   </Box>
                 </Box>

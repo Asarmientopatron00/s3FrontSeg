@@ -230,26 +230,6 @@ const ReporteHorasTrabajadasForm = (props) => {
                 }}
               />
             </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Nombre Lugar'
-                name='lugar'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Dirección Lugar'
-                name='direccion'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
             <MyTextField
               className={classes.myTextField}
               label='Observaciones Programación'

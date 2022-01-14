@@ -708,6 +708,7 @@ const OrdenServicioDocumento = () => {
                       label='Agente de aduanas'
                       value='agente_aduana'
                     />
+                    <ExcelColumn label='Servicio' value='servicio' />
                     <ExcelColumn
                       label='Tipo de servicio'
                       value='tipo_servicio'

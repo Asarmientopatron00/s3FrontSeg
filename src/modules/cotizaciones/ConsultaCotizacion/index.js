@@ -427,36 +427,6 @@ const EnhancedTableToolbar = (props) => {
               component='div'>
               {titulo}
             </Typography>
-            <Box className={classes.horizontalBottoms}>
-              <Tooltip
-                title='Mostrar/Ocultar Columnas'
-                onClick={handleOpenPopoverColumns}>
-                <IconButton
-                  className={classes.columnFilterButton}
-                  aria-label='filter list'>
-                  <TuneIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </Box>
-          <Box className={classes.contenedorFiltros}>
-            <TextField
-              label='Número Cotización'
-              name='numeroFiltro'
-              id='numeroFiltro'
-              onChange={queryFilter}
-              value={numeroFiltro}
-              type='number'
-              inputProps={{min: 0}}
-            />
-
-            <TextField
-              label='Nombre Asociado'
-              name='nombreEmpresaFiltro'
-              id='nombreEmpresaFiltro'
-              onChange={queryFilter}
-              value={nombreEmpresaFiltro}
-            />
             <Box display='grid'>
               {(idsServicios.length > 0 || idsProductos.length > 0) &&
                 permisos.indexOf('Exportar') >= 0 && (
@@ -487,6 +457,38 @@ const EnhancedTableToolbar = (props) => {
                   </Box>
                 )}
             </Box>
+            <Box className={classes.horizontalBottoms}>
+              <Tooltip
+                title='Mostrar/Ocultar Columnas'
+                onClick={handleOpenPopoverColumns}>
+                <IconButton
+                  className={classes.columnFilterButton}
+                  aria-label='filter list'>
+                  <TuneIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+          <Box className={classes.contenedorFiltros}>
+            <TextField
+              label='Número Cotización'
+              name='numeroFiltro'
+              id='numeroFiltro'
+              onChange={queryFilter}
+              value={numeroFiltro}
+              type='number'
+              inputProps={{min: 0}}
+            />
+
+            <TextField
+              label='Nombre Asociado'
+              name='nombreEmpresaFiltro'
+              id='nombreEmpresaFiltro'
+              onChange={queryFilter}
+              value={nombreEmpresaFiltro}
+            />
+            <Box></Box>
+
             <TextField
               label='Documento'
               name='documentoFiltro'

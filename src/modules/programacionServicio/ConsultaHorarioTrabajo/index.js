@@ -365,6 +365,37 @@ const EnhancedTableToolbar = (props) => {
               component='div'>
               {titulo}
             </Typography>
+            {permisos.indexOf('Exportar') >= 0 && (
+              <Box display='grid'>
+                <Box display='flex' mb={2}>
+                  <Tooltip
+                    title='Exportar'
+                    component='a'
+                    className={classes.linkDocumento}
+                    href={
+                      defaultConfig.API_URL +
+                      '/horarios-recursos-tecnicos/exportar?' +
+                      'nombre=' +
+                      nombreFiltro +
+                      '&ciudad=' +
+                      ciudadFiltro +
+                      '&fecha_desde=' +
+                      fecha_desdeFiltro +
+                      '&fecha_hasta=' +
+                      fecha_hastaFiltro
+                    }>
+                    <IconButton
+                      className={classes.exportButton}
+                      aria-label='filter list'>
+                      <Box component='span' className={classes.x}>
+                        X
+                      </Box>
+                      <InsertDriveFileIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Box>
+            )}
             <Box className={classes.horizontalBottoms}>
               <Tooltip
                 title='Mostrar/Ocultar Columnas'
@@ -403,39 +434,7 @@ const EnhancedTableToolbar = (props) => {
               onChange={queryFilter}
               value={ciudadFiltro}
             />
-            <Box display='grid'>
-              {permisos.indexOf('Exportar') >= 0 && (
-                <Box display='grid'>
-                  <Box display='flex' mb={2}>
-                    <Tooltip
-                      title='Exportar'
-                      component='a'
-                      className={classes.linkDocumento}
-                      href={
-                        defaultConfig.API_URL +
-                        '/horarios-recursos-tecnicos/exportar?' +
-                        'nombre=' +
-                        nombreFiltro +
-                        '&ciudad=' +
-                        ciudadFiltro +
-                        '&fecha_desde=' +
-                        fecha_desdeFiltro +
-                        '&fecha_hasta=' +
-                        fecha_hastaFiltro
-                      }>
-                      <IconButton
-                        className={classes.exportButton}
-                        aria-label='filter list'>
-                        <Box component='span' className={classes.x}>
-                          X
-                        </Box>
-                        <InsertDriveFileIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                </Box>
-              )}
-            </Box>
+            <Box></Box>
             <TextField
               label='Fecha Desde'
               name='fecha_desdeFiltro'
