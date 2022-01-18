@@ -21,13 +21,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
 // import EmailIcon from '@material-ui/icons/Email';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccion2,
-  onDelete,
+  // onDelete,
 } from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -37,13 +35,12 @@ import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
 // import {useHistory} from 'react-router-dom';
-import DescriptionIcon from '@material-ui/icons/Description';
 import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
 import MenuItem from '@material-ui/core/MenuItem';
 
@@ -413,7 +410,6 @@ const EnhancedTableToolbar = (props) => {
     nombreAsociadoFiltro,
     nombreTransportadoraFiltro,
     limpiarFiltros,
-    permisos,
   } = props;
   return (
     <Toolbar
@@ -1020,28 +1016,28 @@ const ConsultaFacturacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteOrdenServicio = (id) => {
-    Swal.fire({
-      title: 'Confirmar',
-      text: '¿Seguro que dese anular la orden de servicio?',
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'NO',
-      confirmButtonText: 'SI',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(onDelete(id, updateColeccion));
-        Swal.fire(
-          'Anulado',
-          'La orden de servicio fue anulada correctamente',
-          'success',
-        );
-      }
-    });
-  };
+  // const onDeleteOrdenServicio = (id) => {
+  //   Swal.fire({
+  //     title: 'Confirmar',
+  //     text: '¿Seguro que dese anular la orden de servicio?',
+  //     allowEscapeKey: false,
+  //     allowEnterKey: false,
+  //     showCancelButton: true,
+  //     confirmButtonColor: '#3085d6',
+  //     cancelButtonColor: '#d33',
+  //     cancelButtonText: 'NO',
+  //     confirmButtonText: 'SI',
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       dispatch(onDelete(id, updateColeccion));
+  //       Swal.fire(
+  //         'Anulado',
+  //         'La orden de servicio fue anulada correctamente',
+  //         'success',
+  //       );
+  //     }
+  //   });
+  // };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {

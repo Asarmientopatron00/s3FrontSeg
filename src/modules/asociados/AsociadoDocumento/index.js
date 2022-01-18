@@ -1032,9 +1032,7 @@ const AsociadoDocumento = () => {
               setSubmitting(true);
               dispatch(onCreate(data, handleOnCloseForm));
 
-              // resetForm();
               setSubmitting(false);
-              // handleOnClose();
             }}>
             {({values, initialValues, setFieldValue}) => {
               //  values.nombre_archivo = archivoCargado;

@@ -167,12 +167,9 @@ const ProductoForm = (props) => {
     ],
   );
   const [imagen, setImagen] = useState('');
+
   return (
-    <Form
-      className=''
-      noValidate
-      autoComplete='off'
-      encType='multipart/form-data'>
+    <Form encType='multipart/form-data'>
       <Scrollbar style={{maxHeight: 600}}>
         <Box py={5} px={{xs: 5, lg: 8, xl: 10}}>
           <Box
@@ -269,8 +266,6 @@ const ProductoForm = (props) => {
                 </Box>
                 <Dropzone
                   onDrop={(acceptedFiles) => {
-                    console.log(acceptedFiles[0]);
-
                     if (acceptedFiles.length === 0) {
                       dispatch({
                         type: FETCH_ERROR,
@@ -291,15 +286,19 @@ const ProductoForm = (props) => {
                         type='file'
                         id='archivo'
                         onChange={(event) => {
-                          console.log(event.target.files[0]);
-                          if (event.target.files[0].type.includes('image')) {
-                            setFieldValue('archivo', event.target.files[0]);
+                          if (
+                            event.currentTarget.files[0].type.includes('image')
+                          ) {
+                            setFieldValue(
+                              'archivo',
+                              event.currentTarget.files[0],
+                            );
                             setImagen(
-                              URL.createObjectURL(event.target.files[0]),
+                              URL.createObjectURL(event.currentTarget.files[0]),
                             );
                             setFieldValue(
                               'archivo_foto',
-                              event.target.files[0].name,
+                              event.currentTarget.files[0].name,
                             );
                           } else {
                             dispatch({
