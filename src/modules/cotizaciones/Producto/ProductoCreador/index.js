@@ -70,8 +70,6 @@ const ProductoCreator = (props) => {
 
   const dispatch = useDispatch();
 
-  const [consecutivo, setConsecutivo] = useState('');
-
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
       position: 'relative',
@@ -201,6 +199,12 @@ const ProductoCreator = (props) => {
                   ? selectedRow.archivo_foto
                   : ''
                 : '',
+              imagen: selectedRow
+                ? selectedRow.archivo
+                  ? selectedRow.archivo
+                  : ''
+                : '',
+              archivo: '',
               estado: selectedRow
                 ? selectedRow.estado === 1
                   ? '1'
@@ -210,16 +214,8 @@ const ProductoCreator = (props) => {
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
               setSubmitting(true);
-              console.log(consecutivo);
               if (accion === 'crear') {
-                dispatch(
-                  onCreate(
-                    data,
-                    handleOnClose,
-                    updateColeccion,
-                    setConsecutivo,
-                  ),
-                );
+                dispatch(onCreate(data, handleOnClose, updateColeccion));
               } else if (accion === 'editar') {
                 if (selectedRow) {
                   dispatch(onUpdate(data, handleOnClose, updateColeccion));

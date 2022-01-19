@@ -113,11 +113,45 @@ export const onShow = (id) => {
 
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
+    var formData = new FormData();
+    formData.append('archivo', params['archivo']);
+    formData.append('archivo_foto', params['archivo_foto']);
+    formData.append('id', params['id']);
+    formData.append('codigo_producto', params['codigo_producto']);
+    formData.append('nombre', params['nombre']);
+    formData.append('alias_producto', params['alias_producto']);
+    formData.append(
+      'descripcion_tecnica_producto',
+      params['descripcion_tecnica_producto'],
+    );
+    formData.append('tipo_producto_id', params['tipo_producto_id']);
+    formData.append('color_id', params['color_id']);
+    formData.append('dimensiones_producto', params['dimensiones_producto']);
+    formData.append(
+      'caracteristicas_producto',
+      params['caracteristicas_producto'],
+    );
+    formData.append('producto_empaque', params['producto_empaque']);
+    formData.append(
+      'producto_cliente_especifico',
+      params['producto_cliente_especifico'],
+    );
+    formData.append('producto_produccion_id', params['producto_produccion_id']);
+    formData.append(
+      'producto_facturacion_id',
+      params['producto_facturacion_id'],
+    );
+    formData.append('estado', params['estado']);
+
     dispatch({type: FETCH_START});
     jwtAxios
-      .put('productos/' + params.id, params)
+      .post('productos/' + params.id, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then((data) => {
-        if (data.status === 200) {
+        if (data.status === 200 || data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: UPDATE_PRODUCTO,
