@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
+import * as yup from 'yup';
+import {Formik, Form, useField} from 'formik';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -15,37 +17,39 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-// import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-// import EmailIcon from '@material-ui/icons/Email';
-// import FilterListIcon from '@material-ui/icons/FilterList';
-import {
-  onGetColeccion2,
-  onDelete,
-} from '../../../redux/actions/OrdenServicioAction';
+import SearchIcon from '@material-ui/icons/Search';
+import {onGetColeccion2} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
-// import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IntlMessages from '../../../@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import Swal from 'sweetalert2';
 import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from '../../../shared/constants/ListasValores';
-// import {useHistory} from 'react-router-dom';
-import DescriptionIcon from '@material-ui/icons/Description';
 import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
 import MenuItem from '@material-ui/core/MenuItem';
+
+const MyTextField = (props) => {
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  return (
+    <TextField
+      {...props}
+      {...field}
+      helperText={errorText}
+      error={!!errorText}
+    />
+  );
+};
 
 const cells = [
   {
@@ -335,6 +339,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   createButton: {
     backgroundColor: theme.palette.primary.main,
     color: 'white',
+    marginLeft: 100,
     boxShadow:
       '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
     '&:hover': {
@@ -413,6 +418,8 @@ const EnhancedTableToolbar = (props) => {
     nombreAsociadoFiltro,
     nombreTransportadoraFiltro,
     limpiarFiltros,
+    validationSchema,
+    getValues,
     permisos,
   } = props;
   return (
@@ -450,147 +457,183 @@ const EnhancedTableToolbar = (props) => {
               </Tooltip>
             </Box>
           </Box>
-          <Box className={classes.contenedorFiltros2}>
-            <TextField
-              label='Fecha Orden Servicio Inicial'
-              name='fechaOSIFiltro'
-              id='fechaOSIFiltro'
-              onChange={queryFilter}
-              value={fechaOSIFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <TextField
-              label='Fecha Orden Servicio Final'
-              name='fechaOSFFiltro'
-              id='fechaOSFFiltro'
-              onChange={queryFilter}
-              value={fechaOSFFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-          </Box>
-          <Box className={classes.contenedorFiltros2}>
-            <TextField
-              label='Fecha Programada Inicial'
-              name='fechaProgIFiltro'
-              id='fechaProgIFiltro'
-              onChange={queryFilter}
-              value={fechaProgIFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <TextField
-              label='Fecha Programada Final'
-              name='fechaProgFFiltro'
-              id='fechaProgFFiltro'
-              onChange={queryFilter}
-              value={fechaProgFFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <Box display='grid'>
-              <Box display='flex' mb={2} justifyContent={'flex-end'}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-          </Box>
-          <Box className={classes.contenedorFiltros2}>
-            <TextField
-              label='Fecha Ejecucion Inicial'
-              name='fechaEjecIFiltro'
-              id='fechaEjecIFiltro'
-              onChange={queryFilter}
-              value={fechaEjecIFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <TextField
-              label='Fecha Ejecucion Final'
-              name='fechaEjecFFiltro'
-              id='fechaEjecFFiltro'
-              onChange={queryFilter}
-              value={fechaEjecFFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <TextField
-              label='Estado'
-              name='estadoFiltro'
-              id='estadoFiltro'
-              select={true}
-              onChange={queryFilter}
-              value={estadoFiltro}>
-              {ESTADOS_ORDEN_SERVICIO.map((estado) => {
-                return (
-                  <MenuItem
-                    value={estado.id}
-                    key={estado.id}
-                    id={estado.id}
-                    className={classes.pointer}>
-                    {estado.nombre}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-          </Box>
-          <Box className={classes.contenedorFiltros2}>
-            <TextField
-              label='Orden de Servicio Inicial'
-              name='odsIFiltro'
-              id='odsIFiltro'
-              onChange={queryFilter}
-              value={odsIFiltro}
-              type='number'
-              inputProps={{min: 0}}
-            />
-            <TextField
-              label='Orden de Servicio Final'
-              name='odsFFiltro'
-              id='odsFFiltro'
-              onChange={queryFilter}
-              value={odsFFiltro}
-              type='number'
-              inputProps={{min: 0}}
-            />
-            <TextField
-              label='Asociado Negocio'
-              name='nombreAsociadoFiltro'
-              id='nombreAsociadoFiltro'
-              onChange={queryFilter}
-              value={nombreAsociadoFiltro}
-            />
-          </Box>
-          <Box className={classes.contenedorFiltros2}>
-            <TextField
-              label='Ciudad Origen'
-              name='ciudadIFiltro'
-              id='ciudadIFiltro'
-              onChange={queryFilter}
-              value={ciudadIFiltro}
-            />
-            <TextField
-              label='Ciudad Destino'
-              name='ciudadFFiltro'
-              id='ciudadFFiltro'
-              onChange={queryFilter}
-              value={ciudadFFiltro}
-            />
-            <TextField
-              label='Empresa Transportadora'
-              name='nombreTransportadoraFiltro'
-              id='nombreTransportadoraFiltro'
-              onChange={queryFilter}
-              value={nombreTransportadoraFiltro}
-            />
-          </Box>
-          <Box className={classes.contenedorFiltros}></Box>
+          <Formik
+            validateOnBlur={false}
+            enableReinitialize={true}
+            initialValues={{
+              odsIFiltro: '',
+              odsFFiltro: '',
+              fechaOSIFiltro: '',
+              fechaOSFFiltro: '',
+              fechaProgIFiltro: '',
+              fechaProgFFiltro: '',
+              fechaEjecIFiltro: '',
+              fechaEjecFFiltro: '',
+              estadoFiltro: '',
+              nombreAsociadoFiltro: '',
+              ciudadIFiltro: '',
+              ciudadFFiltro: '',
+              nombreTransportadoraFiltro: '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              getValues(values);
+            }}>
+            {({values, touched, handleReset, errors}) => (
+              <Form noValidate>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Orden Servicio Inicial'
+                    name='fechaOSIFiltro'
+                    id='fechaOSIFiltro'
+                    onChange={queryFilter}
+                    value={fechaOSIFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Orden Servicio Final'
+                    name='fechaOSFFiltro'
+                    id='fechaOSFFiltro'
+                    onChange={queryFilter}
+                    value={fechaOSFFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Programada Inicial'
+                    name='fechaProgIFiltro'
+                    id='fechaProgIFiltro'
+                    onChange={queryFilter}
+                    value={fechaProgIFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Programada Final'
+                    name='fechaProgFFiltro'
+                    id='fechaProgFFiltro'
+                    onChange={queryFilter}
+                    value={fechaProgFFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <Box display='grid'>
+                    <Box display='flex' mb={2} justifyContent={'flex-end'}>
+                      <Tooltip
+                        title='Limpiar Filtros'
+                        onClick={(limpiarFiltros, handleReset)}>
+                        <IconButton
+                          className={classes.clearButton}
+                          aria-label='filter list'>
+                          <ClearAllIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title='Buscar'>
+                        <IconButton
+                          type='submit'
+                          className={classes.createButton}
+                          aria-label='filter list'>
+                          <SearchIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Ejecucion Inicial'
+                    name='fechaEjecIFiltro'
+                    id='fechaEjecIFiltro'
+                    onChange={queryFilter}
+                    value={fechaEjecIFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Ejecucion Final'
+                    name='fechaEjecFFiltro'
+                    id='fechaEjecFFiltro'
+                    onChange={queryFilter}
+                    value={fechaEjecFFiltro}
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Estado'
+                    name='estadoFiltro'
+                    id='estadoFiltro'
+                    select={true}
+                    onChange={queryFilter}
+                    value={estadoFiltro}>
+                    {ESTADOS_ORDEN_SERVICIO.map((estado) => {
+                      return (
+                        <MenuItem
+                          value={estado.id}
+                          key={estado.id}
+                          id={estado.id}
+                          className={classes.pointer}>
+                          {estado.nombre}
+                        </MenuItem>
+                      );
+                    })}
+                  </MyTextField>
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Orden de Servicio Inicial'
+                    name='odsIFiltro'
+                    id='odsIFiltro'
+                    onChange={queryFilter}
+                    value={odsIFiltro}
+                    type='number'
+                    inputProps={{min: 0}}
+                  />
+                  <MyTextField
+                    label='Orden de Servicio Final'
+                    name='odsFFiltro'
+                    id='odsFFiltro'
+                    onChange={queryFilter}
+                    value={odsFFiltro}
+                    type='number'
+                    inputProps={{min: 0}}
+                  />
+                  <MyTextField
+                    label='Asociado Negocio'
+                    name='nombreAsociadoFiltro'
+                    id='nombreAsociadoFiltro'
+                    onChange={queryFilter}
+                    value={nombreAsociadoFiltro}
+                  />
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Ciudad Origen'
+                    name='ciudadIFiltro'
+                    id='ciudadIFiltro'
+                    onChange={queryFilter}
+                    value={ciudadIFiltro}
+                  />
+                  <MyTextField
+                    label='Ciudad Destino'
+                    name='ciudadFFiltro'
+                    id='ciudadFFiltro'
+                    onChange={queryFilter}
+                    value={ciudadFFiltro}
+                  />
+                  <MyTextField
+                    label='Empresa Transportadora'
+                    name='nombreTransportadoraFiltro'
+                    id='nombreTransportadoraFiltro'
+                    onChange={queryFilter}
+                    value={nombreTransportadoraFiltro}
+                  />
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </>
       )}
 
@@ -810,27 +853,44 @@ const ConsultaFacturacion = (props) => {
         });
       });
   }, [user, props.route]);
+
   useEffect(() => {
-    dispatch(
-      onGetColeccion2(
-        page,
-        rowsPerPage,
-        orderByToSend,
-        fechaOSIFiltro,
-        fechaOSFFiltro,
-        fechaProgIFiltro,
-        fechaProgFFiltro,
-        fechaEjecIFiltro,
-        fechaEjecFFiltro,
-        odsIFiltro,
-        odsFFiltro,
-        ciudadIFiltro,
-        ciudadFFiltro,
-        estadoFiltro,
-        nombreAsociadoFiltro,
-        nombreTransportadoraFiltro,
-      ),
-    );
+    if (
+      fechaOSIFiltro ||
+      fechaOSFFiltro ||
+      fechaProgIFiltro ||
+      fechaProgFFiltro ||
+      fechaEjecIFiltro ||
+      fechaEjecFFiltro ||
+      odsIFiltro ||
+      odsFFiltro ||
+      ciudadIFiltro ||
+      ciudadFFiltro ||
+      estadoFiltro ||
+      nombreAsociadoFiltro ||
+      nombreTransportadoraFiltro
+    ) {
+      dispatch(
+        onGetColeccion2(
+          page,
+          rowsPerPage,
+          orderByToSend,
+          fechaOSIFiltro,
+          fechaOSFFiltro,
+          fechaProgIFiltro,
+          fechaProgFFiltro,
+          fechaEjecIFiltro,
+          fechaEjecFFiltro,
+          odsIFiltro,
+          odsFFiltro,
+          ciudadIFiltro,
+          ciudadFFiltro,
+          estadoFiltro,
+          nombreAsociadoFiltro,
+          nombreTransportadoraFiltro,
+        ),
+      );
+    }
   }, [
     dispatch,
     page,
@@ -1020,29 +1080,6 @@ const ConsultaFacturacion = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onDeleteOrdenServicio = (id) => {
-    Swal.fire({
-      title: 'Confirmar',
-      text: '¿Seguro que dese anular la orden de servicio?',
-      allowEscapeKey: false,
-      allowEnterKey: false,
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      cancelButtonText: 'NO',
-      confirmButtonText: 'SI',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(onDelete(id, updateColeccion));
-        Swal.fire(
-          'Anulado',
-          'La orden de servicio fue anulada correctamente',
-          'success',
-        );
-      }
-    });
-  };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.name);
@@ -1072,6 +1109,135 @@ const ConsultaFacturacion = (props) => {
     }
   }, [rows]);
 
+  const validationSchema = yup.object().shape(
+    {
+      odsIFiltro: yup
+        .number()
+        .nullable()
+        .when('odsFFiltro', {
+          is: (odsFFiltro) => !odsFFiltro,
+          then: yup.number().nullable(),
+          otherwise: yup
+            .number()
+            .required('ODS Inicial es requerida cuando se indica una Final'),
+        }),
+      odsFFiltro: yup
+        .number()
+        .nullable()
+        .when(
+          'odsIFiltro',
+          (odsIFiltro, schema) =>
+            odsIFiltro &&
+            schema.min(
+              odsIFiltro,
+              'Numero de ODS Final debe ser mayor que ODS Inicial',
+            ),
+        ),
+      fechaOSIFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaOSFFiltro', {
+          is: (fechaOSFFiltro) => !fechaOSFFiltro,
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .required(
+              'Fecha ODS Inicial es requerida cuando se indica una Final',
+            ),
+        }),
+      fechaOSFFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaOSIFiltro', {
+          is: '',
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .min(
+              yup.ref('fechaOSIFiltro'),
+              'Fecha ODS Final debe ser mayor que Inicial',
+            ),
+        }),
+      fechaProgIFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaProgFFiltro', {
+          is: (fechaProgFFiltro) => !fechaProgFFiltro,
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .required(
+              'Fecha Programacion Inicial es requerida cuando se indica una Final',
+            ),
+        }),
+      fechaProgFFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaProgIFiltro', {
+          is: '',
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .min(
+              yup.ref('fechaProgIFiltro'),
+              'Fecha Programacion Final debe ser mayor que Inicial',
+            ),
+        }),
+      fechaEjecIFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaEjecFFiltro', {
+          is: (fechaEjecFFiltro) => !fechaEjecFFiltro,
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .required(
+              'Fecha Ejecucion Inicial es requerida cuando se indica una Final',
+            ),
+        }),
+      fechaEjecFFiltro: yup
+        .date()
+        .nullable()
+        .when('fechaEjecIFiltro', {
+          is: '',
+          then: yup.date().nullable(),
+          otherwise: yup
+            .date()
+            .min(
+              yup.ref('fechaEjecIFiltro'),
+              'Fecha Ejecucion Final debe ser mayor que Inicial',
+            ),
+        }),
+      estadoFiltro: yup.string().nullable(),
+      nombreAsociadoFiltro: yup.string().nullable(),
+      ciudadIFiltro: yup.string().nullable(),
+      ciudadFFiltro: yup.string().nullable(),
+      nombreTransportadoraFiltro: yup.string().nullable(),
+    },
+    [
+      ['fechaOSFFiltro', 'fechaOSIFiltro'],
+      ['fechaProgFFiltro', 'fechaProgIFiltro'],
+      ['fechaEjecFFiltro', 'fechaEjecIFiltro'],
+      ['odsFFiltro', 'odsIFiltro'],
+    ],
+  );
+
+  const getValues = (value) => {
+    setFechaOSIFiltro(value.fechaOSIFiltro);
+    setFechaOSFFiltro(value.fechaOSFFiltro);
+    setFechaProgIFiltro(value.fechaProgIFiltro);
+    setFechaProgFFiltro(value.fechaProgFFiltro);
+    setFechaEjecIFiltro(value.fechaEjecIFiltro);
+    setFechaEjecFFiltro(value.fechaEjecFFiltro);
+    setODSIFiltro(value.odsIFiltro);
+    setODSFFiltro(value.odsFFiltro);
+    setCiudadIFiltro(value.ciudadIFiltro);
+    setCiudadFFiltro(value.ciudadFFiltro);
+    setEstadoFiltro(value.estadoFiltro);
+    setNombreTransportadoraFiltro(value.nombreTransportadoraFiltro);
+    setNombreAsociadoFiltro(value.nombreAsociadoFiltro);
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -1096,6 +1262,8 @@ const ConsultaFacturacion = (props) => {
             nombreTransportadoraFiltro={nombreTransportadoraFiltro}
             permisos={permisos}
             titulo={titulo}
+            validationSchema={validationSchema}
+            getValues={getValues}
           />
         )}
         {showTable && permisos ? (
