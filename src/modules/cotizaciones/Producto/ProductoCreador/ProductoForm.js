@@ -168,6 +168,10 @@ const ProductoForm = (props) => {
   );
   const [imagen, setImagen] = useState('');
 
+  useEffect(() => {
+    setImagen(values.imagen);
+  }, [values.imagen, setImagen]);
+
   return (
     <Form encType='multipart/form-data'>
       <Scrollbar style={{maxHeight: 600}}>
@@ -328,7 +332,7 @@ const ProductoForm = (props) => {
                     <Tooltip title={<IntlMessages id='boton.eliminar' />}>
                       <DeleteIcon
                         onClick={() => {
-                          setFieldValue('archivo', {});
+                          setFieldValue('archivo', '');
                           setFieldValue('archivo_foto', '');
                           setImagen('');
                         }}

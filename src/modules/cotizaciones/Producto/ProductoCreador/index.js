@@ -199,6 +199,11 @@ const ProductoCreator = (props) => {
                   ? selectedRow.archivo_foto
                   : ''
                 : '',
+              imagen: selectedRow
+                ? selectedRow.archivo
+                  ? selectedRow.archivo
+                  : ''
+                : '',
               archivo: '',
               estado: selectedRow
                 ? selectedRow.estado === 1
