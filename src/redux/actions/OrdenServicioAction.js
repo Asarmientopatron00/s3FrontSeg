@@ -11,6 +11,7 @@ import {
   GET_COLECCION_LIGERA_SERVICIOS_ORDEN,
   GET_ORDEN_SERVICIO_RUTAS,
   GET_ORDEN_SERVICIO_PROGRAMACION,
+  GET_ORDEN_SERVICIO_AGENDA,
   ENVIAR_PROGRAMACION,
   FETCH_ERROR,
   FETCH_START,
@@ -152,6 +153,72 @@ export const onGetColeccion2 = (
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({type: GET_COLECCION_ORDEN_SERVICIO, payload: data});
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionAgenda = ({
+  fechaOSIFiltro,
+  fechaOSFFiltro,
+  fechaProgIIFiltro,
+  fechaProgIFFiltro,
+  ciudadFiltro,
+  fechaProgDIFiltro,
+  fechaProgDFFiltro,
+  nombreAsociadoFiltro,
+  odsIFiltro,
+  odsFFiltro,
+  recursoTecnicoFiltro,
+}) => {
+  const {messages} = appIntl();
+
+  const fechaOSIFiltroAux = fechaOSIFiltro ? fechaOSIFiltro : '';
+  const fechaOSFFiltroAux = fechaOSFFiltro ? fechaOSFFiltro : '';
+  const fechaProgIIFiltroAux = fechaProgIIFiltro ? fechaProgIIFiltro : '';
+  const fechaProgIFFiltroAux = fechaProgIFFiltro ? fechaProgIFFiltro : '';
+  const ciudadFiltroAux = ciudadFiltro ? ciudadFiltro : '';
+  const fechaProgDIFiltroAux = fechaProgDIFiltro ? fechaProgDIFiltro : '';
+  const fechaProgDFFiltroAux = fechaProgDFFiltro ? fechaProgDFFiltro : '';
+  const nombreAsociadoFiltroAux = nombreAsociadoFiltro
+    ? nombreAsociadoFiltro
+    : '';
+  const odsIFiltroAux = odsIFiltro ? odsIFiltro : '';
+  const odsFFiltroAux = odsFFiltro ? odsFFiltro : '';
+  const recursoTecnicoFiltroAux = recursoTecnicoFiltro
+    ? recursoTecnicoFiltro
+    : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('ordenes-servicios/consulta-agenda', {
+        params: {
+          fechaOSInicial: fechaOSIFiltroAux,
+          fechaOSFinal: fechaOSFFiltroAux,
+          fechaProgInstInicial: fechaProgIIFiltroAux,
+          fechaProgInstFinal: fechaProgIFFiltroAux,
+          ciudad: ciudadFiltroAux,
+          fechaProgDesiInicial: fechaProgDIFiltroAux,
+          fechaProgDesiFinal: fechaProgDFFiltroAux,
+          asociado: nombreAsociadoFiltroAux,
+          ODSInicial: odsIFiltroAux,
+          ODSFinal: odsFFiltroAux,
+          recursoTecnico: recursoTecnicoFiltroAux,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({type: GET_ORDEN_SERVICIO_AGENDA, payload: data.data});
         } else {
           dispatch({
             type: FETCH_ERROR,

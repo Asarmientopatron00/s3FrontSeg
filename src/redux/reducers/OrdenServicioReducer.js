@@ -11,6 +11,7 @@ import {
   GET_COLECCION_LIGERA_SERVICIOS_ORDEN,
   GET_COLECCION_LIGERA_TERCERO_SERVICIO_ORDEN,
   GET_ORDEN_SERVICIO_PROGRAMACION,
+  GET_ORDEN_SERVICIO_AGENDA,
   // ENVIAR_PROGRAMACION,
 } from '../../shared/constants/ActionTypes';
 
@@ -31,6 +32,7 @@ const initialState = {
   tercerosServicios: [],
   rutas: [],
   ordenesEnviar: [],
+  agenda: [],
 };
 
 const ordenServicioReducer = (state = initialState, action) => {
@@ -62,6 +64,12 @@ const ordenServicioReducer = (state = initialState, action) => {
       return {
         ...state,
         ordenesEnviar: action.payload,
+      };
+
+    case GET_ORDEN_SERVICIO_AGENDA:
+      return {
+        ...state,
+        agenda: action.payload,
       };
 
     case UPDATE_ORDEN_SERVICIO:
