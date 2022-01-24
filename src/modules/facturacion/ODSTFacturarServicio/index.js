@@ -318,9 +318,26 @@ const useToolbarStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
   },
+  exportButton2: {
+    backgroundColor: '#00254A',
+    color: 'white',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
   x: {
     position: 'absolute',
     color: '#4caf50',
+    fontSize: '14px',
+    top: '19px',
+    fontWeight: 'bold',
+  },
+  check: {
+    position: 'absolute',
+    color: '#00254A',
     fontSize: '14px',
     top: '19px',
     fontWeight: 'bold',
@@ -417,6 +434,31 @@ const EnhancedTableToolbar = (props) => {
               {titulo}
             </Typography>
             <Box className={classes.horizontalBottoms}>
+              {permisos.indexOf('Exportar') >= 0 && (
+                <Tooltip
+                  title='Exportar'
+                  component='a'
+                  className={classes.linkDocumento}
+                  href={
+                    defaultConfig.API_URL +
+                    '/facturacion/os-ter-facturar-servicio' +
+                    '?fechaInicial=' +
+                    fechaInicialFiltro +
+                    '&fechaFinal=' +
+                    fechaFinalFiltro +
+                    '&modify=' +
+                    true
+                  }>
+                  <IconButton
+                    className={classes.exportButton2}
+                    aria-label='filter list'>
+                    <Box component='span' className={classes.check}>
+                      ✓
+                    </Box>
+                    <InsertDriveFileIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
               <Formik>
                 <Form>
                   {permisos.indexOf('Exportar') >= 0 && (
