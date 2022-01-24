@@ -1,15 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Box, Button} from '@material-ui/core';
+import {Box} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 // import TablePagination from '@material-ui/core/TablePagination';
-import Pagination from '@material-ui/lab/Pagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,222 +14,39 @@ import Paper from '@material-ui/core/Paper';
 // import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 import SearchIcon from '@material-ui/icons/Search';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import AceptacionOrdenServicioCreador from './ConsultaAgendaServicioCreador';
-import {onGetColeccionAceptacion as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
+import {onGetColeccionAgenda as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
-import Popover from '@material-ui/core/Popover';
-import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
-import {
-  ESTADOS_ORDEN_SERVICIO,
-  ESTADOS_APROBACION_OS,
-} from '../../../shared/constants/ListasValores';
-
-import {Calendar, Views, momentLocalizer} from 'react-big-calendar';
+// import {Calendar, Views, momentLocalizer} from 'react-big-calendar';
+import {momentLocalizer} from 'react-big-calendar';
 import moment from 'moment';
+import 'moment/locale/es';
 import {StyledCalendar} from './StyledCalendar';
-import {MessageView} from '../../../@crema';
+import {Formik, Form, useField} from 'formik';
+import {onGetColeccionLigera as onGetColeccionLigeraCiudad} from '../../../redux/actions/CiudadAction';
+import {onGetColeccionLigera as onGetColeccionLigeraAsociado} from '../../../redux/actions/AsociadoAction';
+import {onGetColeccionLigera as onGetColeccionRecursoTecnico} from '../../../redux/actions/RecursoTecnicoAction';
+import MyAutoCompleteCiudad from '../../../shared/components/MyAutoCompleteCiudad';
+import MyAutoCompleteAsociado from '../../../shared/components/MyAutoCompleteAsociado';
+import MyAutoCompleteRecursoTecnico from '../../../shared/components/MyAutoCompleteRecursoTecnico';
 
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy);
-// }
-
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
-
-const cells = [
-  {
-    id: 'numero_orden_servicio',
-    typeHead: 'numeric',
-    label: 'Orden Servicio',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_creacion',
-    typeHead: 'numeric',
-    label: 'Fecha y Hora',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: true,
-  },
-  {
-    id: 'estado_orden_servicio',
-    typeHead: 'string',
-    label: 'Estado',
-    value: (value) =>
-      ESTADOS_ORDEN_SERVICIO.map((tipo) =>
-        tipo.id === value ? tipo.nombre : '',
-      ),
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'asociado',
-    typeHead: 'string',
-    label: 'Nombre',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_servicio',
-    typeHead: 'string',
-    label: 'Tipo Proceso',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'fecha_programada',
-    typeHead: 'string',
-    label: 'Fecha Programada',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'hora_programada',
-    typeHead: 'string',
-    label: 'Hora Programada',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'ciudad',
-    typeHead: 'string',
-    label: 'Ciudad',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'lugar',
-    typeHead: 'string',
-    label: 'Lugar',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'observaciones_programacion',
-    typeHead: 'string',
-    label: 'Observaciones Programación',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'recurso',
-    typeHead: 'string',
-    label: 'Técnico',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'indicativo_aceptacion',
-    typeHead: 'string',
-    label: 'Estado Aprobación',
-    value: (value) =>
-      ESTADOS_APROBACION_OS.map((tipo) =>
-        tipo.id === value ? tipo.nombre : '',
-      ),
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'observaciones_rechazo',
-    typeHead: 'string',
-    label: 'Observaciones Rechazo',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-  {
-    id: 'numero_serial',
-    typeHead: 'string',
-    label: 'Serial Equipo',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'estado',
-    typeHead: 'boolean',
-    label: 'Estado',
-    value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
-    align: 'center',
-    mostrarInicio: false,
-    cellColor: (value) => (value === 1 ? 'green' : 'red'),
-  },
-  {
-    id: 'usuario_modificacion_nombre',
-    typeHead: 'string',
-    label: 'Modificado Por',
-    value: (value) => value,
-    align: 'left',
-    width: '140px',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_modificacion',
-    typeHead: 'string',
-    label: 'Fecha Última Modificación',
-    value: (value) => new Date(value).toLocaleString('es-CL'),
-    align: 'left',
-    width: '180px',
-    mostrarInicio: false,
-  },
-  {
-    id: 'usuario_creacion_nombre',
-    typeHead: 'string',
-    label: 'Creado Por',
-    value: (value) => value,
-    align: 'left',
-    width: '140px',
-    mostrarInicio: false,
-  },
-  {
-    id: 'fecha_creacion',
-    typeHead: 'string',
-    label: 'Fecha Creación',
-    value: (value) => new Date(value).toLocaleString('es-CL'),
-    align: 'left',
-    width: '180px',
-    mostrarInicio: false,
-  },
-];
+const MyTextField = (props) => {
+  const [field, meta] = useField(props);
+  const errorText = meta.error && meta.touched ? meta.error : '';
+  return (
+    <TextField
+      {...props}
+      {...field}
+      helperText={errorText}
+      error={!!errorText}
+    />
+  );
+};
 
 const MyCell = (props) => {
   const {align, width, claseBase, value, cellColor} = props;
@@ -393,6 +206,12 @@ const useToolbarStyles = makeStyles((theme) => ({
     gridTemplateColumns: '4fr 4fr 1fr',
     columnGap: '20px',
   },
+  contenedorFiltros2: {
+    width: '90%',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr',
+    columnGap: '20px',
+  },
   pairFilters: {
     display: 'flex',
     justifyContent: 'flex-start',
@@ -403,19 +222,9 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const {
-    numSelected,
-    titulo,
-    handleOpenPopoverColumns,
-    queryFilter,
-    nombreFiltro,
-    fechaProgInicialFiltro,
-    fechaProgFinalFiltro,
-    ciudadFiltro,
-    ordenServicioFiltro,
-    limpiarFiltros,
-    updateColeccion,
-  } = props;
+  const {numSelected, titulo, ciudades, asociados, recursosTecnicos} = props;
+  const dispatch = useDispatch();
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -432,89 +241,142 @@ const EnhancedTableToolbar = (props) => {
       ) : (
         <>
           <Box className={classes.titleTop}>
-            <Typography
-              className={classes.title}
-              variant='h6'
-              id='tableTitle'
-              component='div'>
+            <Typography className={classes.title} variant='h6' component='div'>
               {titulo}
             </Typography>
-            <Box className={classes.horizontalBottoms}>
-              <Tooltip
-                title='Mostrar/Ocultar Columnas'
-                onClick={handleOpenPopoverColumns}>
-                <IconButton
-                  className={classes.columnFilterButton}
-                  aria-label='filter list'>
-                  <TuneIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
           </Box>
-          <Box className={classes.contenedorFiltros}>
-            <TextField
-              label='Fecha Programada Inicial'
-              name='fechaProgInicialFiltro'
-              id='fechaProgInicialFiltro'
-              onChange={queryFilter}
-              value={fechaProgInicialFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <TextField
-              label='Fecha Programada Final'
-              name='fechaProgFinalFiltro'
-              id='fechaProgFinalFiltro'
-              onChange={queryFilter}
-              value={fechaProgFinalFiltro}
-              type='date'
-              InputLabelProps={{shrink: true}}
-            />
-            <Box />
-            <TextField
-              label='Ciudad'
-              name='ciudadFiltro'
-              id='ciudadFiltro'
-              onChange={queryFilter}
-              value={ciudadFiltro}
-            />
-            <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
-              onChange={queryFilter}
-              value={nombreFiltro}
-            />
-            <Box>
-              <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                <IconButton
-                  className={classes.clearButton}
-                  aria-label='filter list'>
-                  <ClearAllIcon />
-                </IconButton>
-              </Tooltip>
-            </Box>
-            <TextField
-              label='Orden Servicio'
-              name='ordenServicioFiltro'
-              id='ordenServicioFiltro'
-              onChange={queryFilter}
-              value={ordenServicioFiltro}
-              type='number'
-            />
-            <Box />
-            <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Buscar' onClick={updateColeccion}>
-                  <IconButton
-                    className={classes.createButton}
-                    aria-label='filter list'>
-                    <SearchIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Box>
-          </Box>
+          <Formik
+            validateOnBlur={false}
+            enableReinitialize={true}
+            initialValues={{
+              fechaOSIFiltro: '',
+              fechaOSFFiltro: '',
+              fechaProgIIFiltro: '',
+              fechaProgIFFiltro: '',
+              ciudadFiltro: '',
+              fechaProgDIFiltro: '',
+              fechaProgDFFiltro: '',
+              nombreAsociadoFiltro: '',
+              odsIFiltro: '',
+              odsFFiltro: '',
+              recursoTecnicoFiltro: '',
+            }}
+            onReset={() => {
+              dispatch(
+                onGetColeccion({
+                  fechaOSIFiltro: '',
+                  fechaOSFFiltro: '',
+                  fechaProgIIFiltro: '',
+                  fechaProgIFFiltro: '',
+                  ciudadFiltro: '',
+                  fechaProgDIFiltro: '',
+                  fechaProgDFFiltro: '',
+                  nombreAsociadoFiltro: '',
+                  odsIFiltro: '',
+                  odsFFiltro: '',
+                  recursoTecnicoFiltro: '',
+                }),
+              );
+            }}
+            // validationSchema={validationSchema}
+            onSubmit={(data, {setSubmitting}) => {
+              setSubmitting(true);
+              dispatch(onGetColeccion(data));
+              setSubmitting(false);
+            }}>
+            {({values, initialValues, errors}) => (
+              <Form noValidate>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Orden Servicio Inicial'
+                    name='fechaOSIFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Orden Servicio Final'
+                    name='fechaOSFFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <Box display={'flex'} justifyContent={'space-around'}>
+                    <Box>
+                      <Tooltip title='Limpiar Filtros' type='reset'>
+                        <IconButton
+                          className={classes.clearButton}
+                          aria-label='filter list'>
+                          <ClearAllIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                    <Box display='flex' mb={2}>
+                      <Tooltip title='Buscar'>
+                        <IconButton
+                          type='submit'
+                          className={classes.createButton}
+                          aria-label='filter list'>
+                          <SearchIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Programada Instalación Inicial'
+                    name='fechaProgIIFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Programada Instalación Final'
+                    name='fechaProgIFFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyAutoCompleteCiudad
+                    options={ciudades}
+                    name='ciudadFiltro'
+                    label='Ciudad'
+                  />
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Fecha Programada Desinstalación Inicial'
+                    name='fechaProgDIFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Programada Desinstalación Final'
+                    name='fechaProgDFFiltro'
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyAutoCompleteAsociado
+                    options={asociados}
+                    name='nombreAsociadoFiltro'
+                    label='Asociado Negocio'
+                  />
+                </Box>
+                <Box className={classes.contenedorFiltros2}>
+                  <MyTextField
+                    label='Número Orden Servicio Inicial'
+                    name='odsIFiltro'
+                  />
+                  <MyTextField
+                    label='Número Orden Servicio Final'
+                    name='odsFFiltro'
+                  />
+                  <MyAutoCompleteRecursoTecnico
+                    options={recursosTecnicos}
+                    name='recursoTecnicoFiltro'
+                    label='Recurso Técnico'
+                  />
+                </Box>
+              </Form>
+            )}
+          </Formik>
         </>
       )}
 
@@ -538,18 +400,6 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  handleOpenPopoverColumns: PropTypes.func.isRequired,
-  queryFilter: PropTypes.func.isRequired,
-  limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
-  fechaProgInicialFiltro: PropTypes.string.isRequired,
-  fechaProgFinalFiltro: PropTypes.string.isRequired,
-  ciudadFiltro: PropTypes.string.isRequired,
-  ordenServicioFiltro: PropTypes.string.isRequired,
-};
-
 const useStyles = makeStyles((theme) => ({
   marcoTabla: {
     backgroundColor: 'white',
@@ -558,6 +408,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginTop: '5px',
+    paddingTop: '5px',
   },
   root: {
     width: '100%%',
@@ -646,53 +497,16 @@ const useStyles = makeStyles((theme) => ({
 
 const AceptacionOrdenServicio = (props) => {
   const [showForm, setShowForm] = useState(false);
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [orderByToSend, setOrderByToSend] = React.useState(
-    'numero_orden_servicio:desc',
-  );
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(1);
-  // const [dense, setDense] = React.useState(false);
   const dense = true; //Borrar cuando se use el change
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const [accion, setAccion] = useState('ver');
   const [
     aceptacionOrdenServicioSeleccionado,
     setAceptacionOrdenServicioSeleccionado,
   ] = useState(0);
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
+  const {agenda} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
-  );
-  const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setnombreFiltro] = useState('');
-  const [fechaProgInicialFiltro, setfechaProgInicialFiltro] = useState('');
-  const [fechaProgFinalFiltro, setfechaProgFinalFiltro] = useState('');
-  const [ciudadFiltro, setciudadFiltro] = useState('');
-  const [ordenServicioFiltro, setordenServicioFiltro] = useState('');
-  // const {pathname} = useLocation();
-  const [openPopOver, setOpenPopOver] = useState(false);
-  const [popoverTarget, setPopoverTarget] = useState(null);
-
-  let columnasMostradasInicial = [];
-
-  cells.forEach((cell) => {
-    columnasMostradasInicial.push({
-      id: cell.id,
-      mostrar: cell.mostrarInicio,
-      typeHead: cell.typeHead,
-      label: cell.label,
-      value: cell.value,
-      align: cell.align,
-      width: cell.width,
-      cellColor: cell.cellColor,
-    });
-  });
-
-  const [columnasMostradas, setColumnasMostradas] = useState(
-    columnasMostradasInicial,
   );
 
   let vp = '15px';
@@ -700,11 +514,26 @@ const AceptacionOrdenServicio = (props) => {
     vp = '0px';
   }
   const classes = useStyles({vp: vp});
-  const dispatch = useDispatch();
 
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
+
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+
+  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.ligera);
+
+  const recursosTecnicos = useSelector(
+    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(onGetColeccionLigeraCiudad());
+    dispatch(onGetColeccionLigeraAsociado());
+    dispatch(onGetColeccionRecursoTecnico());
+  }, [dispatch]);
 
   useEffect(() => {
     user &&
@@ -724,312 +553,57 @@ const AceptacionOrdenServicio = (props) => {
       });
   }, [user, props.route]);
 
+  const [events, setEvents] = useState([]);
   useEffect(() => {
-    dispatch(
-      onGetColeccion(
-        page,
-        rowsPerPage,
-        ordenServicioFiltro,
-        orderByToSend,
-        nombreFiltro,
-        '',
-        'REC,PRG,RUT',
-        '',
-        '',
-        fechaProgInicialFiltro,
-        fechaProgFinalFiltro,
-        ciudadFiltro,
-      ),
-    );
-  }, [
-    dispatch,
-    page,
-    rowsPerPage,
-    ordenServicioFiltro,
-    orderByToSend,
-    nombreFiltro,
-    fechaProgInicialFiltro,
-    fechaProgFinalFiltro,
-    ciudadFiltro,
-  ]);
-
-  const updateColeccion = () => {
-    dispatch(
-      onGetColeccion(
-        1,
-        rowsPerPage,
-        ordenServicioFiltro,
-        orderByToSend,
-        nombreFiltro,
-        '',
-        'REC,PRG,RUT',
-        '',
-        '',
-        fechaProgInicialFiltro,
-        fechaProgFinalFiltro,
-        ciudadFiltro,
-      ),
-    );
-  };
-
-  const queryFilter = (e) => {
-    switch (e.target.name) {
-      case 'nombreFiltro':
-        setnombreFiltro(e.target.value);
-        break;
-      case 'fechaProgInicialFiltro':
-        setfechaProgInicialFiltro(e.target.value);
-        break;
-      case 'fechaProgFinalFiltro':
-        setfechaProgFinalFiltro(e.target.value);
-        break;
-      case 'ciudadFiltro':
-        setciudadFiltro(e.target.value);
-        break;
-      case 'ordenServicioFiltro':
-        setordenServicioFiltro(e.target.value);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const limpiarFiltros = () => {
-    setnombreFiltro('');
-    setfechaProgInicialFiltro('');
-    setfechaProgFinalFiltro('');
-    setciudadFiltro('');
-    setordenServicioFiltro('');
-    dispatch(
-      onGetColeccion(
-        1,
-        rowsPerPage,
-        '',
-        orderByToSend,
-        '',
-        '',
-        'REC,PRG,RUT',
-        '',
-        '',
-        '',
-        '',
-        '',
-      ),
-    );
-  };
-
-  const changeOrderBy = (id) => {
-    if (orderBy === id) {
-      if (order === 'asc') {
-        setOrder('desc');
-        setOrderByToSend(id + ':desc');
-      } else {
-        setOrder('asc');
-        setOrderByToSend(id + ':asc');
-      }
-    } else {
-      setOrder('asc');
-      setOrderBy(id);
-      setOrderByToSend(id + ':asc');
-    }
-  };
-
-  const onOpenEditAceptacionOrdenServicio = (row) => {
-    setAceptacionOrdenServicioSeleccionado(row);
-    setAccion('editar');
-    setShowForm(true);
-  };
-
-  const handleClosePopover = () => {
-    setOpenPopOver(false);
-    setPopoverTarget(null);
-  };
-
-  const handleOpenPopoverColumns = (e) => {
-    setPopoverTarget(e.currentTarget);
-    setOpenPopOver(true);
-  };
-
-  const handleOnchangeMostrarColumna = (e) => {
-    let aux = columnasMostradas;
-    setColumnasMostradas(
-      aux.map((column) => {
-        if (column.id === e.target.id) {
-          return {...column, mostrar: !column.mostrar};
-        } else {
-          return column;
-        }
-      }),
-    );
-  };
-
-  const showAllColumns = () => {
-    let aux = columnasMostradas;
-    setColumnasMostradas(
-      aux.map((column) => {
-        return {...column, mostrar: true};
-      }),
-    );
-  };
-
-  const reiniciarColumns = () => {
-    setColumnasMostradas(columnasMostradasInicial);
-  };
-
-  // const onOpenViewAceptacionOrdenServicio = (id) => {
-  //   setAceptacionOrdenServicioSeleccionado(id);
-  //   setAccion('ver');
-  //   setShowForm(true);
-  // };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setAceptacionOrdenServicioSeleccionado(0);
-    setAccion('ver');
-    updateColeccion();
-  };
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc';
-  //   setOrder(isAsc ? 'desc' : 'asc');
-  //   setOrderBy(property);
-  // };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(1);
-  };
-
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  const [showTable, setShowTable] = useState(true);
-
-  useEffect(() => {
-    if (rows.length === 0) {
-      setShowTable(false);
-    } else {
-      setShowTable(true);
-    }
-  }, [rows]);
-
-  const events = [
-    {
-      title: 'Instalación: 8',
-      start: new Date(2022, 0, 19, 7, 30, 0),
-      end: new Date(2022, 0, 19, 7, 30, 0),
-    },
-    {
-      title: 'Desinstalación: 4',
-      start: new Date(2022, 0, 19, 8, 30, 0),
-      end: new Date(2022, 0, 19, 9, 0, 0),
-    },
-    {
-      title: 'Total Servicios: 12',
-      start: new Date(2022, 0, 19, 9, 30, 0),
-      end: new Date(2022, 0, 19, 10, 0, 0),
-    },
-    // {
-    //   title: 'Long Event',
-    //   start: new Date(2021, 10, 7),
-    //   end: new Date(2021, 10, 10),
-    // },
-
-    // {
-    //   title: 'DTS STARTS',
-    //   start: new Date(2021, 9, 110, 0, 0, 0),
-    //   end: new Date(2021, 9, 20, 0, 0, 0),
-    // },
-
-    // {
-    //   title: 'DTS ENDS',
-    //   start: new Date(2021, 10, 6, 0, 0, 0),
-    //   end: new Date(2021, 10, 10, 0, 0, 0),
-    // },
-
-    // {
-    //   title: 'Some Event',
-    //   start: new Date(2021, 10, 9, 0, 0, 0),
-    //   end: new Date(2021, 10, 9, 0, 0, 0),
-    // },
-    // {
-    //   title: 'Conference',
-    //   start: new Date(2021, 10, 11),
-    //   end: new Date(2021, 10, 13),
-    //   desc: 'Big conference for important people',
-    // },
-    // {
-    //   title: 'Meeting',
-    //   start: new Date(2021, 10, 12, 10, 30, 0, 0),
-    //   end: new Date(2021, 10, 12, 12, 30, 0, 0),
-    //   desc: 'Pre-meeting meeting, to prepare for the meeting',
-    // },
-    // {
-    //   title: 'Lunch',
-    //   start: new Date(2021, 10, 12, 12, 0, 0, 0),
-    //   end: new Date(2021, 10, 12, 110, 0, 0, 0),
-    //   desc: 'Power lunch',
-    // },
-    // {
-    //   title: 'Meeting',
-    //   start: new Date(2021, 10, 12, 14, 0, 0, 0),
-    //   end: new Date(2021, 10, 12, 15, 0, 0, 0),
-    // },
-    // {
-    //   title: 'Happy Hour',
-    //   start: new Date(2021, 10, 12, 17, 0, 0, 0),
-    //   end: new Date(2021, 10, 12, 17, 30, 0, 0),
-    //   desc: 'Most important meal of the day',
-    // },
-    // {
-    //   title: 'Dinner',
-    //   start: new Date(2021, 10, 12, 20, 0, 0, 0),
-    //   end: new Date(2021, 10, 12, 21, 0, 0, 0),
-    // },
-    // {
-    //   title: 'Birthday Party',
-    //   start: new Date(2021, 10, 10, 7, 0, 0),
-    //   end: new Date(2021, 10, 10, 10, 30, 0),
-    // },
-    // {
-    //   title: 'Birthday Party 2',
-    //   start: new Date(2022, 1, 19, 7, 0, 0),
-    //   end: new Date(2022, 1, 19, 10, 30, 0),
-    // },
-    // {
-    //   title: 'Birthday Party 3',
-    //   start: new Date(2021, 10, 10, 7, 0, 0),
-    //   end: new Date(2021, 10, 10, 10, 30, 0),
-    // },
-    // {
-    //   title: 'Late Night Event',
-    //   start: new Date(2021, 10, 17, 19, 30, 0),
-    //   end: new Date(2021, 10, 18, 9, 0, 0),
-    // },
-    // {
-    //   title: 'Multi-day Event',
-    //   start: new Date(2021, 10, 20, 19, 30, 0),
-    //   end: new Date(2021, 10, 22, 9, 0, 0),
-    // },
-  ];
-
-  let allViews = Object.keys(Views).map((k) => Views[k]);
+    let aux = [];
+    agenda.forEach((element) => {
+      let date_array = element['fecha_programada'].split('-');
+      aux.push({
+        title: 'Instalacion: ' + element['instalacion'],
+        start: new Date(
+          date_array[0],
+          date_array[1] - 1,
+          date_array[2],
+          7,
+          30,
+          0,
+        ),
+        end: new Date(date_array[0], date_array[1] - 1, date_array[2], 8, 0, 0),
+      });
+      aux.push({
+        title: 'Desinstalacion: ' + element['desinstalacion'],
+        start: new Date(
+          date_array[0],
+          date_array[1] - 1,
+          date_array[2],
+          8,
+          30,
+          0,
+        ),
+        end: new Date(date_array[0], date_array[1] - 1, date_array[2], 9, 0, 0),
+      });
+      aux.push({
+        title: 'Total: ' + (element['instalacion'] + element['desinstalacion']),
+        start: new Date(
+          date_array[0],
+          date_array[1] - 1,
+          date_array[2],
+          9,
+          30,
+          0,
+        ),
+        end: new Date(
+          date_array[0],
+          date_array[1] - 1,
+          date_array[2],
+          10,
+          0,
+          0,
+        ),
+      });
+    });
+    setEvents(aux);
+  }, [agenda]);
 
   const ColoredDateCellWrapper = ({children}) =>
     React.cloneElement(React.Children.only(children), {
@@ -1038,19 +612,38 @@ const AceptacionOrdenServicio = (props) => {
       },
     });
   const localizer = momentLocalizer(moment);
+
   return (
-    <StyledCalendar
-      // <Calendar
-      events={events}
-      views={allViews}
-      step={30}
-      showMultiDayTimes
-      defaultDate={new Date(Date.now())}
-      components={{
-        timeSlotWrapper: ColoredDateCellWrapper,
-      }}
-      localizer={localizer}
-    />
+    <div className={classes.root}>
+      <Paper className={classes.paper}>
+        {permisos && (
+          <EnhancedTableToolbar
+            numSelected={selected.length}
+            titulo={titulo}
+            ciudades={ciudades}
+            asociados={asociados}
+            recursosTecnicos={recursosTecnicos}
+          />
+        )}
+
+        {
+          <Box className={classes.marcoTabla}>
+            <StyledCalendar
+              // <Calendar
+              events={events}
+              views={['month']}
+              step={60}
+              showMultiDayTimes
+              defaultDate={new Date(Date.now())}
+              components={{
+                timeSlotWrapper: ColoredDateCellWrapper,
+              }}
+              localizer={localizer}
+            />
+          </Box>
+        }
+      </Paper>
+    </div>
   );
 };
 

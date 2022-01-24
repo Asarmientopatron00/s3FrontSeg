@@ -42,11 +42,13 @@ const MyAutoCompleteRecursoTecnico = (props) => {
         if (option.estado) {
           return (
             <React.Fragment>
-              {option.nombre +
-                ' ' +
-                option.hora_inicio.replace(':00', '') +
-                ' - ' +
-                option.hora_fin.replace(':00', '')}
+              {option.hora_inicio !== undefined
+                ? option.nombre +
+                  ' ' +
+                  option.hora_inicio.replace(':00', '') +
+                  ' - ' +
+                  option.hora_fin.replace(':00', '')
+                : option.nombre}
             </React.Fragment>
           );
         } else {
