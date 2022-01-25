@@ -333,6 +333,7 @@ export const GET_ORDEN_SERVICIO_RUTAS = 'get_orden_servicio_rutas';
 export const GET_ORDEN_SERVICIO_PROGRAMACION =
   'get_orden_servicio_programacion';
 export const GET_ORDEN_SERVICIO_AGENDA = 'get_orden_servicio_agenda';
+export const SHOW_AGENDA_BY_DATE = 'show_agenda_by_date';
 export const ENVIAR_PROGRAMACION = 'enviar_programacion';
 export const GET_COLECCION_INFORMACION_EQUIPO =
   'get_coleccion_informacion_equipo';

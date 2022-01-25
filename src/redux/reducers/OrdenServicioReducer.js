@@ -1,6 +1,7 @@
 import {
   GET_COLECCION_ORDEN_SERVICIO,
   GET_COLECCION_LIGERA_ORDEN_SERVICIO,
+  SHOW_AGENDA_BY_DATE,
   SHOW_ORDEN_SERVICIO,
   UPDATE_ORDEN_SERVICIO,
   DELETE_ORDEN_SERVICIO,
@@ -55,6 +56,12 @@ const ordenServicioReducer = (state = initialState, action) => {
         ligera: action.payload.data,
       };
     case SHOW_ORDEN_SERVICIO:
+      return {
+        ...state,
+        selectedRow: action.payload,
+      };
+
+    case SHOW_AGENDA_BY_DATE:
       return {
         ...state,
         selectedRow: action.payload,

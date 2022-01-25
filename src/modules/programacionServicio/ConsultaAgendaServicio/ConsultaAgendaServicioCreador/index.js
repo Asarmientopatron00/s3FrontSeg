@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Scrollbar} from '../../../../@crema';
-import {onUpdate} from '../../../../redux/actions/OrdenServicioAction';
+import {onShowAgendaByDate} from '../../../../redux/actions/OrdenServicioAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
@@ -27,10 +27,21 @@ const validationSchema = yup.object({
   }),
 });
 
-const AceptacionOrdenServicioCreator = (props) => {
-  const {selectedRow, handleOnClose, accion, updateColeccion, titulo} = props;
+const ConsultaAgendaServicioCreador = (props) => {
+  const {consultaAgendaServicio, handleOnClose, accion, titulo} = props;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if ((accion === 'editar') | (accion === 'ver')) {
+      dispatch(onShowAgendaByDate(consultaAgendaServicio));
+    }
+  }, [accion, dispatch, consultaAgendaServicio]);
+
+  let selectedRow = useRef();
+  selectedRow = useSelector(
+    ({ordenServicioReducer}) => ordenServicioReducer.selectedRow,
+  );
 
   const useStyles = makeStyles((theme) => ({
     dialogBox: {
@@ -58,158 +69,17 @@ const AceptacionOrdenServicioCreator = (props) => {
         aria-describedby='simple-modal-description'
         className={classes.dialogBox}
         disableBackdropClick={true}
-        maxWidth={'md'}>
+        maxWidth={'xl'}>
         <Scrollbar>
           <Formik
             initialStatus={true}
             enableReinitialize={true}
             validateOnBlur={false}
             initialValues={{
-              id: selectedRow ? selectedRow.id : '',
-              numero_orden_servicio: selectedRow
-                ? selectedRow.numero_orden_servicio
-                  ? selectedRow.numero_orden_servicio
-                  : ''
-                : '',
-              fecha_creacion: selectedRow
-                ? selectedRow.fecha_creacion
-                  ? selectedRow.fecha_creacion
-                  : ''
-                : '',
-              estado_orden_servicio: selectedRow
-                ? selectedRow.estado_orden_servicio
-                  ? selectedRow.estado_orden_servicio
-                  : ''
-                : '',
-              asociado: selectedRow
-                ? selectedRow.asociado
-                  ? selectedRow.asociado
-                  : ''
-                : '',
-
-              fecha_programada: selectedRow
-                ? selectedRow.fecha_programada
-                  ? selectedRow.fecha_programada
-                  : ''
-                : '',
-              hora_programada: selectedRow
-                ? selectedRow.hora_programada
-                  ? selectedRow.hora_programada
-                  : ''
-                : '',
-              departamento: selectedRow
-                ? selectedRow.departamento
-                  ? selectedRow.departamento
-                  : ''
-                : '',
-              ciudad: selectedRow
-                ? selectedRow.ciudad
-                  ? selectedRow.ciudad
-                  : ''
-                : '',
-              lugar: selectedRow
-                ? selectedRow.lugar
-                  ? selectedRow.lugar
-                  : ''
-                : '',
-              direccion: selectedRow
-                ? selectedRow.direccion
-                  ? selectedRow.direccion
-                  : ''
-                : '',
-              recurso_id: selectedRow
-                ? selectedRow.recurso_id
-                  ? selectedRow.recurso_id
-                  : ''
-                : '',
-              recurso: selectedRow
-                ? selectedRow.recurso
-                  ? selectedRow.recurso
-                  : ''
-                : '',
-              tipo_servicio: selectedRow
-                ? selectedRow.tipo_servicio
-                  ? selectedRow.tipo_servicio
-                  : ''
-                : '',
-              numero_viaje: selectedRow
-                ? selectedRow.numero_viaje
-                  ? selectedRow.numero_viaje
-                  : ''
-                : '',
-              equipo: selectedRow
-                ? selectedRow.equipo
-                  ? selectedRow.equipo
-                  : ''
-                : '',
-              numero_serial: selectedRow
-                ? selectedRow.numero_serial
-                  ? selectedRow.numero_serial
-                  : ''
-                : '',
-              indicativo_aceptacion: selectedRow
-                ? selectedRow.indicativo_aceptacion
-                  ? selectedRow.indicativo_aceptacion === 'A'
-                    ? 'S'
-                    : selectedRow.indicativo_aceptacion === 'R'
-                    ? 'N'
-                    : ''
-                  : ''
-                : '',
-              observaciones_programacion: selectedRow
-                ? selectedRow.observaciones_programacion
-                  ? selectedRow.observaciones_programacion
-                  : ''
-                : '',
-              observaciones_rechazo: selectedRow
-                ? selectedRow.observaciones_rechazo
-                  ? selectedRow.observaciones_rechazo
-                  : ''
-                : '',
+              date: consultaAgendaServicio ? consultaAgendaServicio : '',
+              ordenes: selectedRow ? selectedRow : [],
             }}
-            validationSchema={validationSchema}
-            onSubmit={(data, {setSubmitting, resetForm}) => {
-              setSubmitting(true);
-              if (selectedRow) {
-                if (data.tipo_servicio === 'Instalación') {
-                  const data_aux = {
-                    id: data.id,
-                    observaciones_rechazo_instalacion:
-                      data.indicativo_aceptacion === 'S'
-                        ? ''
-                        : data.observaciones_rechazo,
-                    indicativo_aceptacion_instalacion:
-                      data.indicativo_aceptacion === 'S' ? 'A' : 'R',
-                    tipo_proceso: 'Instalación',
-                    accion:
-                      data.indicativo_aceptacion === 'S'
-                        ? 'Aceptar'
-                        : 'Rechazar',
-                  };
-                  dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
-                } else {
-                  const data_aux = {
-                    id: data.id,
-                    observaciones_rechazo_desinstalacion:
-                      data.indicativo_aceptacion === 'S'
-                        ? ''
-                        : data.observaciones_rechazo,
-                    indicativo_aceptacion_desinstalacion:
-                      data.indicativo_aceptacion === 'S' ? 'A' : 'R',
-                    tipo_proceso: 'Desinstalación',
-                    accion:
-                      data.indicativo_aceptacion === 'S'
-                        ? 'Aceptar'
-                        : 'Rechazar',
-                  };
-                  dispatch(onUpdate(data_aux, handleOnClose, updateColeccion));
-                }
-              }
-              // resetForm();
-              setSubmitting(false);
-              // handleOnClose();
-              // updateColeccion();
-            }}>
+            validationSchema={validationSchema}>
             {({values, initialValues, setFieldValue, errors, touched}) => (
               <AceptacionOrdenServicioForm
                 values={values}
@@ -229,4 +99,4 @@ const AceptacionOrdenServicioCreator = (props) => {
   );
 };
 
-export default AceptacionOrdenServicioCreator;
+export default ConsultaAgendaServicioCreador;

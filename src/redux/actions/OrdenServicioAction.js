@@ -2,6 +2,7 @@ import {
   GET_COLECCION_ORDEN_SERVICIO,
   GET_COLECCION_LIGERA_ORDEN_SERVICIO,
   SHOW_ORDEN_SERVICIO,
+  SHOW_AGENDA_BY_DATE,
   UPDATE_ORDEN_SERVICIO,
   DELETE_ORDEN_SERVICIO,
   CREATE_ORDEN_SERVICIO,
@@ -468,6 +469,31 @@ export const onShow = (id) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
             dispatch({type: SHOW_ORDEN_SERVICIO, payload: data.data});
+          } else {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: messages['message.somethingWentWrong'],
+            });
+          }
+        })
+        .catch((error) => {
+          dispatch({type: FETCH_ERROR, payload: error.message});
+        });
+    }
+  };
+};
+
+export const onShowAgendaByDate = (date) => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    if (date !== '') {
+      dispatch({type: FETCH_START});
+      jwtAxios
+        .get('ordenes-servicios/consulta-agenda/' + date)
+        .then((data) => {
+          if (data.status === 200) {
+            dispatch({type: FETCH_SUCCESS});
+            dispatch({type: SHOW_AGENDA_BY_DATE, payload: data.data});
           } else {
             dispatch({
               type: FETCH_ERROR,

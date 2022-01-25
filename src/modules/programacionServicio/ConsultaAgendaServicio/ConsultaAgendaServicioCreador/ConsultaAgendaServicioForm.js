@@ -6,7 +6,13 @@ import {makeStyles} from '@material-ui/core/styles';
 import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
-import MyRadioField from '../../../../shared/components/MyRadioField';
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+} from '@material-ui/core';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -102,6 +108,9 @@ const AceptacionOrdenServicioForm = (props) => {
     deleteIcon: {
       color: theme.palette.redBottoms,
     },
+    cellHoras: {
+      padding: '3px',
+    },
   }));
 
   const classes = useStyles(props);
@@ -126,163 +135,98 @@ const AceptacionOrdenServicioForm = (props) => {
             <Box className={classes.inputs_2} minWidth='800px'>
               <MyTextField
                 className={classes.myTextFieldSmall}
-                label=' Nº Orden de servicio'
-                name='numero_orden_servicio'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Fecha Orden'
-                name='fecha_creacion'
+                label='Fecha'
+                name='date'
                 disabled={true}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
             </Box>
-            <MyTextField
-              className={classes.myTextFieldSmall}
-              label='Asociado negocios'
-              name='asociado'
-              disabled={true}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Recurso Técnico'
-                name='recurso'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Tipo Proceso'
-                name='tipo_servicio'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Fecha Programada'
-                name='fecha_programada'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Hora Inicio Programada'
-                name='hora_programada'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Departamento'
-                name='departamento'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Ciudad'
-                name='ciudad'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Nombre Lugar'
-                name='lugar'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Dirección Lugar'
-                name='direccion'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-            <Box className={classes.inputs_2} minWidth='800px'>
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label='Equipo'
-                name='numero_serial'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <MyTextField
-                className={classes.myTextFieldSmall}
-                label=' '
-                name='equipo'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Observaciones Programación'
-              name='observaciones_programacion'
-              disabled={true}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              multiline
-            />
-
-            <MyRadioField
-              label='Acepta Servicio'
-              className={classes.MyRadioField}
-              name='indicativo_aceptacion'
-              disabled={disabled}
-              required
-              options={[
-                {value: 'S', label: 'Si'},
-                {value: 'N', label: 'No'},
-              ]}
-            />
-
-            <MyTextField
-              className={classes.myTextField}
-              label='Causa Rechazo'
-              name='observaciones_rechazo'
-              disabled={values.indicativo_aceptacion === 'S'}
-              multiline
-              required={values.indicativo_aceptacion === 'N'}
-            />
+            {values.ordenes.length > 0 && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Número Orden</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Fecha Solicitud</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Fecha Programada Instalación</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>
+                        Fecha Programada Desinstalación
+                      </Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Ciudad Origen</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Ciudad Destino</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Asociado de negocios</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Nombre Transportadora</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Recurso Tecnico Instalación</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Recurso Tecnico Desinstalación</Box>
+                    </TableCell>
+                    <TableCell className={classes.cellHoras}>
+                      <Box component={'h6'}>Equipo</Box>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {values.ordenes.map((elemento) => {
+                    return (
+                      <TableRow>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.numero_orden_servicio}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.fecha_orden_servicio}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.fecha_programada_instalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.fecha_programada_desinstalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.ciudad_instalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.ciudad_desinstalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.asociado}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.transportador}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.recurso_instalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.recurso_desinstalacion}
+                        </TableCell>
+                        <TableCell className={classes.cellHoras}>
+                          {elemento.equipo}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
           </Box>
         </Box>
         <Box className={classes.bottomsGroup}>

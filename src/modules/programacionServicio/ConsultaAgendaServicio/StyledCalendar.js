@@ -5,7 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 export const StyledCalendar = styled(Calendar)(({theme}) => ({
   '& .rbc-event': {
     minHeight: 20,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: 'transparent',
   },
   // '.rbc-overlay': {
   //   backgroundColor: 'red',

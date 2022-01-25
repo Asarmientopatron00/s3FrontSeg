@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
+import ConsultaAgendaServicioCreador from './ConsultaAgendaServicioCreador';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccionAgenda as onGetColeccion} from '../../../redux/actions/OrdenServicioAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -34,7 +35,9 @@ import {onGetColeccionLigera as onGetColeccionRecursoTecnico} from '../../../red
 import MyAutoCompleteCiudad from '../../../shared/components/MyAutoCompleteCiudad';
 import MyAutoCompleteAsociado from '../../../shared/components/MyAutoCompleteAsociado';
 import MyAutoCompleteRecursoTecnico from '../../../shared/components/MyAutoCompleteRecursoTecnico';
-
+import * as yup from 'yup';
+import format from 'date-fns/format';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -220,6 +223,236 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+const validationSchema = yup.object().shape(
+  {
+    one: yup
+      .string()
+      .when(
+        [
+          'fechaOSIFiltro',
+          'fechaOSFFiltro',
+          'fechaProgIIFiltro',
+          'fechaProgIFFiltro',
+          'ciudadFiltro',
+          'fechaProgDIFiltro',
+          'fechaProgDFFiltro',
+          'nombreAsociadoFiltro',
+          'odsIFiltro',
+          'odsFFiltro',
+          'recursoTecnicoFiltro',
+        ],
+        {
+          is: (
+            fechaOSIFiltro,
+            fechaOSFFiltro,
+            fechaProgIIFiltro,
+            fechaProgIFFiltro,
+            ciudadFiltro,
+            fechaProgDIFiltro,
+            fechaProgDFFiltro,
+            nombreAsociadoFiltro,
+            odsIFiltro,
+            odsFFiltro,
+            recursoTecnicoFiltro,
+          ) =>
+            !fechaOSIFiltro &&
+            !fechaOSFFiltro &&
+            !fechaProgIIFiltro &&
+            !fechaProgIFFiltro &&
+            !ciudadFiltro &&
+            !fechaProgDIFiltro &&
+            !fechaProgDFFiltro &&
+            !nombreAsociadoFiltro &&
+            !odsIFiltro &&
+            !odsFFiltro &&
+            !recursoTecnicoFiltro,
+          then: yup.string().required('Debe seleccionar al Menos 1 Filtro'),
+          otherwise: yup.string().nullable(),
+        },
+      ),
+    two: yup
+      .string()
+      .when(
+        [
+          'fechaOSIFiltro',
+          'fechaOSFFiltro',
+          'fechaProgIIFiltro',
+          'fechaProgIFFiltro',
+          'ciudadFiltro',
+          'fechaProgDIFiltro',
+          'fechaProgDFFiltro',
+          'nombreAsociadoFiltro',
+        ],
+        {
+          is: (
+            fechaOSIFiltro,
+            fechaOSFFiltro,
+            fechaProgIIFiltro,
+            fechaProgIFFiltro,
+            ciudadFiltro,
+            fechaProgDIFiltro,
+            fechaProgDFFiltro,
+            nombreAsociadoFiltro,
+          ) =>
+            (ciudadFiltro || nombreAsociadoFiltro) &&
+            !fechaOSIFiltro &&
+            !fechaOSFFiltro &&
+            !fechaProgIIFiltro &&
+            !fechaProgIFFiltro &&
+            !fechaProgDIFiltro &&
+            !fechaProgDFFiltro,
+          then: yup
+            .string()
+            .required(
+              'Al seleccionar criterio de ciudad o asociado de negocio, debe seleccionar al menos un rango de fechas',
+            ),
+          otherwise: yup.string().nullable(),
+        },
+      ),
+    fechaOSIFiltro: yup
+      .date()
+      .nullable()
+      .when('fechaOSFFiltro', {
+        is: (fechaOSFFiltro) => !fechaOSFFiltro,
+        then: yup.date().nullable(),
+        otherwise: yup
+          .date()
+          .required(
+            'Fecha Orden Servicio Inicial es requerida cuando se indica una Final',
+          ),
+      }),
+    fechaOSFFiltro: yup
+      .date()
+      .nullable()
+      .when(
+        'fechaOSIFiltro',
+        (fechaOSIFiltro, schema) =>
+          fechaOSIFiltro &&
+          schema.min(
+            fechaOSIFiltro,
+            'Fecha Orden Servicio Final debe ser mayor que Fecha Orden Servicio Inicial',
+          ),
+      )
+      .when('fechaOSIFiltro', {
+        is: (fechaOSIFiltro) => fechaOSIFiltro,
+        then: yup
+          .date()
+          .required(
+            'Fecha Orden Servicio Final es requerida cuando se indica una Fecha Orden Servicio Inicial',
+          ),
+      }),
+
+    fechaProgIIFiltro: yup
+      .date()
+      .nullable()
+      .when('fechaProgIFFiltro', {
+        is: (fechaProgIFFiltro) => !fechaProgIFFiltro,
+        then: yup.date().nullable(),
+        otherwise: yup
+          .date()
+          .required(
+            'Fecha Programada Instalación Inicial es requerida cuando se indica una Fecha Programada Instalación Final',
+          ),
+      }),
+    fechaProgIFFiltro: yup
+      .date()
+      .nullable()
+      .when(
+        'fechaProgIIFiltro',
+        (fechaProgIIFiltro, schema) =>
+          fechaProgIIFiltro &&
+          schema.min(
+            fechaProgIIFiltro,
+            'Fecha Programada Instalación Final debe ser mayor que Fecha Programada Instalación Inicial',
+          ),
+      )
+      .when('fechaProgIIFiltro', {
+        is: (fechaProgIIFiltro) => fechaProgIIFiltro,
+        then: yup
+          .date()
+          .required(
+            'Fecha Programada Instalación Final es requerida cuando se indica una Fecha Programada Instalación Inicial',
+          ),
+      }),
+
+    fechaProgDIFiltro: yup
+      .date()
+      .nullable()
+      .when('fechaProgDFFiltro', {
+        is: (fechaProgDFFiltro) => !fechaProgDFFiltro,
+        then: yup.date().nullable(),
+        otherwise: yup
+          .date()
+          .required(
+            'Fecha Programada Desinstalación Inicial es requerida cuando se indica una Fecha Programada Desinstalación Final',
+          ),
+      }),
+    fechaProgDFFiltro: yup
+      .date()
+      .nullable()
+      .when(
+        'fechaProgDIFiltro',
+        (fechaProgDIFiltro, schema) =>
+          fechaProgDIFiltro &&
+          schema.min(
+            fechaProgDIFiltro,
+            'Fecha Programada Desinstalación Final debe ser mayor que Fecha Programada Desinstalación Inicial',
+          ),
+      )
+      .when('fechaProgDIFiltro', {
+        is: (fechaProgDIFiltro) => fechaProgDIFiltro,
+        then: yup
+          .date()
+          .required(
+            'Fecha Programada Desinstalación Final es requerida cuando se indica una Fecha Programada Desinstalación Inicial',
+          ),
+      }),
+
+    odsIFiltro: yup
+      .number()
+      .nullable()
+      .when('odsFFiltro', {
+        is: (odsFFiltro) => !odsFFiltro,
+        then: yup.number().nullable(),
+        otherwise: yup
+          .number()
+          .required(
+            'Número Orden Servicio Inicial es requerida cuando se indica una Número Orden Servicio Final',
+          ),
+      }),
+    odsFFiltro: yup
+      .number()
+      .nullable()
+      .when(
+        'odsIFiltro',
+        (odsIFiltro, schema) =>
+          odsIFiltro &&
+          schema.min(
+            odsIFiltro,
+            'Número Orden Servicio Final debe ser mayor que Número Orden Servicio Inicial',
+          ),
+      )
+      .when('odsIFiltro', {
+        is: (odsIFiltro) => odsIFiltro,
+        then: yup
+          .number()
+          .required(
+            'Número Orden Servicio Final es requerida cuando se indica una Número Orden Servicio Inicial',
+          ),
+      }),
+
+    ciudadFiltro: yup.number().nullable(),
+    nombreAsociadoFiltro: yup.number().nullable(),
+    recursoTecnicoFiltro: yup.number().nullable(),
+  },
+  [
+    ['fechaOSFFiltro', 'fechaOSIFiltro'],
+    ['fechaProgIIFiltro', 'fechaProgIFFiltro'],
+    ['fechaProgDIFiltro', 'fechaProgDFFiltro'],
+    ['odsIFiltro', 'odsFFiltro'],
+  ],
+);
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {numSelected, titulo, ciudades, asociados, recursosTecnicos} = props;
@@ -246,7 +479,7 @@ const EnhancedTableToolbar = (props) => {
             </Typography>
           </Box>
           <Formik
-            validateOnBlur={false}
+            validateOnBlur={true}
             enableReinitialize={true}
             initialValues={{
               fechaOSIFiltro: '',
@@ -260,25 +493,27 @@ const EnhancedTableToolbar = (props) => {
               odsIFiltro: '',
               odsFFiltro: '',
               recursoTecnicoFiltro: '',
+              one: '',
+              two: '',
             }}
-            onReset={() => {
-              dispatch(
-                onGetColeccion({
-                  fechaOSIFiltro: '',
-                  fechaOSFFiltro: '',
-                  fechaProgIIFiltro: '',
-                  fechaProgIFFiltro: '',
-                  ciudadFiltro: '',
-                  fechaProgDIFiltro: '',
-                  fechaProgDFFiltro: '',
-                  nombreAsociadoFiltro: '',
-                  odsIFiltro: '',
-                  odsFFiltro: '',
-                  recursoTecnicoFiltro: '',
-                }),
-              );
-            }}
-            // validationSchema={validationSchema}
+            // onReset={() => {
+            //   dispatch(
+            //     onGetColeccion({
+            //       fechaOSIFiltro: '',
+            //       fechaOSFFiltro: '',
+            //       fechaProgIIFiltro: '',
+            //       fechaProgIFFiltro: '',
+            //       ciudadFiltro: '',
+            //       fechaProgDIFiltro: '',
+            //       fechaProgDFFiltro: '',
+            //       nombreAsociadoFiltro: '',
+            //       odsIFiltro: '',
+            //       odsFFiltro: '',
+            //       recursoTecnicoFiltro: '',
+            //     }),
+            //   );
+            // }}
+            validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting}) => {
               setSubmitting(true);
               dispatch(onGetColeccion(data));
@@ -309,7 +544,7 @@ const EnhancedTableToolbar = (props) => {
                         </IconButton>
                       </Tooltip>
                     </Box>
-                    <Box display='flex' mb={2}>
+                    <Box>
                       <Tooltip title='Buscar'>
                         <IconButton
                           type='submit'
@@ -373,6 +608,12 @@ const EnhancedTableToolbar = (props) => {
                     name='recursoTecnicoFiltro'
                     label='Recurso Técnico'
                   />
+                </Box>
+                <Box width={'100%'} display={'flex'} justifyContent={'center'}>
+                  <MyTextField name='one' label='' type='hidden' />
+                </Box>
+                <Box width={'100%'} display={'flex'} justifyContent={'center'}>
+                  <MyTextField name='two' label='' type='hidden' />
                 </Box>
               </Form>
             )}
@@ -495,16 +736,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AceptacionOrdenServicio = (props) => {
+const ConsultaAgendaServicio = (props) => {
   const [showForm, setShowForm] = useState(false);
-  const [selected, setSelected] = React.useState([]);
   const dense = true; //Borrar cuando se use el change
 
   const [accion, setAccion] = useState('ver');
   const [
-    aceptacionOrdenServicioSeleccionado,
-    setAceptacionOrdenServicioSeleccionado,
-  ] = useState(0);
+    ConsultaAgendaServicioSeleccionado,
+    setConsultaAgendaServicioSeleccionado,
+  ] = useState('');
   const {agenda} = useSelector(
     ({ordenServicioReducer}) => ordenServicioReducer,
   );
@@ -559,7 +799,7 @@ const AceptacionOrdenServicio = (props) => {
     agenda.forEach((element) => {
       let date_array = element['fecha_programada'].split('-');
       aux.push({
-        title: 'Instalacion: ' + element['instalacion'],
+        title: 'Instalación: ' + element['instalacion'],
         start: new Date(
           date_array[0],
           date_array[1] - 1,
@@ -571,7 +811,7 @@ const AceptacionOrdenServicio = (props) => {
         end: new Date(date_array[0], date_array[1] - 1, date_array[2], 8, 0, 0),
       });
       aux.push({
-        title: 'Desinstalacion: ' + element['desinstalacion'],
+        title: 'Desinstalación: ' + element['desinstalacion'],
         start: new Date(
           date_array[0],
           date_array[1] - 1,
@@ -613,12 +853,35 @@ const AceptacionOrdenServicio = (props) => {
     });
   const localizer = momentLocalizer(moment);
 
+  const CustomEvent = (event) => {
+    return (
+      <p
+        style={{
+          backgroundColor: event.title.includes('Instalación')
+            ? defaultConfig.theme.palette.primary.main
+            : event.title.includes('Desinstalación')
+            ? 'gray'
+            : 'red',
+          borderRadius: '5px',
+          paddingLeft: '5px',
+        }}>
+        {event.title}
+      </p>
+    );
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setConsultaAgendaServicioSeleccionado('');
+    setAccion('ver');
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         {permisos && (
           <EnhancedTableToolbar
-            numSelected={selected.length}
+            numSelected={[]}
             titulo={titulo}
             ciudades={ciudades}
             asociados={asociados}
@@ -633,18 +896,61 @@ const AceptacionOrdenServicio = (props) => {
               events={events}
               views={['month']}
               step={60}
-              showMultiDayTimes
               defaultDate={new Date(Date.now())}
               components={{
                 timeSlotWrapper: ColoredDateCellWrapper,
+                month: {
+                  dateHeader: ({date, label}) => {
+                    let highlightDate = false;
+
+                    events.forEach((event) => {
+                      if (
+                        format(event.end, 'yyyy-MM-dd') ===
+                        format(date, 'yyyy-MM-dd')
+                      ) {
+                        highlightDate = true;
+                      }
+                    });
+                    return (
+                      <p
+                        style={{cursor: highlightDate ? 'pointer' : 'auto'}}
+                        onClick={() => {
+                          setConsultaAgendaServicioSeleccionado(
+                            format(date, 'yyyy-MM-dd'),
+                          );
+                          setShowForm(true);
+                        }}>
+                        {label}
+                      </p>
+                    );
+                  },
+                },
+                event: CustomEvent,
               }}
               localizer={localizer}
+              onSelectEvent={(event) => {
+                setConsultaAgendaServicioSeleccionado(
+                  format(event.end, 'yyyy-MM-dd'),
+                );
+                setShowForm(true);
+              }}
             />
           </Box>
         }
       </Paper>
+      {showForm ? (
+        <ConsultaAgendaServicioCreador
+          showForm={showForm}
+          consultaAgendaServicio={ConsultaAgendaServicioSeleccionado}
+          accion={accion}
+          handleOnClose={handleOnClose}
+          titulo={titulo}
+        />
+      ) : (
+        ''
+      )}
     </div>
   );
 };
 
-export default AceptacionOrdenServicio;
+export default ConsultaAgendaServicio;
