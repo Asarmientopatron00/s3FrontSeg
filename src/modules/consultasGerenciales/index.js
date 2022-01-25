@@ -10,6 +10,11 @@ export const consultasGerencialesConfig = [
         path: ['/exportacion-odes'],
         component: React.lazy(() => import('./ExportacionOdeS')),
       },
+      {
+        exact: true,
+        path: ['/exportacion-asociado'],
+        component: React.lazy(() => import('./ExportacionAsociado')),
+      },
     ],
   },
 ];
