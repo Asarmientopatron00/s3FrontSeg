@@ -758,6 +758,7 @@ const ConsultaAgendaServicio = (props) => {
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
+  const [defaultDay, setDefaultDay] = useState(new Date(Date.now()));
 
   const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
 
@@ -796,7 +797,12 @@ const ConsultaAgendaServicio = (props) => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     let aux = [];
+    let minDate = new Date(Date.now());
     agenda.forEach((element) => {
+      if (new Date(element['fecha_programada']) < minDate) {
+        minDate = new Date(element['fecha_programada']);
+        setDefaultDay(minDate);
+      }
       let date_array = element['fecha_programada'].split('-');
       aux.push({
         title: 'Instalación: ' + element['instalacion'],
@@ -896,7 +902,7 @@ const ConsultaAgendaServicio = (props) => {
               events={events}
               views={['month']}
               step={60}
-              defaultDate={new Date(Date.now())}
+              date={defaultDay}
               components={{
                 timeSlotWrapper: ColoredDateCellWrapper,
                 month: {

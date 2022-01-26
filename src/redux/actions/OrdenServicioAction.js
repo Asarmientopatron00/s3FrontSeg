@@ -353,12 +353,12 @@ export const onGetColeccionAceptacion = (
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
@@ -418,12 +418,12 @@ export const onGetColeccionReporteHoras = (
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
@@ -602,7 +602,6 @@ export const onCreate = (params, handleOnClose) => {
     jwtAxios
       .post('ordenes-servicios', params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
@@ -630,7 +629,6 @@ export const onApprove = (params, handleOnClose, updateColeccion) => {
     jwtAxios
       .post('ordenes-servicios/aprobar/' + params.id, params)
       .then((data) => {
-        console.log(data);
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
@@ -799,7 +797,6 @@ export const onImport = (params, setActiveStep, setRows) => {
         }
       })
       .catch((error) => {
-        console.log();
         try {
           dispatch({
             type: FETCH_ERROR,
@@ -851,7 +848,6 @@ export const onImportAFacturar = (params, setActiveStep, setRows) => {
         }
       })
       .catch((error) => {
-        console.log();
         try {
           dispatch({
             type: FETCH_ERROR,
@@ -875,7 +871,6 @@ export const onImportAFacturar = (params, setActiveStep, setRows) => {
 };
 
 export const onEnvioCorreos = (fecha, asociados) => {
-  console.log(fecha, asociados);
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
