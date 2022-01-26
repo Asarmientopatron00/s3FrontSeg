@@ -483,13 +483,27 @@ export const onShow = (id) => {
   };
 };
 
-export const onShowAgendaByDate = (date) => {
+export const onShowAgendaByDate = (date, filtros) => {
   const {messages} = appIntl();
   return (dispatch) => {
     if (date !== '') {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('ordenes-servicios/consulta-agenda/' + date)
+        .get('ordenes-servicios/consulta-agenda/' + date, {
+          params: {
+            fechaOSInicial: filtros.fechaOSIFiltro,
+            fechaOSFinal: filtros.fechaOSFFiltro,
+            fechaProgInstInicial: filtros.fechaProgIIFiltro,
+            fechaProgInstFinal: filtros.fechaProgIFFiltro,
+            ciudad: filtros.ciudadFiltro,
+            fechaProgDesiInicial: filtros.fechaProgDIFiltro,
+            fechaProgDesiFinal: filtros.fechaProgDFFiltro,
+            asociado: filtros.nombreAsociadoFiltro,
+            ODSInicial: filtros.odsIFiltro,
+            ODSFinal: filtros.odsFFiltro,
+            recursoTecnico: filtros.recursoTecnicoFiltro,
+          },
+        })
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});

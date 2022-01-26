@@ -26,6 +26,19 @@ export const StyledCalendar = styled(Calendar)(({theme}) => ({
   '& rbc-event, & .rbc-day-slot, & .rbc-background-event': {
     backgroundColor: 'red',
   },
+  '& .rbc-btn-group': {
+    '&>button:first-child': {
+      content: 'uppercase!important',
+    },
+  },
+  '& .rbc-toolbar-label': {
+    textTransform: 'uppercase!important',
+    fontSize: '1.5em',
+  },
+  '& .rbc-header': {
+    textTransform: 'uppercase!important',
+    fontSize: '1em',
+  },
   // '& .rbc-toolbar button': {
   //   cursor: 'pointer',
   //   color: theme.palette.text.secondary,

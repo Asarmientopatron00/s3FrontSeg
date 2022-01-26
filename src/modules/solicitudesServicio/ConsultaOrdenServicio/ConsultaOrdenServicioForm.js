@@ -731,9 +731,9 @@ const AcuerdoServicioForm = (props) => {
               <Box component='h6' mb={2}>
                 Nombre Documento
               </Box>
-              {rows.map((row) => {
+              {rows.map((row, index) => {
                 return (
-                  <>
+                  <Box key={index}>
                     <Box component='a' mb={2}>
                       {row.nombre_documento}
                     </Box>
@@ -749,7 +749,7 @@ const AcuerdoServicioForm = (props) => {
                       justifyContent='center'>
                       {row.nombre_archivo}
                     </Box>
-                  </>
+                  </Box>
                 );
               })}
             </Box>
