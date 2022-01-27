@@ -436,7 +436,7 @@ const EnhancedTableToolbar = (props) => {
             <Box className={classes.horizontalBottoms}>
               {permisos.indexOf('Exportar') >= 0 && (
                 <Tooltip
-                  title='Exportar'
+                  title='Exportar Facturacion'
                   component='a'
                   className={classes.linkDocumento}
                   href={
