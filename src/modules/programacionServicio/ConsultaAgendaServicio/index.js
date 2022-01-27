@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box} from '@material-ui/core';
+import {Box, Button} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -38,6 +38,8 @@ import MyAutoCompleteRecursoTecnico from '../../../shared/components/MyAutoCompl
 import * as yup from 'yup';
 import format from 'date-fns/format';
 import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -220,6 +222,23 @@ const useToolbarStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start',
     gap: '20px',
     minWidth: '100px',
+  },
+  exportButton: {
+    backgroundColor: '#4caf50',
+    color: 'white',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  x: {
+    position: 'absolute',
+    color: '#4caf50',
+    fontSize: '14px',
+    top: '19px',
+    fontWeight: 'bold',
   },
 }));
 
@@ -455,7 +474,19 @@ const validationSchema = yup.object().shape(
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const {numSelected, titulo, ciudades, asociados, recursosTecnicos} = props;
+  const {
+    numSelected,
+    titulo,
+    ciudades,
+    asociados,
+    recursosTecnicos,
+    setEvents,
+    setDefaultDay,
+    setFiltros,
+    filtros,
+    permisos,
+    events,
+  } = props;
   const dispatch = useDispatch();
 
   return (
@@ -477,6 +508,50 @@ const EnhancedTableToolbar = (props) => {
             <Typography className={classes.title} variant='h6' component='div'>
               {titulo}
             </Typography>
+            {permisos.indexOf('Exportar') >= 0 && events.length > 0 && (
+              <Box display='grid'>
+                <Box display='flex' mb={2}>
+                  <Tooltip
+                    title='Exportar'
+                    component='a'
+                    className={classes.linkDocumento}
+                    href={
+                      defaultConfig.API_URL +
+                      '/ordenes-servicios/consulta-agenda/exportar?fechaOSInicial=' +
+                      filtros.fechaOSIFiltro +
+                      '&fechaOSFinal=' +
+                      filtros.fechaOSFFiltro +
+                      '&fechaProgInstInicial=' +
+                      filtros.fechaProgIIFiltro +
+                      '&fechaProgInstFinal' +
+                      filtros.fechaProgIFFiltro +
+                      '&ciudad=' +
+                      filtros.ciudadFiltro +
+                      '&fechaProgDesiInicial=' +
+                      filtros.fechaProgDIFiltro +
+                      '&fechaProgDesiFinal=' +
+                      filtros.fechaProgDFFiltro +
+                      '&asociado=' +
+                      filtros.nombreAsociadoFiltro +
+                      '&ODSInicial=' +
+                      filtros.odsIFiltro +
+                      '&ODSFinal=' +
+                      filtros.odsFFiltro +
+                      '&recursoTecnico=' +
+                      filtros.recursoTecnicoFiltro
+                    }>
+                    <IconButton
+                      className={classes.exportButton}
+                      aria-label='filter list'>
+                      <Box component='span' className={classes.x}>
+                        X
+                      </Box>
+                      <InsertDriveFileIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Box>
+            )}
           </Box>
           <Formik
             validateOnBlur={true}
@@ -496,26 +571,14 @@ const EnhancedTableToolbar = (props) => {
               one: '',
               two: '',
             }}
-            // onReset={() => {
-            //   dispatch(
-            //     onGetColeccion({
-            //       fechaOSIFiltro: '',
-            //       fechaOSFFiltro: '',
-            //       fechaProgIIFiltro: '',
-            //       fechaProgIFFiltro: '',
-            //       ciudadFiltro: '',
-            //       fechaProgDIFiltro: '',
-            //       fechaProgDFFiltro: '',
-            //       nombreAsociadoFiltro: '',
-            //       odsIFiltro: '',
-            //       odsFFiltro: '',
-            //       recursoTecnicoFiltro: '',
-            //     }),
-            //   );
-            // }}
+            onReset={() => {
+              setEvents([]);
+              setDefaultDay(new Date(Date.now()));
+            }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting}) => {
               setSubmitting(true);
+              setFiltros(data);
               dispatch(onGetColeccion(data));
               setSubmitting(false);
             }}>
@@ -734,6 +797,14 @@ const useStyles = makeStyles((theme) => ({
   rowsPerPageOptions: {
     marginRight: '10px',
   },
+  navBottom: {
+    border: '1px solid gray',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      cursor: 'pointer',
+      color: 'white',
+    },
+  },
 }));
 
 const ConsultaAgendaServicio = (props) => {
@@ -758,6 +829,8 @@ const ConsultaAgendaServicio = (props) => {
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
+  const [defaultDay, setDefaultDay] = useState(new Date(Date.now()));
+  const [filtros, setFiltros] = useState({});
 
   const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
 
@@ -796,7 +869,12 @@ const ConsultaAgendaServicio = (props) => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     let aux = [];
+    let minDate = new Date(Date.now());
     agenda.forEach((element) => {
+      if (new Date(element['fecha_programada']) < minDate) {
+        minDate = new Date(element['fecha_programada']);
+        setDefaultDay(minDate);
+      }
       let date_array = element['fecha_programada'].split('-');
       aux.push({
         title: 'Instalación: ' + element['instalacion'],
@@ -876,6 +954,45 @@ const ConsultaAgendaServicio = (props) => {
     setAccion('ver');
   };
 
+  const CustomToolbar = (toolbar) => {
+    const date = moment(toolbar.date);
+
+    return (
+      <Box display={'grid'} gridTemplateColumns={'20% 60% 20%'}>
+        <Box>
+          <Button
+            className={classes.navBottom}
+            onClick={() => {
+              var newDate = date.subtract(1, 'M');
+              toolbar.onNavigate('prev', newDate);
+            }}>
+            ANT.
+          </Button>
+          <Button className={classes.navBottom}>HOY</Button>
+          <Button
+            className={classes.navBottom}
+            onClick={() => {
+              var newDate = date.add(1, 'M');
+              toolbar.onNavigate('next', newDate);
+            }}>
+            SIG.
+          </Button>
+        </Box>
+        <Box>
+          <Box component={'h1'} display={'flex'} justifyContent={'center'}>
+            {' '}
+            {date.format('MMMM') + ' ' + date.format('YYYY')}
+          </Box>
+        </Box>
+      </Box>
+    );
+  };
+
+  const formats = {
+    weekdayFormat: (date, culture, localizer) =>
+      localizer.format(date, 'dddd', culture),
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -886,6 +1003,12 @@ const ConsultaAgendaServicio = (props) => {
             ciudades={ciudades}
             asociados={asociados}
             recursosTecnicos={recursosTecnicos}
+            setEvents={setEvents}
+            setDefaultDay={setDefaultDay}
+            setFiltros={setFiltros}
+            filtros={filtros}
+            permisos={permisos}
+            events={events}
           />
         )}
 
@@ -894,9 +1017,10 @@ const ConsultaAgendaServicio = (props) => {
             <StyledCalendar
               // <Calendar
               events={events}
+              formats={formats}
               views={['month']}
               step={60}
-              defaultDate={new Date(Date.now())}
+              date={defaultDay}
               components={{
                 timeSlotWrapper: ColoredDateCellWrapper,
                 month: {
@@ -927,6 +1051,9 @@ const ConsultaAgendaServicio = (props) => {
                 },
                 event: CustomEvent,
               }}
+              onNavigate={(date) => {
+                setDefaultDay(date);
+              }}
               localizer={localizer}
               onSelectEvent={(event) => {
                 setConsultaAgendaServicioSeleccionado(
@@ -945,6 +1072,7 @@ const ConsultaAgendaServicio = (props) => {
           accion={accion}
           handleOnClose={handleOnClose}
           titulo={titulo}
+          filtros={filtros}
         />
       ) : (
         ''

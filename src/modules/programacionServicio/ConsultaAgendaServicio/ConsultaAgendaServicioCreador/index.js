@@ -28,15 +28,20 @@ const validationSchema = yup.object({
 });
 
 const ConsultaAgendaServicioCreador = (props) => {
-  const {consultaAgendaServicio, handleOnClose, accion, titulo} = props;
+  const {consultaAgendaServicio, handleOnClose, accion, titulo, filtros} =
+    props;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShowAgendaByDate(consultaAgendaServicio));
+      dispatch(onShowAgendaByDate(consultaAgendaServicio, filtros));
     }
   }, [accion, dispatch, consultaAgendaServicio]);
+
+  const updateColection = () => {
+    dispatch(onShowAgendaByDate(consultaAgendaServicio, filtros));
+  };
 
   let selectedRow = useRef();
   selectedRow = useSelector(
@@ -90,6 +95,7 @@ const ConsultaAgendaServicioCreador = (props) => {
                 initialValues={initialValues}
                 errors={errors}
                 touched={touched}
+                updateColection={updateColection}
               />
             )}
           </Formik>

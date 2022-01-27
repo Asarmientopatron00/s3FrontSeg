@@ -353,12 +353,12 @@ export const onGetColeccionAceptacion = (
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
@@ -418,12 +418,12 @@ export const onGetColeccionReporteHoras = (
         } else {
           dispatch({
             type: FETCH_ERROR,
-            payload: messages['message.somethingWentWrong'],
+            payload: data.data.mensajes[0],
           });
         }
       })
       .catch((error) => {
-        dispatch({type: FETCH_ERROR, payload: error.message});
+        dispatch({type: FETCH_ERROR, payload: error.response.data.mensajes[0]});
       });
   };
 };
@@ -483,13 +483,27 @@ export const onShow = (id) => {
   };
 };
 
-export const onShowAgendaByDate = (date) => {
+export const onShowAgendaByDate = (date, filtros) => {
   const {messages} = appIntl();
   return (dispatch) => {
     if (date !== '') {
       dispatch({type: FETCH_START});
       jwtAxios
-        .get('ordenes-servicios/consulta-agenda/' + date)
+        .get('ordenes-servicios/consulta-agenda/' + date, {
+          params: {
+            fechaOSInicial: filtros.fechaOSIFiltro,
+            fechaOSFinal: filtros.fechaOSFFiltro,
+            fechaProgInstInicial: filtros.fechaProgIIFiltro,
+            fechaProgInstFinal: filtros.fechaProgIFFiltro,
+            ciudad: filtros.ciudadFiltro,
+            fechaProgDesiInicial: filtros.fechaProgDIFiltro,
+            fechaProgDesiFinal: filtros.fechaProgDFFiltro,
+            asociado: filtros.nombreAsociadoFiltro,
+            ODSInicial: filtros.odsIFiltro,
+            ODSFinal: filtros.odsFFiltro,
+            recursoTecnico: filtros.recursoTecnicoFiltro,
+          },
+        })
         .then((data) => {
           if (data.status === 200) {
             dispatch({type: FETCH_SUCCESS});
@@ -602,7 +616,6 @@ export const onCreate = (params, handleOnClose) => {
     jwtAxios
       .post('ordenes-servicios', params)
       .then((data) => {
-        console.log(data);
         if (data.status === 201) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
@@ -630,7 +643,6 @@ export const onApprove = (params, handleOnClose, updateColeccion) => {
     jwtAxios
       .post('ordenes-servicios/aprobar/' + params.id, params)
       .then((data) => {
-        console.log(data);
         if (data.status === 200) {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
@@ -799,7 +811,6 @@ export const onImport = (params, setActiveStep, setRows) => {
         }
       })
       .catch((error) => {
-        console.log();
         try {
           dispatch({
             type: FETCH_ERROR,
@@ -851,7 +862,6 @@ export const onImportAFacturar = (params, setActiveStep, setRows) => {
         }
       })
       .catch((error) => {
-        console.log();
         try {
           dispatch({
             type: FETCH_ERROR,
@@ -875,7 +885,6 @@ export const onImportAFacturar = (params, setActiveStep, setRows) => {
 };
 
 export const onEnvioCorreos = (fecha, asociados) => {
-  console.log(fecha, asociados);
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
