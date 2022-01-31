@@ -886,6 +886,8 @@ const OrdenServicio = (props) => {
     }
   }, [rows]);
 
+  const notShownStates = ['TER', 'PDF', 'FAC', 'ANU'];
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -973,7 +975,9 @@ const OrdenServicio = (props) => {
                             align='center'
                             className={classes.acciones}>
                             {permisos.indexOf('Modificar') >= 0 &&
-                              row.estado_orden_servicio !== 'ANU' && (
+                              !notShownStates.includes(
+                                row.estado_orden_servicio,
+                              ) && (
                                 <Box
                                   component='a'
                                   href={'/orden-servicio/editar/' + row.id}
@@ -1009,7 +1013,9 @@ const OrdenServicio = (props) => {
                               </Tooltip>
                             )} */}
                             {permisos.indexOf('Eliminar') >= 0 &&
-                              row.estado_orden_servicio !== 'ANU' && (
+                              !notShownStates.includes(
+                                row.estado_orden_servicio,
+                              ) && (
                                 <Tooltip title={'Anular'}>
                                   <DeleteIcon
                                     onClick={() =>

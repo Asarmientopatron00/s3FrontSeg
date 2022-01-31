@@ -189,7 +189,7 @@ const SolicitudCotizacionCreator = (props) => {
               telefono_contacto: selectedRow
                 ? selectedRow.telefono_contacto
                 : user.telefono,
-              nombre_empresa: selectedRow
+              empresa: selectedRow
                 ? selectedRow.nombre_empresa
                 : user.asociado.nombre,
               asociado_id: selectedRow

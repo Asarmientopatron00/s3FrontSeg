@@ -216,6 +216,11 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.fecha_instalacion
                   : ''
                 : '',
+              fecha_instalacion_fisica: selectedRow
+                ? selectedRow.fecha_instalacion_fisica
+                  ? selectedRow.fecha_instalacion_fisica
+                  : ''
+                : '',
               hora_programada_instalacion: selectedRow
                 ? selectedRow.hora_programada_instalacion
                   ? selectedRow.hora_programada_instalacion
@@ -224,6 +229,11 @@ const AprobacionOrdenServicioCreator = (props) => {
               hora_inicio_instalacion: selectedRow
                 ? selectedRow.hora_inicio_instalacion
                   ? selectedRow.hora_inicio_instalacion
+                  : ''
+                : '',
+              hora_instalacion_fisica: selectedRow
+                ? selectedRow.hora_instalacion_fisica
+                  ? selectedRow.hora_instalacion_fisica
                   : ''
                 : '',
               departamento_instalacion: selectedRow
@@ -299,6 +309,11 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.fecha_desinstalacion
                   : ''
                 : '',
+              fecha_desinstalacion_fisica: selectedRow
+                ? selectedRow.fecha_desinstalacion_fisica
+                  ? selectedRow.fecha_desinstalacion_fisica
+                  : ''
+                : '',
               hora_programada_desinstalacion: selectedRow
                 ? selectedRow.hora_programada_desinstalacion
                   ? selectedRow.hora_programada_desinstalacion
@@ -307,6 +322,11 @@ const AprobacionOrdenServicioCreator = (props) => {
               hora_inicio_desinstalacion: selectedRow
                 ? selectedRow.hora_inicio_desinstalacion
                   ? selectedRow.hora_inicio_desinstalacion
+                  : ''
+                : '',
+              hora_desinstalacion_fisica: selectedRow
+                ? selectedRow.hora_desinstalacion_fisica
+                  ? selectedRow.hora_desinstalacion_fisica
                   : ''
                 : '',
               departamento_desinstalacion: selectedRow

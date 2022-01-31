@@ -299,7 +299,7 @@ const SolicitudCotizacionForm = (props) => {
               <MyTextField
                 className={classes.myTextField}
                 label='Empresa'
-                name='nombre_empresa'
+                name='empresa'
                 disabled={true}
                 required
               />

@@ -141,7 +141,7 @@ const SolicitudCotizacionForm = (props) => {
               />
             </Box>
             <Box
-              component='h7'
+              component='h1'
               mb={{xs: 4, xl: 6}}
               fontSize={15}
               fontWeight={Fonts.BOLD}>
@@ -186,7 +186,7 @@ const SolicitudCotizacionForm = (props) => {
               <MyTextField
                 className={classes.myTextField}
                 label='Empresa'
-                name='nombre_empresa'
+                name='empresa'
                 disabled={true}
                 required
                 InputLabelProps={{

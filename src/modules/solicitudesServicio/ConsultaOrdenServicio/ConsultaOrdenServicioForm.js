@@ -358,7 +358,17 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 disabled={true}
               />
-              <Box></Box>
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Instalacion Fisica'
+                name='fecha_instalacion_fisica'
+                type='date'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
               <MyTextField
                 name='lugar_instalacion'
@@ -367,8 +377,16 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 disabled={true}
               />
-              <Box></Box>
-
+              <MyTextField
+                className={classes.myTextField}
+                label='Hora Instalacion Fisica'
+                name='hora_instalacion_fisica'
+                disabled={true}
+                type='time'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <MyTextField
                 className={classes.myTextField}
                 label='Dirección'
@@ -528,7 +546,17 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 disabled={true}
               />
-              <Box></Box>
+
+              <MyTextField
+                className={classes.myTextField}
+                label='Fecha Desinstalacion Fisica'
+                name='fecha_desinstalacion_fisica'
+                type='date'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
 
               <MyTextField
                 name='lugar_desinstalacion'
@@ -537,8 +565,17 @@ const AcuerdoServicioForm = (props) => {
                 className={classes.myTextField}
                 disabled={true}
               />
-              <Box></Box>
 
+              <MyTextField
+                className={classes.myTextField}
+                label='Hora Desinstalacion Fisica'
+                name='hora_desinstalacion_fisica'
+                disabled={true}
+                type='time'
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <MyTextField
                 className={classes.myTextField}
                 label='Dirección'
