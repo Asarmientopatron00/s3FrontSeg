@@ -62,6 +62,8 @@ import DetalleCotizacionProductoReducer from './DetalleCotizacionProductoReducer
 import BitacoraEquipoReducer from './BitacoraEquipoReducer';
 import ODSTFacturarServicioReducer from './ODSTFacturarServicioReducer';
 import ODSTFacturarClienteReducer from './ODSTFacturarClienteReducer';
+import CGAsociadoNegocioReducer from './CGAsociadoNegocioReducer';
+import CGOrdenCompraReducer from './CGOrdenCompraReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -129,5 +131,7 @@ const reducers = (history) =>
     bitacoraEquipoReducer: BitacoraEquipoReducer,
     oDSTFacturarServicioReducer: ODSTFacturarServicioReducer,
     oDSTFacturarClienteReducer: ODSTFacturarClienteReducer,
+    cGAsociadoNegocioReducer: CGAsociadoNegocioReducer,
+    cGOrdenCompraReducer: CGOrdenCompraReducer,
   });
 export default reducers;

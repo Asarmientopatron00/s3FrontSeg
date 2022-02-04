@@ -107,7 +107,7 @@
     "react-transition-group": "^4.4.1",
     "react-virtualized": "^9.22.2",
     "react-window": "^1.8.5",
-    "recharts": "^1.8.5",
+    "recharts": "^2.1.8",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",

@@ -64,3 +64,5 @@ export * from './DetalleCotizacionProductoAction';
 export * from './BitacoraEquipoAction';
 export * from './ODSTFacturarServicioAction';
 export * from './ODSTFacturarClienteAction';
+export * from './CGAsociadoNegocioAction';
+export * from './CGOrdenCompraAction';

@@ -463,6 +463,14 @@ export const GET_COLECCION_LIGERA_FACTURAR_CLIENTE_TERMINADO =
   'get_coleccion_ligera_facturar_cliente_terminado';
 export const SHOW_FACTURAR_CLIENTE_TERMINADO =
   'show_facturar_cliente_terminado';
+export const GET_COLECCION_CONSULTA_ASOCIADO_NEGOCIO =
+  'get_coleccion_consulta_asociado_negocio';
+export const GET_DATOS_CONSULTA_ASOCIADO_NEGOCIO =
+  'get_datos_consulta_asociado_negocio';
+export const GET_COLECCION_CONSULTA_ORDEN_COMPRA =
+  'get_coleccion_consulta_orden_compra';
+export const GET_DATOS_CONSULTA_ORDEN_COMPRA =
+  'get_datos_consulta_orden_compra';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

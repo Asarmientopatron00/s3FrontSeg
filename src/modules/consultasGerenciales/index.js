@@ -15,6 +15,30 @@ export const consultasGerencialesConfig = [
         path: ['/exportacion-asociado'],
         component: React.lazy(() => import('./ExportacionAsociado')),
       },
+      {
+        exact: true,
+        path: ['/consulta-asociados'],
+        component: React.lazy(() => import('./AsociadoNegocio')),
+      },
+      {
+        exact: true,
+        path: ['/consulta-asociados/:accion/:id'],
+        component: React.lazy(() =>
+          import('./../asociados/AsociadoNegocio/AsociadoNegocioCreador'),
+        ),
+      },
+      {
+        exact: true,
+        path: ['/cg-ordenes-compra'],
+        component: React.lazy(() => import('./OrdenCompra')),
+      },
+      {
+        exact: true,
+        path: ['/cg-ordenes-compra/:accion/:id'],
+        component: React.lazy(() =>
+          import('./../cotizaciones/Pedido/PedidoCreador'),
+        ),
+      },
     ],
   },
 ];
