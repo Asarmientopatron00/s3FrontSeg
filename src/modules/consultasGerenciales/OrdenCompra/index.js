@@ -853,6 +853,53 @@ const OrdenCompraConsulta = (props) => {
   const setEstado = (estado) => {
     setEstadoFiltro(estado);
   };
+
+  const calcProms = () => {
+    let confDays = [];
+    let packingOffDays = [];
+    let anulDays = [];
+    let factDays = [];
+    let tPackinOffDays = [];
+    let tFactDays = [];
+    const reducer = (previousValue, currentValue) =>
+      previousValue + currentValue;
+    rows.map((row, index) => {
+      // eslint-disable-line
+      confDays[index] = row.dias_confirmacion;
+      packingOffDays[index] = row.dias_despacho;
+      factDays[index] = row.dias_facturacion;
+      anulDays[index] = row.dias_anulacion;
+      tPackinOffDays[index] = row.total_dias_despacho;
+      tFactDays[index] = row.total_dias_facturacion;
+    });
+    let promConfDays = 0;
+    let promPackingOffDays = 0;
+    let promAnulDays = 0;
+    let promFactDays = 0;
+    let promTPackinOffDays = 0;
+    let promTFactDays = 0;
+    if (confDays.length) {
+      promConfDays = (confDays.reduce(reducer) / confDays.length).toFixed(2);
+      promPackingOffDays = (
+        packingOffDays.reduce(reducer) / confDays.length
+      ).toFixed(2);
+      promAnulDays = (anulDays.reduce(reducer) / confDays.length).toFixed(2);
+      promFactDays = (factDays.reduce(reducer) / confDays.length).toFixed(2);
+      promTPackinOffDays = (
+        tPackinOffDays.reduce(reducer) / confDays.length
+      ).toFixed(2);
+      promTFactDays = (tFactDays.reduce(reducer) / confDays.length).toFixed(2);
+    }
+    return {
+      promConfDays,
+      promPackingOffDays,
+      promAnulDays,
+      promFactDays,
+      promTPackinOffDays,
+      promTFactDays,
+    };
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -875,7 +922,7 @@ const OrdenCompraConsulta = (props) => {
           {showData && (
             <CustomPieChart
               datos={datosTabla}
-              titulo={'Asociados Negocio'}
+              titulo={'Pedidos Productos'}
               onClick={setEstado}
             />
           )}
@@ -998,6 +1045,67 @@ const OrdenCompraConsulta = (props) => {
                       </TableRow>
                     );
                   })}
+                  <TableRow
+                    hover
+                    tabIndex={-1}
+                    key={236789}
+                    className={classes.row}>
+                    <MyCell
+                      value={''}
+                      align={'left'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={''}
+                      align={'left'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={''}
+                      align={'left'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={''}
+                      align={'left'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={'Promedio:'}
+                      align={'left'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promConfDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promPackingOffDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promFactDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promAnulDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promTPackinOffDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                    <MyCell
+                      value={calcProms().promTFactDays}
+                      align={'right'}
+                      claseBase={classes.cell}
+                    />
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
