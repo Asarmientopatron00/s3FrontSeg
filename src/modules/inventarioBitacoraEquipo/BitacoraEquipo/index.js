@@ -929,16 +929,17 @@ const BitacoraEquipo = (props) => {
                           <TableCell
                             align='center'
                             className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() =>
-                                    onOpenEditBitacoraEquipo(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
-                            )}
+                            {permisos.indexOf('Modificar') >= 0 &&
+                              row.id === row.max_id && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    onClick={() =>
+                                      onOpenEditBitacoraEquipo(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
+                                </Tooltip>
+                              )}
                             {permisos.indexOf('Listar') >= 0 && (
                               <Tooltip title={<IntlMessages id='boton.ver' />}>
                                 <VisibilityIcon
@@ -948,14 +949,17 @@ const BitacoraEquipo = (props) => {
                                   className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
                               </Tooltip>
                             )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.eliminar' />}>
-                                <DeleteIcon
-                                  onClick={() => onDeleteBitacoraEquipo(row.id)}
-                                  className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
-                              </Tooltip>
-                            )}
+                            {permisos.indexOf('Eliminar') >= 0 &&
+                              row.id === row.max_id && (
+                                <Tooltip
+                                  title={<IntlMessages id='boton.eliminar' />}>
+                                  <DeleteIcon
+                                    onClick={() =>
+                                      onDeleteBitacoraEquipo(row.id)
+                                    }
+                                    className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
+                                </Tooltip>
+                              )}
                           </TableCell>
 
                           {columnasMostradas.map((columna) => {

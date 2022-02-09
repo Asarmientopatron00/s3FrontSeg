@@ -251,6 +251,15 @@ const AcuerdoServicioForm = (props) => {
                   shrink: true,
                 }}
               />
+              <MyTextField
+                className={classes.myTextField}
+                label='N° Viaje'
+                name='numero_viaje'
+                disabled={true}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </Box>
             <Box className={classes.inputs_2}>
               <MyTextField
@@ -418,15 +427,7 @@ const AcuerdoServicioForm = (props) => {
                   shrink: true,
                 }}
               />
-              <MyTextField
-                className={classes.myTextField}
-                label='N° Viaje'
-                name='numero_viaje'
-                disabled={true}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+              <Box></Box>
 
               <MyTextField
                 className={classes.myTextField}

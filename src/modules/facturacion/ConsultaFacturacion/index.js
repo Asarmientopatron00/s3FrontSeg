@@ -479,7 +479,7 @@ const EnhancedTableToolbar = (props) => {
             onSubmit={(values) => {
               getValues(values);
             }}>
-            {({values, touched, handleReset, errors}) => (
+            {({values, touched, handleReset, resetForm}) => (
               <Form noValidate>
                 <Box className={classes.contenedorFiltros2}>
                   <MyTextField
@@ -524,7 +524,10 @@ const EnhancedTableToolbar = (props) => {
                     <Box display='flex' mb={2} justifyContent={'flex-end'}>
                       <Tooltip
                         title='Limpiar Filtros'
-                        onClick={(limpiarFiltros, handleReset)}>
+                        onClick={() => {
+                          resetForm();
+                          limpiarFiltros();
+                        }}>
                         <IconButton
                           className={classes.clearButton}
                           aria-label='filter list'>

@@ -171,12 +171,12 @@ const AprobacionOrdenServicioCreator = (props) => {
                 : '',
               numero_factura: selectedRow
                 ? selectedRow.numero_factura
-                  ? selectedRow.clienteFactura.nombre
+                  ? selectedRow.numero_factura
                   : ''
                 : '',
               fecha_factura: selectedRow
-                ? selectedRow.fecha_factura
-                  ? selectedRow.clienteFactura.nombre
+                ? selectedRow.Fecha_factura_odes
+                  ? selectedRow.Fecha_factura_odes
                   : ''
                 : '',
               servicio: selectedRow
