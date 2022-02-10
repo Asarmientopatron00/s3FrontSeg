@@ -471,6 +471,9 @@ export const GET_COLECCION_CONSULTA_ORDEN_COMPRA =
   'get_coleccion_consulta_orden_compra';
 export const GET_DATOS_CONSULTA_ORDEN_COMPRA =
   'get_datos_consulta_orden_compra';
+export const GET_COLECCION_CONSULTA_COTIZACION =
+  'get_coleccion_consulta_cotizacion';
+export const GET_DATOS_CONSULTA_COTIZACION = 'get_datos_consulta_cotizacion';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

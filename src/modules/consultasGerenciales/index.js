@@ -39,6 +39,11 @@ export const consultasGerencialesConfig = [
           import('./../cotizaciones/Pedido/PedidoCreador'),
         ),
       },
+      {
+        exact: true,
+        path: ['/cg-cotizaciones'],
+        component: React.lazy(() => import('./Cotizacion')),
+      },
     ],
   },
 ];
