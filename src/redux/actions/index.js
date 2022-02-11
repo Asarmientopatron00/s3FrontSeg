@@ -67,3 +67,4 @@ export * from './ODSTFacturarClienteAction';
 export * from './CGAsociadoNegocioAction';
 export * from './CGOrdenCompraAction';
 export * from './CGCotizacionAction';
+export * from './CGOrdenServicioAction';
