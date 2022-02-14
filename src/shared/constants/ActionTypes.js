@@ -478,6 +478,20 @@ export const GET_COLECCION_CONSULTA_ORDEN_SERVICIO =
   'get_coleccion_consulta_orden_servicio';
 export const GET_DATOS_CONSULTA_ORDEN_SERVICIO =
   'get_datos_consulta_orden_servicio';
+export const GET_COLECCION_CONSULTA_SERVICIO_MODALIDAD =
+  'get_coleccion_consulta_servicio_modalidad';
+export const GET_DATOS_CONSULTA_SERVICIO_MODALIDAD =
+  'get_datos_consulta_servicio_modalidad';
+export const GET_COLECCION_CONSULTA_SERVICIO_RUTA =
+  'get_coleccion_consulta_servicio_ruta';
+export const GET_DATOS_CONSULTA_SERVICIO_RUTA =
+  'get_datos_consulta_servicio_ruta';
+export const GET_COLECCION_CONSULTA_SERVICIO_CLIENTE =
+  'get_coleccion_consulta_servicio_cliente';
+export const GET_DATOS_CONSULTA_SERVICIO_CLIENTE =
+  'get_datos_consulta_servicio_cliente';
+export const GET_COLECCION_CIUDADES_ORIGEN = 'get_coleccion_ciudades_origen';
+export const GET_COLECCION_CIUDADES_DESTINO = 'get_coleccion_ciudades_destino';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

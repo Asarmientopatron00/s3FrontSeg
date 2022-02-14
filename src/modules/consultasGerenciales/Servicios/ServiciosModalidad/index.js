@@ -24,13 +24,13 @@ import Switch from '@material-ui/core/Switch';
 import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
-  onGetColeccion,
-  onGetColeccionDatos,
-} from '../../../redux/actions/CGOrdenServicioAction';
+  onGetColeccionModalidad,
+  onGetColeccionDatosModalidad,
+} from '../../../../redux/actions/CGServiciosAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import IntlMessages from '@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
@@ -42,13 +42,13 @@ import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from 'shared/constants/ListasValores';
-import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
+import ConsultaOrdenServicio from './../../../solicitudesServicio/ConsultaOrdenServicio';
 
 const cellsTable = [
   {
     id: 'name',
     typeHead: 'string',
-    label: 'Estado',
+    label: 'Modalidad',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
@@ -679,7 +679,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrdenServicioConsulta = (props) => {
+const ServiciosModalidadConsulta = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [ordenServicioSeleccionado, setOrdenServicioSeleccionado] = useState(0);
@@ -696,17 +696,17 @@ const OrdenServicioConsulta = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer,
+    ({cGServiciosReducer}) => cGServiciosReducer,
   );
   const datosTabla = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer.ligera,
+    ({cGServiciosReducer}) => cGServiciosReducer.ligera,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [fechaFinalFiltro, setFechaFinalFiltro] = useState('');
   const [fechaInicialFiltro, setFechaInicialFiltro] = useState('');
   const [fechaInstFinalFiltro, setFechaInstFinalFiltro] = useState('');
   const [fechaInstInicialFiltro, setFechaInstInicialFiltro] = useState('');
-  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [tipoServicioFiltro, setTipoServicioFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
@@ -760,7 +760,7 @@ const OrdenServicioConsulta = (props) => {
       (fechaInstInicialFiltro && fechaInstFinalFiltro)
     ) {
       dispatch(
-        onGetColeccionDatos(
+        onGetColeccionDatosModalidad(
           fechaInicialFiltro,
           fechaFinalFiltro,
           fechaInstInicialFiltro,
@@ -803,14 +803,14 @@ const OrdenServicioConsulta = (props) => {
 
   useEffect(() => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionModalidad(
         page,
         rowsPerPage,
         fechaInicialFiltro,
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
-        estadoFiltro,
+        tipoServicioFiltro,
         orderByToSend,
       ),
     );
@@ -822,20 +822,20 @@ const OrdenServicioConsulta = (props) => {
     fechaFinalFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
-    estadoFiltro,
+    tipoServicioFiltro,
     orderByToSend,
   ]);
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionModalidad(
         page,
         rowsPerPage,
         fechaInicialFiltro,
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
-        estadoFiltro,
+        tipoServicioFiltro,
         orderByToSend,
       ),
     );
@@ -855,8 +855,8 @@ const OrdenServicioConsulta = (props) => {
       case 'fechaInstFinalFiltro':
         setFechaInstFinalFiltro(e.target.value);
         break;
-      case 'estadoFiltro':
-        setEstadoFiltro(e.target.value);
+      case 'tipoServicioFiltro':
+        setTipoServicioFiltro(e.target.value);
         break;
       default:
         break;
@@ -868,7 +868,7 @@ const OrdenServicioConsulta = (props) => {
     setFechaInicialFiltro('');
     setFechaInstInicialFiltro('');
     setFechaInstFinalFiltro('');
-    setEstadoFiltro('');
+    setTipoServicioFiltro('');
   };
 
   const changeOrderBy = (id) => {
@@ -1061,8 +1061,8 @@ const OrdenServicioConsulta = (props) => {
     setFechaInstFinalFiltro(value.fechaInstFinalFiltro);
   };
 
-  const setEstado = (estado) => {
-    setEstadoFiltro(estado);
+  const setTipoServicio = (estado) => {
+    setTipoServicioFiltro(estado);
   };
 
   const calcProms = () => {
@@ -1149,7 +1149,7 @@ const OrdenServicioConsulta = (props) => {
             fechaInicialFiltro={fechaInicialFiltro}
             fechaInstInicialFiltro={fechaInstInicialFiltro}
             fechaInstFinalFiltro={fechaInstFinalFiltro}
-            estadoFiltro={estadoFiltro}
+            tipoServicioFiltro={tipoServicioFiltro}
             permisos={permisos}
             titulo={titulo}
             getValues={getValues}
@@ -1160,13 +1160,13 @@ const OrdenServicioConsulta = (props) => {
           {showData && (
             <CustomPieChart
               datos={datosTabla}
-              titulo={'Ordenes de Servicio'}
-              onClick={setEstado}
+              titulo={'Servicios por Modalidad'}
+              onClick={setTipoServicio}
             />
           )}
           {showData && (
             <MyTable
-              headers={['Estado', 'Numero', 'Participacion']}
+              headers={['Modalidad', 'Numero', 'Participacion']}
               data={datosTabla}
               columns={columnasTabla}
             />
@@ -1193,7 +1193,7 @@ const OrdenServicioConsulta = (props) => {
             className={classes.marcoTabla}>
             <IntlMessages id='sinResultados' />
           </Box>
-        ) : showTable && !estadoFiltro ? (
+        ) : showTable && !tipoServicioFiltro ? (
           ''
         ) : (
           <Box className={classes.marcoTabla}>
@@ -1471,4 +1471,4 @@ const OrdenServicioConsulta = (props) => {
   );
 };
 
-export default OrdenServicioConsulta;
+export default ServiciosModalidadConsulta;

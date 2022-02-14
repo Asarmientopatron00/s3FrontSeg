@@ -24,13 +24,15 @@ import Switch from '@material-ui/core/Switch';
 import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
-  onGetColeccion,
-  onGetColeccionDatos,
-} from '../../../redux/actions/CGOrdenServicioAction';
+  onGetColeccionRuta,
+  onGetColeccionDatosRuta,
+  onGetColeccionCiudadesOrigen,
+  onGetColeccionCiudadesDestino,
+} from '../../../../redux/actions/CGServiciosAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import IntlMessages from '@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
@@ -38,11 +40,12 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import CustomPieChart from 'shared/components/PieChart';
 import MyTable from 'shared/components/Table';
+import MyAutoCompleteCiudad2 from 'shared/components/MyAutoCompleteCiudad2';
 import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from 'shared/constants/ListasValores';
-import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
+import ConsultaOrdenServicio from './../../../solicitudesServicio/ConsultaOrdenServicio';
 
 const cellsTable = [
   {
@@ -417,6 +420,14 @@ const useToolbarStyles = makeStyles((theme) => ({
       marginBottom: 0,
     },
   },
+  // myTextField: {
+  //   width: '100%',
+  //   marginBottom: 5,
+  //   [theme.breakpoints.up('xl')]: {
+  //     marginBottom: 5,
+  //   },
+  //   height: '70px',
+  // },
 }));
 
 const EnhancedTableToolbar = (props) => {
@@ -429,8 +440,10 @@ const EnhancedTableToolbar = (props) => {
     fechaInicialFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
+    ciudadesOrigen,
+    ciudadesDestino,
     limpiarFiltros,
-    permisos,
+    setCity,
     validationSchema,
     getValues,
   } = props;
@@ -478,38 +491,35 @@ const EnhancedTableToolbar = (props) => {
               fechaInicialFiltro: '',
               fechaInstInicialFiltro: '',
               fechaInstFinalFiltro: '',
+              ciudadOrigenFiltro: '',
+              ciudadDestinoFiltro: '',
               one: '',
+              two: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
               getValues(values);
             }}>
-            {({values, handleReset, isValid, resetForm}) => (
+            {({values, initialValues, isValid, resetForm}) => (
               <Form noValidate>
                 <Box className={classes.contenedorFiltros}>
-                  <MyTextField
-                    label='Fecha Solicitud Inicial'
-                    name='fechaInicialFiltro'
-                    value={fechaInicialFiltro}
-                    id='fechaInicialFiltro'
-                    disabled={
-                      values.fechaInstFinalFiltro ||
-                      values.fechaInstInicialFiltro
-                    }
-                    type='date'
-                    InputLabelProps={{shrink: true}}
+                  <MyAutoCompleteCiudad2
+                    options={ciudadesOrigen}
+                    inputValue={initialValues.ciudadOrigenFiltro}
+                    onClick={(id) => setCity(true, id)}
+                    name='ciudadOrigenFiltro'
+                    label='Ciudad Origen'
+                    className={classes.myTextField}
+                    required
                   />
-                  <MyTextField
-                    label='Fecha Solicitud Final'
-                    name='fechaFinalFiltro'
-                    value={fechaFinalFiltro}
-                    id='fechaFinalFiltro'
-                    disabled={
-                      values.fechaInstFinalFiltro ||
-                      values.fechaInstInicialFiltro
-                    }
-                    type='date'
-                    InputLabelProps={{shrink: true}}
+                  <MyAutoCompleteCiudad2
+                    options={ciudadesDestino}
+                    inputValue={initialValues.ciudadDestinoFiltro}
+                    onClick={(id) => setCity(false, id)}
+                    name='ciudadDestinoFiltro'
+                    label='Ciudad Destino'
+                    className={classes.myTextField}
+                    required
                   />
                   <Box display='grid'>
                     <Box display='flex' mb={2} justifyContent={'flex-end'}>
@@ -538,6 +548,32 @@ const EnhancedTableToolbar = (props) => {
                 </Box>
                 <Box className={classes.contenedorFiltros}>
                   <MyTextField
+                    label='Fecha Solicitud Inicial'
+                    name='fechaInicialFiltro'
+                    value={fechaInicialFiltro}
+                    id='fechaInicialFiltro'
+                    disabled={
+                      values.fechaInstFinalFiltro ||
+                      values.fechaInstInicialFiltro
+                    }
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                  <MyTextField
+                    label='Fecha Solicitud Final'
+                    name='fechaFinalFiltro'
+                    value={fechaFinalFiltro}
+                    id='fechaFinalFiltro'
+                    disabled={
+                      values.fechaInstFinalFiltro ||
+                      values.fechaInstInicialFiltro
+                    }
+                    type='date'
+                    InputLabelProps={{shrink: true}}
+                  />
+                </Box>
+                <Box className={classes.contenedorFiltros}>
+                  <MyTextField
                     label='Fecha Instalacion Inicial'
                     name='fechaInstInicialFiltro'
                     value={fechaInstInicialFiltro}
@@ -563,6 +599,9 @@ const EnhancedTableToolbar = (props) => {
                 <Box className={classes.contenedorFiltros}>
                   <Box width={'100%'} display={'flex'}>
                     <MyTextField name='one' label='' type='hidden' />
+                  </Box>
+                  <Box width={'100%'} display={'flex'}>
+                    <MyTextField name='two' label='' type='hidden' />
                   </Box>
                 </Box>
               </Form>
@@ -679,7 +718,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrdenServicioConsulta = (props) => {
+const ServiciosRutaConsulta = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [ordenServicioSeleccionado, setOrdenServicioSeleccionado] = useState(0);
@@ -696,16 +735,24 @@ const OrdenServicioConsulta = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer,
+    ({cGServiciosReducer}) => cGServiciosReducer,
   );
   const datosTabla = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer.ligera,
+    ({cGServiciosReducer}) => cGServiciosReducer.ligera,
+  );
+  const ciudadesOrigen = useSelector(
+    ({cGServiciosReducer}) => cGServiciosReducer.ciudadesOr,
+  );
+  const ciudadesDestino = useSelector(
+    ({cGServiciosReducer}) => cGServiciosReducer.ciudadesDes,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [fechaFinalFiltro, setFechaFinalFiltro] = useState('');
   const [fechaInicialFiltro, setFechaInicialFiltro] = useState('');
   const [fechaInstFinalFiltro, setFechaInstFinalFiltro] = useState('');
   const [fechaInstInicialFiltro, setFechaInstInicialFiltro] = useState('');
+  const [ciudadOrigenFiltro, setCiudadOrigenFiltro] = useState('');
+  const [ciudadDestinoFiltro, setCiudadDestinoFiltro] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -756,15 +803,23 @@ const OrdenServicioConsulta = (props) => {
 
   useEffect(() => {
     if (
-      (fechaInicialFiltro && fechaFinalFiltro) ||
-      (fechaInstInicialFiltro && fechaInstFinalFiltro)
+      (fechaInicialFiltro &&
+        fechaFinalFiltro &&
+        ciudadOrigenFiltro &&
+        ciudadDestinoFiltro) ||
+      (fechaInstInicialFiltro &&
+        fechaInstFinalFiltro &&
+        ciudadOrigenFiltro &&
+        ciudadDestinoFiltro)
     ) {
       dispatch(
-        onGetColeccionDatos(
+        onGetColeccionDatosRuta(
           fechaInicialFiltro,
           fechaFinalFiltro,
           fechaInstInicialFiltro,
           fechaInstFinalFiltro,
+          ciudadOrigenFiltro,
+          ciudadDestinoFiltro,
         ),
       );
       setShowData(true);
@@ -777,7 +832,14 @@ const OrdenServicioConsulta = (props) => {
     fechaFinalFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
+    ciudadOrigenFiltro,
+    ciudadDestinoFiltro,
   ]);
+
+  useEffect(() => {
+    dispatch(onGetColeccionCiudadesOrigen(ciudadDestinoFiltro));
+    dispatch(onGetColeccionCiudadesDestino(ciudadOrigenFiltro));
+  }, [ciudadOrigenFiltro, ciudadDestinoFiltro]);
 
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
@@ -803,13 +865,15 @@ const OrdenServicioConsulta = (props) => {
 
   useEffect(() => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionRuta(
         page,
         rowsPerPage,
         fechaInicialFiltro,
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
+        ciudadOrigenFiltro,
+        ciudadDestinoFiltro,
         estadoFiltro,
         orderByToSend,
       ),
@@ -822,19 +886,23 @@ const OrdenServicioConsulta = (props) => {
     fechaFinalFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
+    ciudadOrigenFiltro,
+    ciudadDestinoFiltro,
     estadoFiltro,
     orderByToSend,
   ]);
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionRuta(
         page,
         rowsPerPage,
         fechaInicialFiltro,
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
+        ciudadOrigenFiltro,
+        ciudadDestinoFiltro,
         estadoFiltro,
         orderByToSend,
       ),
@@ -855,6 +923,12 @@ const OrdenServicioConsulta = (props) => {
       case 'fechaInstFinalFiltro':
         setFechaInstFinalFiltro(e.target.value);
         break;
+      case 'ciudadOrigenFiltro':
+        setCiudadOrigenFiltro(e.target.value);
+        break;
+      case 'ciudadDestinoFiltro':
+        setCiudadDestinoFiltro(e.target.value);
+        break;
       case 'estadoFiltro':
         setEstadoFiltro(e.target.value);
         break;
@@ -863,11 +937,21 @@ const OrdenServicioConsulta = (props) => {
     }
   };
 
+  const setCity = (origen, id) => {
+    if (origen) {
+      setCiudadOrigenFiltro(id);
+    } else {
+      setCiudadDestinoFiltro(id);
+    }
+  };
+
   const limpiarFiltros = () => {
     setFechaFinalFiltro('');
     setFechaInicialFiltro('');
     setFechaInstInicialFiltro('');
     setFechaInstFinalFiltro('');
+    setCiudadOrigenFiltro('');
+    setCiudadDestinoFiltro('');
     setEstadoFiltro('');
   };
 
@@ -967,6 +1051,8 @@ const OrdenServicioConsulta = (props) => {
 
   const validationSchema = yup.object().shape(
     {
+      ciudadOrigenFiltro: yup.number().required('Requerido'),
+      ciudadDestinoFiltro: yup.number().required('Requerido'),
       fechaInicialFiltro: yup
         .date()
         .nullable()
@@ -1031,6 +1117,36 @@ const OrdenServicioConsulta = (props) => {
             'fechaInicialFiltro',
             'fechaInstFinalFiltro',
             'fechaInstInicialFiltro',
+            'ciudadOrigenFiltro',
+            'ciudadDestinoFiltro',
+          ],
+          {
+            is: (
+              fechaFinalFiltro,
+              fechaInicialFiltro,
+              fechaInstFinalFiltro,
+              fechaInstInicialFiltro,
+              ciudadOrigenFiltro,
+              ciudadDestinoFiltro,
+            ) =>
+              !fechaFinalFiltro &&
+              !fechaInicialFiltro &&
+              !fechaInstFinalFiltro &&
+              !ciudadOrigenFiltro &&
+              !ciudadDestinoFiltro &&
+              !fechaInstInicialFiltro,
+            then: yup.string().required('Debe seleccionar al Menos 1 Filtro'),
+            otherwise: yup.string().nullable(),
+          },
+        ),
+      two: yup
+        .string()
+        .when(
+          [
+            'fechaFinalFiltro',
+            'fechaInicialFiltro',
+            'fechaInstFinalFiltro',
+            'fechaInstInicialFiltro',
           ],
           {
             is: (
@@ -1043,7 +1159,9 @@ const OrdenServicioConsulta = (props) => {
               !fechaInicialFiltro &&
               !fechaInstFinalFiltro &&
               !fechaInstInicialFiltro,
-            then: yup.string().required('Debe seleccionar al Menos 1 Filtro'),
+            then: yup
+              .string()
+              .required('Debe seleccionar al menos un par de fechas'),
             otherwise: yup.string().nullable(),
           },
         ),
@@ -1059,6 +1177,8 @@ const OrdenServicioConsulta = (props) => {
     setFechaFinalFiltro(value.fechaFinalFiltro);
     setFechaInstInicialFiltro(value.fechaInstInicialFiltro);
     setFechaInstFinalFiltro(value.fechaInstFinalFiltro);
+    setCiudadOrigenFiltro(value.ciudadOrigenFiltro);
+    setCiudadDestinoFiltro(value.ciudadDestinoFiltro);
   };
 
   const setEstado = (estado) => {
@@ -1147,12 +1267,17 @@ const OrdenServicioConsulta = (props) => {
             limpiarFiltros={limpiarFiltros}
             fechaFinalFiltro={fechaFinalFiltro}
             fechaInicialFiltro={fechaInicialFiltro}
+            ciudadOrigenFiltro={ciudadOrigenFiltro}
+            ciudadDestinoFiltro={ciudadDestinoFiltro}
             fechaInstInicialFiltro={fechaInstInicialFiltro}
             fechaInstFinalFiltro={fechaInstFinalFiltro}
             estadoFiltro={estadoFiltro}
             permisos={permisos}
             titulo={titulo}
+            ciudadesOrigen={ciudadesOrigen}
+            ciudadesDestino={ciudadesDestino}
             getValues={getValues}
+            setCity={setCity}
             validationSchema={validationSchema}
           />
         )}
@@ -1160,7 +1285,7 @@ const OrdenServicioConsulta = (props) => {
           {showData && (
             <CustomPieChart
               datos={datosTabla}
-              titulo={'Ordenes de Servicio'}
+              titulo={'Servicios por Ruta'}
               onClick={setEstado}
             />
           )}
@@ -1471,4 +1596,4 @@ const OrdenServicioConsulta = (props) => {
   );
 };
 
-export default OrdenServicioConsulta;
+export default ServiciosRutaConsulta;

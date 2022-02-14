@@ -68,3 +68,4 @@ export * from './CGAsociadoNegocioAction';
 export * from './CGOrdenCompraAction';
 export * from './CGCotizacionAction';
 export * from './CGOrdenServicioAction';
+export * from './CGServiciosAction';

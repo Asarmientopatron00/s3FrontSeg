@@ -66,6 +66,7 @@ import CGAsociadoNegocioReducer from './CGAsociadoNegocioReducer';
 import CGOrdenCompraReducer from './CGOrdenCompraReducer';
 import CGCotizacionReducer from './CGCotizacionReducer';
 import CGOrdenServicioReducer from './CGOrdenServicioReducer';
+import CGServiciosReducer from './CGServiciosReducer';
 
 const reducers = (history) =>
   combineReducers({
@@ -137,5 +138,6 @@ const reducers = (history) =>
     cGOrdenCompraReducer: CGOrdenCompraReducer,
     cGCotizacionReducer: CGCotizacionReducer,
     cGOrdenServicioReducer: CGOrdenServicioReducer,
+    cGServiciosReducer: CGServiciosReducer,
   });
 export default reducers;

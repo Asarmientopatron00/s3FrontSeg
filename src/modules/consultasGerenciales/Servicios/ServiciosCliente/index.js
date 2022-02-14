@@ -24,13 +24,13 @@ import Switch from '@material-ui/core/Switch';
 import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
-  onGetColeccion,
-  onGetColeccionDatos,
-} from '../../../redux/actions/CGOrdenServicioAction';
+  onGetColeccionCliente,
+  onGetColeccionDatosCliente,
+} from '../../../../redux/actions/CGServiciosAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import IntlMessages from '@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
@@ -42,7 +42,7 @@ import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
 } from 'shared/constants/ListasValores';
-import ConsultaOrdenServicio from './../../solicitudesServicio/ConsultaOrdenServicio';
+import ConsultaOrdenServicio from './../../../solicitudesServicio/ConsultaOrdenServicio';
 
 const cellsTable = [
   {
@@ -679,7 +679,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const OrdenServicioConsulta = (props) => {
+const ServiciosClienteConsulta = (props) => {
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [ordenServicioSeleccionado, setOrdenServicioSeleccionado] = useState(0);
@@ -760,7 +760,7 @@ const OrdenServicioConsulta = (props) => {
       (fechaInstInicialFiltro && fechaInstFinalFiltro)
     ) {
       dispatch(
-        onGetColeccionDatos(
+        onGetColeccionDatosCliente(
           fechaInicialFiltro,
           fechaFinalFiltro,
           fechaInstInicialFiltro,
@@ -803,7 +803,7 @@ const OrdenServicioConsulta = (props) => {
 
   useEffect(() => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionCliente(
         page,
         rowsPerPage,
         fechaInicialFiltro,
@@ -828,7 +828,7 @@ const OrdenServicioConsulta = (props) => {
 
   const updateColeccion = () => {
     dispatch(
-      onGetColeccion(
+      onGetColeccionCliente(
         page,
         rowsPerPage,
         fechaInicialFiltro,
@@ -1471,4 +1471,4 @@ const OrdenServicioConsulta = (props) => {
   );
 };
 
-export default OrdenServicioConsulta;
+export default ServiciosClienteConsulta;
