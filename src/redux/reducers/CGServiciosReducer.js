@@ -7,6 +7,7 @@ import {
   GET_DATOS_CONSULTA_SERVICIO_CLIENTE,
   GET_COLECCION_CIUDADES_ORIGEN,
   GET_COLECCION_CIUDADES_DESTINO,
+  GET_COLECCION_ASOCIADOS,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   ligera: [],
   ciudadesOr: [],
   ciudadesDes: [],
+  asociados: [],
   selectedRow: null,
   desde: 1,
   hasta: 1,
@@ -89,6 +91,12 @@ const CGServiciosReducer = (state = initialState, action) => {
       return {
         ...state,
         ciudadesDes: action.payload.data,
+      };
+
+    case GET_COLECCION_ASOCIADOS:
+      return {
+        ...state,
+        asociados: action.payload.data,
       };
 
     default:

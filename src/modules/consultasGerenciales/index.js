@@ -59,6 +59,11 @@ export const consultasGerencialesConfig = [
         path: ['/cg-servicios-ruta'],
         component: React.lazy(() => import('./Servicios/ServiciosRuta')),
       },
+      {
+        exact: true,
+        path: ['/cg-servicios-cliente'],
+        component: React.lazy(() => import('./Servicios/ServiciosCliente')),
+      },
     ],
   },
 ];

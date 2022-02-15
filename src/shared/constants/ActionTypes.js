@@ -492,6 +492,7 @@ export const GET_DATOS_CONSULTA_SERVICIO_CLIENTE =
   'get_datos_consulta_servicio_cliente';
 export const GET_COLECCION_CIUDADES_ORIGEN = 'get_coleccion_ciudades_origen';
 export const GET_COLECCION_CIUDADES_DESTINO = 'get_coleccion_ciudades_destino';
+export const GET_COLECCION_ASOCIADOS = 'get_coleccion_asociados';
 //APP SETTING
 
 export const TOGGLE_NAV_COLLAPSED = 'toggle_nav_collapsed';

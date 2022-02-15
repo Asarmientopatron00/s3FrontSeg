@@ -26,6 +26,7 @@ import * as yup from 'yup';
 import {
   onGetColeccionCliente,
   onGetColeccionDatosCliente,
+  onGetColeccionAsociados,
 } from '../../../../redux/actions/CGServiciosAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
@@ -38,6 +39,7 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import CustomPieChart from 'shared/components/PieChart';
 import MyTable from 'shared/components/Table';
+import MyAutoCompleteAsociado from 'shared/components/MyAutoCompleteAsociado';
 import {
   ESTADOS_ORDEN_SERVICIO,
   TIPOS_SERVICIOS,
@@ -431,6 +433,8 @@ const EnhancedTableToolbar = (props) => {
     fechaInstFinalFiltro,
     limpiarFiltros,
     permisos,
+    asociados,
+    asociadoFiltro,
     validationSchema,
     getValues,
   } = props;
@@ -478,14 +482,52 @@ const EnhancedTableToolbar = (props) => {
               fechaInicialFiltro: '',
               fechaInstInicialFiltro: '',
               fechaInstFinalFiltro: '',
+              asociadoFiltro: '',
               one: '',
+              two: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
               getValues(values);
             }}>
-            {({values, handleReset, isValid, resetForm}) => (
+            {({values, initialValues, isValid, resetForm}) => (
               <Form noValidate>
+                <Box className={classes.contenedorFiltros}>
+                  <MyAutoCompleteAsociado
+                    options={asociados}
+                    name='asociadoFiltro'
+                    complete={true}
+                    inputValue={initialValues.asociadoFiltro}
+                    label='Asociado de negocio'
+                    className={classes.myTextField}
+                    required
+                  />
+                  <Box width={'100%'} display={'flex'}></Box>
+                  <Box display='grid'>
+                    <Box display='flex' mb={2} justifyContent={'flex-end'}>
+                      <Tooltip
+                        title='Limpiar Filtros'
+                        onClick={() => {
+                          resetForm();
+                          limpiarFiltros();
+                        }}>
+                        <IconButton
+                          className={classes.clearButton}
+                          aria-label='filter list'>
+                          <ClearAllIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title='Buscar' style={{marginLeft: 20}}>
+                        <IconButton
+                          type='submit'
+                          className={classes.createButton}
+                          aria-label='filter list'>
+                          <SearchIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                </Box>
                 <Box className={classes.contenedorFiltros}>
                   <MyTextField
                     label='Fecha Solicitud Inicial'
@@ -511,30 +553,6 @@ const EnhancedTableToolbar = (props) => {
                     type='date'
                     InputLabelProps={{shrink: true}}
                   />
-                  <Box display='grid'>
-                    <Box display='flex' mb={2} justifyContent={'flex-end'}>
-                      <Tooltip
-                        title='Limpiar Filtros'
-                        onClick={() => {
-                          resetForm();
-                          limpiarFiltros();
-                        }}>
-                        <IconButton
-                          className={classes.clearButton}
-                          aria-label='filter list'>
-                          <ClearAllIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title='Buscar' style={{marginLeft: 20}}>
-                        <IconButton
-                          type='submit'
-                          className={classes.createButton}
-                          aria-label='filter list'>
-                          <SearchIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  </Box>
                 </Box>
                 <Box className={classes.contenedorFiltros}>
                   <MyTextField
@@ -563,6 +581,9 @@ const EnhancedTableToolbar = (props) => {
                 <Box className={classes.contenedorFiltros}>
                   <Box width={'100%'} display={'flex'}>
                     <MyTextField name='one' label='' type='hidden' />
+                  </Box>
+                  <Box width={'100%'} display={'flex'}>
+                    <MyTextField name='two' label='' type='hidden' />
                   </Box>
                 </Box>
               </Form>
@@ -696,16 +717,20 @@ const ServiciosClienteConsulta = (props) => {
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer,
+    ({cGServiciosReducer}) => cGServiciosReducer,
   );
   const datosTabla = useSelector(
-    ({cGOrdenServicioReducer}) => cGOrdenServicioReducer.ligera,
+    ({cGServiciosReducer}) => cGServiciosReducer.ligera,
+  );
+  const asociados = useSelector(
+    ({cGServiciosReducer}) => cGServiciosReducer.asociados,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [fechaFinalFiltro, setFechaFinalFiltro] = useState('');
   const [fechaInicialFiltro, setFechaInicialFiltro] = useState('');
   const [fechaInstFinalFiltro, setFechaInstFinalFiltro] = useState('');
   const [fechaInstInicialFiltro, setFechaInstInicialFiltro] = useState('');
+  const [asociadoFiltro, setAsociadoFiltro] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
   // const {pathname} = useLocation();
   const [openPopOver, setOpenPopOver] = useState(false);
@@ -756,8 +781,8 @@ const ServiciosClienteConsulta = (props) => {
 
   useEffect(() => {
     if (
-      (fechaInicialFiltro && fechaFinalFiltro) ||
-      (fechaInstInicialFiltro && fechaInstFinalFiltro)
+      (fechaInicialFiltro && fechaFinalFiltro && asociadoFiltro) ||
+      (fechaInstInicialFiltro && fechaInstFinalFiltro && asociadoFiltro)
     ) {
       dispatch(
         onGetColeccionDatosCliente(
@@ -765,6 +790,7 @@ const ServiciosClienteConsulta = (props) => {
           fechaFinalFiltro,
           fechaInstInicialFiltro,
           fechaInstFinalFiltro,
+          asociadoFiltro,
         ),
       );
       setShowData(true);
@@ -777,7 +803,12 @@ const ServiciosClienteConsulta = (props) => {
     fechaFinalFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
+    asociadoFiltro,
   ]);
+
+  useEffect(() => {
+    dispatch(onGetColeccionAsociados());
+  }, []);
 
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
@@ -810,6 +841,7 @@ const ServiciosClienteConsulta = (props) => {
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
+        asociadoFiltro,
         estadoFiltro,
         orderByToSend,
       ),
@@ -822,6 +854,7 @@ const ServiciosClienteConsulta = (props) => {
     fechaFinalFiltro,
     fechaInstInicialFiltro,
     fechaInstFinalFiltro,
+    asociadoFiltro,
     estadoFiltro,
     orderByToSend,
   ]);
@@ -835,6 +868,7 @@ const ServiciosClienteConsulta = (props) => {
         fechaFinalFiltro,
         fechaInstInicialFiltro,
         fechaInstFinalFiltro,
+        asociadoFiltro,
         estadoFiltro,
         orderByToSend,
       ),
@@ -855,6 +889,9 @@ const ServiciosClienteConsulta = (props) => {
       case 'fechaInstFinalFiltro':
         setFechaInstFinalFiltro(e.target.value);
         break;
+      case 'asociadoFiltro':
+        setAsociadoFiltro(e.target.value);
+        break;
       case 'estadoFiltro':
         setEstadoFiltro(e.target.value);
         break;
@@ -868,6 +905,7 @@ const ServiciosClienteConsulta = (props) => {
     setFechaInicialFiltro('');
     setFechaInstInicialFiltro('');
     setFechaInstFinalFiltro('');
+    setAsociadoFiltro('');
     setEstadoFiltro('');
   };
 
@@ -967,6 +1005,7 @@ const ServiciosClienteConsulta = (props) => {
 
   const validationSchema = yup.object().shape(
     {
+      asociadoFiltro: yup.number().required('Requerido'),
       fechaInicialFiltro: yup
         .date()
         .nullable()
@@ -1043,7 +1082,36 @@ const ServiciosClienteConsulta = (props) => {
               !fechaInicialFiltro &&
               !fechaInstFinalFiltro &&
               !fechaInstInicialFiltro,
-            then: yup.string().required('Debe seleccionar al Menos 1 Filtro'),
+            then: yup
+              .string()
+              .required('Debe seleccionar al menos un par de fechas'),
+            otherwise: yup.string().nullable(),
+          },
+        ),
+      two: yup
+        .string()
+        .when(
+          [
+            'fechaFinalFiltro',
+            'fechaInicialFiltro',
+            'fechaInstFinalFiltro',
+            'fechaInstInicialFiltro',
+            'asociadoFiltro',
+          ],
+          {
+            is: (
+              fechaFinalFiltro,
+              fechaInicialFiltro,
+              fechaInstFinalFiltro,
+              fechaInstInicialFiltro,
+              asociadoFiltro,
+            ) =>
+              !fechaFinalFiltro &&
+              !fechaInicialFiltro &&
+              !fechaInstFinalFiltro &&
+              !asociadoFiltro &&
+              !fechaInstInicialFiltro,
+            then: yup.string().required('Debe seleccionar al menos un filtro'),
             otherwise: yup.string().nullable(),
           },
         ),
@@ -1059,6 +1127,7 @@ const ServiciosClienteConsulta = (props) => {
     setFechaFinalFiltro(value.fechaFinalFiltro);
     setFechaInstInicialFiltro(value.fechaInstInicialFiltro);
     setFechaInstFinalFiltro(value.fechaInstFinalFiltro);
+    setAsociadoFiltro(value.asociadoFiltro);
   };
 
   const setEstado = (estado) => {
@@ -1149,6 +1218,8 @@ const ServiciosClienteConsulta = (props) => {
             fechaInicialFiltro={fechaInicialFiltro}
             fechaInstInicialFiltro={fechaInstInicialFiltro}
             fechaInstFinalFiltro={fechaInstFinalFiltro}
+            asociadoFiltro={asociadoFiltro}
+            asociados={asociados}
             estadoFiltro={estadoFiltro}
             permisos={permisos}
             titulo={titulo}
@@ -1160,7 +1231,7 @@ const ServiciosClienteConsulta = (props) => {
           {showData && (
             <CustomPieChart
               datos={datosTabla}
-              titulo={'Ordenes de Servicio'}
+              titulo={'Servicios por Cliente'}
               onClick={setEstado}
             />
           )}

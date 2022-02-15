@@ -7,6 +7,7 @@ import {
   GET_DATOS_CONSULTA_SERVICIO_CLIENTE,
   GET_COLECCION_CIUDADES_ORIGEN,
   GET_COLECCION_CIUDADES_DESTINO,
+  GET_COLECCION_ASOCIADOS,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -376,6 +377,34 @@ export const onGetColeccionCiudadesDestino = (ciudadOrigen) => {
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_CIUDADES_DESTINO,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetColeccionAsociados = () => {
+  const {messages} = appIntl();
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/asociados', {
+        params: {},
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_COLECCION_ASOCIADOS,
             payload: data,
           });
         } else {

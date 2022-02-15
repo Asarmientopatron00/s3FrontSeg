@@ -40,6 +40,13 @@ const MyAutocompleteAsociado = (props) => {
       inputValue={myvalue}
       renderOption={(option) => {
         if (option.estado) {
+          if (props.complete) {
+            return (
+              <React.Fragment>
+                {option.nombre} - {option.numero_documento}
+              </React.Fragment>
+            );
+          }
           return <React.Fragment>{option.nombre}</React.Fragment>;
         } else {
           return '';
