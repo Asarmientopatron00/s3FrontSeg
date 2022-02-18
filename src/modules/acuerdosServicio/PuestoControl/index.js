@@ -704,7 +704,7 @@ const PuestoControl = () => {
   const onDeletePuestoControl = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el contacto notificación?',
+      text: '¿Seguro qué desea eliminar el puesto de control?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -717,7 +717,7 @@ const PuestoControl = () => {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
           'Eliminado',
-          'El contacto notificación ha sido eliminado',
+          'El puesto de control ha sido eliminado',
           'success',
         );
       }

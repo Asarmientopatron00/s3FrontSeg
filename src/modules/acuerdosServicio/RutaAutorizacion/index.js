@@ -703,7 +703,7 @@ const RutaAutorizacion = () => {
   const onDeleteRutaAutorizacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el contacto notificación?',
+      text: '¿Seguro qué desea eliminar la ruta autorizada?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -715,8 +715,8 @@ const RutaAutorizacion = () => {
       if (result.isConfirmed) {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
-          'Eliminado',
-          'El contacto notificación ha sido eliminado',
+          'Eliminada',
+          'La ruta autorizada ha sido eliminada',
           'success',
         );
       }

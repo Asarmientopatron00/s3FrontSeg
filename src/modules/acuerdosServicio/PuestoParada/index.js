@@ -708,7 +708,7 @@ const PuestoParada = () => {
   const onDeletePuestoParada = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el contacto notificación?',
+      text: '¿Seguro qué desea eliminar el puesto de parada?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -721,7 +721,7 @@ const PuestoParada = () => {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
           'Eliminado',
-          'El contacto notificación ha sido eliminado',
+          'El puesto de parada ha sido eliminado',
           'success',
         );
       }

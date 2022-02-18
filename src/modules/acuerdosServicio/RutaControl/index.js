@@ -743,7 +743,7 @@ const RutaControl = () => {
   const onDeleteRutaControl = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro qué desea eliminar el contacto notificación?',
+      text: '¿Seguro que desea eliminar la ruta de control?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -755,8 +755,8 @@ const RutaControl = () => {
       if (result.isConfirmed) {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
-          'Eliminado',
-          'El contacto notificación ha sido eliminado',
+          'Eliminada',
+          'La ruta de control ha sido eliminada',
           'success',
         );
       }

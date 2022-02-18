@@ -16,7 +16,7 @@ const Navigation = () => {
         <React.Fragment key={item.id}>
           {item.type === 'group' && <VerticalNavGroup item={item} level={0} />}
 
-          {item.type === 'collapse' && (
+          {item.type === 'collapse' && item.nombre !== 'Aplicación Móvil' && (
             <VerticalCollapse item={item} level={0} />
           )}
 

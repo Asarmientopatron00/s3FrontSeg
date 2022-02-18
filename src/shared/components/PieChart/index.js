@@ -18,13 +18,14 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
   const RADIAN = Math.PI / 180;
 
   const COLORS = [
-    '#0088FE',
-    '#FFBB28',
-    '#00C49F',
-    '#FF8042',
-    '#9A00CB',
-    '#DF3600',
-    '#28F7E1',
+    '#46F1EA',
+    '#E6B25C',
+    '#D00062',
+    '#F7F700',
+    '#08FF00',
+    '#FF9700',
+    '#0017FF',
+    '#FF0000',
   ];
 
   const getIntroOfPage = (label) => {
