@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -49,7 +49,7 @@ const MyCell = (props) => {
 };
 
 const MyTable = (props) => {
-  const {headers, data, columns} = props;
+  const {headers, data, columns, promedios} = props;
   const [selected, setSelected] = React.useState([]);
   let vp = '0px';
   const classes = useStyles({vp: vp});
@@ -66,6 +66,27 @@ const MyTable = (props) => {
       return values.reduce(reducer);
     }
     return 0;
+  };
+
+  const setValues = (estado, promedios) => {
+    switch (estado) {
+      case 'REC':
+        return parseFloat(promedios[0].REC).toFixed(2);
+      case 'PRG':
+        return parseFloat(promedios[0].PRG).toFixed(2);
+      case 'PDF':
+        return parseFloat(promedios[0].PDF).toFixed(2);
+      case 'FAC':
+        return parseFloat(promedios[0].FAC).toFixed(2);
+      case 'RUT':
+        return parseFloat(promedios[0].RUT).toFixed(2);
+      case 'TER':
+        return parseFloat(promedios[0].TER).toFixed(2);
+      case 'ANU':
+        return parseFloat(promedios[0].ANU).toFixed(2);
+      case 'REG':
+        return parseFloat(0).toFixed(2);
+    }
   };
 
   return (
@@ -118,6 +139,13 @@ const MyTable = (props) => {
                       return <th key={row.id + columna.id}></th>;
                     }
                   })}
+                  {headers.length > 3 && promedios.length > 0 && (
+                    <MyCell
+                      align={'right'}
+                      claseBase={classes.cell}
+                      value={setValues(row.estado, promedios)}
+                    />
+                  )}
                 </TableRow>
               );
             })}

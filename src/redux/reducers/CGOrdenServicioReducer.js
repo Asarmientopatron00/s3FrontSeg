@@ -1,11 +1,13 @@
 import {
   GET_COLECCION_CONSULTA_ORDEN_SERVICIO,
   GET_DATOS_CONSULTA_ORDEN_SERVICIO,
+  GET_PROMEDIOS_CONSULTA_ORDEN_SERVICIO,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
   rows: [],
   ligera: [],
+  promedios: [],
   selectedRow: null,
   desde: 1,
   hasta: 1,
@@ -33,6 +35,12 @@ const CGOrdenServicioReducer = (state = initialState, action) => {
       return {
         ...state,
         ligera: action.payload.data,
+      };
+
+    case GET_PROMEDIOS_CONSULTA_ORDEN_SERVICIO:
+      return {
+        ...state,
+        promedios: action.payload.data,
       };
 
     default:

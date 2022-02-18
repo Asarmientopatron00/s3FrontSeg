@@ -476,6 +476,8 @@ export const GET_COLECCION_CONSULTA_COTIZACION =
 export const GET_DATOS_CONSULTA_COTIZACION = 'get_datos_consulta_cotizacion';
 export const GET_COLECCION_CONSULTA_ORDEN_SERVICIO =
   'get_coleccion_consulta_orden_servicio';
+export const GET_PROMEDIOS_CONSULTA_ORDEN_SERVICIO =
+  'get_promedios_consulta_orden_servicio';
 export const GET_DATOS_CONSULTA_ORDEN_SERVICIO =
   'get_datos_consulta_orden_servicio';
 export const GET_COLECCION_CONSULTA_SERVICIO_MODALIDAD =
@@ -484,10 +486,14 @@ export const GET_DATOS_CONSULTA_SERVICIO_MODALIDAD =
   'get_datos_consulta_servicio_modalidad';
 export const GET_COLECCION_CONSULTA_SERVICIO_RUTA =
   'get_coleccion_consulta_servicio_ruta';
+export const GET_PROMEDIOS_CONSULTA_SERVICIO_RUTA =
+  'get_promedios_consulta_servicio_ruta';
 export const GET_DATOS_CONSULTA_SERVICIO_RUTA =
   'get_datos_consulta_servicio_ruta';
 export const GET_COLECCION_CONSULTA_SERVICIO_CLIENTE =
   'get_coleccion_consulta_servicio_cliente';
+export const GET_PROMEDIOS_CONSULTA_SERVICIO_CLIENTE =
+  'get_promedios_consulta_servicio_cliente';
 export const GET_DATOS_CONSULTA_SERVICIO_CLIENTE =
   'get_datos_consulta_servicio_cliente';
 export const GET_COLECCION_CIUDADES_ORIGEN = 'get_coleccion_ciudades_origen';

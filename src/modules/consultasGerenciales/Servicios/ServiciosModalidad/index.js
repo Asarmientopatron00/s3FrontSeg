@@ -155,7 +155,7 @@ const cells = [
   {
     id: 'dias_inicio_viaje',
     typeHead: 'numeric',
-    label: 'Dias Inicio Viaje',
+    label: 'Dias Inicio/Viaje',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -163,7 +163,7 @@ const cells = [
   {
     id: 'dias_ruta_viaje',
     typeHead: 'numeric',
-    label: 'Dias Ruta Viaje',
+    label: 'Dias Ruta/Viaje',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -171,7 +171,7 @@ const cells = [
   {
     id: 'dias_interfaz_facturacion',
     typeHead: 'numeric',
-    label: 'Dias Interfaz Fact.',
+    label: 'Dias Interfaz/Fact.',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -249,7 +249,7 @@ function EnhancedTableHead(props) {
         <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-        {columnasMostradas.map((cell) => {
+        {columnasMostradas.map((cell, index) => {
           if (cell.mostrar) {
             return (
               <TableCell
@@ -261,7 +261,7 @@ function EnhancedTableHead(props) {
                     ? 'right'
                     : 'center'
                 }
-                className={classes.cell}
+                className={index <= 7 ? classes.cell : classes.cell2}
                 sortDirection={orderBy === cell.id ? order : false}>
                 <TableSortLabel
                   active={orderBy === cell.id}
@@ -615,6 +615,10 @@ const useStyles = makeStyles((theme) => ({
   cell: (props) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
+  }),
+  cell2: (props) => ({
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    whiteSpace: 'wrap',
   }),
   cellWidth: (props) => ({
     minWidth: props.width,

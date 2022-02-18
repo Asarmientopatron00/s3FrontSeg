@@ -1,6 +1,7 @@
 import {
   GET_COLECCION_CONSULTA_ORDEN_SERVICIO,
   GET_DATOS_CONSULTA_ORDEN_SERVICIO,
+  GET_PROMEDIOS_CONSULTA_ORDEN_SERVICIO,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -48,6 +49,49 @@ export const onGetColeccion = (
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_CONSULTA_ORDEN_SERVICIO,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+export const onGetPromedios = (
+  fechaInicial,
+  fechaFinal,
+  fechaInstInicial,
+  fechaInstFinal,
+) => {
+  const {messages} = appIntl();
+  const fechaInicialAux = fechaInicial ? fechaInicial : '';
+  const fechaFinalAux = fechaFinal ? fechaFinal : '';
+  const fechaInstInicialAux = fechaInstInicial ? fechaInstInicial : '';
+  const fechaInstFinalAux = fechaInstFinal ? fechaInstFinal : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/ordenes-servicio', {
+        params: {
+          fechaInicial: fechaInicialAux,
+          fechaFinal: fechaFinalAux,
+          fechaInstInicial: fechaInstInicialAux,
+          fechaInstFinal: fechaInstFinalAux,
+          todos: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_PROMEDIOS_CONSULTA_ORDEN_SERVICIO,
             payload: data,
           });
         } else {

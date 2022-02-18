@@ -5,6 +5,8 @@ import {
   GET_DATOS_CONSULTA_SERVICIO_RUTA,
   GET_COLECCION_CONSULTA_SERVICIO_CLIENTE,
   GET_DATOS_CONSULTA_SERVICIO_CLIENTE,
+  GET_PROMEDIOS_CONSULTA_SERVICIO_CLIENTE,
+  GET_PROMEDIOS_CONSULTA_SERVICIO_RUTA,
   GET_COLECCION_CIUDADES_ORIGEN,
   GET_COLECCION_CIUDADES_DESTINO,
   GET_COLECCION_ASOCIADOS,
@@ -12,6 +14,7 @@ import {
 
 const initialState = {
   rows: [],
+  promedios: [],
   ligera: [],
   ciudadesOr: [],
   ciudadesDes: [],
@@ -63,6 +66,12 @@ const CGServiciosReducer = (state = initialState, action) => {
         ligera: action.payload.data,
       };
 
+    case GET_PROMEDIOS_CONSULTA_SERVICIO_RUTA:
+      return {
+        ...state,
+        promedios: action.payload.data,
+      };
+
     case GET_COLECCION_CONSULTA_SERVICIO_CLIENTE:
       return {
         ...state,
@@ -79,6 +88,12 @@ const CGServiciosReducer = (state = initialState, action) => {
       return {
         ...state,
         ligera: action.payload.data,
+      };
+
+    case GET_PROMEDIOS_CONSULTA_SERVICIO_CLIENTE:
+      return {
+        ...state,
+        promedios: action.payload.data,
       };
 
     case GET_COLECCION_CIUDADES_ORIGEN:

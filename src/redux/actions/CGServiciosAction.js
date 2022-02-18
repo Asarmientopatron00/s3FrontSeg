@@ -3,8 +3,10 @@ import {
   GET_DATOS_CONSULTA_SERVICIO_MODALIDAD,
   GET_COLECCION_CONSULTA_SERVICIO_RUTA,
   GET_DATOS_CONSULTA_SERVICIO_RUTA,
+  GET_PROMEDIOS_CONSULTA_SERVICIO_RUTA,
   GET_COLECCION_CONSULTA_SERVICIO_CLIENTE,
   GET_DATOS_CONSULTA_SERVICIO_CLIENTE,
+  GET_PROMEDIOS_CONSULTA_SERVICIO_CLIENTE,
   GET_COLECCION_CIUDADES_ORIGEN,
   GET_COLECCION_CIUDADES_DESTINO,
   GET_COLECCION_ASOCIADOS,
@@ -175,6 +177,57 @@ export const onGetColeccionRuta = (
   };
 };
 
+export const onGetPromediosRuta = (
+  fechaInicial,
+  fechaFinal,
+  fechaInstInicial,
+  fechaInstFinal,
+  ciudadOrigen,
+  ciudadDestino,
+) => {
+  const {messages} = appIntl();
+  const fechaInicialAux = fechaInicial ? fechaInicial : '';
+  const fechaFinalAux = fechaFinal ? fechaFinal : '';
+  const fechaInstInicialAux = fechaInstInicial ? fechaInstInicial : '';
+  const fechaInstFinalAux = fechaInstFinal ? fechaInstFinal : '';
+  const ciudadOrigenAux = ciudadOrigen ? ciudadOrigen : '';
+  const ciudadDestinoAux = ciudadDestino ? ciudadDestino : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/servicios', {
+        params: {
+          fechaInicial: fechaInicialAux,
+          fechaFinal: fechaFinalAux,
+          fechaInstInicial: fechaInstInicialAux,
+          fechaInstFinal: fechaInstFinalAux,
+          ciudadOrigen: ciudadOrigenAux,
+          ciudadDestino: ciudadDestinoAux,
+          ruta: true,
+          todos: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_PROMEDIOS_CONSULTA_SERVICIO_RUTA,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
 export const onGetColeccionDatosRuta = (
   fechaInicial,
   fechaFinal,
@@ -267,6 +320,54 @@ export const onGetColeccionCliente = (
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_CONSULTA_SERVICIO_CLIENTE,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+
+export const onGetPromediosCliente = (
+  fechaInicial,
+  fechaFinal,
+  fechaInstInicial,
+  fechaInstFinal,
+  asociadoId,
+) => {
+  const {messages} = appIntl();
+  const fechaInicialAux = fechaInicial ? fechaInicial : '';
+  const fechaFinalAux = fechaFinal ? fechaFinal : '';
+  const fechaInstInicialAux = fechaInstInicial ? fechaInstInicial : '';
+  const fechaInstFinalAux = fechaInstFinal ? fechaInstFinal : '';
+  const asociadoIdAux = asociadoId ? asociadoId : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/servicios', {
+        params: {
+          fechaInicial: fechaInicialAux,
+          fechaFinal: fechaFinalAux,
+          fechaInstInicial: fechaInstInicialAux,
+          fechaInstFinal: fechaInstFinalAux,
+          asociadoId: asociadoIdAux,
+          cliente: true,
+          todos: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_PROMEDIOS_CONSULTA_SERVICIO_CLIENTE,
             payload: data,
           });
         } else {

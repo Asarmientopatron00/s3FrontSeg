@@ -25,6 +25,7 @@ import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccionCliente,
+  onGetPromediosCliente,
   onGetColeccionDatosCliente,
   onGetColeccionAsociados,
 } from '../../../../redux/actions/CGServiciosAction';
@@ -157,7 +158,7 @@ const cells = [
   {
     id: 'dias_inicio_viaje',
     typeHead: 'numeric',
-    label: 'Dias Inicio Viaje',
+    label: 'Dias Inicio/Viaje',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -165,7 +166,7 @@ const cells = [
   {
     id: 'dias_ruta_viaje',
     typeHead: 'numeric',
-    label: 'Dias Ruta Viaje',
+    label: 'Dias Ruta/Viaje',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -173,7 +174,7 @@ const cells = [
   {
     id: 'dias_interfaz_facturacion',
     typeHead: 'numeric',
-    label: 'Dias Interfaz Fact.',
+    label: 'Dias Interfaz/Fact.',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
@@ -251,7 +252,7 @@ function EnhancedTableHead(props) {
         <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
-        {columnasMostradas.map((cell) => {
+        {columnasMostradas.map((cell, index) => {
           if (cell.mostrar) {
             return (
               <TableCell
@@ -263,7 +264,7 @@ function EnhancedTableHead(props) {
                     ? 'right'
                     : 'center'
                 }
-                className={classes.cell}
+                className={index <= 7 ? classes.cell : classes.cell2}
                 sortDirection={orderBy === cell.id ? order : false}>
                 <TableSortLabel
                   active={orderBy === cell.id}
@@ -496,7 +497,6 @@ const EnhancedTableToolbar = (props) => {
                   <MyAutoCompleteAsociado
                     options={asociados}
                     name='asociadoFiltro'
-                    complete={true}
                     inputValue={initialValues.asociadoFiltro}
                     label='Asociado de negocio'
                     className={classes.myTextField}
@@ -637,6 +637,10 @@ const useStyles = makeStyles((theme) => ({
     padding: props.vp + ' 0px ' + props.vp + ' 15px',
     whiteSpace: 'nowrap',
   }),
+  cell2: (props) => ({
+    padding: props.vp + ' 0px ' + props.vp + ' 15px',
+    whiteSpace: 'wrap',
+  }),
   cellWidth: (props) => ({
     minWidth: props.width,
   }),
@@ -715,8 +719,7 @@ const ServiciosClienteConsulta = (props) => {
   const dense = true; //Borrar cuando se use el change
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
-
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
+  const {promedios, rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({cGServiciosReducer}) => cGServiciosReducer,
   );
   const datosTabla = useSelector(
@@ -786,6 +789,15 @@ const ServiciosClienteConsulta = (props) => {
     ) {
       dispatch(
         onGetColeccionDatosCliente(
+          fechaInicialFiltro,
+          fechaFinalFiltro,
+          fechaInstInicialFiltro,
+          fechaInstFinalFiltro,
+          asociadoFiltro,
+        ),
+      );
+      dispatch(
+        onGetPromediosCliente(
           fechaInicialFiltro,
           fechaFinalFiltro,
           fechaInstInicialFiltro,
@@ -1134,77 +1146,6 @@ const ServiciosClienteConsulta = (props) => {
     setEstadoFiltro(estado);
   };
 
-  const calcProms = () => {
-    let receiveDays = [];
-    let programDays = [];
-    let starTripDays = [];
-    let routeTripDays = [];
-    let intFactDays = [];
-    let factDays = [];
-    let anulDays = [];
-    let solToFactDays = [];
-    let startToFactDays = [];
-    const reducer = (previousValue, currentValue) =>
-      previousValue + currentValue;
-    rows.map((row, index) => {
-      // eslint-disable-line
-      receiveDays[index] = row.dias_recibido;
-      programDays[index] = row.dias_programacion;
-      starTripDays[index] = row.dias_inicio_viaje;
-      routeTripDays[index] = row.dias_ruta_viaje;
-      intFactDays[index] = row.dias_interfaz_facturacion;
-      factDays[index] = row.dias_facturacion;
-      anulDays[index] = row.dias_anulacion;
-      solToFactDays[index] = row.dias_solicitud_facturacion;
-      startToFactDays[index] = row.dias_inicio_facturacion;
-    });
-    let promReceiveDays = 0;
-    let promProgramDays = 0;
-    let promStarTripDays = 0;
-    let promRouteTripDays = 0;
-    let promIntFactDays = 0;
-    let promFactDays = 0;
-    let promAnulDays = 0;
-    let promSolToFactDays = 0;
-    let promStartToFactDays = 0;
-    if (receiveDays.length) {
-      promReceiveDays = (
-        receiveDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promProgramDays = (
-        programDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promStarTripDays = (
-        starTripDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promRouteTripDays = (
-        routeTripDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promIntFactDays = (
-        intFactDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promFactDays = (factDays.reduce(reducer) / receiveDays.length).toFixed(2);
-      promAnulDays = (anulDays.reduce(reducer) / receiveDays.length).toFixed(2);
-      promSolToFactDays = (
-        solToFactDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-      promStartToFactDays = (
-        startToFactDays.reduce(reducer) / receiveDays.length
-      ).toFixed(2);
-    }
-    return {
-      promReceiveDays,
-      promProgramDays,
-      promStarTripDays,
-      promRouteTripDays,
-      promIntFactDays,
-      promFactDays,
-      promAnulDays,
-      promSolToFactDays,
-      promStartToFactDays,
-    };
-  };
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -1237,9 +1178,10 @@ const ServiciosClienteConsulta = (props) => {
           )}
           {showData && (
             <MyTable
-              headers={['Estado', 'Numero', 'Participacion']}
+              headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
               data={datosTabla}
               columns={columnasTabla}
+              promedios={promedios}
             />
           )}
         </Box>
@@ -1334,7 +1276,7 @@ const ServiciosClienteConsulta = (props) => {
                           )}
                         </TableCell>
 
-                        {columnasMostradas.map((columna) => {
+                        {columnasMostradas.map((columna, index) => {
                           if (columna.mostrar) {
                             return (
                               <MyCell
@@ -1342,6 +1284,7 @@ const ServiciosClienteConsulta = (props) => {
                                 align={columna.align}
                                 width={columna.width}
                                 claseBase={classes.cell}
+                                complete
                                 value={columna.value(row[columna.id])}
                                 cellColor={
                                   columna.cellColor
@@ -1357,102 +1300,6 @@ const ServiciosClienteConsulta = (props) => {
                       </TableRow>
                     );
                   })}
-                  <TableRow
-                    hover
-                    tabIndex={-1}
-                    key={236789}
-                    className={classes.row}>
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={'Promedio:'}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promReceiveDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promProgramDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promStarTripDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promRouteTripDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promIntFactDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promFactDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promAnulDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promSolToFactDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promStartToFactDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
