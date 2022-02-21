@@ -498,7 +498,7 @@ export const onGetColeccionAsociados = () => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
-      .get('consultas-gerenciales/asociados', {
+      .get('consultas-gerenciales/asociados-ligera', {
         params: {},
       })
       .then((data) => {
