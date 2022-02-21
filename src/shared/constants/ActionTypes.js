@@ -469,10 +469,14 @@ export const GET_DATOS_CONSULTA_ASOCIADO_NEGOCIO =
   'get_datos_consulta_asociado_negocio';
 export const GET_COLECCION_CONSULTA_ORDEN_COMPRA =
   'get_coleccion_consulta_orden_compra';
+export const GET_PROMEDIOS_CONSULTA_ORDEN_COMPRA =
+  'get_promedios_consulta_orden_compra';
 export const GET_DATOS_CONSULTA_ORDEN_COMPRA =
   'get_datos_consulta_orden_compra';
 export const GET_COLECCION_CONSULTA_COTIZACION =
   'get_coleccion_consulta_cotizacion';
+export const GET_PROMEDIOS_CONSULTA_COTIZACION =
+  'get_promedios_consulta_cotizacion';
 export const GET_DATOS_CONSULTA_COTIZACION = 'get_datos_consulta_cotizacion';
 export const GET_COLECCION_CONSULTA_ORDEN_SERVICIO =
   'get_coleccion_consulta_orden_servicio';

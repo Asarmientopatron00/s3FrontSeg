@@ -25,6 +25,7 @@ import * as yup from 'yup';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {
   onGetColeccion,
+  onGetPromedios,
   onGetColeccionDatos,
 } from '../../../redux/actions/CGCotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -600,7 +601,7 @@ const CotizacionConsulta = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const {rows, desde, hasta, ultima_pagina, total} = useSelector(
+  const {promedios, rows, desde, hasta, ultima_pagina, total} = useSelector(
     ({cGCotizacionReducer}) => cGCotizacionReducer,
   );
   const datosTabla = useSelector(
@@ -662,6 +663,13 @@ const CotizacionConsulta = (props) => {
     if (fechaInicialFiltro && fechaFinalFiltro && tipoCotizacionFiltro) {
       dispatch(
         onGetColeccionDatos(
+          fechaInicialFiltro,
+          fechaFinalFiltro,
+          tipoCotizacionFiltro,
+        ),
+      );
+      dispatch(
+        onGetPromedios(
           fechaInicialFiltro,
           fechaFinalFiltro,
           tipoCotizacionFiltro,
@@ -877,40 +885,6 @@ const CotizacionConsulta = (props) => {
     setEstadoFiltro(estado);
   };
 
-  const calcProms = () => {
-    let sendDays = [];
-    let approveDays = [];
-    let anulDays = [];
-    let tDays = [];
-    const reducer = (previousValue, currentValue) =>
-      previousValue + currentValue;
-    rows.map((row, index) => {
-      // eslint-disable-line
-      sendDays[index] = row.dias_envio;
-      approveDays[index] = row.dias_aprobacion;
-      anulDays[index] = row.dias_anulacion;
-      tDays[index] = row.total_dias;
-    });
-    let promSendDays = 0;
-    let promApproveDays = 0;
-    let promAnulDays = 0;
-    let promTotalDays = 0;
-    if (sendDays.length) {
-      promSendDays = (sendDays.reduce(reducer) / sendDays.length).toFixed(2);
-      promAnulDays = (anulDays.reduce(reducer) / sendDays.length).toFixed(2);
-      promApproveDays = (approveDays.reduce(reducer) / sendDays.length).toFixed(
-        2,
-      );
-      promTotalDays = (tDays.reduce(reducer) / sendDays.length).toFixed(2);
-    }
-    return {
-      promSendDays,
-      promAnulDays,
-      promApproveDays,
-      promTotalDays,
-    };
-  };
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -940,9 +914,10 @@ const CotizacionConsulta = (props) => {
           )}
           {showData && (
             <MyTable
-              headers={['Estado', 'Numero', 'Participacion']}
+              headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
               data={datosTabla}
               columns={columnasTabla}
+              promedios={promedios}
             />
           )}
         </Box>
@@ -1059,62 +1034,6 @@ const CotizacionConsulta = (props) => {
                       </TableRow>
                     );
                   })}
-                  <TableRow
-                    hover
-                    tabIndex={-1}
-                    key={236789}
-                    className={classes.row}>
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={''}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={'Promedio:'}
-                      align={'left'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promSendDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promApproveDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promAnulDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                    <MyCell
-                      value={calcProms().promTotalDays}
-                      align={'right'}
-                      claseBase={classes.cell}
-                    />
-                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>

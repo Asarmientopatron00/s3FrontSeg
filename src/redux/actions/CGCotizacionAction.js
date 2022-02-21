@@ -1,6 +1,7 @@
 import {
   GET_COLECCION_CONSULTA_COTIZACION,
   GET_DATOS_CONSULTA_COTIZACION,
+  GET_PROMEDIOS_CONSULTA_COTIZACION,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -45,6 +46,42 @@ export const onGetColeccion = (
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_CONSULTA_COTIZACION,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+export const onGetPromedios = (fechaInicial, fechaFinal, tipoCotizacion) => {
+  const {messages} = appIntl();
+  const fechaInicialAux = fechaInicial ? fechaInicial : '';
+  const fechaFinalAux = fechaFinal ? fechaFinal : '';
+  const tipoCotizacionAux = tipoCotizacion ? tipoCotizacion : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/cotizaciones', {
+        params: {
+          fechaInicial: fechaInicialAux,
+          fechaFinal: fechaFinalAux,
+          tipoCotizacion: tipoCotizacionAux,
+          promedios: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_PROMEDIOS_CONSULTA_COTIZACION,
             payload: data,
           });
         } else {

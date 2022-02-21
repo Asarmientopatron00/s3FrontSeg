@@ -1,12 +1,14 @@
 import {
   GET_COLECCION_CONSULTA_COTIZACION,
   GET_DATOS_CONSULTA_COTIZACION,
+  GET_PROMEDIOS_CONSULTA_COTIZACION,
   SHOW_COTIZACION,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
   rows: [],
   ligera: [],
+  promedios: [],
   selectedRow: null,
   desde: 1,
   hasta: 1,
@@ -34,6 +36,12 @@ const CGCotizacionReducer = (state = initialState, action) => {
       return {
         ...state,
         ligera: action.payload.data,
+      };
+
+    case GET_PROMEDIOS_CONSULTA_COTIZACION:
+      return {
+        ...state,
+        promedios: action.payload.data,
       };
 
     case SHOW_COTIZACION:

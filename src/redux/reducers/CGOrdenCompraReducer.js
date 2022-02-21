@@ -1,12 +1,14 @@
 import {
   GET_COLECCION_CONSULTA_ORDEN_COMPRA,
   GET_DATOS_CONSULTA_ORDEN_COMPRA,
+  GET_PROMEDIOS_CONSULTA_ORDEN_COMPRA,
   SHOW_PEDIDO,
 } from '../../shared/constants/ActionTypes';
 
 const initialState = {
   rows: [],
   ligera: [],
+  promedios: [],
   selectedRow: null,
   desde: 1,
   hasta: 1,
@@ -34,6 +36,12 @@ const CGOrdenCompraReducer = (state = initialState, action) => {
       return {
         ...state,
         ligera: action.payload.data,
+      };
+
+    case GET_PROMEDIOS_CONSULTA_ORDEN_COMPRA:
+      return {
+        ...state,
+        promedios: action.payload.data,
       };
 
     case SHOW_PEDIDO:

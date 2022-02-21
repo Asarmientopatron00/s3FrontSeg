@@ -84,6 +84,16 @@ const MyTable = (props) => {
         return parseFloat(promedios[0].TER).toFixed(2);
       case 'ANU':
         return parseFloat(promedios[0].ANU).toFixed(2);
+      case 'APR':
+        return parseFloat(promedios[0].APR).toFixed(2);
+      case 'ENV':
+        return parseFloat(promedios[0].ENV).toFixed(2);
+      case 'CON':
+        return parseFloat(promedios[0].CON).toFixed(2);
+      case 'DES':
+        return parseFloat(promedios[0].DES).toFixed(2);
+      case 'GEN':
+        return parseFloat(0).toFixed(2);
       case 'REG':
         return parseFloat(0).toFixed(2);
     }

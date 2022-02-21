@@ -1,6 +1,7 @@
 import {
   GET_COLECCION_CONSULTA_ORDEN_COMPRA,
   GET_DATOS_CONSULTA_ORDEN_COMPRA,
+  GET_PROMEDIOS_CONSULTA_ORDEN_COMPRA,
   FETCH_ERROR,
   FETCH_START,
   FETCH_SUCCESS,
@@ -42,6 +43,40 @@ export const onGetColeccion = (
           dispatch({type: FETCH_SUCCESS});
           dispatch({
             type: GET_COLECCION_CONSULTA_ORDEN_COMPRA,
+            payload: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: messages['message.somethingWentWrong'],
+          });
+        }
+      })
+      .catch((error) => {
+        dispatch({type: FETCH_ERROR, payload: error.message});
+      });
+  };
+};
+export const onGetPromedios = (fechaInicial, fechaFinal) => {
+  const {messages} = appIntl();
+  const fechaInicialAux = fechaInicial ? fechaInicial : '';
+  const fechaFinalAux = fechaFinal ? fechaFinal : '';
+
+  return (dispatch) => {
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .get('consultas-gerenciales/ordenes-compra', {
+        params: {
+          fechaInicial: fechaInicialAux,
+          fechaFinal: fechaFinalAux,
+          promedios: true,
+        },
+      })
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch({type: FETCH_SUCCESS});
+          dispatch({
+            type: GET_PROMEDIOS_CONSULTA_ORDEN_COMPRA,
             payload: data,
           });
         } else {
