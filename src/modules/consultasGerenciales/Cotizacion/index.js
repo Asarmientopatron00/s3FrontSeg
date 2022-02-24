@@ -905,21 +905,34 @@ const CotizacionConsulta = (props) => {
           />
         )}
         <Box className={classes.marcoTabla}>
-          {showData && (
-            <CustomPieChart
-              datos={datosTabla}
-              titulo={'Numero Cotizaciones'}
-              onClick={setEstado}
-            />
+          {showData && datosTabla.length > 0 && (
+            <Typography
+              className={classes.title}
+              variant='h6'
+              id='tableTitle'
+              style={{textAlign: 'center', paddingTop: 10, fontWeight: 'bold'}}
+              component='div'>
+              {'Numero Cotizaciones'}
+            </Typography>
           )}
-          {showData && (
-            <MyTable
-              headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
-              data={datosTabla}
-              columns={columnasTabla}
-              promedios={promedios}
-            />
-          )}
+          <Box style={{flexDirection: 'row', display: 'flex'}}>
+            {showData && (
+              <CustomPieChart
+                datos={datosTabla}
+                titulo={'Numero Cotizaciones'}
+                onClick={setEstado}
+              />
+            )}
+            {showData && (
+              <MyTable
+                headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
+                data={datosTabla}
+                columns={columnasTabla}
+                promedios={promedios}
+                onClick={setEstado}
+              />
+            )}
+          </Box>
         </Box>
         {!permisos ? (
           <Box

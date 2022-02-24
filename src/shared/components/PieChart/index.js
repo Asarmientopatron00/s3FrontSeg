@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import {PieChart, Pie, Cell} from 'recharts';
 
 const CustomPieChart = ({datos, titulo, onClick}) => {
   const [data, setData] = useState([]);
@@ -18,30 +11,15 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
   const RADIAN = Math.PI / 180;
 
   const COLORS = [
-    '#46F1EA',
-    '#E6B25C',
-    '#D00062',
-    '#F7F700',
-    '#08FF00',
-    '#FF9700',
-    '#0017FF',
-    '#FF0000',
+    '#5C069B',
+    '#9B8706',
+    '#434145',
+    '#E216B7',
+    '#22A10E',
+    '#0A6189',
+    '#2D04F9',
+    '#F90B04',
   ];
-
-  const getIntroOfPage = (label) => {
-    switch (label) {
-      case 'Group A':
-        return "Group A is about men's clothing";
-      case 'Group B':
-        return "Group B is about women's dress";
-      case 'Group C':
-        return "Group C is about women's bag";
-      case 'Group D':
-        return 'Group D is about household goods';
-      default:
-        return '';
-    }
-  };
 
   const calcPosition = (radius, middleAngle, cx, cy) => {
     let x,
@@ -65,25 +43,24 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
     }
   };
 
-  const CustomTooltip = ({active, payload, label}) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className='custom-tooltip'>
-          <p className='label'>{`${payload[0].name} : ${payload[0].value}`}</p>
-          {/* <p className="intro">{getIntroOfPage(payload[0].name)}</p> */}
-          {/* <p className="desc">Anything you want can be displayed here.</p> */}
-        </div>
-      );
-    }
+  // const CustomTooltip = ({active, payload, label}) => {
+  //   if (active && payload && payload.length) {
+  //     return (
+  //       <div className='custom-tooltip'>
+  //         <p className='label'>{`${payload[0].name} : ${payload[0].value}`}</p>
+  //         {/* <p className="intro">{getIntroOfPage(payload[0].name)}</p> */}
+  //         {/* <p className="desc">Anything you want can be displayed here.</p> */}
+  //       </div>
+  //     );
+  //   }
 
-    return null;
-  };
+  //   return null;
+  // };
 
   const renderCustomizedLabel = ({
     cx,
     cy,
     midAngle,
-    innerRadius,
     outerRadius,
     percent,
     index,
@@ -110,7 +87,7 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
           fill='black'
           textAnchor={'middle'}
           dominantBaseline='central'
-          style={{fontSize: 18}}>
+          style={{fontSize: 12}}>
           {`${data[index].name}`}
         </text>
         <text
@@ -119,19 +96,11 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
           fill='black'
           textAnchor={'middle'}
           dominantBaseline='central'
-          style={{fontSize: 18}}>
+          style={{fontSize: 12}}>
           {`${(percent * 100).toFixed(2)}%`}
         </text>
       </>
     );
-  };
-
-  const uniqid = (prefix = '', random = false) => {
-    const sec = Date.now() * 1000 + Math.random() * 1000;
-    const id = sec.toString(16).replace(/\./g, '').padEnd(14, '0');
-    return `${prefix}${id}${
-      random ? `.${Math.trunc(Math.random() * 100000000)}` : ''
-    }`;
   };
 
   return data.length > 0 ? (
@@ -141,9 +110,10 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        paddingTop: 20,
+        // paddingTop: 20,
+        margin: 'auto',
       }}>
-      <p style={{fontWeight: 'bold', fontSize: 20}}>{titulo}</p>
+      {/* <p style={{fontWeight: 'bold', fontSize: 20}}>{titulo}</p> */}
       {/* <ResponsiveContainer key={uniqid()} width={400} height={400}> */}
       <PieChart width={500} height={500}>
         <Pie
@@ -170,7 +140,7 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
-        <Tooltip content={<CustomTooltip />} />
+        {/* <Tooltip content={<CustomTooltip />} /> */}
         {/* <Legend/> */}
       </PieChart>
 

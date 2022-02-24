@@ -49,7 +49,7 @@ const MyCell = (props) => {
 };
 
 const MyTable = (props) => {
-  const {headers, data, columns, promedios} = props;
+  const {headers, data, columns, promedios, onClick} = props;
   const [selected, setSelected] = React.useState([]);
   let vp = '0px';
   const classes = useStyles({vp: vp});
@@ -102,7 +102,7 @@ const MyTable = (props) => {
   return (
     data.length > 0 && (
       <TableContainer
-        style={{maxWidth: 400, margin: '0 auto', paddingBottom: 20}}>
+        style={{maxWidth: 400, margin: 'auto', paddingBottom: 20}}>
         <Table>
           <TableHead>
             <TableRow className={classes.head}>
@@ -124,6 +124,13 @@ const MyTable = (props) => {
               return (
                 <TableRow
                   hover
+                  onClick={() => {
+                    if (row.estado === 0) {
+                      onClick('0');
+                    } else {
+                      onClick(row.estado);
+                    }
+                  }}
                   aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.name + row.value}

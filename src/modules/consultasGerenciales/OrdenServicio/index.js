@@ -262,7 +262,13 @@ function EnhancedTableHead(props) {
                     ? 'right'
                     : 'center'
                 }
-                className={index <= 7 ? classes.cell : classes.cell2}
+                className={
+                  index <= 7
+                    ? index <= 4 && index >= 2
+                      ? classes.cell2
+                      : classes.cell
+                    : classes.cell2
+                }
                 sortDirection={orderBy === cell.id ? order : false}>
                 <TableSortLabel
                   active={orderBy === cell.id}
@@ -1099,21 +1105,34 @@ const OrdenServicioConsulta = (props) => {
           />
         )}
         <Box className={classes.marcoTabla}>
-          {showData && (
-            <CustomPieChart
-              datos={datosTabla}
-              titulo={'Ordenes de Servicio'}
-              onClick={setEstado}
-            />
+          {showData && datosTabla.length > 0 && (
+            <Typography
+              className={classes.title}
+              variant='h6'
+              id='tableTitle'
+              style={{textAlign: 'center', paddingTop: 10, fontWeight: 'bold'}}
+              component='div'>
+              {'Ordenes de Servicio'}
+            </Typography>
           )}
-          {showData && (
-            <MyTable
-              headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
-              data={datosTabla}
-              columns={columnasTabla}
-              promedios={promedios}
-            />
-          )}
+          <Box style={{flexDirection: 'row', display: 'flex'}}>
+            {showData && (
+              <CustomPieChart
+                datos={datosTabla}
+                titulo={'Ordenes de Servicio'}
+                onClick={setEstado}
+              />
+            )}
+            {showData && (
+              <MyTable
+                headers={['Estado', 'Numero', 'Participacion', 'Dias Promedio']}
+                data={datosTabla}
+                columns={columnasTabla}
+                promedios={promedios}
+                onClick={setEstado}
+              />
+            )}
+          </Box>
         </Box>
         {!permisos ? (
           <Box
