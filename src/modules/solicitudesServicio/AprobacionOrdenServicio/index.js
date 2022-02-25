@@ -569,6 +569,9 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
     },
   },
+  aprobarIcon: {
+    color: theme.palette.enviaEmailBottoms,
+  },
   editIcon: {
     color: theme.palette.primary.main,
   },

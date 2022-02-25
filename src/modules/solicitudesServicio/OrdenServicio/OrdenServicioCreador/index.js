@@ -212,6 +212,31 @@ const OrdenServicioCreator = (props) => {
               ? selectedRow.agente_aduana_id
               : ''
             : '',
+          agente_aduana: selectedRow
+            ? selectedRow.agenteAduana
+              ? selectedRow.agenteAduana.nombre
+              : ''
+            : '',
+          contacto_agente_aduana: selectedRow
+            ? selectedRow.agenteAduana
+              ? selectedRow.agenteAduana.nombre_contacto
+              : ''
+            : '',
+          telefono_agente_aduana: selectedRow
+            ? selectedRow.agenteAduana
+              ? selectedRow.agenteAduana.telefono_contacto
+              : ''
+            : '',
+          celular_agente_aduana: selectedRow
+            ? selectedRow.agenteAduana
+              ? selectedRow.agenteAduana.celular_contacto
+              : ''
+            : '',
+          email_agente_aduana: selectedRow
+            ? selectedRow.agenteAduana
+              ? selectedRow.agenteAduana.email_contacto
+              : ''
+            : '',
           fecha_programada_instalacion: selectedRow
             ? selectedRow.fecha_programada_instalacion
               ? selectedRow.fecha_programada_instalacion

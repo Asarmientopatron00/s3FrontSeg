@@ -159,6 +159,26 @@ const AprobacionOrdenServicioCreator = (props) => {
                   ? selectedRow.agenteAduana.nombre
                   : ''
                 : '',
+              agente_aduana_nombre_contacto: selectedRow
+                ? selectedRow.agenteAduana
+                  ? selectedRow.agenteAduana.nombre_contacto
+                  : ''
+                : '',
+              agente_aduana_telefono_contacto: selectedRow
+                ? selectedRow.agenteAduana
+                  ? selectedRow.agenteAduana.telefono_contacto
+                  : ''
+                : '',
+              agente_aduana_celular_contacto: selectedRow
+                ? selectedRow.agenteAduana
+                  ? selectedRow.agenteAduana.celular_contacto
+                  : ''
+                : '',
+              agente_aduana_email_contacto: selectedRow
+                ? selectedRow.agenteAduana
+                  ? selectedRow.agenteAduana.email_contacto
+                  : ''
+                : '',
               referencia_factura: selectedRow
                 ? selectedRow.referencia_factura
                   ? selectedRow.referencia_factura

@@ -618,6 +618,9 @@ const useStyles = makeStyles((theme) => ({
   editIcon: {
     color: theme.palette.primary.main,
   },
+  aprobarIcon: {
+    color: theme.palette.enviaEmailBottoms,
+  },
   visivilityIcon: {
     color: theme.palette.grayBottoms,
   },
@@ -1010,7 +1013,7 @@ const AceptacionOrdenServicio = (props) => {
                                 onClick={() =>
                                   onOpenEditAceptacionOrdenServicio(row)
                                 }
-                                className={`${classes.generalIcons} ${classes.editIcon}`}></LibraryAddCheckIcon>
+                                className={`${classes.generalIcons} ${classes.aprobarIcon}`}></LibraryAddCheckIcon>
                             </Tooltip>
                           )}
                           {/* {permisos.indexOf('Listar') >= 0 && (

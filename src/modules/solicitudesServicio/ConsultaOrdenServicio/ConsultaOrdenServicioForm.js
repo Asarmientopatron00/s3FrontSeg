@@ -281,6 +281,42 @@ const AcuerdoServicioForm = (props) => {
                 disabled={true}
               />
               <MyTextField
+                name='agente_aduana_nombre_contacto'
+                label='Contacto'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
+                name='agente_aduana_telefono_contacto'
+                label='Telefono'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
+                name='agente_aduana_celular_contacto'
+                label='Celular'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
+                name='agente_aduana_email_contacto'
+                label='Correo'
+                className={classes.myTextField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                disabled={true}
+              />
+              <MyTextField
                 name='observaciones_odes'
                 label='Observaciones O de S'
                 className={classes.myTextField}
