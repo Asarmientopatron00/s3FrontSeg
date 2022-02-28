@@ -807,7 +807,7 @@ const AcuerdoServicioForm = (props) => {
               </Box>
               {rows.map((row, index) => {
                 return (
-                  <Box key={index}>
+                  <React.Fragment key={index}>
                     <Box component='a' mb={2}>
                       {row.nombre_documento}
                     </Box>
@@ -820,10 +820,10 @@ const AcuerdoServicioForm = (props) => {
                         row.id
                       }
                       display='flex'
-                      justifyContent='center'>
+                      justifyContent='flex-start'>
                       {row.nombre_archivo}
                     </Box>
-                  </Box>
+                  </React.Fragment>
                 );
               })}
             </Box>
