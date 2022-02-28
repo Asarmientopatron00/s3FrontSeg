@@ -11,14 +11,14 @@ const CustomPieChart = ({datos, titulo, onClick}) => {
   const RADIAN = Math.PI / 180;
 
   const COLORS = [
-    '#5C069B',
-    '#9B8706',
-    '#434145',
-    '#E216B7',
-    '#22A10E',
-    '#0A6189',
-    '#2D04F9',
-    '#F90B04',
+    '#581845',
+    '#013BF1',
+    '#3B3838',
+    '#117329',
+    '#C70039',
+    '#FF0000',
+    '#2E75B6',
+    '#B80001',
   ];
 
   const calcPosition = (radius, middleAngle, cx, cy) => {
