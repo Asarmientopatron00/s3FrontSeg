@@ -10,7 +10,7 @@ import {
   FETCH_SUCCESS,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+import jwtAxios, {jwtAxios2} from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 import {appIntl} from '../../@crema/utility/Utils';
 
@@ -27,7 +27,7 @@ export const onGetColeccion = (
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('usuarios', {
         params: {
           page: page,
@@ -57,7 +57,7 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('/api/contactApp/labels/list')
       .then((data) => {
         if (data.status === 200) {
@@ -81,7 +81,7 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .get('usuarios/' + id)
         .then((data) => {
           if (data.status === 200) {
@@ -104,7 +104,7 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .put('usuarios/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
@@ -135,7 +135,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .delete('usuarios/' + id)
       .then((data) => {
         if (data.status === 200) {
@@ -162,7 +162,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .post('usuarios', params)
       .then((data) => {
         if (data.status === 201) {

@@ -10,7 +10,7 @@ import {
   FETCH_SUCCESS,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+import jwtAxios, {jwtAxios2} from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 import {appIntl} from '../../@crema/utility/Utils';
 
@@ -29,7 +29,7 @@ export const onGetColeccion = (
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('opciones-del-sistema', {
         params: {
           page: page,
@@ -60,7 +60,7 @@ export const onGetColeccionLigera = (modulo_id) => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('opciones-del-sistema', {
         params: {
           ligera: true,
@@ -89,7 +89,7 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .get('opciones-del-sistema/' + id)
         .then((data) => {
           if (data.status === 200) {
@@ -112,7 +112,7 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .put('opciones-del-sistema/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
@@ -143,7 +143,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .delete('opciones-del-sistema/' + id)
       .then((data) => {
         if (data.status === 200) {
@@ -170,7 +170,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .post('opciones-del-sistema', params)
       .then((data) => {
         console.log(data);

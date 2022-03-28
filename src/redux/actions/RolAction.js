@@ -13,7 +13,7 @@ import {
   FETCH_SUCCESS,
   SHOW_MESSAGE,
 } from '../../shared/constants/ActionTypes';
-import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+import jwtAxios, {jwtAxios2} from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 import {appIntl} from '../../@crema/utility/Utils';
 
@@ -30,7 +30,7 @@ export const onGetColeccion = (
 
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('roles', {
         params: {
           page: page,
@@ -60,7 +60,7 @@ export const onGetColeccionLigera = () => {
   const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .get('roles', {
         params: {
           ligera: true,
@@ -91,7 +91,7 @@ export const onGetPermisos = (id, modulo, opcionSistema) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .get('roles/permisos/' + id, {
           params: {
             modulo_id: moduloAux,
@@ -121,7 +121,7 @@ export const onOtorgarPermiso = (params, updateColeccion) => {
   return (dispatch) => {
     if (params) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .post('roles/permisos', params)
         .then((data) => {
           if (data.status === 200) {
@@ -147,7 +147,7 @@ export const onRevocarPermiso = (params, updateColeccion) => {
   return (dispatch) => {
     if (params) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .put('roles/permisos', params)
         .then((data) => {
           if (data.status === 200) {
@@ -173,7 +173,7 @@ export const onShow = (id) => {
   return (dispatch) => {
     if (id !== 0) {
       dispatch({type: FETCH_START});
-      jwtAxios
+      jwtAxios2
         .get('roles/' + id)
         .then((data) => {
           if (data.status === 200) {
@@ -196,7 +196,7 @@ export const onShow = (id) => {
 export const onUpdate = (params, handleOnClose, updateColeccion) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .put('roles/' + params.id, params)
       .then((data) => {
         if (data.status === 200) {
@@ -227,7 +227,7 @@ export const onUpdate = (params, handleOnClose, updateColeccion) => {
 export const onDelete = (id) => {
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .delete('roles/' + id)
       .then((data) => {
         if (data.status === 200) {
@@ -254,7 +254,7 @@ export const onCreate = (params, handleOnClose, updateColeccion) => {
   // const {messages} = appIntl();
   return (dispatch) => {
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .post('roles', params)
       .then((data) => {
         if (data.status === 201) {

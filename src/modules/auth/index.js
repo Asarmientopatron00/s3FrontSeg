@@ -5,6 +5,15 @@ export const authRouteConfig = [
     routes: [
       {
         exact: true,
+        path: '/login2/:hash',
+        component: React.lazy(() => import('./Login2/index')),
+      },
+    ],
+  },
+  {
+    routes: [
+      {
+        exact: true,
         path: '/signin',
         component: React.lazy(() => import('./Signin/index')),
       },

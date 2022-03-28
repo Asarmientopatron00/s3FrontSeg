@@ -11,7 +11,7 @@ import {
 } from '../../redux/actions';
 import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
-import jwtAxios from '../services/auth/jwt-auth/jwt-api';
+import jwtAxios, {jwtAxios2} from '../services/auth/jwt-auth/jwt-api';
 
 export const useAuthToken = () => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ export const useAuthToken = () => {
       }
       dispatch(setJWTToken(token));
       try {
-        const res = await jwtAxios.get('/users/current/session');
+        const res = await jwtAxios2.get('/users/current/session');
         dispatch(fetchSuccess());
         dispatch({
           type: UPDATE_AUTH_USER,

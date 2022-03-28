@@ -8,7 +8,7 @@ import {
 import {Auth} from 'aws-amplify';
 import {AuthType} from '../../shared/constants/AppEnums';
 import {defaultUser} from '../../shared/constants/AppConst';
-import jwtAxios from '../../@crema/services/auth/jwt-auth/jwt-api';
+import jwtAxios, {jwtAxios2} from '../../@crema/services/auth/jwt-auth/jwt-api';
 
 export const onConfirmCognitoUserSignup = (username, confirmCode, history) => {
   const code = confirmCode ? confirmCode : '000000';
@@ -176,7 +176,7 @@ export const onResetCognitoPassword = (email, history) => {
   return (dispatch) => {
     const params = {email: email};
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .post('forgot-password', params)
       .then((data) => {
         if (data) {
@@ -212,7 +212,7 @@ export const onSetNewCognitoPassword = (
       password_confirmation: password_confirmation,
     };
     dispatch({type: FETCH_START});
-    jwtAxios
+    jwtAxios2
       .post('reset-password', params)
       .then((data) => {
         if (data) {

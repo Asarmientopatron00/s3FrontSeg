@@ -154,7 +154,8 @@ const defaultConfig = {
   },
   rtlLocale: ['ar'],
   API_URL: environment.API_URL,
+  API_URL2: environment.API_URL2,
   // API_URL: 'https://solicitudesservicio-back.sellosdeseguridad.net/public',
-  version: 'V 17.1',
+  version: 'V 18.0',
 };
 export default defaultConfig;
