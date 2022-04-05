@@ -10,6 +10,7 @@ import {Fonts} from '../../constants/AppEnums';
 import PersonIcon from '@material-ui/icons/Person';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import Popover from '@material-ui/core/Popover';
+import defaultConfig from './../../../@crema/utility/ContextProvider/defaultConfig';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -140,6 +141,10 @@ const UserInfo = (props) => {
             className={`${classes.btnRoot} ${classes.btnPrymary}`}
             onClick={() => {
               dispatch(onJWTAuthSignout());
+              setTimeout(() => {
+                window.location.href =
+                  defaultConfig.APP_SEGURIDAD + '/launcher/security/dashboard';
+              }, 200);
             }}>
             Cerrar Sesion
           </Button>

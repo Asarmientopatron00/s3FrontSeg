@@ -8,7 +8,7 @@ import {useAuthToken} from './AppHooks';
 import {Loader} from '../index';
 import PropTypes from 'prop-types';
 import {checkPermission} from './Utils';
-
+import defaultConfig from './ContextProvider/defaultConfig';
 import {initialUrl} from '../../shared/constants/AppConst';
 import {setInitialPath} from '../../redux/actions';
 
@@ -86,7 +86,8 @@ const AuthRoutes = ({children}) => {
   useEffect(() => {
     if (!loading) {
       if (!user && !isPermitted) {
-        history.push('/signin'); // allowed route
+        window.location.href =
+          defaultConfig.APP_SEGURIDAD + '/authentication/login'; // allowed route
       } else if (user && !isPermitted) {
         history.push('/error-pages/error-404'); // Not found
       } else if (user && isPermitted) {
