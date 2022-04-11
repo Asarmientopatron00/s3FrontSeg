@@ -57,17 +57,17 @@ const useStyles = makeStyles((theme) => {
         '& .nav-item-text': {
           fontWeight: theme.palette.sidebar.fontWeight,
           color: (props) =>
-            props.themeMode === ThemeMode.LIGHT ? '#313541' : '#fff',
+            props.themeMode === ThemeMode.LIGHT ? '#0c4f7f' : '#0c4f7f',
         },
 
         '& .nav-item-icon': {
           color: (props) =>
-            props.themeMode === ThemeMode.LIGHT ? '#313541' : '#fff',
+            props.themeMode === ThemeMode.LIGHT ? '#0c4f7f' : '#0c4f7f',
         },
 
         '& .nav-item-icon-arrow': {
           color: (props) =>
-            props.themeMode === ThemeMode.LIGHT ? '#313541' : '#fff',
+            props.themeMode === ThemeMode.LIGHT ? '#0c4f7f' : '#0c4f7f',
         },
       },
     },

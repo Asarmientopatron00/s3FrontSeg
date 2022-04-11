@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   menuIcon: {
     width: 35,
     height: 35,
+    color: '#0c4f7f',
   },
   title: {
     display: 'none',
@@ -85,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
-    backgroundColor: '#26426C',
+    backgroundColor: '#f4f7fe',
     width: '100%',
     boxShadow: '4px 3px 4px 0px rgba(0,0,0,0.12)',
     [theme.breakpoints.up('lg')]: {

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => {
     profilePic: {
       fontSize: 50,
       backgroundColor: 'transparent',
-      color: 'white',
+      color: '#0C4F7F',
     },
     userInfo: {
       width: 'fit-content',
@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme) => {
       whiteSpace: 'nowrap',
       fontSize: 12,
       fontWeight: Fonts.MEDIUM,
-      color: 'white',
+      color: '#0C4F7F',
       textTransform: 'uppercase',
     },
     designation: {
       margin: 0,
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      color: 'white',
+      color: '#0C4F7F',
     },
     pointer: {
       cursor: 'pointer',

@@ -21,22 +21,22 @@ const defaultConfig = {
       type: ThemeMode.LIGHT,
       grayBottoms: '#999',
       redBottoms: '#be1e2d',
-      colorHover: '#4992de',
+      colorHover: '#35BCE1',
       enviaEmailBottoms: '#043927',
       background: {
         paper: '#fff',
         default: '#f4f7fe',
       },
       primary: {
-        main: '#26426C',
+        main: '#0C4F7F',
         contrastText: '#fff',
       },
       secondary: {
         main: '#F04F47',
       },
       sidebar: {
-        bgColor: '#26426C',
-        textColor: '#FFFFFF',
+        bgColor: '#f4f7fe',
+        textColor: '#0C4F7F',
         fontSize: '14px',
         fontWeight: '600',
       },
@@ -157,6 +157,6 @@ const defaultConfig = {
   API_URL2: environment.API_URL2,
   APP_SEGURIDAD: environment.APP_SEGURIDAD,
   // API_URL: 'https://solicitudesservicio-back.sellosdeseguridad.net/public',
-  version: 'V 18.1',
+  version: 'V 18.2',
 };
 export default defaultConfig;

@@ -17,7 +17,7 @@ const AppLogo = () => {
       marginBottom: '20px',
     },
     logo: {
-      height: 160,
+      // height: 160,
       marginRight: 10,
     },
   }));
@@ -32,7 +32,7 @@ const AppLogo = () => {
         <img
           className={classes.logo}
           src={
-            '/assets/images/LogoSecSel.png'
+            '/assets/images/LogoSmart3.png'
             // themeMode === ThemeMode.DARK
             // ? '/assets/images/logo-white.png'
             // : '/assets/images/logo.png'
@@ -44,7 +44,7 @@ const AppLogo = () => {
         <img
           className={classes.logo}
           src={
-            '/assets/images/LogoSecSel.png'
+            '/assets/images/LogoSmart3.png'
             // themeMode === ThemeMode.DARK
             //   ? '/assets/images/logo-white-with-name.png'
             //   : '/assets/images/logo-with-name.png'

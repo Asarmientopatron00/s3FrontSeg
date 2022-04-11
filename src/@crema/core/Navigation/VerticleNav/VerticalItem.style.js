@@ -45,21 +45,21 @@ const useStyles = makeStyles((theme) => {
           color: (props) =>
             props.themeMode === ThemeMode.LIGHT
               ? theme.palette.primary.main
-              : '#fff',
+              : '#0c4f7f',
         },
 
         '& .nav-item-icon': {
           color: (props) =>
             props.themeMode === ThemeMode.LIGHT
               ? theme.palette.primary.main
-              : '#fff',
+              : '#0c4f7f',
         },
 
         '& .nav-item-icon-arrow': {
           color: (props) =>
             props.themeMode === ThemeMode.LIGHT
               ? theme.palette.primary.main
-              : '#fff',
+              : '#0c4f7f',
         },
       },
       '& .nav-item-icon': {
