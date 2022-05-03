@@ -56,14 +56,16 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = () => {
+export const onGetColeccionLigera = (departamento_id) => {
   const {messages} = appIntl();
+  const depAux = departamento_id ?? '';
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
       .get('recursos-tecnicos', {
         params: {
           ligera: true,
+          departamento_id: depAux,
         },
       })
       .then((data) => {

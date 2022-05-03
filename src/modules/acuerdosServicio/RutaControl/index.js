@@ -821,6 +821,10 @@ const RutaControl = () => {
     ({tipoDocumentoReducer}) => tipoDocumentoReducer.ligera,
   );
   const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+  const lugares = useSelector(({lugarReducer}) => lugarReducer.ligera);
+  const recursosTecnicos = useSelector(
+    ({recursoTecnicoReducer}) => recursoTecnicoReducer.ligera,
+  );
 
   useEffect(() => {
     dispatch(onGetColeccionLigeraDepartamento());
@@ -1038,6 +1042,8 @@ const RutaControl = () => {
           updateColeccion={updateColeccion}
           departamentos={departamentos}
           ciudades={ciudades}
+          lugares={lugares}
+          recursosTecnicos={recursosTecnicos}
           encabezado={encabezado}
           acuerdo_id={acuerdo_id}
           TIPOS_PROCESOS={TIPOS_PROCESOS}

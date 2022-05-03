@@ -34,6 +34,8 @@ const RutaControlCreator = (props) => {
     accion,
     updateColeccion,
     ciudades,
+    lugares,
+    recursosTecnicos,
     departamentos,
     TIPOS_PROCESOS,
     encabezado,
@@ -149,6 +151,8 @@ const RutaControlCreator = (props) => {
               tipo_proceso: selectedRow ? selectedRow.tipo_proceso : '',
               departamento_id: selectedRow ? selectedRow.departamento_id : '',
               ciudad_id: selectedRow ? selectedRow.ciudad_id : '',
+              lugar_id: '',
+              recurso_tecnico_id: '',
               nombre: selectedRow
                 ? selectedRow.nombre
                   ? selectedRow.nombre
@@ -208,6 +212,8 @@ const RutaControlCreator = (props) => {
                 accion={accion}
                 initialValues={initialValues}
                 ciudades={ciudades}
+                lugares={lugares}
+                recursosTecnicos={recursosTecnicos}
                 departamentos={departamentos}
                 TIPOS_PROCESOS={TIPOS_PROCESOS}
                 tiposDocumentos={tiposDocumentos}
