@@ -86,8 +86,8 @@ const AuthRoutes = ({children}) => {
   useEffect(() => {
     if (!loading) {
       if (!user && !isPermitted) {
-        window.location.href = '/signin';
-        // defaultConfig.APP_SEGURIDAD + '/authentication/login'; // allowed route
+        window.location.href =
+          defaultConfig.APP_SEGURIDAD + '/authentication/login'; // allowed route
       } else if (user && !isPermitted) {
         history.push('/error-pages/error-404'); // Not found
       } else if (user && isPermitted) {
