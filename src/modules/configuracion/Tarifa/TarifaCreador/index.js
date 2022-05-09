@@ -24,13 +24,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const validationSchema = yup.object({
   ciudad_origen_id: yup.string().required('Requerido'),
-  ciudad_destino_id: yup
-    .string()
-    .required('Requerido')
-    .notOneOf(
-      [yup.ref('ciudad_origen_id')],
-      'Ciudad de destino debe ser diferente a ciudad de origen',
-    ),
+  ciudad_destino_id: yup.string().required('Requerido'),
+  // .notOneOf(
+  //   [yup.ref('ciudad_origen_id')],
+  //   'Ciudad de destino debe ser diferente a ciudad de origen',
+  // ),
   servicio_id: yup.string().required('Requerido'),
   tipo_servicio: yup.string().required('Requerido'),
   tipo_servicio_otro: yup

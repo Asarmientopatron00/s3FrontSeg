@@ -9,6 +9,8 @@ import {Fonts} from '../../../../shared/constants/AppEnums';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
 import {useDispatch} from 'react-redux';
 import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
+import {onGetColeccionLigera as coleccionLigeraLugar} from '../../../../redux/actions/LugarAction';
+import {onGetColeccionLigera as onGetColeccionLigeraRecursoTecnico} from '../../../../redux/actions/RecursoTecnicoAction';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
   LONGITUD_MAXIMA_TELEFONOS,
@@ -38,6 +40,9 @@ const RutaControl = (props) => {
     encabezado,
     departamentos,
     ciudades,
+    lugares,
+    recursosTecnicos,
+    setFieldValue,
     values,
   } = props;
 
@@ -126,7 +131,13 @@ const RutaControl = (props) => {
   let onChangeDepartamento1 = useRef();
   onChangeDepartamento1 = (id) => {
     dispatch(ciudadColeccionLigera(id));
+    dispatch(onGetColeccionLigeraRecursoTecnico(id));
     values.ciudad_id = '';
+  };
+
+  let onChangeCiudad1 = useRef();
+  onChangeCiudad1 = (id) => {
+    dispatch(coleccionLigeraLugar(id));
   };
 
   useEffect(() => {
@@ -136,6 +147,34 @@ const RutaControl = (props) => {
       onChangeDepartamento1(0);
     }
   }, [values.departamento_id]);
+
+  useEffect(() => {
+    if (values.ciudad_id !== '') {
+      onChangeCiudad1(values.ciudad_id);
+    } else {
+      onChangeCiudad1(0);
+    }
+  }, [values.ciudad_id]);
+
+  useEffect(() => {
+    if (values.lugar_id !== '') {
+      const lugar = lugares.find((lugar) => lugar.id === values.lugar_id);
+      setFieldValue('nombre', lugar.nombre);
+      setFieldValue('direccion', lugar.direccion);
+    }
+  }, [values.lugar_id]);
+
+  useEffect(() => {
+    if (values.recurso_tecnico_id !== '') {
+      const recurso = recursosTecnicos.find(
+        (recurso) => recurso.id === values.recurso_tecnico_id,
+      );
+      setFieldValue('tipo_documento_id', recurso.tipo_documento_id);
+      setFieldValue('numero_documento', recurso.numero_documento);
+      setFieldValue('nombre_encargado', recurso.nombre_completo);
+      setFieldValue('celular_encargado', recurso.celular);
+    }
+  }, [values.recurso_tecnico_id]);
 
   const classes = useStyles(props);
 
@@ -245,6 +284,16 @@ const RutaControl = (props) => {
               required
               disabled={disabled}
             />
+
+            <MyAutocomplete
+              options={lugares}
+              name='lugar_id'
+              inputValue={initialValues.lugar_id}
+              label='Lugar'
+              //autoHighlight
+              className={classes.myTextField}
+              disabled={disabled}
+            />
           </Box>
 
           <MyTextField
@@ -263,6 +312,16 @@ const RutaControl = (props) => {
 
           <Box component='h3'>Información persona encargada:</Box>
           <Box className={classes.inputs_2}>
+            <MyAutocomplete
+              options={recursosTecnicos}
+              name='recurso_tecnico_id'
+              inputValue={initialValues.recurso_tecnico_id}
+              label='Recurso Técnico'
+              //autoHighlight
+              className={classes.myTextField}
+              disabled={disabled}
+            />
+            <Box sx={{display: 'hidden'}}></Box>
             <MyAutocomplete
               options={tiposDocumentos}
               name='tipo_documento_id'
