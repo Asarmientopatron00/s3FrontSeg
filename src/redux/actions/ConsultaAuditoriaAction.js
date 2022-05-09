@@ -16,12 +16,14 @@ export const onGetColeccion = (
   descripcion_recurso,
   fecha_desde,
   fecha_hasta,
+  nombre_responsable,
   accion,
 ) => {
   const {messages} = appIntl();
   const page = currentPage ? currentPage : 0;
   const ordenar_por = orderByToSend ? orderByToSend : '';
   const nombre_recursoAux = nombre_recurso ? nombre_recurso : '';
+  const nombre_responsableAux = nombre_responsable ? nombre_responsable : '';
   const descripcion_recursoAux = descripcion_recurso ? descripcion_recurso : '';
   const fecha_desdeAux = fecha_desde ? fecha_desde : '';
   const fecha_hastaAux = fecha_hasta ? fecha_hasta : '';
@@ -39,6 +41,7 @@ export const onGetColeccion = (
           descripcion_recurso: descripcion_recursoAux,
           fecha_desde: fecha_desdeAux,
           fecha_hasta: fecha_hastaAux,
+          nombre_responsable: nombre_responsableAux,
           accion: accionAux,
         },
       })

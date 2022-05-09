@@ -157,6 +157,6 @@ const defaultConfig = {
   API_URL2: environment.API_URL2,
   APP_SEGURIDAD: environment.APP_SEGURIDAD,
   // API_URL: 'https://solicitudesservicio-back.sellosdeseguridad.net/public',
-  version: 'V 18.2',
+  version: 'V 18.3',
 };
 export default defaultConfig;

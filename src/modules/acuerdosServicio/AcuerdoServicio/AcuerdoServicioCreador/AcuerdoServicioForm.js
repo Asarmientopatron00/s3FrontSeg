@@ -347,6 +347,21 @@ const AcuerdoServicioForm = (props) => {
                 label='Exportación'
                 disabled={disabled}
               />
+              <FormControlLabel
+                style={{color: !!errors.tipo_servicio_dta ? 'red' : 'black'}}
+                control={
+                  <Checkbox
+                    name='tipo_servicio_crd'
+                    checked={values.tipo_servicio_crd === 'S'}
+                    onChange={handleChange}
+                    style={{
+                      color: !!errors.tipo_servicio_dta ? 'red' : '#74788d',
+                    }}
+                  />
+                }
+                label='Cross Docking'
+                disabled={disabled}
+              />
               <MyTextField
                 label='Otro'
                 name='tipo_servicio_otro'

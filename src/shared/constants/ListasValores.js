@@ -94,6 +94,7 @@ export const TIPOS_SERVICIOS = [
   {id: 'NAC', nombre: 'Nacionalizado', estado: 1},
   {id: 'PER', nombre: 'Pernocta', estado: 1},
   {id: 'EXP', nombre: 'Exportación', estado: 1},
+  {id: 'CRD', nombre: 'Cross Docking', estado: 1},
   {id: 'OTR', nombre: 'Otro', estado: 1},
 ];
 

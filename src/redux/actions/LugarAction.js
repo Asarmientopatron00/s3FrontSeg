@@ -56,8 +56,9 @@ export const onGetColeccion = (
   };
 };
 
-export const onGetColeccionLigera = (ciudad) => {
+export const onGetColeccionLigera = (ciudad, asociado) => {
   const {messages} = appIntl();
+  const asociadoAux = asociado ?? '';
   return (dispatch) => {
     dispatch({type: FETCH_START});
     jwtAxios
@@ -65,6 +66,7 @@ export const onGetColeccionLigera = (ciudad) => {
         params: {
           ligera: true,
           ciudad_id: ciudad,
+          asociado: asociadoAux,
         },
       })
       .then((data) => {

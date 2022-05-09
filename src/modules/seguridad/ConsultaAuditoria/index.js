@@ -287,6 +287,7 @@ const EnhancedTableToolbar = (props) => {
     accionFiltro,
     fechaHastaFiltro,
     fechaDesdeFiltro,
+    nombreResponsableFiltro,
     limpiarFiltros,
   } = props;
   return (
@@ -382,6 +383,14 @@ const EnhancedTableToolbar = (props) => {
               }}
               onChange={queryFilter}
               value={fechaHastaFiltro}
+              className={classes.inputFiltros}
+            />
+            <TextField
+              label='Nombre Responsable'
+              name='nombreResponsableFiltro'
+              id='nombreResponsableFiltro'
+              onChange={queryFilter}
+              value={nombreResponsableFiltro}
               className={classes.inputFiltros}
             />
           </Box>
@@ -526,6 +535,7 @@ const ConsultaAuditoria = (props) => {
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
   const [nombreRecursoFiltro, setNombreRecursoFiltro] = useState('');
+  const [nombreResponsableFiltro, setNombreResponsableFiltro] = useState('');
   const [descripcionRecursoFiltro, setDescripcionRecursoFiltro] = useState('');
   const [accionFiltro, setAccionFiltro] = useState('');
   const [fechaHastaFiltro, setFechaHastaFiltro] = useState('');
@@ -591,6 +601,7 @@ const ConsultaAuditoria = (props) => {
         descripcionRecursoFiltro,
         fechaDesdeFiltro,
         fechaHastaFiltro,
+        nombreResponsableFiltro,
         accionFiltro,
       ),
     );
@@ -602,6 +613,7 @@ const ConsultaAuditoria = (props) => {
     descripcionRecursoFiltro,
     fechaDesdeFiltro,
     fechaHastaFiltro,
+    nombreResponsableFiltro,
     accionFiltro,
     orderByToSend,
   ]);
@@ -614,6 +626,7 @@ const ConsultaAuditoria = (props) => {
     orderByToSend,
     fechaDesdeFiltro,
     fechaHastaFiltro,
+    nombreResponsableFiltro,
     accionFiltro,
   ]);
 
@@ -624,6 +637,9 @@ const ConsultaAuditoria = (props) => {
         break;
       case 'nombreRecursoFiltro':
         setNombreRecursoFiltro(e.target.value);
+        break;
+      case 'nombreResponsableFiltro':
+        setNombreResponsableFiltro(e.target.value);
         break;
       case 'fechaDesdeFiltro':
         setFechaDesdeFiltro(e.target.value);
@@ -641,6 +657,7 @@ const ConsultaAuditoria = (props) => {
 
   const limpiarFiltros = () => {
     setNombreRecursoFiltro('');
+    setNombreResponsableFiltro('');
     setDescripcionRecursoFiltro('');
     setFechaDesdeFiltro('');
     setFechaHastaFiltro('');
@@ -752,6 +769,7 @@ const ConsultaAuditoria = (props) => {
             fechaHastaFiltro={fechaHastaFiltro}
             fechaDesdeFiltro={fechaDesdeFiltro}
             nombreRecursoFiltro={nombreRecursoFiltro}
+            nombreResponsableFiltro={nombreResponsableFiltro}
             descripcionRecursoFiltro={descripcionRecursoFiltro}
             permisos={permisos}
             titulo={titulo}

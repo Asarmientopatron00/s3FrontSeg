@@ -35,7 +35,6 @@ const RutaControlCreator = (props) => {
     updateColeccion,
     ciudades,
     lugares,
-    recursosTecnicos,
     departamentos,
     TIPOS_PROCESOS,
     encabezado,
@@ -65,7 +64,7 @@ const RutaControlCreator = (props) => {
     departamento_id: yup.string().required('Requerido'),
     ciudad_id: yup.string().required('Requerido'),
     direccion: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
-    tipo_documento_id: yup.string().required('Requerido'),
+    tipo_documento_id: yup.string().nullable(),
     numero_documento: yup
       .string()
       .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
@@ -75,11 +74,11 @@ const RutaControlCreator = (props) => {
       ),
     nombre_encargado: yup
       .string()
-      .required('Requerido')
+      .nullable()
       .max(128, mensajeValidacion('max', 128)),
     celular_encargado: yup
       .string()
-      .required('Requerido')
+      .nullable()
       .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
       .max(
         LONGITUD_MAXIMA_TELEFONOS,
@@ -152,7 +151,6 @@ const RutaControlCreator = (props) => {
               departamento_id: selectedRow ? selectedRow.departamento_id : '',
               ciudad_id: selectedRow ? selectedRow.ciudad_id : '',
               lugar_id: '',
-              recurso_tecnico_id: '',
               nombre: selectedRow
                 ? selectedRow.nombre
                   ? selectedRow.nombre
@@ -163,6 +161,9 @@ const RutaControlCreator = (props) => {
                   ? selectedRow.direccion
                   : ''
                 : '',
+              encargado_inst_desinst_secsecl: selectedRow
+                ? selectedRow.encargado_inst_desinst_secsecl
+                : 'N',
               tipo_documento_id: selectedRow
                 ? selectedRow.tipo_documento_id
                   ? selectedRow.tipo_documento_id
@@ -213,7 +214,6 @@ const RutaControlCreator = (props) => {
                 initialValues={initialValues}
                 ciudades={ciudades}
                 lugares={lugares}
-                recursosTecnicos={recursosTecnicos}
                 departamentos={departamentos}
                 TIPOS_PROCESOS={TIPOS_PROCESOS}
                 tiposDocumentos={tiposDocumentos}

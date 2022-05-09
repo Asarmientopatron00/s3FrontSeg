@@ -120,6 +120,9 @@ const AcuerdoServicioCreator = (props) => {
               tipo_servicio_exportacion: selectedRow
                 ? selectedRow.tipo_servicio_exportacion
                 : 'N',
+              tipo_servicio_crd: selectedRow
+                ? selectedRow.tipo_servicio_crd
+                : 'N',
               tipo_servicio_otro: selectedRow
                 ? selectedRow.tipo_servicio_otro
                 : '',
