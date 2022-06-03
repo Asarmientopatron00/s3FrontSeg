@@ -158,8 +158,8 @@ const RutaControl = (props) => {
   useEffect(() => {
     if (values.lugar_id !== '') {
       const lugar = lugares.find((lugar) => lugar.id === values.lugar_id);
-      setFieldValue('nombre', lugar.nombre);
-      setFieldValue('direccion', lugar.direccion);
+      setFieldValue('nombre', lugar?.nombre ?? '');
+      setFieldValue('direccion', lugar?.direccion ?? '');
     }
   }, [values.lugar_id]);
 
