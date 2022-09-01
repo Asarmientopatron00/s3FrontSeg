@@ -18,6 +18,7 @@ import {makeStyles} from '@material-ui/core/styles/index';
 import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
 import {onGetColeccionLigera as departamentosColeccionLigera} from '../../../../redux/actions/DepartamentoAction';
 import {onGetColeccionLigera as ciudadColeccionLigera} from '../../../../redux/actions/CiudadAction';
+import {onGetColeccionDatosBasicos as onGetAsociados} from 'redux/actions/AsociadoAction';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
@@ -174,10 +175,12 @@ const TerceroServicioCreator = (props) => {
     ({departamentoReducer}) => departamentoReducer.ligera,
   );
   const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.rows);
 
   useEffect(() => {
     dispatch(tipoDocumentoColeccionLigera());
     dispatch(departamentosColeccionLigera());
+    dispatch(onGetAsociados(1, 500));
   }, [dispatch]);
 
   const onChangeDepartamento = (id) => {
@@ -295,6 +298,7 @@ const TerceroServicioCreator = (props) => {
                   ? '1'
                   : '0'
                 : '1',
+              asociado: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
@@ -322,6 +326,7 @@ const TerceroServicioCreator = (props) => {
                 tiposDocumentos={tiposDocumentos}
                 departamentos={departamentos}
                 ciudades={ciudades}
+                asociados={asociados}
                 onChangeDepartamento={onChangeDepartamento}
               />
             )}

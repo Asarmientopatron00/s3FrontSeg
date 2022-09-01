@@ -70,6 +70,8 @@ const TerceroServicioForm = (props) => {
     ciudades,
     onChangeDepartamento,
     titulo,
+    asociados,
+    setFieldValue,
   } = props;
 
   // const factores = [41, 37, 29, 23, 19, 17, 13, 7, 3];
@@ -123,6 +125,33 @@ const TerceroServicioForm = (props) => {
   useEffect(() => {
     setTipoPersona(values.tipo_persona);
   }, [values.tipo_persona]);
+
+  useEffect(() => {
+    if (values.asociado) {
+      const asociado = asociados.find(
+        (asocciate) => asocciate.id === parseInt(values.asociado),
+      );
+      if (asociado) {
+        console.log(asociado);
+        setFieldValue('tipo_persona', asociado.tipo_persona ?? '');
+        setFieldValue('tipo_documento_id', asociado.tipo_documento_id ?? '');
+        setFieldValue('numero_documento', asociado.numero_documento ?? '');
+        setFieldValue('nombre', asociado.primer_nombre ?? '');
+        setFieldValue('segundo_nombre', asociado.segundo_nombre ?? '');
+        setFieldValue('primer_apellido', asociado.primer_apellido ?? '');
+        setFieldValue('segundo_apellido', asociado.segundo_apellido ?? '');
+        setFieldValue('departamento_id', asociado.departamento_id ?? '');
+        setTimeout(() => {
+          setFieldValue('ciudad_id', asociado.ciudad_id ?? '');
+        }, 800);
+        setFieldValue('direccion', asociado.direccion ?? '');
+        setFieldValue('telefono', asociado.telefono ?? '');
+        setFieldValue('celular', asociado.celular ?? '');
+        setFieldValue('email', asociado.email ?? '');
+        setFieldValue('pagina_web', asociado.pagina_web ?? '');
+      }
+    }
+  }, [values.asociado]);
 
   const useStyles = makeStyles((theme) => ({
     bottomsGroup: {
@@ -207,6 +236,17 @@ const TerceroServicioForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
+            <Box className={classes.inputs_2}>
+              <MyAutocompleteAsociado
+                options={asociados}
+                name='asociado'
+                inputValue={initialValues.tipo}
+                label='Referencia Tercero'
+                //autoHighlight
+                className={classes.myTextField}
+                disabled={disabled}
+              />
+            </Box>
             <Box className={classes.inputs_2}>
               <MyAutocomplete
                 options={TIPOS_TERCEROS}
