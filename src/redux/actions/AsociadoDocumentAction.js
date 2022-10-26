@@ -106,6 +106,10 @@ export const onCreate = (params, handleOnCloseForm) => {
     var formData = new FormData();
     formData.append('archivo', params['archivo']);
     formData.append('nombre_archivo', params['nombre_archivo']);
+    formData.append(
+      'fecha_vencimiento_documento',
+      params['fecha_vencimiento_documento'],
+    );
     formData.append('documento_id', params['documento_id']);
     formData.append('asociado_id', params['asociado_id']);
     dispatch({type: FETCH_START});

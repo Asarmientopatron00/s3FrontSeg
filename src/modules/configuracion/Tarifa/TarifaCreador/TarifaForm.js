@@ -245,14 +245,14 @@ const TarifaForm = (props) => {
             />
             <MyTextField
               className={classes.myTextField}
-              label='Valor Tarifa'
+              label='Valor Tarifa antes de IVA'
               name='valor_tarifa'
               disabled={disabled}
               required
             />
             <MyTextField
               className={classes.myTextField}
-              label='Valor Tarifa Dia Adicional'
+              label='Valor Tarifa Dia Adicional antes de IVA'
               name='valor_tarifa_dia_adicional'
               disabled={disabled}
             />

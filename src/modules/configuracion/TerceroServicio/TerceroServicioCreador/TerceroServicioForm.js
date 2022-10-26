@@ -132,7 +132,6 @@ const TerceroServicioForm = (props) => {
         (asocciate) => asocciate.id === parseInt(values.asociado),
       );
       if (asociado) {
-        console.log(asociado);
         setFieldValue('tipo_persona', asociado.tipo_persona ?? '');
         setFieldValue('tipo_documento_id', asociado.tipo_documento_id ?? '');
         setFieldValue('numero_documento', asociado.numero_documento ?? '');
@@ -236,17 +235,19 @@ const TerceroServicioForm = (props) => {
           </Box>
 
           <Box px={{md: 5, lg: 8, xl: 10}}>
-            <Box className={classes.inputs_2}>
-              <MyAutocompleteAsociado
-                options={asociados}
-                name='asociado'
-                inputValue={initialValues.tipo}
-                label='Referencia Tercero'
-                //autoHighlight
-                className={classes.myTextField}
-                disabled={disabled}
-              />
-            </Box>
+            {accion === 'crear' && (
+              <Box className={classes.inputs_2}>
+                <MyAutocompleteAsociado
+                  options={asociados}
+                  name='asociado'
+                  inputValue={initialValues.tipo}
+                  label='Asociado de Negocios Base'
+                  complete={'true'}
+                  className={classes.myTextField}
+                  disabled={disabled}
+                />
+              </Box>
+            )}
             <Box className={classes.inputs_2}>
               <MyAutocomplete
                 options={TIPOS_TERCEROS}

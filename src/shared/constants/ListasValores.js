@@ -49,6 +49,9 @@ export const TIPOS_CONTACTOS = [
   {id: 'FR', nombre: 'Facturación', estado: 1},
   {id: 'LG', nombre: 'Logística', estado: 1},
   {id: 'CM', nombre: 'Comercial', estado: 1},
+  {id: 'MO', nombre: 'Monitoreo', estado: 1},
+  {id: 'PR', nombre: 'Producción', estado: 1},
+  {id: 'TR', nombre: 'Transportador', estado: 1},
   {id: 'OT', nombre: 'Otros', estado: 1},
 ];
 

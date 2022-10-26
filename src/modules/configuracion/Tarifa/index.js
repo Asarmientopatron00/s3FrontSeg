@@ -129,7 +129,7 @@ const cells = [
   {
     id: 'valor_tarifa',
     typeHead: 'string',
-    label: 'Valor Tarifa',
+    label: 'Valor Tarifa antes de IVA',
     value: (value) => value,
     align: 'left',
     mostrarInicio: true,
@@ -137,7 +137,7 @@ const cells = [
   {
     id: 'valor_tarifa_dia_adicional',
     typeHead: 'string',
-    label: 'Valor Tarifa Día Adicional',
+    label: 'Valor Tarifa Día Adicional antes de IVA',
     value: (value) => value,
     align: 'left',
     mostrarInicio: false,

@@ -51,6 +51,7 @@ import {
 import {onGetTipoRol} from '../../../redux/actions/AsociadoAction';
 import GetUsuario from '../../../shared/functions/GetUsuario';
 import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
+import moment from 'moment';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -131,6 +132,14 @@ const cells = [
     typeHead: 'string',
     label: 'Documento',
     value: (value) => value,
+    align: 'left',
+    mostrarInicio: true,
+  },
+  {
+    id: 'fecha_vencimiento_documento',
+    typeHead: 'string',
+    label: 'Fecha Vencimiento',
+    value: (value) => (value ? moment(value).format('DD-MM-YYYY') : ''),
     align: 'left',
     mostrarInicio: true,
   },
@@ -787,6 +796,7 @@ const AsociadoDocumento = () => {
 
   const validationSchema = yup.object({
     nombre_archivo: yup.string().required('Requerido'),
+    fecha_vencimiento_documento: yup.date().nullable(),
   });
 
   return (
@@ -879,6 +889,14 @@ const AsociadoDocumento = () => {
                               row[columnasMostradas[1].id],
                             )}
                           />
+                          <MyCell
+                            align={columnasMostradas[2].align}
+                            width={columnasMostradas[2].width}
+                            claseBase={classes.cell}
+                            value={columnasMostradas[2].value(
+                              row[columnasMostradas[2].id],
+                            )}
+                          />
                           <TableCell>
                             <Box
                               component='a'
@@ -890,8 +908,8 @@ const AsociadoDocumento = () => {
                               }
                               display='flex'
                               justifyContent='center'>
-                              {columnasMostradas[2].value(
-                                row[columnasMostradas[2].id],
+                              {columnasMostradas[3].value(
+                                row[columnasMostradas[3].id],
                               )}
                             </Box>
                           </TableCell>
@@ -1025,6 +1043,7 @@ const AsociadoDocumento = () => {
               asociado_id: asociado_id,
               documento_id: documentoId,
               nombre_archivo: nombreDocumento ? nombreDocumento : '',
+              fecha_vencimiento_documento: '',
               archivo: '',
             }}
             validationSchema={validationSchema}
@@ -1039,6 +1058,20 @@ const AsociadoDocumento = () => {
               return (
                 <Form encType='multipart/form-data'>
                   <Box py={5} px={{xs: 5, lg: 8, xl: 10}} height='200px'>
+                    <MyTextField
+                      name='fecha_vencimiento_documento'
+                      label='Fecha Vencimiento'
+                      id='fecha_vencimiento_documento'
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      type='date'
+                      style={{
+                        width: '30%',
+                        marginBottom: 5,
+                        height: '60px',
+                      }}
+                    />
                     <Dropzone
                       onDrop={(event) => {
                         setFieldValue('archivo', event[0]);
