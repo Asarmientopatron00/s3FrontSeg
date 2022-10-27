@@ -1057,7 +1057,7 @@ const AsociadoDocumento = () => {
               //  values.nombre_archivo = archivoCargado;
               return (
                 <Form encType='multipart/form-data'>
-                  <Box py={5} px={{xs: 5, lg: 8, xl: 10}} height='200px'>
+                  <Box py={5} px={{xs: 5, lg: 8, xl: 10}} height='260px'>
                     <MyTextField
                       name='fecha_vencimiento_documento'
                       label='Fecha Vencimiento'
