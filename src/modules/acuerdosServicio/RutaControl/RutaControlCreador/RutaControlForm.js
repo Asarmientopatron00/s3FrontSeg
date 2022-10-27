@@ -136,7 +136,7 @@ const RutaControl = (props) => {
 
   let onChangeCiudad1 = useRef();
   onChangeCiudad1 = (id) => {
-    dispatch(coleccionLigeraLugar(id, true));
+    dispatch(coleccionLigeraLugar(id, encabezado?.id));
   };
 
   useEffect(() => {
