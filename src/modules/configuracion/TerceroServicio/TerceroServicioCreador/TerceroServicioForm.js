@@ -12,6 +12,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import {TIPOS_TERCEROS} from './../../../../shared/constants/ListasValores';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
+import MyAutocompleteAsociado from 'shared/components/MyAutoCompleteAsociado';
 
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
