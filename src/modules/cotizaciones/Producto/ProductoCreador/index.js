@@ -194,6 +194,11 @@ const ProductoCreator = (props) => {
                   ? selectedRow.producto_facturacion_id
                   : ''
                 : '',
+              link_especificaciones_tecnicas: selectedRow
+                ? selectedRow.link_especificaciones_tecnicas
+                  ? selectedRow.link_especificaciones_tecnicas
+                  : ''
+                : '',
               archivo_foto: selectedRow
                 ? selectedRow.archivo_foto
                   ? selectedRow.archivo_foto

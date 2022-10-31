@@ -92,7 +92,13 @@ const OrdenServicioCreator = (props) => {
     departamento_id_instalacion: yup.string().required('Requerido'),
     ciudad_id_instalacion: yup.string().required('Requerido'),
     lugar_id_instalacion: yup.string().nullable(),
-    fecha_programada_desinstalacion: yup.date().nullable(),
+    fecha_programada_desinstalacion: yup
+      .date()
+      .nullable()
+      .min(
+        yup.ref('fecha_programada_instalacion'),
+        'Debe ser mayor a la fecha de instalación',
+      ),
     hora_programada_desinstalacion: yup.string().nullable(),
     departamento_id_desinstalacion: yup.string().required('Requerido'),
     ciudad_id_desinstalacion: yup.string().required('Requerido'),

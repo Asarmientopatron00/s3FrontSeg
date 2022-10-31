@@ -9,6 +9,7 @@ import {
   onUpdate,
   onCreate,
 } from '../../../../redux/actions/SolicitudCotizacionAction';
+import {onGetColeccionDatosBasicos as onGetAsociados} from 'redux/actions/AsociadoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
@@ -82,9 +83,7 @@ const SolicitudCotizacionCreator = (props) => {
   } = props;
 
   const user = useAuthUser();
-
   const dispatch = useDispatch();
-
   const [consecutivo, setConsecutivo] = useState('');
 
   const useStyles = makeStyles((theme) => ({
@@ -108,12 +107,14 @@ const SolicitudCotizacionCreator = (props) => {
   selectedRow = useSelector(
     ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.selectedRow,
   );
+  const asociados = useSelector(({asociadoReducer}) => asociadoReducer.rows);
 
   const initializeSelectedRow = () => {
     selectedRow = null;
   };
   useEffect(() => {
     initializeSelectedRow();
+    dispatch(onGetAsociados(1, 500));
   }, []);
 
   if (accion === 'crear') {
@@ -184,17 +185,29 @@ const SolicitudCotizacionCreator = (props) => {
                 : '',
               nombre_contacto: selectedRow
                 ? selectedRow.nombre_contacto
-                : user.displayName,
-              email: selectedRow ? selectedRow.email : user.email,
+                : user?.rol?.tipo !== 'IN'
+                ? user.displayName
+                : '',
+              email: selectedRow
+                ? selectedRow.email
+                : user?.rol?.tipo !== 'IN'
+                ? user.email
+                : '',
               telefono_contacto: selectedRow
                 ? selectedRow.telefono_contacto
-                : user.telefono,
+                : user?.rol?.tipo !== 'IN'
+                ? user.telefono
+                : '',
               empresa: selectedRow
                 ? selectedRow.nombre_empresa
-                : user.asociado.nombre,
+                : user?.rol?.tipo !== 'IN'
+                ? user.asociado.nombre
+                : '',
               asociado_id: selectedRow
                 ? selectedRow.asociado_id
-                : user.asociado.id,
+                : user?.rol?.tipo !== 'IN'
+                ? user?.asociado?.id
+                : '',
               numero_solicitud: selectedRow ? selectedRow.numero_solicitud : '',
               observaciones: selectedRow
                 ? selectedRow.observaciones
@@ -244,6 +257,8 @@ const SolicitudCotizacionCreator = (props) => {
                 ciudades={ciudades}
                 servicios={servicios}
                 TIPOS_SERVICIOS={TIPOS_SERVICIOS}
+                user={user}
+                asociados={asociados}
               />
             )}
           </Formik>

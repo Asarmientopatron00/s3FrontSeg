@@ -1,6 +1,12 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import {useDispatch} from 'react-redux';
-import {Box, Button, RadioGroup, Radio} from '@material-ui/core';
+import {
+  Box,
+  Button,
+  RadioGroup,
+  Radio,
+  InputAdornment,
+} from '@material-ui/core';
 import {Field, Form, useField} from 'formik';
 import TextField from '@material-ui/core/TextField';
 import {makeStyles} from '@material-ui/core/styles';
@@ -17,6 +23,7 @@ import Dropzone from 'react-dropzone';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {FETCH_ERROR} from '../../../../shared/constants/ActionTypes';
+import {Info, VisibilityTwoTone} from '@material-ui/icons';
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
@@ -171,6 +178,12 @@ const ProductoForm = (props) => {
   useEffect(() => {
     setImagen(values.imagen);
   }, [values.imagen, setImagen]);
+
+  const onGoLink = (link) => {
+    if (link) {
+      window.open(link, '_blank');
+    }
+  };
 
   return (
     <Form encType='multipart/form-data'>
@@ -442,6 +455,24 @@ const ProductoForm = (props) => {
               className={classes.myTextField}
               label='Link Archivo Especificaciones Técnicas'
               name='link_especificaciones_tecnicas'
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position='end'
+                    className={classes.pointer}
+                    onClick={() => {
+                      onGoLink(values.link_especificaciones_tecnicas);
+                    }}>
+                    <Tooltip title='Ver Especificaciones Técnicas'>
+                      <Info
+                        style={{
+                          color: '#0C4F7F',
+                        }}
+                      />
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              }}
               disabled={disabled}
             />
 

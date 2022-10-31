@@ -10,6 +10,7 @@ import {
   LONGITUD_MAXIMA_TELEFONOS,
   LONGITUD_MINIMA_TELEFONOS,
 } from '../../../../shared/constants/Constantes';
+import MyAutocompleteAsociado from 'shared/components/MyAutoCompleteAsociado';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -25,7 +26,7 @@ const MyTextField = (props) => {
 };
 
 const SolicitudCotizacionForm = (props) => {
-  const {accion, initialValues, values, setDetalles} = props;
+  const {accion, initialValues, values, setDetalles, user, asociados} = props;
 
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -138,6 +139,14 @@ const SolicitudCotizacionForm = (props) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+              />
+              <MyAutocompleteAsociado
+                options={asociados}
+                name='asociado_id'
+                label='Asociado de negocio'
+                className={classes.myTextField}
+                required
+                disabled={user?.rol?.tipo !== 'IN'}
               />
             </Box>
             <Box
