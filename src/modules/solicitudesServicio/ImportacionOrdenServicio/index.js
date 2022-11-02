@@ -1,5 +1,5 @@
 import React, {useState, useMemo} from 'react';
-import {Box, Button} from '@material-ui/core';
+import {Box, Button, Icon} from '@material-ui/core';
 import {styled} from '@material-ui/styles';
 import {FETCH_ERROR} from '../../../shared/constants/ActionTypes';
 
@@ -137,6 +137,24 @@ const useToolbarStyles = makeStyles((theme) => ({
     gap: '20px',
     minWidth: '100px',
   },
+  layout: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 270,
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 const ColorlibStepIconRoot = styled('div')(({theme, ownerstate}) => ({
@@ -206,6 +224,32 @@ const ColorlibConnector = withStyles({
   },
 })(StepConnector);
 
+const columns = [
+  'Asociados Negocios',
+  'Codigo referencia factura',
+  'Factura a',
+  'Agente de aduanas',
+  'Servicio',
+  'Tipo de Servicio',
+  'Fecha instalacion',
+  'Hora instalacion',
+  'Departamento instalacion',
+  'Ciudad instalacion',
+  'Lugar instalacion',
+  'Fecha desinstalación',
+  'Hora desinstalación',
+  'Departamento desinstalación',
+  'Ciudad desinstalación',
+  'Lugar desinstalación',
+  'Nit Transportador',
+  'Placa Vehículo',
+  'Placa Trailer',
+  'Número Contenedor',
+  'Nombre Conductor',
+  'Cédula Conductor',
+  'Celular Conductor',
+];
+
 const EnhancedTableToolbar = ({activeStep}) => {
   const classes = useToolbarStyles();
   const steps = ['Cargar Archivo', 'Verificación de datos'];
@@ -220,7 +264,24 @@ const EnhancedTableToolbar = ({activeStep}) => {
           component='div'>
           Carga Masiva Ordenes de Servicio
         </Typography>
-        <Box className={classes.horizontalBottoms}></Box>
+        <Box className={classes.horizontalBottoms}>
+          <Box className={classes.layout}>
+            <ExcelFile
+              element={
+                <Button className={`${classes.btnRoot} ${classes.btnPrymary}`}>
+                  <Icon>{'download'}</Icon>
+                  Formato Importación OdeS
+                </Button>
+              }
+              filename={'Formato Carga OdeS'}>
+              <ExcelSheet data={[]} name='Hoja 1'>
+                {columns.map((value, index) => (
+                  <ExcelColumn key={index} label={value} value='' />
+                ))}
+              </ExcelSheet>
+            </ExcelFile>
+          </Box>
+        </Box>
       </Box>
       <Box>
         <Stepper

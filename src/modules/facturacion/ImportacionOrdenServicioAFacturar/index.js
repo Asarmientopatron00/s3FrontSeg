@@ -1,5 +1,5 @@
 import React, {useState, useMemo} from 'react';
-import {Box, Button} from '@material-ui/core';
+import {Box, Button, Icon} from '@material-ui/core';
 import {styled} from '@material-ui/styles';
 import {FETCH_ERROR} from '../../../shared/constants/ActionTypes';
 
@@ -137,6 +137,24 @@ const useToolbarStyles = makeStyles((theme) => ({
     gap: '20px',
     minWidth: '100px',
   },
+  layout: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 380,
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
 const ColorlibStepIconRoot = styled('div')(({theme, ownerstate}) => ({
@@ -206,6 +224,8 @@ const ColorlibConnector = withStyles({
   },
 })(StepConnector);
 
+const columns = ['Número OdeS', 'Número Factura', 'Fecha Factura'];
+
 const EnhancedTableToolbar = ({activeStep}) => {
   const classes = useToolbarStyles();
   const steps = ['Cargar Archivo', 'Verificación de datos'];
@@ -220,7 +240,24 @@ const EnhancedTableToolbar = ({activeStep}) => {
           component='div'>
           Carga de Ordenes de Servicio Facturadas
         </Typography>
-        <Box className={classes.horizontalBottoms}></Box>
+        <Box className={classes.horizontalBottoms}>
+          <Box className={classes.layout}>
+            <ExcelFile
+              element={
+                <Button className={`${classes.btnRoot} ${classes.btnPrymary}`}>
+                  <Icon>{'download'}</Icon>
+                  Formato Importación OdeS Facturadas
+                </Button>
+              }
+              filename={'Formato Carga OdeS Facturadas'}>
+              <ExcelSheet data={[]} name='Hoja 1'>
+                {columns.map((value, index) => (
+                  <ExcelColumn key={index} label={value} value='' />
+                ))}
+              </ExcelSheet>
+            </ExcelFile>
+          </Box>
+        </Box>
       </Box>
       <Box>
         <Stepper

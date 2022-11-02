@@ -1059,8 +1059,7 @@ const AcuerdoServicio = (props) => {
                               component='a'
                               href={'/puestos-control/' + row.id}
                               className={classes.generalIcons}>
-                              <Tooltip
-                                title={<IntlMessages id='boton.contactos' />}>
+                              <Tooltip title={'Puestos de Control'}>
                                 <LocalShippingIcon
                                   className={`${classes.generalIcons} ${classes.contactIcon}`}></LocalShippingIcon>
                               </Tooltip>
