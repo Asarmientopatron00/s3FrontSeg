@@ -259,7 +259,7 @@ function EnhancedTableHead(props) {
           }
         })}
         <TableCell align='center' className={classes.headCellWoMargin}>
-          {'Rutas a Controlar'}
+          {'Lugares Ins/Des'}
         </TableCell>
         <TableCell align='center' className={classes.headCellWoMargin}>
           {'Puestos de Control'}
@@ -1048,7 +1048,8 @@ const AcuerdoServicio = (props) => {
                               component='a'
                               href={'/rutas-control/' + row.id}
                               className={classes.generalIcons}>
-                              <Tooltip title={'Rutas a Controlar'}>
+                              <Tooltip
+                                title={'Lugares Instalación/Desinstalación'}>
                                 <SwapCallsIcon
                                   className={`${classes.generalIcons} ${classes.legalIcon}`}></SwapCallsIcon>
                               </Tooltip>

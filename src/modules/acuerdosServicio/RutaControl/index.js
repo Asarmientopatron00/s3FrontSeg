@@ -387,7 +387,8 @@ const EnhancedTableToolbar = (props) => {
               variant='h6'
               id='tableTitle'
               component='div'>
-              Acuerdos operativos de servicio - Rutas a controlar
+              Acuerdos operativos de servicio - Lugares
+              Instalación/Desinstalación
             </Typography>
             <Box className={classes.horizontalBottoms}>
               <Tooltip
@@ -400,7 +401,7 @@ const EnhancedTableToolbar = (props) => {
                 </IconButton>
               </Tooltip>
               <Tooltip
-                title='Crear Ruta Control'
+                title='Crear Lugar Ins/Des'
                 onClick={onOpenAddRutaControl}>
                 <IconButton
                   className={classes.createButton}
@@ -743,7 +744,7 @@ const RutaControl = () => {
   const onDeleteRutaControl = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro que desea eliminar la ruta de control?',
+      text: '¿Seguro que desea eliminar el lugar instalación/desinstalación?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -755,8 +756,8 @@ const RutaControl = () => {
       if (result.isConfirmed) {
         dispatch(onDelete(id, updateColeccion));
         Swal.fire(
-          'Eliminada',
-          'La ruta de control ha sido eliminada',
+          'Eliminado',
+          'El lugar instalación desinstalación ha sido eliminado',
           'success',
         );
       }

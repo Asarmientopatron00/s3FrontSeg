@@ -174,7 +174,9 @@ const RutaControl = (props) => {
             mb={{xs: 4, xl: 6}}
             fontSize={20}
             fontWeight={Fonts.MEDIUM}>
-            {'Acuerdos operativos de servicio - Rutas a controlar'}
+            {
+              'Acuerdos operativos de servicio - Lugares Instalación/Desinstalación'
+            }
           </Box>
 
           <Box className={classes.contenedorFiltros}>
