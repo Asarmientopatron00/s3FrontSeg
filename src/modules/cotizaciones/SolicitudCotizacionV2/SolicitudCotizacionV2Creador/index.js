@@ -49,7 +49,7 @@ const SolicitudCotizacionV2Creador = (props) => {
   const {accion, id} = useParams();
   const user = useAuthUser();
   const handleOnClose = () => {
-    window.location.href = '/solicitud-cotizacion-v2';
+    window.location.href = '/solicitar-cotizacion';
   };
 
   const dispatch = useDispatch();

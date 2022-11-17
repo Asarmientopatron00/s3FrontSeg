@@ -321,7 +321,7 @@ const EnhancedTableToolbar = (props) => {
               </IconButton>
             </Tooltip>
             {permisos.indexOf('Crear') >= 0 && (
-              <Box component='a' href='/solicitud-cotizacion-v2/crear'>
+              <Box component='a' href='/solicitar-cotizacion/crear'>
                 <Tooltip title='Crear Cotización'>
                   <IconButton
                     className={classes.createButton}
@@ -777,9 +777,7 @@ const SolicitudCotizacionV2 = (props) => {
                             row.estado_solicitud_cotizacion === 'SOL' && (
                               <Box
                                 component='a'
-                                href={
-                                  '/solicitud-cotizacion-v2/editar/' + row.id
-                                }
+                                href={'/solicitar-cotizacion/editar/' + row.id}
                                 className={classes.generalIcons}>
                                 <Tooltip
                                   title={<IntlMessages id='boton.editar' />}>

@@ -262,7 +262,7 @@ const SolicitudCotizacionV2Form = (props) => {
             )}
             <Button
               className={`${classes.btnRoot} ${classes.btnSecundary}`}
-              href='/solicitud-cotizacion-v2'>
+              href='/solicitar-cotizacion'>
               <IntlMessages id='boton.cancel' />
             </Button>
           </Box>
