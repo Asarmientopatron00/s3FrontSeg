@@ -6,11 +6,11 @@ export const cotizacionConfig = [
   {
     auth: authRole.user,
     routes: [
-      {
-        exact: true,
-        path: ['/solicitar-cotizacion'],
-        component: React.lazy(() => import('./SolicitudCotizacion')),
-      },
+      // {
+      //   exact: true,
+      //   path: ['/solicitar-cotizacion'],
+      //   component: React.lazy(() => import('./SolicitudCotizacion')),
+      // },
       {
         exact: true,
         path: '/solicitud-contacto',
@@ -101,6 +101,25 @@ export const cotizacionConfig = [
         path: ['/cotizacion-productos/:accion'],
         component: React.lazy(() =>
           import('./CotizacionProducto/CotizacionProductoCreador'),
+        ),
+      },
+      {
+        exact: true,
+        path: '/solicitar-cotizacion',
+        component: React.lazy(() => import('./SolicitudCotizacionV2')),
+      },
+      {
+        exact: true,
+        path: ['/solicitar-cotizacion/:accion/:id'],
+        component: React.lazy(() =>
+          import('./SolicitudCotizacionV2/SolicitudCotizacionV2Creador'),
+        ),
+      },
+      {
+        exact: true,
+        path: ['/solicitar-cotizacion/:accion'],
+        component: React.lazy(() =>
+          import('./SolicitudCotizacionV2/SolicitudCotizacionV2Creador'),
         ),
       },
     ],

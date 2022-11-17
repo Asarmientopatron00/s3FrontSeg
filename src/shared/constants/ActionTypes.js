@@ -422,6 +422,18 @@ export const CREATE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
   'create_detalle_solicitud_cotizacion_producto';
 export const DELETE_DETALLE_SOLICITUD_COTIZACION_PRODUCTO =
   'delete_detalle_solicitud_cotizacion_producto';
+export const GET_COLECCION_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'get_coleccion_detalle_solicitud_cotizacion_servicio';
+export const GET_COLECCION_LIGERA_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'get_coleccion_ligera_detalle_solicitud_cotizacion_servicio';
+export const SHOW_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'show_detalle_solicitud_cotizacion_servicio';
+export const UPDATE_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'update_detalle_solicitud_cotizacion_servicio';
+export const CREATE_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'create_detalle_solicitud_cotizacion_servicio';
+export const DELETE_DETALLE_SOLICITUD_COTIZACION_SERVICIO =
+  'delete_detalle_solicitud_cotizacion_servicio';
 export const GET_COLECCION_COTIZACION_PRODUCTO =
   'get_coleccion_cotizacion_producto';
 export const GET_COLECCION_LIGERA_COTIZACION_PRODUCTO =

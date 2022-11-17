@@ -7,6 +7,7 @@ import VerticalItem from './VerticalItem';
 import VerticalNavGroup from './VerticalNavGroup';
 
 import {useAuthUser} from '../../../../@crema/utility/AppHooks';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const Navigation = () => {
   const user = useAuthUser();
@@ -16,9 +17,10 @@ const Navigation = () => {
         <React.Fragment key={item.id}>
           {item.type === 'group' && <VerticalNavGroup item={item} level={0} />}
 
-          {item.type === 'collapse' && item.nombre !== 'Aplicación Móvil' && (
-            <VerticalCollapse item={item} level={0} />
-          )}
+          {item.type === 'collapse' &&
+            item.id != defaultConfig.ID_APP_MOVIL && (
+              <VerticalCollapse item={item} level={0} />
+            )}
 
           {item.type === 'item' && <VerticalItem item={item} level={0} />}
         </React.Fragment>

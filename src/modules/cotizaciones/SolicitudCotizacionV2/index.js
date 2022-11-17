@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Box, Button} from '@material-ui/core';
+import ConsultaSolicitudCotizacion from '../ConsultaCotizacion/ConsultaSolicitudCotizacion';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {lighten, makeStyles} from '@material-ui/core/styles';
@@ -24,108 +25,77 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
-import InformacionEquipoCreador from './InformacionEquipoCreador';
 import {
   onGetColeccion,
   onDelete,
-} from '../../../redux/actions/InformacionEquipoAction';
+} from 'redux/actions/SolicitudCotizacionAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import IntlMessages from '../../../@crema/utility/IntlMessages';
+import IntlMessages from '@crema/utility/IntlMessages';
 import Popover from '@material-ui/core/Popover';
 import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
-import {TIPOS_EQUIPOS} from '../../../shared/constants/ListasValores';
-import MenuItem from '@material-ui/core/MenuItem';
-import {Form, Formik} from 'formik';
-import {InsertDriveFile} from '@material-ui/icons';
-import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
 
 const cells = [
   {
-    id: 'numero_serial',
+    id: 'numero_solicitud',
     typeHead: 'numeric',
-    label: 'Número Serial',
+    label: 'Solicitud Cotización',
     value: (value) => value,
     align: 'right',
     mostrarInicio: true,
   },
   {
-    id: 'nombre_equipo',
+    id: 'fecha_solicitud_cotizacion',
     typeHead: 'string',
-    label: 'Nombre',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: true,
-  },
-  {
-    id: 'tipo_equipo',
-    typeHead: 'string',
-    label: 'Tipo',
+    label: 'Fecha',
     value: (value) =>
-      TIPOS_EQUIPOS.map((tipo) => (tipo.id === value ? tipo.nombre : '')),
+      new Date(value).toLocaleDateString('es-CL', {timeZone: 'UTC'}),
     align: 'left',
     mostrarInicio: true,
   },
   {
-    id: 'fecha_compra_equipo',
+    id: 'numero_servicios_mes',
     typeHead: 'string',
-    label: 'Fecha Compra',
+    label: 'Número de Servicios por Mes',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
-    id: 'fecha_activacion_equipo',
+    id: 'nombre_empresa',
     typeHead: 'string',
-    label: 'Fecha Activacion',
+    label: 'Nombre Empresa',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
-    id: 'valor_costo_equipo_USD',
-    typeHead: 'numeric',
-    label: 'Valor Costo USD',
-    value: (value) => value,
-    align: 'right',
-    mostrarInicio: false,
-  },
-  {
-    id: 'nombre_proveedor',
+    id: 'nombre_contacto',
     typeHead: 'string',
-    label: 'Nombre Proveedor',
+    label: 'Persona Contacto',
     value: (value) => value,
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
   {
-    id: 'equipo_desechable',
+    id: 'estado_solicitud_cotizacion',
     typeHead: 'string',
-    label: 'Equipo Desechable',
-    value: (value) => (value === 'S' ? 'Si' : value === 'N' ? 'No' : ''),
+    label: 'Estado Solicitud',
+    value: (value) => (value === 'SOL' ? 'Solicitada' : 'Cotizada'),
     align: 'left',
-    mostrarInicio: false,
+    mostrarInicio: true,
   },
-  {
-    id: 'observaciones',
-    typeHead: 'string',
-    label: 'Observaciones',
-    value: (value) => value,
-    align: 'left',
-    mostrarInicio: false,
-  },
-
   {
     id: 'estado',
     typeHead: 'boolean',
     label: 'Estado',
     value: (value) => (value === 1 ? 'Activo' : 'Inactivo'),
     align: 'center',
-    mostrarInicio: true,
+    mostrarInicio: false,
     cellColor: (value) => (value === 1 ? 'green' : 'red'),
   },
   {
@@ -135,7 +105,7 @@ const cells = [
     value: (value) => value,
     align: 'left',
     width: '140px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'fecha_modificacion',
@@ -144,7 +114,7 @@ const cells = [
     value: (value) => new Date(value).toLocaleString('es-CL'),
     align: 'left',
     width: '180px',
-    mostrarInicio: true,
+    mostrarInicio: false,
   },
   {
     id: 'usuario_creacion_nombre',
@@ -185,22 +155,10 @@ const MyCell = (props) => {
 
 function EnhancedTableHead(props) {
   const {classes, order, orderBy, onRequestSort, columnasMostradas} = props;
-  // const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  // const createSortHandler = (property) => (event) => {
-  //   onRequestSort(event, property);
-  // };
 
   return (
     <TableHead>
       <TableRow className={classes.head}>
-        {/* <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell> */}
         <TableCell align='center' className={classes.headCell}>
           {'Acciones'}
         </TableCell>
@@ -247,9 +205,7 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -330,194 +286,94 @@ const useToolbarStyles = makeStyles((theme) => ({
     gap: '20px',
     minWidth: '100px',
   },
-  exportButton: {
-    backgroundColor: '#4caf50',
-    color: 'white',
-    boxShadow:
-      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
-    '&:hover': {
-      backgroundColor: theme.palette.colorHover,
-      cursor: 'pointer',
-    },
-  },
-  x: {
-    position: 'absolute',
-    color: '#4caf50',
-    fontSize: '14px',
-    top: '19px',
-    fontWeight: 'bold',
-  },
 }));
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const {
-    numSelected,
     titulo,
-    onOpenAddInformacionEquipo,
     handleOpenPopoverColumns,
     queryFilter,
-    nombreFiltro,
-    tipoFiltro,
-    serialFiltro,
+    numeroFiltro,
+    nombreEmpresaFiltro,
     limpiarFiltros,
     permisos,
   } = props;
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}>
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color='inherit'
-          variant='subtitle1'
-          component='div'>
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <>
-          <Box className={classes.titleTop}>
-            <Typography
-              className={classes.title}
-              variant='h6'
-              id='tableTitle'
-              component='div'>
-              {titulo}
-            </Typography>
-            <Box className={classes.horizontalBottoms}>
-              <Formik>
-                <Form>
-                  {permisos.indexOf('Exportar') >= 0 && (
-                    <Tooltip
-                      title='Exportar'
-                      component='a'
-                      className={classes.linkDocumento}
-                      href={
-                        defaultConfig.API_URL +
-                        '/exportar-equipos' +
-                        '?nombre_equipo=' +
-                        nombreFiltro +
-                        '&tipo_equipo=' +
-                        tipoFiltro +
-                        '&numero_serial=' +
-                        serialFiltro
-                      }>
-                      <IconButton
-                        className={classes.exportButton}
-                        aria-label='filter list'>
-                        <Box component='span' className={classes.x}>
-                          X
-                        </Box>
-                        <InsertDriveFile />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Form>
-              </Formik>
-              <Tooltip
-                title='Mostrar/Ocultar Columnas'
-                onClick={handleOpenPopoverColumns}>
-                <IconButton
-                  className={classes.columnFilterButton}
-                  aria-label='filter list'>
-                  <TuneIcon />
-                </IconButton>
-              </Tooltip>
-              {permisos.indexOf('Crear') >= 0 && (
-                <Tooltip
-                  title='Crear InformacionEquipo'
-                  onClick={onOpenAddInformacionEquipo}>
+    <Toolbar className={clsx(classes.root)}>
+      <>
+        <Box className={classes.titleTop}>
+          <Typography
+            className={classes.title}
+            variant='h6'
+            id='tableTitle'
+            component='div'>
+            {titulo}
+          </Typography>
+          <Box className={classes.horizontalBottoms}>
+            <Tooltip
+              title='Mostrar/Ocultar Columnas'
+              onClick={handleOpenPopoverColumns}>
+              <IconButton
+                className={classes.columnFilterButton}
+                aria-label='filter list'>
+                <TuneIcon />
+              </IconButton>
+            </Tooltip>
+            {permisos.indexOf('Crear') >= 0 && (
+              <Box component='a' href='/solicitud-cotizacion-v2/crear'>
+                <Tooltip title='Crear Cotización'>
                   <IconButton
                     className={classes.createButton}
                     aria-label='filter list'>
                     <AddIcon />
                   </IconButton>
                 </Tooltip>
-              )}
-            </Box>
-          </Box>
-          <Box className={classes.contenedorFiltros}>
-            <TextField
-              label='Nombre'
-              name='nombreFiltro'
-              id='nombreFiltro'
-              onChange={queryFilter}
-              value={nombreFiltro}
-            />
-
-            <TextField
-              label='Tipo Equipo'
-              name='tipoFiltro'
-              id='tipoFiltro'
-              onChange={queryFilter}
-              value={tipoFiltro}
-              select>
-              {TIPOS_EQUIPOS.map((tipo) => {
-                return (
-                  <MenuItem
-                    value={tipo.id}
-                    key={tipo.id}
-                    id={tipo.id}
-                    className={classes.pointer}>
-                    {tipo.nombre}
-                  </MenuItem>
-                );
-              })}
-            </TextField>
-            <Box display='grid'>
-              <Box display='flex' mb={2}>
-                <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
-                  <IconButton
-                    className={classes.clearButton}
-                    aria-label='filter list'>
-                    <ClearAllIcon />
-                  </IconButton>
-                </Tooltip>
               </Box>
-            </Box>
-
-            <TextField
-              label='Número Serial'
-              name='serialFiltro'
-              id='serialFiltro'
-              onChange={queryFilter}
-              value={serialFiltro}
-            />
+            )}
           </Box>
-        </>
-      )}
+        </Box>
+        <Box className={classes.contenedorFiltros}>
+          <TextField
+            label='Número Cotización'
+            name='numeroFiltro'
+            id='numeroFiltro'
+            onChange={queryFilter}
+            value={numeroFiltro}
+            type='number'
+            inputProps={{min: 0}}
+          />
 
-      {
-        numSelected > 0 ? (
-          <Tooltip title='Delete'>
-            <IconButton aria-label='delete'>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          ''
-        )
-        //  <Tooltip title="Filtros Avanzados">
-        //         <IconButton aria-label="filter list">
-        //           <FilterListIcon />
-        //         </IconButton>
-        //       </Tooltip>
-      }
+          <TextField
+            label='Nombre Empresa'
+            name='nombreEmpresaFiltro'
+            id='nombreEmpresaFiltro'
+            onChange={queryFilter}
+            value={nombreEmpresaFiltro}
+          />
+          <Box display='grid'>
+            <Box display='flex' mb={2}>
+              <Tooltip title='Limpiar Filtros' onClick={limpiarFiltros}>
+                <IconButton
+                  className={classes.clearButton}
+                  aria-label='filter list'>
+                  <ClearAllIcon />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+        </Box>
+      </>
     </Toolbar>
   );
 };
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onOpenAddInformacionEquipo: PropTypes.func.isRequired,
   handleOpenPopoverColumns: PropTypes.func.isRequired,
   queryFilter: PropTypes.func.isRequired,
   limpiarFiltros: PropTypes.func.isRequired,
-  nombreFiltro: PropTypes.string.isRequired,
-  tipoFiltro: PropTypes.string.isRequired,
-  serialFiltro: PropTypes.string.isRequired,
+  numeroFiltro: PropTypes.string.isRequired,
+  nombreEmpresaFiltro: PropTypes.string.isRequired,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -597,6 +453,9 @@ const useStyles = makeStyles((theme) => ({
   deleteIcon: {
     color: theme.palette.redBottoms,
   },
+  enviarIcon: {
+    color: theme.palette.enviaEmailBottoms,
+  },
   popoverColumns: {
     display: 'grid',
     padding: '10px',
@@ -614,31 +473,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InformacionEquipo = (props) => {
+const SolicitudCotizacionV2 = (props) => {
   const [showForm, setShowForm] = useState(false);
+  const [accion, setAccion] = useState('ver');
+  const [solicitudCotizacionSeleccionado, setSolicitudCotizacionSeleccionado] =
+    useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
   const [orderByToSend, setOrderByToSend] = React.useState(
     'fecha_modificacion:desc',
   );
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(1);
   // const [dense, setDense] = React.useState(false);
   const dense = true; //Borrar cuando se use el change
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const rowsPerPageOptions = [5, 10, 15, 25, 50];
 
-  const [accion, setAccion] = useState('ver');
-  const [informacionEquipoSeleccionado, setInformacionEquipoSeleccionado] =
-    useState(0);
   const {rows, desde, hasta, ultima_pagina, total} = useSelector(
-    ({informacionEquipoReducer}) => informacionEquipoReducer,
+    ({solicitudCotizacionReducer}) => solicitudCotizacionReducer,
   );
   const textoPaginacion = `Mostrando de ${desde} a ${hasta} de ${total} resultados - Página ${page} de ${ultima_pagina}`;
-  const [nombreFiltro, setNombreFiltro] = useState('');
-  const [tipoFiltro, setTipoFiltro] = useState('');
-  const [serialFiltro, setSerialFiltro] = useState('');
-  // const {pathname} = useLocation();
+  const [numeroFiltro, setnumeroFiltro] = useState('');
+  const [nombreEmpresaFiltro, setnombreEmpresaFiltro] = useState('');
   const [openPopOver, setOpenPopOver] = useState(false);
   const [popoverTarget, setPopoverTarget] = useState(null);
 
@@ -671,12 +527,21 @@ const InformacionEquipo = (props) => {
   const {user} = useSelector(({auth}) => auth);
   const [permisos, setPermisos] = useState('');
   const [titulo, setTitulo] = useState('');
+  const [showTable, setShowTable] = useState(true);
+
+  useEffect(() => {
+    if (rows.length === 0) {
+      setShowTable(false);
+    } else {
+      setShowTable(true);
+    }
+  }, [rows]);
 
   useEffect(() => {
     user &&
       user.permisos.forEach((modulo) => {
         modulo.opciones.forEach((opcion) => {
-          if (opcion.url === props.route.path[0]) {
+          if (opcion.url === props.route.path) {
             setTitulo(opcion.nombre);
             const permisoAux = [];
             opcion.permisos.forEach((permiso) => {
@@ -695,48 +560,31 @@ const InformacionEquipo = (props) => {
       onGetColeccion(
         page,
         rowsPerPage,
-        nombreFiltro,
+        numeroFiltro,
         orderByToSend,
-        tipoFiltro,
-        serialFiltro,
+        nombreEmpresaFiltro,
       ),
     );
   }, [
     dispatch,
     page,
     rowsPerPage,
-    nombreFiltro,
+    numeroFiltro,
     orderByToSend,
-    tipoFiltro,
-    serialFiltro,
+    nombreEmpresaFiltro,
   ]);
 
-  const updateColeccion = () => {
-    dispatch(
-      onGetColeccion(
-        1,
-        rowsPerPage,
-        nombreFiltro,
-        orderByToSend,
-        tipoFiltro,
-        serialFiltro,
-      ),
-    );
-  };
   useEffect(() => {
     setPage(1);
-  }, [nombreFiltro, orderByToSend, tipoFiltro, serialFiltro]);
+  }, [numeroFiltro, orderByToSend, nombreEmpresaFiltro]);
 
   const queryFilter = (e) => {
     switch (e.target.name) {
-      case 'nombreFiltro':
-        setNombreFiltro(e.target.value);
+      case 'numeroFiltro':
+        setnumeroFiltro(e.target.value);
         break;
-      case 'tipoFiltro':
-        setTipoFiltro(e.target.value);
-        break;
-      case 'serialFiltro':
-        setSerialFiltro(e.target.value);
+      case 'nombreEmpresaFiltro':
+        setnombreEmpresaFiltro(e.target.value);
         break;
       default:
         break;
@@ -744,9 +592,20 @@ const InformacionEquipo = (props) => {
   };
 
   const limpiarFiltros = () => {
-    setNombreFiltro('');
-    setTipoFiltro('');
-    setSerialFiltro('');
+    setnumeroFiltro('');
+    setnombreEmpresaFiltro('');
+  };
+
+  const updateColeccion = () => {
+    dispatch(
+      onGetColeccion(
+        1,
+        rowsPerPage,
+        numeroFiltro,
+        orderByToSend,
+        nombreEmpresaFiltro,
+      ),
+    );
   };
 
   const changeOrderBy = (id) => {
@@ -763,12 +622,6 @@ const InformacionEquipo = (props) => {
       setOrderBy(id);
       setOrderByToSend(id + ':asc');
     }
-  };
-
-  const onOpenEditInformacionEquipo = (id) => {
-    setInformacionEquipoSeleccionado(id);
-    setAccion('editar');
-    setShowForm(true);
   };
 
   const handleClosePopover = () => {
@@ -794,6 +647,18 @@ const InformacionEquipo = (props) => {
     );
   };
 
+  const onOpenViewAprobacionCotizacion = (id) => {
+    setSolicitudCotizacionSeleccionado(id);
+    setAccion('ver');
+    setShowForm(true);
+  };
+
+  const handleOnClose = () => {
+    setShowForm(false);
+    setSolicitudCotizacionSeleccionado(0);
+    setAccion('ver');
+  };
+
   const showAllColumns = () => {
     let aux = columnasMostradas;
     setColumnasMostradas(
@@ -807,16 +672,10 @@ const InformacionEquipo = (props) => {
     setColumnasMostradas(columnasMostradasInicial);
   };
 
-  const onOpenViewInformacionEquipo = (id) => {
-    setInformacionEquipoSeleccionado(id);
-    setAccion('ver');
-    setShowForm(true);
-  };
-
-  const onDeleteInformacionEquipo = (id) => {
+  const onDeleteCotizacion = (id) => {
     Swal.fire({
       title: 'Confirmar',
-      text: '¿Seguro que desea eliminar el equipo?',
+      text: '¿Seguro Que Desea Eliminar La Solicitud Cotizacion?',
       allowEscapeKey: false,
       allowEnterKey: false,
       showCancelButton: true,
@@ -826,10 +685,10 @@ const InformacionEquipo = (props) => {
       confirmButtonText: 'SI',
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(onDelete(id));
+        dispatch(onDelete(id, updateColeccion));
         Swal.fire(
           'Eliminado',
-          'El equipo fue eliminado correctamente',
+          'La Solicitud Cotizacion Fue Eliminada Correctamente',
           'success',
         );
         setTimeout(() => {
@@ -837,32 +696,6 @@ const InformacionEquipo = (props) => {
         }, 500);
       }
     });
-  };
-
-  const onOpenAddInformacionEquipo = () => {
-    setInformacionEquipoSeleccionado(0);
-    setAccion('crear');
-    setShowForm(true);
-  };
-
-  const handleOnClose = () => {
-    setShowForm(false);
-    setInformacionEquipoSeleccionado(0);
-    setAccion('ver');
-  };
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc';
-  //   setOrder(isAsc ? 'desc' : 'asc');
-  //   setOrderBy(property);
-  // };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -874,35 +707,16 @@ const InformacionEquipo = (props) => {
     setPage(1);
   };
 
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  const [showTable, setShowTable] = useState(true);
-  useEffect(() => {
-    if (rows.length === 0) {
-      setShowTable(false);
-    } else {
-      setShowTable(true);
-    }
-  }, [rows]);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         {permisos && (
           <EnhancedTableToolbar
-            numSelected={selected.length}
-            onOpenAddInformacionEquipo={onOpenAddInformacionEquipo}
             handleOpenPopoverColumns={handleOpenPopoverColumns}
             queryFilter={queryFilter}
             limpiarFiltros={limpiarFiltros}
-            nombreFiltro={nombreFiltro}
-            tipoFiltro={tipoFiltro}
-            serialFiltro={serialFiltro}
+            numeroFiltro={numeroFiltro}
+            nombreEmpresaFiltro={nombreEmpresaFiltro}
             permisos={permisos}
             titulo={titulo}
           />
@@ -944,113 +758,84 @@ const InformacionEquipo = (props) => {
                 aria-label='enhanced table'>
                 <EnhancedTableHead
                   classes={classes}
-                  numSelected={selected.length}
                   order={order}
                   orderBy={orderBy}
-                  onSelectAllClick={handleSelectAllClick}
                   onRequestSort={changeOrderBy}
                   rowCount={rows.length}
                   columnasMostradas={columnasMostradas}
                 />
                 <TableBody>
-                  {
-                    // stableSort(rows, getComparator(order, orderBy))
-                    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    rows.map((row, index) => {
-                      const isItemSelected = isSelected(row.name);
-
-                      return (
-                        <TableRow
-                          hover
-                          // role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.id}
-                          selected={isItemSelected}
-                          className={classes.row}>
-                          {/* <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell> */}
-
-                          <TableCell
-                            align='center'
-                            className={classes.acciones}>
-                            {permisos.indexOf('Modificar') >= 0 && (
-                              <Tooltip
-                                title={<IntlMessages id='boton.editar' />}>
-                                <EditIcon
-                                  onClick={() =>
-                                    onOpenEditInformacionEquipo(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.editIcon}`}></EditIcon>
-                              </Tooltip>
+                  {rows.map((row, index) => {
+                    return (
+                      <TableRow
+                        hover
+                        tabIndex={-1}
+                        key={row.id}
+                        className={classes.row}>
+                        <TableCell align='center' className={classes.acciones}>
+                          {permisos.indexOf('Modificar') >= 0 &&
+                            row.estado_solicitud_cotizacion === 'SOL' && (
+                              <Box
+                                component='a'
+                                href={
+                                  '/solicitud-cotizacion-v2/editar/' + row.id
+                                }
+                                className={classes.generalIcons}>
+                                <Tooltip
+                                  title={<IntlMessages id='boton.editar' />}>
+                                  <EditIcon
+                                    className={`${classes.generalIcons} ${classes.editIcon}`}
+                                  />
+                                </Tooltip>
+                              </Box>
                             )}
-                            {permisos.indexOf('Listar') >= 0 && (
-                              <Tooltip title={<IntlMessages id='boton.ver' />}>
-                                <VisibilityIcon
-                                  onClick={() =>
-                                    onOpenViewInformacionEquipo(row.id)
-                                  }
-                                  className={`${classes.generalIcons} ${classes.visivilityIcon}`}></VisibilityIcon>
-                              </Tooltip>
-                            )}
-                            {permisos.indexOf('Eliminar') >= 0 && (
+                          {permisos.indexOf('Listar') >= 0 && (
+                            <Tooltip title={<IntlMessages id='boton.ver' />}>
+                              <VisibilityIcon
+                                className={`${classes.generalIcons} ${classes.visivilityIcon}`}
+                                onClick={() =>
+                                  onOpenViewAprobacionCotizacion(row.id)
+                                }
+                              />
+                            </Tooltip>
+                          )}
+                          {permisos.indexOf('Eliminar') >= 0 &&
+                            row.estado_solicitud_cotizacion === 'SOL' && (
                               <Tooltip
                                 title={<IntlMessages id='boton.eliminar' />}>
                                 <DeleteIcon
-                                  onClick={() =>
-                                    onDeleteInformacionEquipo(row.id)
-                                  }
+                                  onClick={() => onDeleteCotizacion(row.id)}
                                   className={`${classes.generalIcons} ${classes.deleteIcon}`}></DeleteIcon>
                               </Tooltip>
                             )}
-                          </TableCell>
+                        </TableCell>
 
-                          {columnasMostradas.map((columna) => {
-                            if (columna.mostrar) {
-                              return (
-                                <MyCell
-                                  key={row.id + columna.id}
-                                  align={columna.align}
-                                  width={columna.width}
-                                  claseBase={classes.cell}
-                                  value={columna.value(row[columna.id])}
-                                  cellColor={
-                                    columna.cellColor
-                                      ? columna.cellColor(row[columna.id])
-                                      : ''
-                                  }
-                                />
-                              );
-                            } else {
-                              return <th key={row.id + columna.id}></th>;
-                            }
-                          })}
-                        </TableRow>
-                      );
-                    })
-                  }
-                  {/* {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
+                        {columnasMostradas.map((columna) => {
+                          if (columna.mostrar) {
+                            return (
+                              <MyCell
+                                key={row.id + columna.id}
+                                align={columna.align}
+                                width={columna.width}
+                                claseBase={classes.cell}
+                                value={columna.value(row[columna.id])}
+                                cellColor={
+                                  columna.cellColor
+                                    ? columna.cellColor(row[columna.id])
+                                    : ''
+                                }
+                              />
+                            );
+                          } else {
+                            return <th key={row.id + columna.id}></th>;
+                          }
+                        })}
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>
-            {/* <TablePagination
-          rowsPerPageOptions={rowsPerPageOptions}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        /> */}
-
             <Box className={classes.paginacion}>
               <Box>
                 <p>{textoPaginacion}</p>
@@ -1097,19 +882,15 @@ const InformacionEquipo = (props) => {
         )}
       </Paper>
 
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Cambiar Densidad"
-      /> */}
       {showForm ? (
-        <InformacionEquipoCreador
+        <ConsultaSolicitudCotizacion
           showForm={showForm}
-          informacionEquipo={informacionEquipoSeleccionado}
+          consultaCotizacion={solicitudCotizacionSeleccionado}
           accion={accion}
           handleOnClose={handleOnClose}
           updateColeccion={updateColeccion}
           titulo={titulo}
-          TIPOS_EQUIPOS={TIPOS_EQUIPOS}
+          user={user}
         />
       ) : (
         ''
@@ -1155,4 +936,4 @@ const InformacionEquipo = (props) => {
   );
 };
 
-export default InformacionEquipo;
+export default SolicitudCotizacionV2;
