@@ -7,6 +7,7 @@ import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import DetalleCotizacion from '../../DetalleCotizacion';
+import {CREATE_DETALLE_COTIZACION} from 'shared/constants/ActionTypes';
 
 const MyTextField = (props) => {
   const [field, meta] = useField(props);
@@ -80,6 +81,76 @@ const MyAutocompleteSolicitud = (props) => {
   );
 };
 
+const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: '0px',
+    gap: '10px',
+    backgroundColor: 'white',
+    paddingRight: '20px',
+    position: 'sticky',
+    left: 0,
+    bottom: 0,
+  },
+  myTextField: {
+    width: '100%',
+    marginBottom: 5,
+    [theme.breakpoints.up('xl')]: {
+      marginBottom: 5,
+    },
+    height: '70px',
+  },
+  MySelectField: {
+    width: 'auto',
+    marginBottom: 16,
+    [theme.breakpoints.up('xl')]: {
+      marginBottom: 24,
+    },
+    color: theme.palette.primary.main,
+    '&:target': {
+      color: theme.palette.primary.main,
+    },
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  btnSecundary: {
+    backgroundColor: theme.palette.grayBottoms,
+  },
+  widthFull: {
+    width: '100%',
+  },
+  pointer: {
+    cursor: 'pointer',
+  },
+  inputs_2: {
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2,1fr)',
+    columnGap: '20px',
+  },
+  marco: {
+    padding: '0px',
+    backgroundColor: 'white',
+    boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
+    borderRadius: '4px',
+  },
+  root: {
+    padding: '20px',
+    backgroundColor: theme.palette.gray[200],
+  },
+}));
+
 const SolicitudCotizacionForm = (props) => {
   const {
     accion,
@@ -88,6 +159,9 @@ const SolicitudCotizacionForm = (props) => {
     values,
     setFieldValue,
     setDetalles,
+    ciudades,
+    servicios,
+    dispatch,
   } = props;
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
@@ -95,103 +169,77 @@ const SolicitudCotizacionForm = (props) => {
       setDisabled(true);
     }
   }, [initialValues.estado, accion]);
-  const useStyles = makeStyles((theme) => ({
-    bottomsGroup: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      paddingBottom: '0px',
-      gap: '10px',
-      backgroundColor: 'white',
-      paddingRight: '20px',
-      position: 'sticky',
-      left: 0,
-      bottom: 0,
-    },
-    myTextField: {
-      width: '100%',
-      marginBottom: 5,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 5,
-      },
-      height: '70px',
-    },
-    MySelectField: {
-      width: 'auto',
-      marginBottom: 16,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
-      },
-      color: theme.palette.primary.main,
-      '&:target': {
-        color: theme.palette.primary.main,
-      },
-    },
-    btnRoot: {
-      paddingLeft: 15,
-      paddingRight: 15,
-      color: 'white',
-      '&:hover': {
-        backgroundColor: theme.palette.colorHover,
-        cursor: 'pointer',
-      },
-    },
-    btnPrymary: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    btnSecundary: {
-      backgroundColor: theme.palette.grayBottoms,
-    },
-    widthFull: {
-      width: '100%',
-    },
-    pointer: {
-      cursor: 'pointer',
-    },
-    inputs_2: {
-      width: '100%',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2,1fr)',
-      columnGap: '20px',
-    },
-    marco: {
-      padding: '0px',
-      backgroundColor: 'white',
-      boxShadow: '0px 0px 5px 5px rgb(0 0 0 / 10%)',
-      borderRadius: '4px',
-    },
-    root: {
-      padding: '20px',
-      backgroundColor: theme.palette.gray[200],
-    },
-  }));
 
   useEffect(() => {
-    let empresa = '';
-    let numero_solicitud_cotizacion = '';
-    let asociado_id = '';
-    solicitudes.forEach((solicitud) => {
-      if (solicitud.id === values.solicitud_cotizacion_id) {
-        empresa = solicitud.nombre_empresa;
-        numero_solicitud_cotizacion = solicitud.numero_solicitud;
-        asociado_id = solicitud.asociado_id;
+    if (values.solicitud_cotizacion_id) {
+      const solicitud = solicitudes.find(
+        (sol) => sol.id === parseInt(values.solicitud_cotizacion_id),
+      );
+      if (solicitud) {
+        if (!solicitud.asociado_id) {
+          setFieldValue('empresa_cotizacion', solicitud.nombre_empresa);
+          setFieldValue('asociado_id', '');
+        } else {
+          setFieldValue('asociado_id', solicitud.asociado_id);
+          setFieldValue('empresa_cotizacion', '');
+        }
+        if (accion === 'crear') {
+          solicitud.detalles.forEach((data, index) => {
+            let newRow = {
+              ciudad_origen_id: data.ciudad_origen_id,
+              ciudad_destino_id: data.ciudad_destino_id,
+              servicio_id: data.servicio_id,
+              tipo_servicio: data.tipo_servicio,
+              tipo_servicio_otro: data.tipo_servicio_otro,
+              numero_dias_viaje: '',
+              valor_servicio: '',
+              valor_servicio_dia_adicional: '',
+              numero_cotizacion_servicio: values.id ?? 0,
+              id: -1000 + index,
+            };
+            const ciudadOrigen = ciudades.find(
+              (city) => city.id === newRow.ciudad_origen_id,
+            );
+            if (ciudadOrigen) {
+              newRow = {
+                ...newRow,
+                ciudad_origen:
+                  ciudadOrigen.nombre + '-' + ciudadOrigen.departamento,
+              };
+            }
+            const ciudadDestino = ciudades.find(
+              (city) => city.id === newRow.ciudad_destino_id,
+            );
+            if (ciudadDestino) {
+              newRow = {
+                ...newRow,
+                ciudad_destino:
+                  ciudadDestino.nombre + '-' + ciudadDestino.departamento,
+              };
+            }
+            const servicio = servicios.find(
+              (service) => service.id === newRow.servicio_id,
+            );
+            if (servicio) {
+              newRow = {...newRow, servicio: servicio.nombre};
+            }
+            dispatch({type: CREATE_DETALLE_COTIZACION, payload: newRow});
+          });
+        }
       }
-    });
-
-    if (asociado_id === null) {
-      setFieldValue('empresa_cotizacion', empresa);
-      setFieldValue('asociado_id', '');
+      setFieldValue('nombre_empresa', solicitud.nombre_empresa);
+      setFieldValue('numero_solicitud_cotizacion', solicitud.numero_solicitud);
+      setFieldValue('observaciones', solicitud.observaciones);
+      setFieldValue('numero_viajes_mes', solicitud.numero_servicios_mes);
     } else {
-      setFieldValue('asociado_id', asociado_id);
+      setFieldValue('nombre_empresa', '');
+      setFieldValue('numero_solicitud_cotizacion', '');
+      setFieldValue('observaciones', '');
+      setFieldValue('numero_viajes_mes', '');
+      setFieldValue('asociado_id', '');
       setFieldValue('empresa_cotizacion', '');
     }
-    setFieldValue('nombre_empresa', empresa);
-    setFieldValue('numero_solicitud_cotizacion', numero_solicitud_cotizacion);
-  }, [
-    values.solicitud_cotizacion_id,
-    setFieldValue,
-    solicitudes,
-    values.nombre_empresa,
-  ]);
+  }, [values.solicitud_cotizacion_id]);
 
   const classes = useStyles(props);
   return (
@@ -291,6 +339,8 @@ const SolicitudCotizacionForm = (props) => {
           id={values.id ? values.id : 0}
           accionDetalle={accion}
           setDetalles={setDetalles}
+          ciudades={ciudades}
+          servicios={servicios}
         />
 
         <Box className={classes.marco}>

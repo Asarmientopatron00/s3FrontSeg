@@ -139,6 +139,7 @@ const DetalleCotizacionCreator = (props) => {
                   ? selectedRow.color_id
                   : ''
                 : '',
+              link: selectedRow?.link ?? '',
               valor_unitario_producto: selectedRow
                 ? selectedRow.valor_unitario_producto
                 : '',

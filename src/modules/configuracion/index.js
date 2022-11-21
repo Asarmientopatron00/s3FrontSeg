@@ -87,6 +87,10 @@ export const configuracionConfig = [
         path: ['/colores'],
         component: React.lazy(() => import('./Color')),
       },
+      {
+        path: ['/importar-tarifas'],
+        component: React.lazy(() => import('./ImportacionTarifas')),
+      },
     ],
   },
 ];

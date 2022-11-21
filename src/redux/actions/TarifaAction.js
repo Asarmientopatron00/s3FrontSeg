@@ -259,3 +259,54 @@ export const onBuscar = (
       });
   };
 };
+
+export const onImport = (params, setActiveStep, setRows) => {
+  return (dispatch) => {
+    var formData = new FormData();
+    formData.append('archivo', params['archivo']);
+    formData.append('asociado_id', params['asociado_id']);
+    dispatch({type: FETCH_START});
+    jwtAxios
+      .post('tarifas/importar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((data) => {
+        if (data.status === 201) {
+          dispatch({type: FETCH_SUCCESS});
+          setRows(data.data.datos);
+          setActiveStep(1);
+          dispatch({
+            type: SHOW_MESSAGE,
+            payload: data.data.mensajes[0],
+          });
+        } else {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: data.data.mensajes[0],
+          });
+        }
+      })
+      .catch((error) => {
+        try {
+          dispatch({
+            type: FETCH_ERROR,
+            payload: error.response.data.mensajes[0],
+          });
+        } catch {
+          try {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: error,
+            });
+          } catch {
+            dispatch({
+              type: FETCH_ERROR,
+              payload: 'Error',
+            });
+          }
+        }
+      });
+  };
+};

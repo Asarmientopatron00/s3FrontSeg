@@ -9,6 +9,7 @@ import {
   onUpdate,
   onCreate,
 } from '../../../../redux/actions/NotificacionContactoAction';
+import {onGetColeccion as onGetContactos} from 'redux/actions/AsociadoContactoAction';
 import Slide from '@material-ui/core/Slide';
 // import IntlMessages from '../../../../@crema/utility/IntlMessages';
 // import PropTypes from 'prop-types';
@@ -96,13 +97,19 @@ const AsociadoCotnactoLegalCreator = (props) => {
   selectedRow = useSelector(
     ({notificacionContactoReducer}) => notificacionContactoReducer.selectedRow,
   );
+  const contactos = useSelector(
+    ({asociadoContactoReducer}) => asociadoContactoReducer.rows,
+  );
 
   const initializeSelectedRow = () => {
     selectedRow = null;
   };
   useEffect(() => {
     initializeSelectedRow();
-  }, []);
+    if (encabezado?.id) {
+      dispatch(onGetContactos(1, 500, 'nombre:asc', encabezado.id));
+    }
+  }, [encabezado.id]);
 
   if (accion === 'crear') {
     initializeSelectedRow();
@@ -174,6 +181,7 @@ const AsociadoCotnactoLegalCreator = (props) => {
                   ? '1'
                   : '0'
                 : '1',
+              contacto: '',
             }}
             validationSchema={validationSchema}
             onSubmit={(data, {setSubmitting, resetForm}) => {
@@ -199,6 +207,7 @@ const AsociadoCotnactoLegalCreator = (props) => {
                 initialValues={initialValues}
                 eventosNotificaciones={eventosNotificaciones}
                 encabezado={encabezado}
+                contactos={contactos}
               />
             )}
           </Formik>

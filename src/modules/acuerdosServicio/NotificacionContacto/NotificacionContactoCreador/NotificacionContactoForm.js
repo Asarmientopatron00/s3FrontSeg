@@ -7,7 +7,7 @@ import Scrollbar from '../../../../@crema/core/Scrollbar';
 import IntlMessages from '../../../../@crema/utility/IntlMessages';
 import {Fonts} from '../../../../shared/constants/AppEnums';
 import MyAutocomplete from '../../../../shared/components/MyAutoComplete';
-
+import MyAutocompleteAsociado from 'shared/components/MyAutoCompleteAsociado';
 // import MenuItem from '@material-ui/core/MenuItem';
 import {
   LONGITUD_MAXIMA_TELEFONOS,
@@ -27,6 +27,79 @@ const MyTextField = (props) => {
   );
 };
 
+const useStyles = makeStyles((theme) => ({
+  bottomsGroup: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    paddingBottom: '20px',
+    gap: '10px',
+    backgroundColor: 'white',
+    paddingRight: '20px',
+    position: 'sticky',
+    left: 0,
+    bottom: 0,
+  },
+  myTextField: {
+    width: '100%',
+    marginBottom: 5,
+    [theme.breakpoints.up('xl')]: {
+      marginBottom: 5,
+    },
+    height: '70px',
+  },
+  MyRadioField: {
+    width: '100%',
+    marginBottom: 0,
+    [theme.breakpoints.up('xl')]: {
+      marginBottom: 0,
+    },
+  },
+  MySelectField: {
+    width: 'auto',
+    marginBottom: 16,
+    [theme.breakpoints.up('xl')]: {
+      marginBottom: 24,
+    },
+    color: theme.palette.primary.main,
+    '&:target': {
+      color: theme.palette.primary.main,
+    },
+  },
+  btnRoot: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    color: 'white',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  btnPrymary: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  btnSecundary: {
+    backgroundColor: theme.palette.grayBottoms,
+  },
+  widthFull: {
+    width: '100%',
+  },
+  pointer: {
+    cursor: 'pointer',
+  },
+  inputs_2: {
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2,1fr)',
+    columnGap: '20px',
+  },
+  contenedorFiltros: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: 20,
+    marginBottom: 20,
+  },
+}));
+
 const NotificacionContacto = (props) => {
   const {
     handleOnClose,
@@ -34,87 +107,35 @@ const NotificacionContacto = (props) => {
     initialValues,
     eventosNotificaciones,
     encabezado,
+    contactos,
+    setFieldValue,
+    values,
   } = props;
 
   const [disabled, setDisabled] = useState(false);
+
   useEffect(() => {
     if (accion === 'ver' || initialValues.estado === '0') {
       setDisabled(true);
     }
   }, [initialValues.estado, accion]);
 
-  const useStyles = makeStyles((theme) => ({
-    bottomsGroup: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      paddingBottom: '20px',
-      gap: '10px',
-      backgroundColor: 'white',
-      paddingRight: '20px',
-      position: 'sticky',
-      left: 0,
-      bottom: 0,
-    },
-    myTextField: {
-      width: '100%',
-      marginBottom: 5,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 5,
-      },
-      height: '70px',
-    },
-    MyRadioField: {
-      width: '100%',
-      marginBottom: 0,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 0,
-      },
-    },
-    MySelectField: {
-      width: 'auto',
-      marginBottom: 16,
-      [theme.breakpoints.up('xl')]: {
-        marginBottom: 24,
-      },
-      color: theme.palette.primary.main,
-      '&:target': {
-        color: theme.palette.primary.main,
-      },
-    },
-    btnRoot: {
-      paddingLeft: 15,
-      paddingRight: 15,
-      color: 'white',
-      '&:hover': {
-        backgroundColor: theme.palette.colorHover,
-        cursor: 'pointer',
-      },
-    },
-    btnPrymary: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    btnSecundary: {
-      backgroundColor: theme.palette.grayBottoms,
-    },
-    widthFull: {
-      width: '100%',
-    },
-    pointer: {
-      cursor: 'pointer',
-    },
-    inputs_2: {
-      width: '100%',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2,1fr)',
-      columnGap: '20px',
-    },
-    contenedorFiltros: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: 20,
-      marginBottom: 20,
-    },
-  }));
+  useEffect(() => {
+    if (values.contacto) {
+      const contacto = contactos.find((cont) => cont.id === values.contacto);
+      if (contacto) {
+        setFieldValue('nombre', contacto.nombre);
+        setFieldValue('celular', contacto.celular);
+        setFieldValue('telefono', contacto.telefono);
+        setFieldValue('email', contacto.email);
+      }
+    } else if (!values.contacto && accion === 'crear') {
+      setFieldValue('nombre', '');
+      setFieldValue('celular', '');
+      setFieldValue('telefono', '');
+      setFieldValue('email', '');
+    }
+  }, [values.contacto]);
 
   const classes = useStyles(props);
 
@@ -190,55 +211,62 @@ const NotificacionContacto = (props) => {
               disabled={true}
             />
           </Box>
-
-          <MyAutocomplete
-            options={eventosNotificaciones}
-            name='evento_notificacion_id'
-            inputValue={initialValues.evento_notificacion_id}
-            label='Evento'
-            //autoHighlight
+          <MyAutocompleteAsociado
+            options={contactos.filter((contact) => contact.tipo === 'MO')}
+            complete='true'
+            name='contacto'
+            inputValue={initialValues.contacto}
+            label='Contacto'
             className={classes.myTextField}
-            required
             disabled={disabled}
           />
-          <MyTextField
-            className={classes.myTextField}
-            label='Nombre Contacto'
-            name='nombre'
-            disabled={disabled}
-            required
-          />
-
-          <MyTextField
-            className={classes.myTextField}
-            label='Telefono Celular'
-            name='celular'
-            disabled={disabled}
-            required
-            inputProps={{
-              maxLength: LONGITUD_MAXIMA_TELEFONOS,
-              minLength: LONGITUD_MINIMA_TELEFONOS,
-            }}
-          />
-
-          <MyTextField
-            className={classes.myTextField}
-            label='Telefono Fijo'
-            name='telefono'
-            disabled={disabled}
-            inputProps={{
-              maxLength: LONGITUD_MAXIMA_TELEFONOS,
-              minLength: LONGITUD_MINIMA_TELEFONOS,
-            }}
-          />
-
-          <MyTextField
-            className={classes.myTextField}
-            label='Correo Electrónico'
-            name='email'
-            disabled={disabled}
-            required
-          />
+          <Box className={classes.inputs_2}>
+            <MyAutocomplete
+              options={eventosNotificaciones}
+              name='evento_notificacion_id'
+              inputValue={initialValues.evento_notificacion_id}
+              label='Evento'
+              //autoHighlight
+              className={classes.myTextField}
+              required
+              disabled={disabled}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Nombre Contacto'
+              name='nombre'
+              disabled={disabled}
+              required
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Telefono Celular'
+              name='celular'
+              disabled={disabled}
+              required
+              inputProps={{
+                maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                minLength: LONGITUD_MINIMA_TELEFONOS,
+              }}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Telefono Fijo'
+              name='telefono'
+              disabled={disabled}
+              inputProps={{
+                maxLength: LONGITUD_MAXIMA_TELEFONOS,
+                minLength: LONGITUD_MINIMA_TELEFONOS,
+              }}
+            />
+            <MyTextField
+              className={classes.myTextField}
+              label='Correo Electrónico'
+              name='email'
+              disabled={disabled}
+              required
+            />
+          </Box>
         </Box>
       </Scrollbar>
       <Box className={classes.bottomsGroup}>

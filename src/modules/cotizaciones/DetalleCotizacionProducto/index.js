@@ -25,8 +25,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 // import FilterListIcon from '@material-ui/icons/FilterList';
 import {onGetColeccion} from '../../../redux/actions/DetalleCotizacionProductoAction';
-import {onGetColeccionLigera as onGetColeccionLigeraColor} from '../../../redux/actions/ColorAction';
-import {onGetColeccionLigera as onGetColeccionLigeraProducto} from '../../../redux/actions/ProductoAction';
+// import {onGetColeccionLigera as onGetColeccionLigeraColor} from '../../../redux/actions/ColorAction';
+// import {onGetColeccionLigera as onGetColeccionLigeraProducto} from '../../../redux/actions/ProductoAction';
 import {useDispatch, useSelector} from 'react-redux';
 // import {useLocation} from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -513,7 +513,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Cotizacion = (props) => {
   const [idAux, setIdAux] = useState(-1000);
-  const {empresa, fecha, id, accionDetalle, setDetalles, asociado_id} = props;
+  const {
+    empresa,
+    fecha,
+    id,
+    accionDetalle,
+    setDetalles,
+    asociado_id,
+    colores,
+    productos,
+  } = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [
@@ -567,13 +576,13 @@ const Cotizacion = (props) => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
-  const colores = useSelector(({colorReducer}) => colorReducer.ligera);
-  const productos = useSelector(({productoReducer}) => productoReducer.ligera);
+  // const colores = useSelector(({colorReducer}) => colorReducer.ligera);
+  // const productos = useSelector(({productoReducer}) => productoReducer.ligera);
 
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraColor());
-    dispatch(onGetColeccionLigeraProducto());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(onGetColeccionLigeraColor());
+  //   dispatch(onGetColeccionLigeraProducto());
+  // }, [dispatch]);
 
   useEffect(() => {
     if (accionDetalle !== 'crear') {

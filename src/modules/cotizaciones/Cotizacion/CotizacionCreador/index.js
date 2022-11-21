@@ -2,15 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
-import {Scrollbar} from '../../../../@crema';
-import {
-  onShow,
-  onUpdate,
-  onCreate,
-} from '../../../../redux/actions/CotizacionAction';
-import {onGetColeccionLigera} from '../../../../redux/actions/SolicitudCotizacionAction';
+import {Scrollbar} from '@crema';
+import {onShow, onUpdate, onCreate} from 'redux/actions/CotizacionAction';
+import {onGetColeccionLigera} from 'redux/actions/SolicitudCotizacionAction';
 import CotizacionForm from './CotizacionForm';
-// import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+import {onGetColeccionLigera as onGetColeccionLigeraCiudad} from 'redux/actions/CiudadAction';
+import {onGetColeccionLigera as onGetColeccionLigeraServicio} from 'redux/actions/ServicioAction';
+// import mensajeValidacion from 'shared/functions/MensajeValidacion';
 import {useParams} from 'react-router-dom';
 import {history} from 'redux/store';
 import format from 'date-fns/format';
@@ -31,6 +29,8 @@ const CotizacionCreator = (props) => {
   selectedRow = useSelector(
     ({cotizacionReducer}) => cotizacionReducer.selectedRow,
   );
+  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+  const servicios = useSelector(({servicioReducer}) => servicioReducer.ligera);
 
   const solicitudes = useSelector(
     ({solicitudCotizacionReducer}) => solicitudCotizacionReducer.ligera,
@@ -41,7 +41,9 @@ const CotizacionCreator = (props) => {
   };
   useEffect(() => {
     initializeSelectedRow();
-  }, []);
+    dispatch(onGetColeccionLigeraCiudad());
+    dispatch(onGetColeccionLigeraServicio());
+  }, []); // eslint-disable-line
 
   if (accion === 'crear') {
     initializeSelectedRow();
@@ -159,6 +161,9 @@ const CotizacionCreator = (props) => {
             initialValues={initialValues}
             solicitudes={solicitudes}
             setDetalles={setDetalles}
+            ciudades={ciudades}
+            servicios={servicios}
+            dispatch={dispatch}
           />
         )}
       </Formik>

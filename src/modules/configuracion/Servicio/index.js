@@ -35,6 +35,9 @@ import TuneIcon from '@material-ui/icons/Tune';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import TextField from '@material-ui/core/TextField';
 import Swal from 'sweetalert2';
+import {Form, Formik} from 'formik';
+import defaultConfig from '@crema/utility/ContextProvider/defaultConfig';
+import {InsertDriveFile} from '@material-ui/icons';
 
 // import {MessageView} from '../../../@crema';
 
@@ -284,6 +287,23 @@ const useToolbarStyles = makeStyles((theme) => ({
     gap: '20px',
     minWidth: '100px',
   },
+  exportButton: {
+    backgroundColor: '#4caf50',
+    color: 'white',
+    boxShadow:
+      '0px 3px 5px -1px rgb(0 0 0 / 30%), 0px 6px 10px 0px rgb(0 0 0 / 20%), 0px 1px 18px 0px rgb(0 0 0 / 16%)',
+    '&:hover': {
+      backgroundColor: theme.palette.colorHover,
+      cursor: 'pointer',
+    },
+  },
+  x: {
+    position: 'absolute',
+    color: '#4caf50',
+    fontSize: '14px',
+    top: '19px',
+    fontWeight: 'bold',
+  },
 }));
 
 const EnhancedTableToolbar = (props) => {
@@ -322,6 +342,31 @@ const EnhancedTableToolbar = (props) => {
               {titulo}
             </Typography>
             <Box className={classes.horizontalBottoms}>
+              <Formik>
+                <Form>
+                  {permisos.indexOf('Exportar') >= 0 && (
+                    <Tooltip
+                      title='Exportar'
+                      component='a'
+                      className={classes.linkDocumento}
+                      href={
+                        defaultConfig.API_URL +
+                        '/exportar/servicios' +
+                        '?nombre=' +
+                        nombreFiltro
+                      }>
+                      <IconButton
+                        className={classes.exportButton}
+                        aria-label='filter list'>
+                        <Box component='span' className={classes.x}>
+                          X
+                        </Box>
+                        <InsertDriveFile />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </Form>
+              </Formik>
               <Tooltip
                 title='Mostrar/Ocultar Columnas'
                 onClick={handleOpenPopoverColumns}>

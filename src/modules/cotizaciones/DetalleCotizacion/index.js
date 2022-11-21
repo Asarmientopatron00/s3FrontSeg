@@ -536,7 +536,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Cotizacion = (props) => {
   const [idAux, setIdAux] = useState(-1000);
-  const {empresa, fecha, id, accionDetalle, setDetalles, asociado_id} = props;
+  const {
+    empresa,
+    fecha,
+    id,
+    accionDetalle,
+    setDetalles,
+    asociado_id,
+    ciudades,
+    servicios,
+  } = props;
   const [showForm, setShowForm] = useState(false);
   const [accion, setAccion] = useState('ver');
   const [detalleCotizacionSeleccionado, setDetalleCotizacionSeleccionado] =
@@ -588,13 +597,13 @@ const Cotizacion = (props) => {
   const classes = useStyles({vp: vp});
   const dispatch = useDispatch();
 
-  const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
-  const servicios = useSelector(({servicioReducer}) => servicioReducer.ligera);
+  // const ciudades = useSelector(({ciudadReducer}) => ciudadReducer.ligera);
+  // const servicios = useSelector(({servicioReducer}) => servicioReducer.ligera);
 
-  useEffect(() => {
-    dispatch(onGetColeccionLigeraCiudad());
-    dispatch(onGetColeccionLigeraServicio());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(onGetColeccionLigeraCiudad());
+  //   dispatch(onGetColeccionLigeraServicio());
+  // }, [dispatch]);
 
   useEffect(() => {
     if (accionDetalle !== 'crear') {

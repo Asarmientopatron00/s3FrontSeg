@@ -2,18 +2,28 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
-import {Scrollbar} from '../../../../@crema';
+import {Scrollbar} from '@crema';
 import {
   onShow,
   onUpdate,
   onCreate,
-} from '../../../../redux/actions/CotizacionProductoAction';
-import {onGetColeccionLigera} from '../../../../redux/actions/SolicitudCotizacionProductoAction';
+} from 'redux/actions/CotizacionProductoAction';
+import {onGetColeccionLigera} from 'redux/actions/SolicitudCotizacionProductoAction';
+import {onGetColeccionLigera as onGetColeccionLigeraColor} from 'redux/actions/ColorAction';
+import {onGetColeccionLigera as onGetColeccionLigeraProducto} from 'redux/actions/ProductoAction';
 import CotizacionProductoForm from './CotizacionProductoForm';
-// import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+// import mensajeValidacion from 'shared/functions/MensajeValidacion';
 import {useParams} from 'react-router-dom';
 import {history} from 'redux/store';
 import format from 'date-fns/format';
+
+const validationSchema = yup.object({
+  solicitud_cotizacion_id: yup.string().required('Requerido'),
+  fecha_cotizacion: yup.date().required('Requerido'),
+  fecha_vigencia_cotizacion: yup.date().required('Requerido'),
+  plazo_pago_cotizacion: yup.number().required('Requerido'),
+  tiempo_estimado_entrega: yup.number().required('Requerido'),
+});
 
 const CotizacionCreator = (props) => {
   const {accion, id} = useParams();
@@ -25,12 +35,16 @@ const CotizacionCreator = (props) => {
 
   useEffect(() => {
     dispatch(onGetColeccionLigera(true));
+    dispatch(onGetColeccionLigeraColor());
+    dispatch(onGetColeccionLigeraProducto());
   }, [dispatch]);
 
   let selectedRow = useRef();
   selectedRow = useSelector(
     ({cotizacionProductoReducer}) => cotizacionProductoReducer.selectedRow,
   );
+  const colores = useSelector(({colorReducer}) => colorReducer.ligera);
+  const productos = useSelector(({productoReducer}) => productoReducer.ligera);
 
   const solicitudes = useSelector(
     ({solicitudCotizacionProductoReducer}) =>
@@ -57,13 +71,6 @@ const CotizacionCreator = (props) => {
       dispatch(onShow(id));
     }
   }, [accion, dispatch, id]);
-  const validationSchema = yup.object({
-    solicitud_cotizacion_id: yup.string().required('Requerido'),
-    fecha_cotizacion: yup.date().required('Requerido'),
-    fecha_vigencia_cotizacion: yup.date().required('Requerido'),
-    plazo_pago_cotizacion: yup.number().required('Requerido'),
-    tiempo_estimado_entrega: yup.number().required('Requerido'),
-  });
 
   const [detalles, setDetalles] = useState();
   return (
@@ -160,6 +167,9 @@ const CotizacionCreator = (props) => {
             initialValues={initialValues}
             solicitudes={solicitudes}
             setDetalles={setDetalles}
+            colores={colores}
+            productos={productos}
+            dispatch={dispatch}
           />
         )}
       </Formik>
