@@ -158,6 +158,6 @@ const defaultConfig = {
   APP_SEGURIDAD: environment.APP_SEGURIDAD,
   ID_APP_MOVIL: environment.ID_APP_MOVIL,
   // API_URL: 'https://solicitudesservicio-back.sellosdeseguridad.net/public',
-  version: 'V 18.5',
+  version: 'V 19',
 };
 export default defaultConfig;
