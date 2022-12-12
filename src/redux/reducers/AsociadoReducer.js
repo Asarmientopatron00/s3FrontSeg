@@ -117,6 +117,12 @@ const asociadoReducer = (state = initialState, action) => {
         selectedRow: action.payload.datos,
       };
 
+    case 'UNSELECTASOCIADO':
+      return {
+        ...state,
+        selectedRow: null,
+      };
+
     default:
       return state;
   }

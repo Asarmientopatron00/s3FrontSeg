@@ -215,10 +215,13 @@ const SolicitudCotizacionForm = (props) => {
             });
           });
         }
+        setFieldValue('nombre_empresa', solicitud.nombre_empresa);
+        setFieldValue(
+          'numero_solicitud_cotizacion',
+          solicitud.numero_solicitud,
+        );
+        setFieldValue('observaciones', solicitud.observaciones);
       }
-      setFieldValue('nombre_empresa', solicitud.nombre_empresa);
-      setFieldValue('numero_solicitud_cotizacion', solicitud.numero_solicitud);
-      setFieldValue('observaciones', solicitud.observaciones);
     } else {
       setFieldValue('nombre_empresa', '');
       setFieldValue('numero_solicitud_cotizacion', '');

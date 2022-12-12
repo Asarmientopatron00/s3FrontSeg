@@ -226,11 +226,14 @@ const SolicitudCotizacionForm = (props) => {
             dispatch({type: CREATE_DETALLE_COTIZACION, payload: newRow});
           });
         }
+        setFieldValue('nombre_empresa', solicitud.nombre_empresa);
+        setFieldValue(
+          'numero_solicitud_cotizacion',
+          solicitud.numero_solicitud,
+        );
+        setFieldValue('observaciones', solicitud.observaciones);
+        setFieldValue('numero_viajes_mes', solicitud.numero_servicios_mes);
       }
-      setFieldValue('nombre_empresa', solicitud.nombre_empresa);
-      setFieldValue('numero_solicitud_cotizacion', solicitud.numero_solicitud);
-      setFieldValue('observaciones', solicitud.observaciones);
-      setFieldValue('numero_viajes_mes', solicitud.numero_servicios_mes);
     } else {
       setFieldValue('nombre_empresa', '');
       setFieldValue('numero_solicitud_cotizacion', '');

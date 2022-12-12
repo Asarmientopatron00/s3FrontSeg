@@ -1,9 +1,8 @@
 import React, {useEffect, useRef} from 'react';
-// import Dialog from '@material-ui/core/Dialog';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {useDispatch, useSelector} from 'react-redux';
-import {Scrollbar} from '../../../../@crema';
+import {Scrollbar} from '@crema';
 import {
   onShow,
   onUpdate,
@@ -12,15 +11,11 @@ import {
   onGetColeccionLigeraCiudadOtra,
   onGetColeccionLigeraActividadesEconomicas,
   onGetClausulas,
-} from '../../../../redux/actions/AsociadoAction';
-// import Slide from '@material-ui/core/Slide';
-// import IntlMessages from '../../../../@crema/utility/IntlMessages';
-// import PropTypes from 'prop-types';
+  unSelect,
+} from 'redux/actions/AsociadoAction';
 import AsociadoNegocioForm from './AsociadoNegocioForm';
-// import {Fonts} from '../../../../shared/constants/AppEnums';
-// import {makeStyles} from '@material-ui/core/styles/index';
-import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from '../../../../redux/actions/TipoDocumentoAction';
-import {onGetColeccionLigera as departamentosColeccionLigera} from '../../../../redux/actions/DepartamentoAction';
+import {onGetColeccionLigera as tipoDocumentoColeccionLigera} from 'redux/actions/TipoDocumentoAction';
+import {onGetColeccionLigera as departamentosColeccionLigera} from 'redux/actions/DepartamentoAction';
 import {
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
   LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
@@ -29,25 +24,247 @@ import {
   VALIDACION_REGEX_TELEFONOS,
   VALIDACION_REGEX_DOCUMENTOS,
   VALIDACION_REGEX_NUMEROS,
-} from '../../../../shared/constants/Constantes';
-import mensajeValidacion from '../../../../shared/functions/MensajeValidacion';
+} from 'shared/constants/Constantes';
+import mensajeValidacion from 'shared/functions/MensajeValidacion';
 import {useParams} from 'react-router-dom';
 import {history} from 'redux/store';
-import GetUsuario from '../../../../shared/functions/GetUsuario';
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction='down' ref={ref} {...props} />;
-// });
+import GetUsuario from 'shared/functions/GetUsuario';
+
+const validationSchema = yup.object({
+  tipo_persona: yup.string().required('Requerido'),
+  entidad_publica: yup.string().required('Requerido'),
+  tipo_documento_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  numero_documento: yup
+    .string()
+    .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
+    .required('Requerido')
+    .when('tipo_persona', {
+      is: 'N',
+      then: yup
+        .string()
+        .max(
+          LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
+          mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL),
+        ),
+    })
+    .when('tipo_persona', {
+      is: 'J',
+      then: yup
+        .string()
+        .max(
+          LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
+          mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
+        ),
+    }),
+  nombre: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  segundo_nombre: yup
+    .string()
+    .nullable()
+    .max(128, mensajeValidacion('max', 128)),
+  primer_apellido: yup
+    .string()
+    .max(128, mensajeValidacion('max', 128))
+    .nullable()
+    .when('tipo_persona', {
+      is: 'N',
+      then: yup.string().required('Requerido'),
+    }),
+  segundo_apellido: yup
+    .string()
+    .nullable()
+    .max(128, mensajeValidacion('max', 128)),
+  departamento_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  ciudad_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  direccion: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  telefono: yup
+    .string()
+    .required('Requerido')
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
+  celular: yup
+    .string()
+    .nullable()
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
+  email: yup
+    .string()
+    .nullable()
+    .email('Debe ser tipo e-mail')
+    .max(128, mensajeValidacion('max', 128)),
+  pagina_web: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
+  departamento_otro_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .nullable(),
+  ciudad_otra_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .nullable()
+    .when('departamento_otro_id', {
+      is: undefined,
+      then: yup.number().nullable(),
+      otherwise: yup.number().required('Requerido'),
+    }),
+  direccion_otra_sede: yup
+    .string()
+    .max(128, mensajeValidacion('max', 128))
+    .when('departamento_otro_id', {
+      is: undefined,
+      then: yup.string().nullable(),
+      otherwise: yup.string().required('Requerido'),
+    }),
+  telefono_otra_sede: yup
+    .string()
+    .nullable('')
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
+  celular_otra_sede: yup
+    .string()
+    .nullable()
+    .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
+    .max(
+      LONGITUD_MAXIMA_TELEFONOS,
+      mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
+    )
+    .min(
+      LONGITUD_MINIMA_TELEFONOS,
+      mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
+    ),
+  descripcion_actividad_economica: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  actividad_economica_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  capital_registrado: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido'),
+  responsable_iva: yup.string().required('Requerido'),
+  exento_impuesto_renta: yup.string().required('Requerido'),
+  gran_contribuyente: yup.string().required('Requerido'),
+  numero_resolucion_gran_c: yup
+    .string()
+    .max(128, mensajeValidacion('max', 128))
+    .when('gran_contribuyente', {
+      is: 'S',
+      then: yup.string().required('Requerido'),
+      otherwise: yup.string().nullable(),
+    }),
+  fecha_resolucion_gran_c: yup.date().when('gran_contribuyente', {
+    is: 'S',
+    then: yup.date().required('Requerido'),
+    otherwise: yup.date().nullable(),
+  }),
+  autorretenedor: yup.string().required('Requerido'),
+  resolucion_autorretenedor: yup
+    .string()
+    .max(128, mensajeValidacion('max', 128))
+    .when('autorretenedor', {
+      is: 'S',
+      then: yup.string().required('Requerido'),
+      otherwise: yup.string().nullable(),
+    }),
+  fecha_resolucion_autorretenedor: yup.date().when('autorretenedor', {
+    is: 'S',
+    then: yup.date().required('Requerido'),
+    otherwise: yup.date().nullable(),
+  }),
+  origen_fondos: yup
+    .string()
+    .required('Requerido')
+    .max(128, mensajeValidacion('max', 128)),
+  certificado_oea: yup.string().required('Requerido'),
+  certificado_basc: yup.string().required('Requerido'),
+  certificado_iso_28001: yup.string().required('Requerido'),
+  certificado_iso_9001: yup.string().required('Requerido'),
+  certificado_c_tpat: yup.string().required('Requerido'),
+  otro_certificado: yup
+    .string()
+    .nullable()
+    .max(128, mensajeValidacion('max', 128)),
+  tipo_documento_facturacion_id: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .nullable(),
+  numero_documento_facturacion: yup
+    .string()
+    .nullable()
+    .max(
+      LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
+      mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
+    ),
+  dia_cierre_facturacion: yup
+    .number()
+    .typeError(mensajeValidacion('numero'))
+    .required('Requerido')
+    .max(31, 'No debe superar 31'),
+  codigo_postal_facturacion: yup
+    .string()
+    .required('Requerido')
+    .matches(VALIDACION_REGEX_NUMEROS, mensajeValidacion('numero'))
+    .max(6, 'Debe ser de 6 dígitos')
+    .min(6, 'Debe ser de 6 dígitos'),
+  correo_envio_facturacion_electronica: yup
+    .string()
+    .required('Requerido')
+    .email('Debe ser tipo e-mail')
+    .max(128, mensajeValidacion('max', 128)),
+  correo_recepcion_facturacion_electronica: yup
+    .string()
+    .required('Requerido')
+    .email('Debe ser tipo e-mail')
+    .max(128, mensajeValidacion('max', 128)),
+  aceptar_condiciones_circular_070: yup.string().required('Requerido'),
+  autorizacion_datos_personales: yup.string().required('Requerido'),
+  autorizacion_clausula_confidencialidad: yup.string().required('Requerido'),
+  firma_representante_legal: yup.string().required('Requerido'),
+  informacion_verificada_asociado: yup.string().required('Requerido'),
+  estado: yup.string().required('Requerido'),
+});
 
 const AsociadoDatoBasicoCreator = (props) => {
   const {accion, id} = useParams();
-  const handleOnClose = () => {
-    history.goBack();
-  };
-
   const usuario = GetUsuario();
-
   const dispatch = useDispatch();
-
   const tiposDocumentos = useSelector(
     ({tipoDocumentoReducer}) => tipoDocumentoReducer.ligera,
   );
@@ -64,6 +281,9 @@ const AsociadoDatoBasicoCreator = (props) => {
   const clausulas = useSelector(
     ({asociadoReducer}) => asociadoReducer.clausulas,
   );
+  const selectedRow = useSelector(
+    ({asociadoReducer}) => asociadoReducer.selectedRow,
+  );
 
   useEffect(() => {
     dispatch(tipoDocumentoColeccionLigera());
@@ -72,275 +292,28 @@ const AsociadoDatoBasicoCreator = (props) => {
     dispatch(onGetClausulas());
   }, [dispatch]);
 
+  useEffect(() => {
+    initializeSelectedRow();
+  }, []);
+
+  useEffect(() => {
+    if ((accion === 'editar') | (accion === 'ver')) {
+      dispatch(onShow(id));
+    }
+  }, [accion, dispatch, id]);
+
+  const initializeSelectedRow = () => {
+    dispatch(unSelect());
+  };
   const onChangeDepartamento = (id) => {
     dispatch(onGetColeccionLigeraCiudad(id));
   };
   const onChangeDepartamentoOtra = (id) => {
     dispatch(onGetColeccionLigeraCiudadOtra(id));
   };
-
-  // const useStyles = makeStyles((theme) => ({
-  //   dialogBox: {
-  //     position: 'relative',
-  //     '& .MuiDialog-paperWidthSm': {
-  //       maxWidth: 600,
-  //       width: '100%',
-  //       // maxHeight:'fit-content'
-  //     },
-  //     '& .MuiTypography-h6': {
-  //       fontWeight: Fonts.LIGHT,
-  //     },
-  //   },
-  // }));
-
-  let validationSchema = yup.object({
-    tipo_persona: yup.string().required('Requerido'),
-    entidad_publica: yup.string().required('Requerido'),
-    tipo_documento_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido'),
-    numero_documento: yup
-      .string()
-      .matches(VALIDACION_REGEX_DOCUMENTOS, mensajeValidacion('documento'))
-      .required('Requerido')
-      .when('tipo_persona', {
-        is: 'N',
-        then: yup
-          .string()
-          .max(
-            LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
-            mensajeValidacion(
-              'max',
-              LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_NATURAL,
-            ),
-          ),
-      })
-      .when('tipo_persona', {
-        is: 'J',
-        then: yup
-          .string()
-          .max(
-            LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
-            mensajeValidacion(
-              'max',
-              LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
-            ),
-          ),
-      }),
-    nombre: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
-    segundo_nombre: yup
-      .string()
-      .nullable()
-      .max(128, mensajeValidacion('max', 128)),
-    primer_apellido: yup
-      .string()
-      .max(128, mensajeValidacion('max', 128))
-      .nullable()
-      .when('tipo_persona', {
-        is: 'N',
-        then: yup.string().required('Requerido'),
-      }),
-    segundo_apellido: yup
-      .string()
-      .nullable()
-      .max(128, mensajeValidacion('max', 128)),
-    departamento_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido'),
-    ciudad_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido'),
-    direccion: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
-    telefono: yup
-      .string()
-      .required('Requerido')
-      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-      .max(
-        LONGITUD_MAXIMA_TELEFONOS,
-        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-      )
-      .min(
-        LONGITUD_MINIMA_TELEFONOS,
-        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-      ),
-    celular: yup
-      .string()
-      .nullable()
-      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-      .max(
-        LONGITUD_MAXIMA_TELEFONOS,
-        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-      )
-      .min(
-        LONGITUD_MINIMA_TELEFONOS,
-        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-      ),
-    email: yup
-      .string()
-      .nullable()
-      .email('Debe ser tipo e-mail')
-      .max(128, mensajeValidacion('max', 128)),
-    pagina_web: yup.string().nullable().max(128, mensajeValidacion('max', 128)),
-    departamento_otro_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .nullable(),
-    ciudad_otra_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .nullable()
-      .when('departamento_otro_id', {
-        is: undefined,
-        then: yup.number().nullable(),
-        otherwise: yup.number().required('Requerido'),
-      }),
-    direccion_otra_sede: yup
-      .string()
-      .max(128, mensajeValidacion('max', 128))
-      .when('departamento_otro_id', {
-        is: undefined,
-        then: yup.string().nullable(),
-        otherwise: yup.string().required('Requerido'),
-      }),
-    telefono_otra_sede: yup
-      .string()
-      .nullable('')
-      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-      .max(
-        LONGITUD_MAXIMA_TELEFONOS,
-        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-      )
-      .min(
-        LONGITUD_MINIMA_TELEFONOS,
-        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-      ),
-    celular_otra_sede: yup
-      .string()
-      .nullable()
-      .matches(VALIDACION_REGEX_TELEFONOS, mensajeValidacion('telefono'))
-      .max(
-        LONGITUD_MAXIMA_TELEFONOS,
-        mensajeValidacion('max', LONGITUD_MAXIMA_TELEFONOS),
-      )
-      .min(
-        LONGITUD_MINIMA_TELEFONOS,
-        mensajeValidacion('min', LONGITUD_MINIMA_TELEFONOS),
-      ),
-    descripcion_actividad_economica: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
-    actividad_economica_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido'),
-    capital_registrado: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido'),
-    responsable_iva: yup.string().required('Requerido'),
-    exento_impuesto_renta: yup.string().required('Requerido'),
-    gran_contribuyente: yup.string().required('Requerido'),
-    numero_resolucion_gran_c: yup
-      .string()
-      .max(128, mensajeValidacion('max', 128))
-      .when('gran_contribuyente', {
-        is: 'S',
-        then: yup.string().required('Requerido'),
-        otherwise: yup.string().nullable(),
-      }),
-    fecha_resolucion_gran_c: yup.date().when('gran_contribuyente', {
-      is: 'S',
-      then: yup.date().required('Requerido'),
-      otherwise: yup.date().nullable(),
-    }),
-    autorretenedor: yup.string().required('Requerido'),
-    resolucion_autorretenedor: yup
-      .string()
-      .max(128, mensajeValidacion('max', 128))
-      .when('autorretenedor', {
-        is: 'S',
-        then: yup.string().required('Requerido'),
-        otherwise: yup.string().nullable(),
-      }),
-    fecha_resolucion_autorretenedor: yup.date().when('autorretenedor', {
-      is: 'S',
-      then: yup.date().required('Requerido'),
-      otherwise: yup.date().nullable(),
-    }),
-    origen_fondos: yup
-      .string()
-      .required('Requerido')
-      .max(128, mensajeValidacion('max', 128)),
-    certificado_oea: yup.string().required('Requerido'),
-    certificado_basc: yup.string().required('Requerido'),
-    certificado_iso_28001: yup.string().required('Requerido'),
-    certificado_iso_9001: yup.string().required('Requerido'),
-    certificado_c_tpat: yup.string().required('Requerido'),
-    otro_certificado: yup
-      .string()
-      .nullable()
-      .max(128, mensajeValidacion('max', 128)),
-    tipo_documento_facturacion_id: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .nullable(),
-    numero_documento_facturacion: yup
-      .string()
-      .nullable()
-      .max(
-        LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA,
-        mensajeValidacion('max', LONGITUD_MAXIMA_DOCUMENTOS_PERSONA_JURIDICA),
-      ),
-    dia_cierre_facturacion: yup
-      .number()
-      .typeError(mensajeValidacion('numero'))
-      .required('Requerido')
-      .max(31, 'No debe superar 31'),
-    codigo_postal_facturacion: yup
-      .string()
-      .required('Requerido')
-      .matches(VALIDACION_REGEX_NUMEROS, mensajeValidacion('numero'))
-      .max(6, 'Debe ser de 6 dígitos')
-      .min(6, 'Debe ser de 6 dígitos'),
-    correo_envio_facturacion_electronica: yup
-      .string()
-      .required('Requerido')
-      .email('Debe ser tipo e-mail')
-      .max(128, mensajeValidacion('max', 128)),
-    correo_recepcion_facturacion_electronica: yup
-      .string()
-      .required('Requerido')
-      .email('Debe ser tipo e-mail')
-      .max(128, mensajeValidacion('max', 128)),
-    aceptar_condiciones_circular_070: yup.string().required('Requerido'),
-    autorizacion_datos_personales: yup.string().required('Requerido'),
-    autorizacion_clausula_confidencialidad: yup.string().required('Requerido'),
-    firma_representante_legal: yup.string().required('Requerido'),
-    informacion_verificada_asociado: yup.string().required('Requerido'),
-    estado: yup.string().required('Requerido'),
-  });
-  // const classes = useStyles(props);
-
-  // const [showForm, setShowForm] = useState(false);
-  let selectedRow = useRef();
-  selectedRow = useSelector(({asociadoReducer}) => asociadoReducer.selectedRow);
-
-  const initializeSelectedRow = () => {
-    selectedRow = null;
+  const handleOnClose = () => {
+    history.goBack();
   };
-  useEffect(() => {
-    initializeSelectedRow();
-  }, []);
 
   if (accion === 'crear') {
     initializeSelectedRow();
@@ -348,11 +321,6 @@ const AsociadoDatoBasicoCreator = (props) => {
   if (accion !== 'editar' && accion !== 'ver' && accion !== 'crear') {
     history.goBack();
   }
-  useEffect(() => {
-    if ((accion === 'editar') | (accion === 'ver')) {
-      dispatch(onShow(id));
-    }
-  }, [accion, dispatch, id]);
 
   return (
     // <Dialog

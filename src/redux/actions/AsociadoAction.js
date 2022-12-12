@@ -406,3 +406,9 @@ export const onVerificarInformacion = (params) => {
       });
   };
 };
+
+export const unSelect = () => {
+  return (dispatch) => {
+    dispatch({type: 'UNSELECTASOCIADO'});
+  };
+};
